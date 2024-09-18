@@ -59,7 +59,7 @@
             <th class="py-3 px-6">Mortuary Coverage Start</th>
             <th class="py-3 px-6">Mortuary Coverage End</th>
             <th class="py-3 px-6">Notes</th>
-            <th class="py-3 px-6"></th>
+            <th class="py-3 px-6">Action</th>
           </tr>
         </thead>
         <tbody class="text-gray-600 divide-y">
@@ -85,6 +85,7 @@
             <td class="px-6 py-4 whitespace-nowrap">{{ item.dateLastModified }}</td>
             <td class="px-6 py-4 whitespace-nowrap">{{ item.passbookNumber }}</td>
             <td class="px-6 py-4 whitespace-nowrap">{{ item.loanCount }}</td>
+            <td class="px-6 py-4 whitespace-nowrap"></td>
             <!-- Display Mortuary Status with Color Indicator -->
             <td class="px-6 py-4 whitespace-nowrap">
               <span :class="{'bg-green-500': item.mortuaryStatus, 'bg-red-500': !item.mortuaryStatus}" class="inline-block w-3 h-3 rounded-full"></span>
@@ -111,14 +112,16 @@
 import { CustomersService } from '~/models/Customer';
 import { ref, computed } from 'vue'
 import { apiService } from '~/routes/api/API'
+import { numeric } from '@vuelidate/validators';
 
 const searchQuery = ref<string>('')
 
 const tableItems = ref<TableItem[]>([]); // Initialize tableItems
 
 const state = {
-  customers: [] as any[], // Array to store multiple customers
-  personalities: [] as any[], // Array to store multiple personalities
+  datas: [],
+  customers: [],
+  personality: [],
 };
 
 // Fetch customers when necessary
@@ -168,12 +171,12 @@ interface TableItem {
 // Fetching customers from the API
 async function fetchCustomers() {
   try {
+    debugger;
     const params = {}; // Your query params for the API
     const response = await apiService.getCustomers(params); // Fetch customer data from API
 
     // Store API response in state (assuming API returns arrays)
-    state.customers = response.customer; // An array of customer objects
-    state.personalities = response.personality; // An array of personality objects
+    state.datas = response // An array of personality objects
 
     // Call the function to map the API data to tableItems
     storeResponseInTableItems();
@@ -190,9 +193,10 @@ function storeResponseInTableItems() {
   // Clear table items before pushing new data
   tableItems.value = [];
 
-  // Loop through each customer and personality data (assuming they have matching indices)
-  state.customers.forEach((customer, index) => {
-    const personality = state.personalities[index];
+  for (let i = 0; i < state.datas.data.length; i++)
+  {
+    const personality = state.datas.data[i].personality;
+    const customer = state.datas.data[i].customer;
 
     tableItems.value.push({
       employeeId: customer.id.toString(), // Assuming passbook_no is like employeeId
@@ -200,7 +204,7 @@ function storeResponseInTableItems() {
       email: personality.email_address,
       telephoneNumber: personality.telephone_no,
       birthday: personality.birthday, // Make sure it's properly formatted
-      gender: personality.gender_code === 1 ? 'Male' : 'Female', // Example: gender_code mapping
+      gender: personality.gender_code === 1 ? 'Male': 'Female', // Example: gender_code mapping
       civilStatus: mapCivilStatus(personality.civil_status), // Map the civil_status code
       groupName: `Group ${customer.group_id}`, // Assuming group_id is like groupName
       houseStreet: personality.house_street,
@@ -220,7 +224,12 @@ function storeResponseInTableItems() {
       mortuaryCoverageStart: customer.mortuary_coverage_start,
       mortuaryCoverageEnd: customer.mortuary_coverage_end,
     });
-  });
+  }
+
+  // // Loop through each customer and personality data (assuming they have matching indices)
+  // state.datas?.data.forEach((customer, index) => {
+    
+  // });
 }
 
 // Example helper function to map civil status codes to human-readable values

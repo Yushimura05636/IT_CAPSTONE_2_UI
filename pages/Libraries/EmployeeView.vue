@@ -37,8 +37,6 @@
             <th class="py-3 px-6">Employee ID</th>
             <th class="py-3 px-6">Name</th>
             <th class="py-3 px-6">Email</th>
-            <th class="py-3 px-6">Position</th>
-            <th class="py-3 px-6">Salary</th>
             <th class="py-3 px-6">SSS Number</th>
             <th class="py-3 px-6">PhilHealth Number</th>
             <th class="py-3 px-6">TIN Number</th>
@@ -59,7 +57,7 @@
             <th class="py-3 px-6">Date Created</th>
             <th class="py-3 px-6">Date Last Modified</th>
             <th class="py-3 px-6">Notes</th>
-            <th class="py-3 px-6"></th>
+            <th class="py-3 px-6">Action</th>
           </tr>
         </thead>
         <tbody class="text-gray-600 divide-y">
@@ -67,13 +65,11 @@
             <td class="px-6 py-4 whitespace-nowrap">{{ item.employeeId }}</td>
             <td class="px-6 py-4 whitespace-nowrap">{{ item.name }}</td>
             <td class="px-6 py-4 whitespace-nowrap">{{ item.email }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">{{ item.position }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">{{ item.salary }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">{{ item.sssNumber }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">{{ item.philHealthNumber }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">{{ item.tinNumber }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">{{ item.dateHired }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">{{ item.dateResigned }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ item.sssno }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ item.phicno }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ item.tinno }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ item.datetime_hired }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ item.datetime_resigned }}</td>
             <td class="px-6 py-4 whitespace-nowrap">{{ item.telephoneNumber }}</td>
             <td class="px-6 py-4 whitespace-nowrap">{{ item.birthday }}</td>
             <td class="px-6 py-4 whitespace-nowrap">{{ item.gender }}</td>
@@ -89,7 +85,10 @@
             <td class="px-6 py-4 whitespace-nowrap">{{ item.dateCreated }}</td>
             <td class="px-6 py-4 whitespace-nowrap">{{ item.dateLastModified }}</td>
             <td class="text-right px-6 whitespace-nowrap">
-              <button @click="editMember(item)" class="py-2 px-3 font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg">
+              
+            </td>
+            <td class="text-right px-6 whitespace-nowrap">
+              <button @click="editEmployee(item)" class="py-2 px-3 font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg">
                 Edit
               </button>
             </td>
@@ -103,44 +102,160 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      searchQuery: '',
-      tableItems: [
-        // Example data
-        //{ employeeId: "001", name: "Liam James", sssNumber: "123456789", philHealthNumber: "PH-001", tinNumber: "TIN-001", dateHired: "2020-01-15", dateResigned: "" },
-        //{ employeeId: "002", name: "Olivia Emma", sssNumber: "987654321", philHealthNumber: "PH-002", tinNumber: "TIN-002", dateHired: "2019-03-25", dateResigned: "2023-06-10" },
-        // Add more data here
-      ]
-    };
-  },
-  computed: {
-    filteredTableItems() {
-      return this.tableItems.filter(item => {
-        return Object.values(item).some(value =>
-          String(value).toLowerCase().includes(this.searchQuery.toLowerCase())
-        );
-      });
-    }
-  },
-  methods: {
-    editMember(item) {
-      console.log('Editing member:', item);
-    }
+<script setup lang="ts">
+import { EmployeesService } from '~/models/Employee';
+import { ref, computed } from 'vue'
+import { apiService } from '~/routes/api/API'
+import Customers from '../customers.vue';
+
+
+const searchQuery = ref<string>('')
+
+const tableItems = ref<TableItem[]>([]); // Initialize tableItems
+
+const state = {
+  datas: [] as any[],
+  employees: [] as any[], // Array to store multiple customers
+  personalities: [] as any[], // Array to store multiple personalities
+};
+
+const filteredTableItems = computed(() => {
+  return tableItems.value.filter(item => {
+    return Object.values(item).some(value =>
+      String(value).toLowerCase().includes(searchQuery.value.toLowerCase())
+    )
+  })
+})
+
+const editEmployee = (item: TableItem) => {
+  debugger;
+  EmployeesService.id = parseInt(item.employeeId);
+  navigateTo(`/Libraries/EmployeeUpdate`)
+  // console.log('Editing member:', item)
+}
+
+
+interface TableItem {
+  employeeId: string;
+  name: string;
+  birthday: string;
+  civilStatus: string;
+  gender: string;
+  houseStreet: string;
+  purokZone: string;
+  postalCode: string;
+  telephoneNumber: string;
+  email: string;
+  cellphoneNo: string;
+  personalityStatus: string;
+  Barangay: string;
+  city: string;
+  country: string;
+  province: string;
+  dateCreated: string;
+  dateLastModified: string;
+  sssno: number;
+  phicno: number;
+  tinno: number;
+  datetime_hired: string;
+  datetime_resigned: string;
+
+}
+
+async function fetchEmployees() {
+  try {
+    const params = {}; // Your query params for the API
+    const response = await apiService.getEmployees(params); // Fetch customer data from API
+
+    state.datas = response;
+    
+    // Call the function to map the API data to tableItems
+    storeResponseInTableItems();
+
+    alert('Data fetched successfully');
+  } catch (error) {
+    alert('Error fetching data from API: ' + error);
+    console.error(error);
   }
 }
+
+
+// Function to map customer and personality data to tableItems
+function storeResponseInTableItems() {
+  // Clear table items before pushing new data
+  tableItems.value = [];
+
+  for (let i = 0; i < state.datas.data.length; i++)
+  {
+    const personality = state.datas.data[i].personality;
+    const employees = state.datas.data[i].employee;
+
+    tableItems.value.push({
+      employeeId: employees.id.toString(), // Assuming passbook_no is like employeeId
+      name: `${personality.first_name} ${personality.family_name}`,
+      birthday: personality.birthday, // Make sure it's properly formatted
+      civilStatus: mapCivilStatus(personality.civil_status), // Map the civil_status code
+      gender: personality.gender_code === 1 ? 'Male' : 'Female', // Example: gender_code mapping
+      houseStreet: personality.house_street,
+      purokZone: personality.purok_zone,
+      postalCode: personality.postal_code,
+      telephoneNumber: personality.telephone_no,
+      email: personality.email_address,
+      cellphoneNo: personality.cellphone_no,
+      personalityStatus: mapPersonalityStatus(personality.personality_status_code), // Example mapping
+      Barangay: mapBarangay(personality.barangay_id), // Example: You might want to map IDs to names
+      city: mapCity(personality.city_id),
+      country: mapCountry(personality.country_id),
+      province: mapProvince(personality.province_id),
+      dateCreated: new Date().toISOString().split('T')[0], // Set current date as dateCreated
+      dateLastModified: new Date().toISOString().split('T')[0], // Set current date as dateLastModified
+      sssno: employees.sss_no,
+      phicno: employees.phic_no,
+      tinno: employees.tin_no,
+      datetime_hired: employees.datetime_hired,
+      datetime_resigned:  employees.datetime_resigned,
+    });
+  }
+}
+
+
+function mapCivilStatus(civilStatusCode: number) {
+  const statuses: { [key: number]: string } = {
+    1: 'Single',
+    2: 'Married',
+    3: 'Divorced',
+    4: 'Widowed',
+  };
+  return statuses[civilStatusCode] || 'Unknown';
+}
+
+// Example helper function for personality status
+function mapPersonalityStatus(statusCode: number) {
+  const statuses: { [key: number]: string } = {
+    1: 'Active',
+    2: 'Inactive',
+    3: 'Suspended',
+  };
+  return statuses[statusCode] || 'Unknown';
+}
+
+// Add your own mapping functions for barangay, city, province, etc.
+function mapBarangay(barangayId: number) {
+  // Mapping logic for barangay IDs to names
+  return `Brgy ${barangayId}`;
+}
+
+function mapCity(cityId: number) {
+  return `City ${cityId}`;
+}
+
+function mapCountry(countryId: number) {
+  return `Country ${countryId}`;
+}
+
+function mapProvince(provinceId: number) {
+  return `Province ${provinceId}`;
+}
+
+fetchEmployees();
 </script>
-
-<style scoped>
-button {
-  padding: 8px 12px;
-  font-size: 0.875rem;
-  text-align: center;
-}
-
-input[type="text"] {
-  width: 50%;
-}
-</style>
