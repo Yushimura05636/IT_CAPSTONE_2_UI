@@ -43,6 +43,17 @@ class API extends BaseAPIService {
     async deleteCustomer(params: object, id: number): Promise<any> {
         return await this.request(`/customers/${id}`, 'DELETE', params)
     }
+
+    // Example API call
+    async libraryCreate(params: object): Promise<any> {
+    return await this.request(`/libraries`, 'POST', params);
+    }
+    async libraryUpdate(params: object, id: number): Promise<any> {
+    return await this.request(`/libraries/${id}`, 'PUT', params);
+    }
+    async libraryDelete(params: object, id: number): Promise<any> {
+    return await this.request(`/libraries/${id}`, 'DELETE', params);
+    }
 }
 
 export const apiService = new API()
