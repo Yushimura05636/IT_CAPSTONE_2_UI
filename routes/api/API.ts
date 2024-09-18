@@ -45,13 +45,19 @@ class API extends BaseAPIService {
     }
 
     // Example API call
-    async libraryCreate(params: object): Promise<any> {
+    async get(params: object, modeltype: string): Promise<any> {
+    return await this.request(`/libraries/${modeltype}`, 'GET', params);
+    }
+    async getOne(params: object, id: number): Promise<any> {
+    return await this.request(`/libraries/findOne/${id}`, 'POST', params);
+    }
+    async create(params: object): Promise<any> {
     return await this.request(`/libraries`, 'POST', params);
     }
-    async libraryUpdate(params: object, id: number): Promise<any> {
+    async update(params: object, id: number): Promise<any> {
     return await this.request(`/libraries/${id}`, 'PUT', params);
     }
-    async libraryDelete(params: object, id: number): Promise<any> {
+    async delete(params: object, id: number): Promise<any> {
     return await this.request(`/libraries/${id}`, 'DELETE', params);
     }
 }

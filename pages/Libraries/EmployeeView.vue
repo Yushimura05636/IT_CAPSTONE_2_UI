@@ -13,9 +13,9 @@
         <h3 class="text-gray-800 text-xl font-bold sm:text-2xl">Employees</h3>
       </div>
       <div class="mt-3 md:mt-0 flex flex-col items-start gap-y-4">
-        <a href="javascript:void(0)" class="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 md:text-sm">
+        <FormButton @click='createEmployee' class="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 md:text-sm">
           Add Employee
-        </a>
+        </FormButton>
       </div>
     </div>
 
@@ -107,6 +107,7 @@ import { EmployeesService } from '~/models/Employee';
 import { ref, computed } from 'vue'
 import { apiService } from '~/routes/api/API'
 import Customers from '../customers.vue';
+import { Employee } from '../../models/Employee';
 
 
 const searchQuery = ref<string>('')
@@ -160,6 +161,10 @@ interface TableItem {
   datetime_hired: string;
   datetime_resigned: string;
 
+}
+
+function createEmployee() {
+  navigateTo('/Libraries/EmployeeCreate');
 }
 
 async function fetchEmployees() {

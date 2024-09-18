@@ -61,11 +61,12 @@
   
   <script setup lang="ts">
   import { ref } from 'vue';
+import { libraryService } from '~/models/Library';
   import { apiService } from '~/routes/api/API';
   
   const form = ref({
-    id: '',
-    modeltype: 'city',
+    id: libraryService.id,
+    modeltype: libraryService.description,
     description: ''
   });
   
@@ -97,9 +98,10 @@
                 modeltype: form.value.modeltype,
                 description: form.value.description,
             }
-            const response = await apiService.libraryUpdate(params, parseInt(form.value.id));
+            const response = await apiService.update(params, parseInt(form.value.id));
             if (response.data) {
                 alert("edit successfully!");
+                navigateTo("./view");
             }
         } catch (error: any) {
             alert("error: " + error);
