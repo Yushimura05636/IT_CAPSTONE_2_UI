@@ -11,7 +11,7 @@ setCustomerData();
 sendCustomerData();
 
 const state = {
-  'data' : [],
+  data : [],
 }
 
 function formatDateTimeToMySQL(date: any) {

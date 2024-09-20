@@ -1,32 +1,39 @@
 <template>
-  <div class="bg-white">
-    <header class="py-8 px-4 md:px-16">
-      <div class="container mx-auto flex justify-between items-center">
-        <img src="../../img/LendCash_Logo-removebg-preview.png" class="w-20" alt="logo" />
-      </div>
-    </header>
-  </div>
-
   <div class="max-w-screen-xl mx-auto px-4 md:px-8">
-    <div class="items-start justify-between md:flex">
+    <!-- Title Section -->
+    <div class="items-start justify-between md:flex mt-8">
       <div class="max-w-lg">
-        <h3 class="text-gray-800 text-xl font-bold sm:text-2xl">Employees</h3>
-      </div>
-      <div class="mt-3 md:mt-0 flex flex-col items-start gap-y-4">
-        <FormButton @click='createEmployee' class="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 md:text-sm">
-          Add Employee
-        </FormButton>
+        <h3 class="text-gray-800 text-xl font-bold sm:text-2xl mb-4">Employees</h3>
       </div>
     </div>
 
-    <!-- Search Bar - Centered and Spaced Above Table -->
-    <div class="flex justify-center mt-8 mb-6">
-      <input
-        v-model="searchQuery"
-        type="text"
-        placeholder="Search employees"
-        class="px-4 py-2 border border-gray-300 rounded-lg"
-      />
+    <!-- Action Buttons -->
+    <div class="flex justify-between items-center mb-8">
+      <!-- Left: Action Buttons -->
+      <div class="flex space-x-4">
+        <button @click="createEmployee" class="px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-600">
+          Create
+        </button>
+        <button @click="modifyEmployee" :disabled="!selectedEmployeeId" class="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 disabled:opacity-50">
+          Modify
+        </button>
+        <button @click="deleteEmployee" :disabled="!selectedEmployeeId" class="px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600 disabled:opacity-50">
+          Delete
+        </button>
+      </div>
+
+      <!-- Right: Search Bar -->
+      <div class="flex items-center space-x-2">
+        <input
+          v-model="searchQuery"
+          type="text"
+          placeholder="Search employees"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
+        />
+        <button class="px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
+          Search
+        </button>
+      </div>
     </div>
 
     <!-- Employee Table -->
@@ -34,8 +41,11 @@
       <table class="w-full table-auto text-sm text-left">
         <thead class="bg-gray-50 text-gray-600 font-medium border-b">
           <tr>
-            <th class="py-3 px-6">Employee ID</th>
-            <th class="py-3 px-6">Name</th>
+            <th class="py-3 px-6">Select</th>
+            <th class="py-3 px-6">Employee No</th>
+            <th class="py-3 px-6">Last Name</th>
+            <th class="py-3 px-6">First Name</th>
+            <th class="py-3 px-6">Middle Name</th>
             <th class="py-3 px-6">Email</th>
             <th class="py-3 px-6">SSS Number</th>
             <th class="py-3 px-6">PhilHealth Number</th>
@@ -49,7 +59,7 @@
             <th class="py-3 px-6">House Street</th>
             <th class="py-3 px-6">Purok Zone</th>
             <th class="py-3 px-6">postal Code</th>
-            <th class="py-3 px-6">Pesonality Status</th>
+            <th class="py-3 px-6">Personality Status</th>
             <th class="py-3 px-6">Barangay</th>
             <th class="py-3 px-6">City</th>
             <th class="py-3 px-6">Country</th>
@@ -62,8 +72,13 @@
         </thead>
         <tbody class="text-gray-600 divide-y">
           <tr v-for="(item, idx) in filteredTableItems" :key="idx">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <input type="radio" :value="item.employeeId" v-model="selectedEmployeeId" />
+            </td>
             <td class="px-6 py-4 whitespace-nowrap">{{ item.employeeId }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">{{ item.name }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ item.family_name }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ item.first_name }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ item.middle_name }}</td>
             <td class="px-6 py-4 whitespace-nowrap">{{ item.email }}</td>
             <td class="px-6 py-4 whitespace-nowrap">{{ item.sssno }}</td>
             <td class="px-6 py-4 whitespace-nowrap">{{ item.phicno }}</td>
@@ -84,9 +99,7 @@
             <td class="px-6 py-4 whitespace-nowrap">{{ item.province }}</td>
             <td class="px-6 py-4 whitespace-nowrap">{{ item.dateCreated }}</td>
             <td class="px-6 py-4 whitespace-nowrap">{{ item.dateLastModified }}</td>
-            <td class="text-right px-6 whitespace-nowrap">
-              
-            </td>
+            <td class="text-right px-6 whitespace-nowrap"></td>
             <td class="text-right px-6 whitespace-nowrap">
               <button @click="editEmployee(item)" class="py-2 px-3 font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg">
                 Edit
@@ -106,13 +119,13 @@
 import { EmployeesService } from '~/models/Employee';
 import { ref, computed } from 'vue'
 import { apiService } from '~/routes/api/API'
-import Customers from '../customers.vue';
-import { Employee } from '../../models/Employee';
 
 
 const searchQuery = ref<string>('')
 
-const tableItems = ref<TableItem[]>([]); // Initialize tableItems
+const tableItems = ref<TableItem[]>([]); // Initialize 
+const selectedEmployeeId = ref<string | null>(null); // Track selected employee ID
+
 
 const state = {
   datas: [] as any[],
@@ -129,7 +142,6 @@ const filteredTableItems = computed(() => {
 })
 
 const editEmployee = (item: TableItem) => {
-  debugger;
   EmployeesService.id = parseInt(item.employeeId);
   navigateTo(`/Libraries/EmployeeUpdate`)
   // console.log('Editing member:', item)
@@ -138,7 +150,9 @@ const editEmployee = (item: TableItem) => {
 
 interface TableItem {
   employeeId: string;
-  name: string;
+  first_name: string;
+  family_name: string;
+  middle_name: string;
   birthday: string;
   civilStatus: string;
   gender: string;
@@ -164,7 +178,12 @@ interface TableItem {
 }
 
 function createEmployee() {
-  navigateTo('/Libraries/EmployeeCreate');
+  navigateTo('employees/create');
+}
+
+function modifyEmployee() {
+  alert(selectedEmployeeId.value);
+  //navigateTo('employees/update');
 }
 
 async function fetchEmployees() {
@@ -172,6 +191,7 @@ async function fetchEmployees() {
     const params = {}; // Your query params for the API
     const response = await apiService.getEmployees(params); // Fetch customer data from API
 
+    debugger;
     state.datas = response;
     
     // Call the function to map the API data to tableItems
@@ -196,8 +216,11 @@ function storeResponseInTableItems() {
     const employees = state.datas.data[i].employee;
 
     tableItems.value.push({
-      employeeId: employees.id.toString(), // Assuming passbook_no is like employeeId
-      name: `${personality.first_name} ${personality.family_name}`,
+
+      //Personality Section
+      family_name: personality.family_name,
+      first_name: personality.first_name,
+      middle_name: personality.middle_name,
       birthday: personality.birthday, // Make sure it's properly formatted
       civilStatus: mapCivilStatus(personality.civil_status), // Map the civil_status code
       gender: personality.gender_code === 1 ? 'Male' : 'Female', // Example: gender_code mapping
@@ -214,11 +237,15 @@ function storeResponseInTableItems() {
       province: mapProvince(personality.province_id),
       dateCreated: new Date().toISOString().split('T')[0], // Set current date as dateCreated
       dateLastModified: new Date().toISOString().split('T')[0], // Set current date as dateLastModified
+      
+      //Employee Section
+      employeeId: employees.id.toString(), 
       sssno: employees.sss_no,
       phicno: employees.phic_no,
       tinno: employees.tin_no,
       datetime_hired: employees.datetime_hired,
       datetime_resigned:  employees.datetime_resigned,
+
     });
   }
 }

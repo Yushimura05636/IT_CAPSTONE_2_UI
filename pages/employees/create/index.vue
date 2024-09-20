@@ -1,8 +1,9 @@
 <template>
-  <div class="bg-white p-4 md:p-8">
-    <h2 class="text-gray-800 text-xl font-bold mb-4">Create Customer</h2>
+  <NuxtLayout name="admin">
+    <div class="bg-white p-4 md:p-8">
+    <h2 class="text-gray-800 text-xl font-bold mb-4">Create Employee</h2>
 
-    <form @submit.prevent="createCustomer">
+    <form @submit.prevent="createEmployee">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <!-- Personality Fields -->
         <div>
@@ -55,11 +56,6 @@
         </div>
 
         <div>
-          <label for="houseStreet" class="block text-gray-700">House Street</label>
-          <input v-model="personality.house_street" type="text" id="houseStreet" class="w-full border rounded-lg px-4 py-2" />
-        </div>
-        
-        <div>
           <label for="Cellphone No" class="block text-gray-700">Cellphone No</label>
           <input v-model="personality.cellphone_no" type="text" id="cellphoneNo" class="w-full border rounded-lg px-4 py-2" />
         </div>
@@ -74,56 +70,52 @@
           <input v-model="personality.postal_code" type="text" id="postalCode" class="w-full border rounded-lg px-4 py-2" />
         </div>
 
-        <!-- Customer Fields -->
         <div>
-          <label for="groupId" class="block text-gray-700">Group ID</label>
-          <input v-model="customer.group_id" type="number" id="groupId" class="w-full border rounded-lg px-4 py-2" />
+          <label for="houseStreet" class="block text-gray-700">House Street</label>
+          <input v-model="personality.house_street" type="text" id="houseStreet" class="w-full border rounded-lg px-4 py-2" />
+        </div>
+
+        <!-- Employee Fields -->
+        <div>
+          <label for="sssNo" class="block text-gray-700">SSS NO</label>
+          <input v-model="employee.sss_no" type="number" id="sssNo" class="w-full border rounded-lg px-4 py-2" />
         </div>
 
         <div>
-          <label for="passbookNo" class="block text-gray-700">Passbook No</label>
-          <input v-model="customer.passbook_no" type="number" id="passbookNo" class="w-full border rounded-lg px-4 py-2" />
+          <label for="phnicNo" class="block text-gray-700">PHNIC NO</label>
+          <input v-model="employee.phnic_no" type="number" id="phnicNo" class="w-full border rounded-lg px-4 py-2" />
         </div>
 
         <div>
-          <label for="loanCount" class="block text-gray-700">Loan Count</label>
-          <input v-model="customer.loan_count" type="number" id="loanCount" class="w-full border rounded-lg px-4 py-2" />
+          <label for="tinNo" class="block text-gray-700">TIN NO</label>
+          <input v-model="employee.tin_no" type="number" id="tinNo" class="w-full border rounded-lg px-4 py-2" />
         </div>
 
         <div>
-          <label for="enableMortuary" class="block text-gray-700">Enable Mortuary</label>
-          <input v-model="customer.enable_mortuary" type="number" id="enableMortuary" class="w-full border rounded-lg px-4 py-2" />
+          <label for="dateHired" class="block text-gray-700">Date Hired</label>
+          <input v-model="employee.date_hired" type="date" id="dateHired" class="w-full border rounded-lg px-4 py-2" />
         </div>
 
         <div>
-          <label for="mortuaryCoverageStart" class="block text-gray-700">Mortuary Coverage Start</label>
-          <input v-model="customer.mortuary_coverage_start" type="date" id="mortuaryCoverageStart" class="w-full border rounded-lg px-4 py-2" />
-        </div>
-
-        <div>
-          <label for="mortuaryCoverageEnd" class="block text-gray-700">Mortuary Coverage End</label>
-          <input v-model="customer.mortuary_coverage_end" type="date" id="mortuaryCoverageEnd" class="w-full border rounded-lg px-4 py-2" />
+          <label for="dateResigned" class="block text-gray-700">Date Resigned</label>
+          <input v-model="employee.date_resigned" type="date" id="dateResigned" class="w-full border rounded-lg px-4 py-2" />
         </div>
       </div>
 
-      <div>
-          <label for="dateTimeRegistered" class="block text-gray-700">Date Time Registered</label>
-          <input v-model="personality.datetime_registered" type="date" id="dateTimeRegistered" class="w-full border rounded-lg px-4 py-2" />
-        </div>
-
       <div class="mt-4">
         <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500">
-          Update Customer
+          Update Employee
         </button>
       </div>
     </form>
   </div>
+  </NuxtLayout>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { CustomersService } from '~/models/Customer';
+import { EmployeesService } from '~/models/Employee';
 import { apiService } from '~/routes/api/API';
 
 const route = useRoute();
@@ -153,13 +145,12 @@ const personality = ref({
   name_type_code: 0,
 })
 
-const customer = ref({
-  group_id: 0, // Set as necessary
-  passbook_no: 0, // Set as necessary
-  loan_count: 0, // Set as necessary
-  enable_mortuary: 0, // Set as necessary
-  mortuary_coverage_start: undefined, // Optional
-  mortuary_coverage_end: undefined, // Optional
+const employee = ref({
+  sss_no : 0,
+  phnic_no : 0,
+  tin_no : 0,
+  date_hired : new Date().toISOString().split('T')[0],
+  date_resigned : new Date().toISOString().split('T')[0],
   personality_id: 0,
 });
 
@@ -187,17 +178,19 @@ function formatDateToMySQL(date: any) {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
-const createCustomer = async () => {
+// Update employee data
+const createEmployee = async () => {
   try {
-    const customerId = CustomersService.id;
+    const employeeId = EmployeesService.id;
     
     const jsonObject = {
-      customer: {
-            group_id: customer.value.group_id,
-            passbook_no: customer.value.passbook_no,
-            loan_count: customer.value.loan_count,
-            enable_mortuary: customer.value.enable_mortuary,
-            personality_id: customer.value.personality_id,
+      employee: {
+            sss_no: employee.value.sss_no,
+            phic_no: employee.value.phnic_no,
+            tin_no: employee.value.tin_no,
+            datetime_hired: employee.value.date_hired,
+            datetime_resigned: employee.value.date_resigned,
+            personality_id: employee.value.personality_id,
         },
         personality: {
             datetime_registered: personality.value.datetime_registered,
@@ -225,11 +218,11 @@ const createCustomer = async () => {
     };
 
     debugger;
-    await apiService.createCustomer(jsonObject);
-    alert('Customer create successfully!');
-    navigateTo('/Libraries/CustomerView'); // Redirect to the customer list page
+    await apiService.createEmployee(jsonObject);
+    alert('Employee created successfully!');
+    navigateTo('/Libraries/EmployeeView'); // Redirect to the customer list page
   } catch (error) {
-    alert('Error updating customer: ' + error);
+    alert('Error updating employee: ' + error);
     console.error(error);
   }
 };

@@ -234,9 +234,8 @@ const navigation = [
         icon: UsersIcon,
         current: false,
         children: [
-            { name: "Suppliers", href: "/supplier", icon: TruckIcon, current: false },
-            { name: "Customers", href: "/customers", icon: UserIcon, current: false },
-            { name: "Employees", href: "/employees", icon: UserCircleIcon, current: false },
+            { name: "Customers", href: "./customers", icon: UserIcon, current: false },
+            { name: "Employees", href: "./employees", icon: UserCircleIcon, current: false },
         ],
     },
     { name: "Transactions",
