@@ -51,6 +51,7 @@
     <script setup lang="ts">
     import { ref, reactive, onMounted } from 'vue'
     import { apiService } from '~/routes/api/API'
+    import { UserService } from '~/models/User';
 
 
     const state = reactive({
@@ -85,6 +86,7 @@
         state.isTableLoading = false
     }
     function managePermissions(userId: number) {
+        UserService.usr_id = userId;
         navigateTo('Permission');
     }
 

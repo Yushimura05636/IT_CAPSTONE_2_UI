@@ -4,6 +4,40 @@
     <div class="space-y-12">
         <div class="pb-12">
         <h2 class="text-base font-semibold leading-7 text-gray-900">
+            <br />User Information
+        </h2>
+        <div class="w-full max-w-xs mx-auto">
+            <label for="userId" class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+            <input
+            v-model="state.user.id"
+            type="text"
+            id="userId"
+            class="block w-full p-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            disabled
+            />
+        </div>
+        <div class="w-full max-w-xs mx-auto">
+            <label for="userId" class="block text-sm font-medium text-gray-700 mb-2">User Name</label>
+            <input
+            :value="fullName"
+            type="text"
+            id="fullname"
+            class="block w-full p-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            disabled
+            />
+        </div>
+        <div class="w-full max-w-xs mx-auto">
+            <label for="userId" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+            <input
+            v-model="state.user.email"
+            type="text"
+            id="email"
+            class="block w-full p-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            disabled
+            />
+        </div>
+
+        <h2 class="text-base font-semibold leading-7 text-gray-900">
             Add Document and Permission
         </h2>
         <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -62,11 +96,13 @@
 
     <script setup lang="ts">
     import { ref, reactive, onMounted } from 'vue';
+import { UserService } from '~/models/User';
     import { apiService } from '~/routes/api/API'; // Adjust path as necessary
 
     const state = reactive({
     permission: [], // Holds fetched roles data
     document: [], // Holds fetched roles data
+    user: [],
     error: "error", // Stores any error messages
     isTableLoading: true, // Track loading state
     });
@@ -79,10 +115,12 @@
                 const params = {}; // Define params if needed
                 const permissions = await apiService.getPermission(params);
                 const documents = await apiService.getDocumentMap(params);
+                const users = await apiService.getUserById(params, UserService.usr_id);
                 // Check if the response contains a "data" property with an array of permissions
-                if (permissions && permissions.data && Array.isArray(permissions.data)&& documents && documents.data && Array.isArray(documents.data)) {
+                if (users && users.data && !Array.isArray(users.data) && permissions && permissions.data && Array.isArray(permissions.data)&& documents && documents.data && Array.isArray(documents.data)) {
                     state.permission = permissions.data; // Assign the array to state.permission
                     state.document = documents.data; // Assign the array to state.permission
+                    state.user = users.data;
 
                     console.log('Fetched permission data:', state.permission);
                     console.log('Fetched permission data:', state.document);
@@ -108,4 +146,6 @@
         console.log('Component mounted, triggering fetchPermission');
         fetchPermissionandDocuments();
         });
+
+        const fullName = computed(() => `${state.user.first_name} ${state.user.last_name} ${state.user.middle_name}` );
     </script>
