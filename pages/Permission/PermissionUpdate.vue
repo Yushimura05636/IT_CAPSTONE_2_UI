@@ -14,7 +14,7 @@
               type="text"
               id="fullname"
               class="block w-full p-2 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed"
-              
+              disabled
             />
           </div>
   
