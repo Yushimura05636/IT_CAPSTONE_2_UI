@@ -150,7 +150,7 @@ const personality = ref({
   credit_status_id: 0,
   notes: undefined, // Optional
   datetime_registered: new Date().toISOString().split('T')[0],
-  name_type_code: 0,
+  name_type_code: 2,
 })
 
 const customer = ref({

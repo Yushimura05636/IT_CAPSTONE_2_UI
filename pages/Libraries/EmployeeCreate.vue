@@ -1,4 +1,4 @@
-<template>
+  <template>
   <div class="bg-white p-4 md:p-8">
     <h2 class="text-gray-800 text-xl font-bold mb-4">Create Employee</h2>
 
@@ -6,12 +6,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <!-- Personality Fields -->
         <div>
-          <label for="firstName" class="block text-gray-700">First Name</label>
-          <input v-model="personality.first_name" type="text" id="firstName" class="w-full border rounded-lg px-4 py-2" required />
-        </div>
-
-        <div>
-          <label for="lastName" class="block text-gray-700">Last Name</label>
+          <label for="lastName" class="block text-gray-700">Family Name</label>
           <input v-model="personality.family_name" type="text" id="lastName" class="w-full border rounded-lg px-4 py-2" required />
         </div>
 
@@ -21,18 +16,23 @@
         </div>
 
         <div>
-          <label for="email" class="block text-gray-700">Email</label>
-          <input v-model="personality.email_address" type="email" id="email" class="w-full border rounded-lg px-4 py-2" required />
-        </div>
-
-        <div>
-          <label for="telephone" class="block text-gray-700">Telephone#</label>
-          <input v-model="personality.telephone_no" type="text" id="telephone" class="w-full border rounded-lg px-4 py-2" />
+          <label for="firstName" class="block text-gray-700">First Name</label>
+          <input v-model="personality.first_name" type="text" id="firstName" class="w-full border rounded-lg px-4 py-2" required />
         </div>
 
         <div>
           <label for="birthday" class="block text-gray-700">Birthday</label>
           <input v-model="personality.birthday" type="date" id="birthday" class="w-full border rounded-lg px-4 py-2" required />
+        </div>
+
+        <div>
+          <label for="civilStatus" class="block text-gray-700">Civil Status</label>
+          <select v-model="personality.civil_status" id="civilStatus" class="w-full border rounded-lg px-4 py-2">
+            <option value="1">Single</option>
+            <option value="2">Married</option>
+            <option value="3">Divorced</option>
+            <option value="4">Widowed</option>
+          </select>
         </div>
 
         <div>
@@ -44,19 +44,8 @@
         </div>
 
         <div>
-          <label for="civilStatus" class="block text-gray-700">Civil Status</label>
-          <select v-model="personality.civil_status" id="civilStatus" class="w-full border rounded-lg px-4 py-2">
-            <option value="0">Select</option>
-            <option value="1">Single</option>
-            <option value="2">Married</option>
-            <option value="3">Divorced</option>
-            <option value="4">Widowed</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="Cellphone No" class="block text-gray-700">Cellphone No</label>
-          <input v-model="personality.cellphone_no" type="text" id="cellphoneNo" class="w-full border rounded-lg px-4 py-2" />
+          <label for="houseStreet" class="block text-gray-700">House Street</label>
+          <input v-model="personality.house_street" type="text" id="houseStreet" class="w-full border rounded-lg px-4 py-2" />
         </div>
 
         <div>
@@ -70,13 +59,18 @@
         </div>
 
         <div>
-          <label for="houseStreet" class="block text-gray-700">House Street</label>
-          <input v-model="personality.house_street" type="text" id="houseStreet" class="w-full border rounded-lg px-4 py-2" />
+          <label for="telephone" class="block text-gray-700">Telephone#</label>
+          <input v-model="personality.telephone_no" type="text" id="telephone" class="w-full border rounded-lg px-4 py-2" />
         </div>
 
         <div>
-          <label for="purokZone" class="block text-gray-700">Purok Zone</label>
-          <input v-model="personality.purok_zone" type="text" id="purokZone" class="w-full border rounded-lg px-4 py-2" />
+          <label for="email" class="block text-gray-700">Email</label>
+          <input v-model="personality.email_address" type="email" id="email" class="w-full border rounded-lg px-4 py-2" required />
+        </div>
+
+        <div>
+          <label for="Cellphone No" class="block text-gray-700">Cellphone No</label>
+          <input v-model="personality.cellphone_no" type="text" id="cellphoneNo" class="w-full border rounded-lg px-4 py-2" />
         </div>
 
         <!-- Employee Fields -->
@@ -104,32 +98,27 @@
           <label for="dateResigned" class="block text-gray-700">Date Resigned</label>
           <input v-model="employee.date_resigned" type="date" id="dateResigned" class="w-full border rounded-lg px-4 py-2" />
         </div>
-
-        <div>
-          <label for="personalityId" class="block text-gray-700">Personality ID</label>
-          <input v-model="employee.personality_id" type="number" id="personalityId" class="w-full border rounded-lg px-4 py-2" />
-        </div>
       </div>
 
       <div class="mt-4">
         <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500">
-          Update Employee
+          Create Employee
         </button>
       </div>
     </form>
   </div>
-</template>
+  </template>
 
-<script setup lang="ts">
-import { ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import { EmployeesService } from '~/models/Employee';
-import { apiService } from '~/routes/api/API';
+  <script setup lang="ts">
+  import { ref } from 'vue';
+  import { useRoute, useRouter } from 'vue-router';
+  import { EmployeesService } from '~/models/Employee';
+  import { apiService } from '~/routes/api/API';
 
-const route = useRoute();
-const router = useRouter();
+  const route = useRoute();
+  const router = useRouter();
 
-const personality = ref({
+  const personality = ref({
   first_name: '',
   family_name: '',
   middle_name: '',
@@ -143,26 +132,28 @@ const personality = ref({
   postal_code: '',
   cellphone_no: '',
   personality_status_code: 0,
-  barangay_id: 0,
-  city_id: 0,
-  country_id: 0,
-  province_id: 0,
-  credit_status_id: 0,
+
+  barangay_id: 1,
+  city_id: 1,
+  country_id: 1,
+  province_id: 1,
+
+  credit_status_id: 1,
   notes: undefined, // Optional
   datetime_registered: new Date().toISOString().split('T')[0],
-  name_type_code: 0,
-})
+  name_type_code: 1,
+  })
 
-const employee = ref({
+  const employee = ref({
   sss_no : 0,
   phnic_no : 0,
   tin_no : 0,
   date_hired : new Date().toISOString().split('T')[0],
   date_resigned : new Date().toISOString().split('T')[0],
   personality_id: 0,
-});
+  });
 
-function formatDateTimeToMySQL(date: any) {
+  function formatDateTimeToMySQL(date: any) {
   const pad = (num: any) => (num < 10 ? '0' + num : num);
   const year = date.getFullYear();
   const month = pad(date.getMonth() + 1);
@@ -170,11 +161,11 @@ function formatDateTimeToMySQL(date: any) {
   const hours = pad(date.getHours());
   const minutes = pad(date.getMinutes());
   const seconds = pad(date.getSeconds());
-  
-  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`; // Return as Y-m-d H:i:s
-}
 
-function formatDateToMySQL(date: any) {
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`; // Return as Y-m-d H:i:s
+  }
+
+  function formatDateToMySQL(date: any) {
   const pad = (num: any) => (num < 10 ? '0' + num : num);
   const year = date.getFullYear();
   const month = pad(date.getMonth() + 1); // Months are zero-based
@@ -182,16 +173,16 @@ function formatDateToMySQL(date: any) {
   const hours = pad(date.getHours());
   const minutes = pad(date.getMinutes());
   const seconds = pad(date.getSeconds());
-  
-  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-}
 
-// Update employee data
-const createEmployee = async () => {
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
+
+  // Update employee data
+  const createEmployee = async () => {
   try {
     const employeeId = EmployeesService.id;
 
-    alert(employee.value.personality_id);
+    // alert(employee.value.personality_id);
     
     const jsonObject = {
       employee: {
@@ -218,12 +209,15 @@ const createEmployee = async () => {
             cellphone_no: personality.value.cellphone_no, // Get from personality ref
             name_type_code: personality.value.name_type_code, // Assuming this remains unchanged
             personality_status_code: personality.value.personality_status_code, // Get from personality ref
+            
             barangay_id: personality.value.barangay_id, // Get from personality ref
             city_id: personality.value.city_id, // Get from personality ref
             country_id: personality.value.country_id, // Get from personality ref
             province_id: personality.value.province_id, // Get from personality ref
+
             credit_status_id: personality.value.credit_status_id, // Get from personality ref
             notes: personality.value.notes, // Get from personality ref, optional
+            
         }
     };
 
@@ -235,5 +229,5 @@ const createEmployee = async () => {
     alert('Error updating employee: ' + error);
     console.error(error);
   }
-};
-</script>
+  };
+  </script>

@@ -224,43 +224,43 @@ function storeResponseInTableItems() {
 }
 
 
-function mapCivilStatus(civilStatusCode: number) {
-  const statuses: { [key: number]: string } = {
-    1: 'Single',
-    2: 'Married',
-    3: 'Divorced',
-    4: 'Widowed',
-  };
-  return statuses[civilStatusCode] || 'Unknown';
-}
+  function mapCivilStatus(civilStatusCode: number) {
+    const statuses: { [key: number]: string } = {
+      1: 'Single',
+      2: 'Married',
+      3: 'Divorced',
+      4: 'Widowed',
+    };
+    return statuses[civilStatusCode] || 'Unknown';
+  }
 
-// Example helper function for personality status
-function mapPersonalityStatus(statusCode: number) {
-  const statuses: { [key: number]: string } = {
-    1: 'Active',
-    2: 'Inactive',
-    3: 'Suspended',
-  };
-  return statuses[statusCode] || 'Unknown';
-}
+  // Example helper function for personality status
+  function mapPersonalityStatus(statusCode: number) {
+    const statuses: { [key: number]: string } = {
+      1: 'Active',
+      2: 'Inactive',
+      3: 'Suspended',
+    };
+    return statuses[statusCode] || 'Unknown';
+  }
 
-// Add your own mapping functions for barangay, city, province, etc.
-function mapBarangay(barangayId: number) {
-  // Mapping logic for barangay IDs to names
-  return `Brgy ${barangayId}`;
-}
+  // Add your own mapping functions for barangay, city, province, etc.
+  function mapBarangay(barangayId: number) {
+    // Mapping logic for barangay IDs to names
+    return `Brgy ${barangayId}`;
+  }
 
-function mapCity(cityId: number) {
-  return `City ${cityId}`;
-}
+  function mapCity(cityId: number) {
+    return `City ${cityId}`;
+  }
 
-function mapCountry(countryId: number) {
-  return `Country ${countryId}`;
-}
+  function mapCountry(countryId: number) {
+    return `Country ${countryId}`;
+  }
 
-function mapProvince(provinceId: number) {
-  return `Province ${provinceId}`;
-}
+  function mapProvince(provinceId: number) {
+    return `Province ${provinceId}`;
+  }
 
-fetchEmployees();
+  fetchEmployees();
 </script>
