@@ -62,8 +62,11 @@ class API extends BaseAPIService {
     }
 
      //permission
-    async getPermission(params: object): Promise<any> {
+     async getPermission(params: object): Promise<any> {
         return await this.request(`/permission`, 'GET', params)
+    }
+    async getUserPermission(params: object, id: number): Promise<any> {
+        return await this.request(`/documentpermission/${id}`, 'GET', params)
     }
 
     async getPermissionById(params: object, id: number): Promise<any> {
@@ -106,6 +109,14 @@ class API extends BaseAPIService {
     //documentpermission
     async createDocumentPermission(params: object): Promise<any> {
         return await this.request(`/documentpermission`, 'POST', params)
+    }
+
+    async updateDocumentPermission(params: object, id: number): Promise<any> {
+        return await this.request(`/documentpermission/${id}`, 'PUT', params)
+    }
+    
+    async deleteDocumentPermission(params: object, id: number): Promise<any> {
+        return await this.request(`/documentpermission/${id}`, 'DELETE', params)
     }
 
     //users

@@ -87,7 +87,7 @@
     }
     function managePermissions(userId: number) {
         UserService.usr_id = userId;
-        navigateTo('Permission');
+        navigateTo('PermissionUpdate');
     }
 
     // function managePermissions(userId: number) {
