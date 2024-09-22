@@ -139,6 +139,30 @@
   
   const selectedDocuments = ref([]); // Store selected document IDs
   const documentPermissions = ref([]); // Store selected permissions
+
+  function formatDateTimeToMySQL(date: any) {
+  const pad = (num: any) => (num < 10 ? '0' + num : num);
+  const year = date.getFullYear();
+  const month = pad(date.getMonth() + 1);
+  const day = pad(date.getDate());
+  const hours = pad(date.getHours());
+  const minutes = pad(date.getMinutes());
+  const seconds = pad(date.getSeconds());
+  
+  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`; // Return as Y-m-d H:i:s
+  }
+
+  function formatDateToMySQL(date: any) {
+    const pad = (num: any) => (num < 10 ? '0' + num : num);
+    const year = date.getFullYear();
+    const month = pad(date.getMonth() + 1); // Months are zero-based
+    const day = pad(date.getDate());
+    const hours = pad(date.getHours());
+    const minutes = pad(date.getMinutes());
+    const seconds = pad(date.getSeconds());
+    
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
   
   // Fetch permission and document data from API
   async function fetchPermissionandDocuments() {
@@ -162,17 +186,53 @@
     }
   }
   
-  function submitForm() {
-  // Filter permissions for selected documents only
-  const filteredPermissions = documentPermissions.value.filter(permission =>
-    selectedDocuments.value.includes(permission.documentId)
-  );
+  async function submitForm() {
+  try {
+    // Get the current date and time
+    const currentDateTime = formatDateToMySQL(new Date()); // Gets the current time
 
-  console.log("Selected Documents:", selectedDocuments.value);
-  console.log("Filtered Permissions:", filteredPermissions);
+    // Filter permissions for selected documents only
+    const filteredPermissions = documentPermissions.value.filter(permission =>
+      selectedDocuments.value.includes(permission.documentId)
+    );
 
-  // Proceed with form submission using selected documents and filtered permissions
+    // Group permissions by document
+    const documentPermissionMap = selectedDocuments.value.map((docId) => {
+      const permissionsForDocument = filteredPermissions
+        .filter((perm) => perm.documentId === docId)
+        .map((perm) => perm.permission);
+
+      return {
+        document_id: docId,
+        permissions: permissionsForDocument,
+        datetime_granted: currentDateTime, // Use currentDateTime here
+      };
+    });
+
+    // Predefine the JSON structure
+    const jsonObject = {
+      User: {
+        id: state.user.id,  // Use the user's ID from the reactive state
+      },
+      DocumentPermissionMap: {
+        data: documentPermissionMap,  // The document-permission mapping
+      },
+    };
+
+    const response = await apiService.createDocumentPermission(jsonObject);
+
+    if (response) {
+      console.log('The permission has updated successfully!');
+    }
+
+    // Send to the database
+    console.log("Predefined JSON structure:", jsonObject);
+
+  } catch (error: any) {
+    console.log(error);
   }
+}
+
   
   function back() {
     navigateTo('userTable');

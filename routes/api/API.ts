@@ -103,6 +103,11 @@ class API extends BaseAPIService {
         return await this.request(`/documentMap/${id}`, 'DELETE', params)
     }
 
+    //documentpermission
+    async createDocumentPermission(params: object): Promise<any> {
+        return await this.request(`/documentpermission`, 'POST', params)
+    }
+
     //users
     async getUser(params: object): Promise<any> {
         return await this.request(`/users`, 'GET', params)
