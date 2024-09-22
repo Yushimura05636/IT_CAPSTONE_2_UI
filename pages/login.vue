@@ -15,8 +15,8 @@
       <div>
         <label class="font-medium"> Email </label>
         <input
-         id="email"
-         name="email"
+          id="email"
+          name="email"
           placeholder="Email"
           type="email"
           v-model="state.email"
