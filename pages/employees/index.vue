@@ -1,4 +1,5 @@
 <template>
+  <NuxtLayout name="admin">
   <div class="max-w-screen-xl mx-auto px-4 md:px-8">
     <!-- Title Section -->
     <div class="items-start justify-between md:flex mt-8">
@@ -113,6 +114,7 @@
       </table>
     </div>
   </div>
+</NuxtLayout>
 </template>
 
 <script setup lang="ts">
@@ -182,22 +184,19 @@ function createEmployee() {
 }
 
 function modifyEmployee() {
-  alert(selectedEmployeeId.value);
-  //navigateTo('employees/update');
+  EmployeesService.id = parseInt(selectedEmployeeId.value?.toString());
+  navigateTo('employees/update');
 }
 
 async function fetchEmployees() {
   try {
     const params = {}; // Your query params for the API
     const response = await apiService.getEmployees(params); // Fetch customer data from API
-
-    debugger;
     state.datas = response;
     
     // Call the function to map the API data to tableItems
     storeResponseInTableItems();
 
-    alert('Data fetched successfully');
   } catch (error) {
     alert('Error fetching data from API: ' + error);
     console.error(error);

@@ -1,4 +1,5 @@
 <template>
+  <NuxtLayout name="admin">
   <div class="bg-white p-4 md:p-8">
     <h2 class="text-gray-800 text-xl font-bold mb-4">Edit Employee</h2>
 
@@ -103,6 +104,7 @@
       </div>
     </form>
   </div>
+</NuxtLayout>
 </template>
 
 <script setup lang="ts">

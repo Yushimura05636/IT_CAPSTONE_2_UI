@@ -104,7 +104,7 @@
 
       <div class="mt-4">
         <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500">
-          Update Employee
+          Create Employee
         </button>
       </div>
     </form>

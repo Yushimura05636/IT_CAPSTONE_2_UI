@@ -98,11 +98,11 @@
           <label for="dateTimeRegistered" class="block text-gray-700">Date Time Registered</label>
           <input v-model="personality.datetime_registered" type="date" id="dateTimeRegistered" class="w-full border rounded-lg px-4 py-2" />
         </div>
-
-        <div>
-          <p>
-            Mortuary
-          </p>
+        
+        <div class="py-5">
+        </div>
+        <div class="py-5">
+          
         </div>
         
         <div>
@@ -113,6 +113,10 @@
             <option value="2">No</option>
           </select>
           <!-- <input v-model="customer.enable_mortuary" type="number" id="enableMortuary" class="w-full border rounded-lg px-4 py-2" /> -->
+        </div>
+
+        <div>
+          
         </div>
 
         <div>
@@ -133,7 +137,7 @@
       </div>
     </form>
   </div>
-  </NuxtLayout>
+</NuxtLayout>
 </template>
 
 <script setup lang="ts">

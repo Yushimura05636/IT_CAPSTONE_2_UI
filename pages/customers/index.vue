@@ -1,4 +1,5 @@
 <template>
+  <NuxtLayout name="admin">
   <div class="bg-white">
     <header class="py-8 px-4 md:px-16">
       <div class="container mx-auto flex justify-between items-center">
@@ -106,6 +107,7 @@
       </table>
     </div>
   </div>
+</NuxtLayout>
 </template>
 
 <script setup lang="ts">
@@ -125,7 +127,7 @@ const state = {
 };
 
 function createCustomer() {
-  navigateTo('/Libraries/CustomerCreate');
+  navigateTo('./create');
 }
 
 // Fetch customers when necessary
@@ -141,7 +143,7 @@ const filteredTableItems = computed(() => {
 
 const editMember = (item: TableItem) => {
   CustomersService.id = parseInt(item.employeeId);
-  navigateTo(`/Libraries/CustomerUpdate`)
+  navigateTo(`/create`)
   console.log('Editing member:', item)
 }
 
