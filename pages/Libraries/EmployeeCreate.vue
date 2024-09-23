@@ -1,4 +1,4 @@
-  <template>
+<template>
   <div class="bg-white p-4 md:p-8">
     <h2 class="text-gray-800 text-xl font-bold mb-4">Create Employee</h2>
 
@@ -107,18 +107,18 @@
       </div>
     </form>
   </div>
-  </template>
+</template>
 
-  <script setup lang="ts">
-  import { ref } from 'vue';
-  import { useRoute, useRouter } from 'vue-router';
-  import { EmployeesService } from '~/models/Employee';
-  import { apiService } from '~/routes/api/API';
+<script setup lang="ts">
+import { ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { EmployeesService } from '~/models/Employee';
+import { apiService } from '~/routes/api/API';
 
-  const route = useRoute();
-  const router = useRouter();
+const route = useRoute();
+const router = useRouter();
 
-  const personality = ref({
+const personality = ref({
   first_name: '',
   family_name: '',
   middle_name: '',
@@ -131,7 +131,7 @@
   purok_zone: '',
   postal_code: '',
   cellphone_no: '',
-  personality_status_code: 0,
+  personality_status_code: 1,
 
   barangay_id: 1,
   city_id: 1,
@@ -142,18 +142,18 @@
   notes: undefined, // Optional
   datetime_registered: new Date().toISOString().split('T')[0],
   name_type_code: 1,
-  })
+})
 
-  const employee = ref({
+const employee = ref({
   sss_no : 0,
   phnic_no : 0,
   tin_no : 0,
   date_hired : new Date().toISOString().split('T')[0],
   date_resigned : new Date().toISOString().split('T')[0],
   personality_id: 0,
-  });
+});
 
-  function formatDateTimeToMySQL(date: any) {
+function formatDateTimeToMySQL(date: any) {
   const pad = (num: any) => (num < 10 ? '0' + num : num);
   const year = date.getFullYear();
   const month = pad(date.getMonth() + 1);
@@ -161,11 +161,11 @@
   const hours = pad(date.getHours());
   const minutes = pad(date.getMinutes());
   const seconds = pad(date.getSeconds());
-
+  
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`; // Return as Y-m-d H:i:s
-  }
+}
 
-  function formatDateToMySQL(date: any) {
+function formatDateToMySQL(date: any) {
   const pad = (num: any) => (num < 10 ? '0' + num : num);
   const year = date.getFullYear();
   const month = pad(date.getMonth() + 1); // Months are zero-based
@@ -173,12 +173,12 @@
   const hours = pad(date.getHours());
   const minutes = pad(date.getMinutes());
   const seconds = pad(date.getSeconds());
-
+  
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-  }
+}
 
-  // Update employee data
-  const createEmployee = async () => {
+// Update employee data
+const createEmployee = async () => {
   try {
     const employeeId = EmployeesService.id;
 
@@ -229,5 +229,5 @@
     alert('Error updating employee: ' + error);
     console.error(error);
   }
-  };
-  </script>
+};
+</script>
