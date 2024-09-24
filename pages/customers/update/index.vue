@@ -1,9 +1,9 @@
 <template>
   <NuxtLayout name="admin">
     <div class="bg-white p-4 md:p-8">
-      <h2 class="text-gray-800 text-xl font-bold mb-4">Create Customer</h2>
+      <h2 class="text-gray-800 text-xl font-bold mb-4">Update Customer</h2>
 
-      <form @submit.prevent="createCustomer">
+      <form @submit.prevent="updateCustomer">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <!-- Personality Fields -->
           <div>
@@ -148,7 +148,7 @@
 
           <div>
             <label for="groupId" class="block text-gray-700">Loan Count</label>
-            <select v-model="customer.loan_count_id" id="groupId" class="w-full border rounded-lg px-4 py-2" v-if="!state.isTableLoading">
+            <select v-model="customer.loan_count" id="groupId" class="w-full border rounded-lg px-4 py-2" v-if="!state.isTableLoading">
               <option v-for="groups in state.loan_count" :key="groups.id" :value="groups.id">
                 {{ groups.loan_count }} 
               </option>
@@ -182,7 +182,7 @@
 
         <div class="mt-4">
           <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500">
-            Create Customer
+            Update Customer
           </button>
         </div>
       </form>
@@ -223,7 +223,7 @@ const personality = ref({
 const customer = ref({
   group_id: '',
   passbook_no: '',
-  loan_count_id: 0,
+  loan_count: 0,
   enable_mortuary: '',
   mortuary_coverage_start: '',
   mortuary_coverage_end: '',
@@ -394,7 +394,7 @@ const fetchCustomer = async () => {
 }
 
 
-const createCustomer = async () => {
+const updateCustomer = async () => {
   try {
     const customerId = CustomersService.id;
     const jsonObject = {
@@ -403,7 +403,7 @@ const createCustomer = async () => {
       customer: {
             group_id: customer.value.group_id,
             passbook_no: customer.value.passbook_no,
-            loan_count: customer.value.loan_count_id,
+            loan_count: customer.value.loan_count,
             enable_mortuary: customer.value.enable_mortuary,
             personality_id: customer.value.personality_id,
         },
