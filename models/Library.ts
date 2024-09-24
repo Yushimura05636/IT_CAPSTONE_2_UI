@@ -3,6 +3,16 @@ import { Personality } from "./Personality";
 export class Library {
   private _description?: string;
   private _id?: number;
+  private _oldText?: string;
+
+  set oldText(value: string | undefined) {
+    this._oldText = value;
+  }
+
+  // Getter and Setter for personality_id (optional)
+  get oldText(): string | undefined {
+    return this._oldText;
+  }
 
   set description(value: string | undefined) {
     this._description = value;

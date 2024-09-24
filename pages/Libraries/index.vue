@@ -1,137 +1,187 @@
 <template>
-    <div class="px-4 sm:px-6 lg:px-8">
-        <div class="sm:flex sm:items-center">
-            <div class="sm:flex-auto">
-                <h1 class="text-base font-bold leading-6 text-gray-900">Dashboard Libraries Roles</h1>
-                <p class="mt-2 text-sm text-gray-700">Library List</p>
-            </div>
-            <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                <button type="button"
-                    class="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"><a href="dashboard">Back</a></button>
-            </div>
+    <div>
+      <Head>
+        <Title>Libraries</Title>
+      </Head>
+  
+      <div class="sm:flex sm:items-center">
+        <div class="sm:flex-auto">
+          <h1 class="m-6 text-base font-bold leading-6 text-gray-900">Libraries</h1>
         </div>
-        <div class="mt-6 flow-root shadow-sm border rounded-lg overflow-x-auto">
-            <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                    <table class="w-full table-auto text-sm text-center">
-                        <thead class="bg-gray-50 text-gray-600 font-medium border-b">
-                            <tr>
-                                <th scope="col"
-                                    class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-whtie sm:pl-3">Name</th>
-                                <!-- <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-whtie">City</th>
-                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-whtie">Province</th>
-                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-whtie">Country</th>
-                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-whtie">Name Type</th> -->
-                                <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-whtie">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white">
-                            <template v-for="location in locations" :key="location.name">
-                                <tr class="border-t border-gray-200">
-                                    <th colspan="5" scope="colgroup"
-                                        class="bg-gray-50 py-2 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3">
-                                        {{ location.name }}</th>
-                                </tr>
-                                <tr v-for="(person, personIdx) in location.people" :key="person.name"
-                                    :class="[personIdx === 0 ? 'border-gray-300' : 'border-gray-200', 'border-t']">
-                                    <td class="whitespace-nowrap py-6 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3">
-                                        {{ person.name }}</td>
-                                    <td class="whitespace-nowrap px-3 py-2 text-sm text-gray-500">
-                                        <FormButton @click='saveModel(personIdx)' class="text-indigo-600 hover:text-indigo-900 mr-4">Add Form</FormButton>                        
-                                        <FormButton @click='viewModel(personIdx)' class="text-indigo-600 hover:text-indigo-900 mr-4">View Form</FormButton>
-                                        <FormButton @click='updateModel(personIdx)' class="text-indigo-600 hover:text-indigo-900 mr-4">Update Form</FormButton>
-                                    </td>
-                                </tr>
-                            </template>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+      </div>
+  
+      <!-- Action Buttons on the left -->
+      <div class="flex justify-between items-center mb-4">
+        <div class="flex space-x-4">
+          <button
+            type="button"
+            @click="createLibrary"
+            class="rounded bg-black px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500"
+          >
+            Create
+          </button>
+          <button
+            type="button"
+            @click="updateLibrary"
+            :disabled="!selectedLibraryId"
+            class="rounded bg-black px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 disabled:opacity-50"
+          >
+            Update
+          </button>
+          <button
+            type="button"
+            @click="deleteLibrary"
+            :disabled="!selectedLibraryId"
+            class="rounded bg-black px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 disabled:opacity-50"
+          >
+            Delete
+          </button>
         </div>
+  
+        <!-- Combobox on the right -->
+        <div class="flex-none">
+          <label for="modelType" class="block text-sm font-medium text-gray-700">Select Model Type:</label>
+          <select
+            id="modelType"
+            v-model="state.modeltype"
+            @change="fetchLibraries"
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+          >
+            <option v-for="type in modelTypes" :key="type" :value="type">{{ type }}</option>
+          </select>
+        </div>
+      </div>
+  
+      <div class="mt-2">
+        <Alert type="danger" :text="state.error?.message" v-if="state.error" />
+        
+        <!-- Scrollable Table Container -->
+        <div class="overflow-x-auto">
+          <div class="min-w-full max-h-96 overflow-y-auto"> <!-- Add max-h for vertical scroll if needed -->
+            <Table
+              class="w-full"
+              :columnHeaders="state.columnHeaders"
+              :data="state.libraries"
+              :isLoading="state.isTableLoading"
+              :sortData="state.sortData"
+              @sort="sort"
+            >
+              <template #body
+                v-if="!(state.isTableLoading || (state.datas?.data && state.libraries?.data.length === 0))"
+              >
+                <tr v-for="(lib, index) in state.datas?.data" :key="index">
+                  <td class="py-2 px-4 border-b border-gray-300 text-center">
+                    <input
+                      type="radio"
+                      :value="lib.id"
+                      v-model="selectedLibraryId"
+                      class="cursor-pointer"
+                    />
+                  </td>
+                  <td class="py-2 px-4 border-b border-gray-300 text-center">
+                    <span>{{ lib.description }}</span>
+                  </td>
+                </tr>
+              </template>
+            </Table>
+          </div>
+        </div>
+  
+        <Pagination :data="state.datas" @previous="previous" @next="next" />
+        <div class="ml-10 mb-5"></div>
+      </div>
     </div>
-</template>
-
-<script setup>
-import { libraryService } from '~/models/Library';
-
-function saveModel(index)
-{
-    switch(index)
-    {
-        case 0:
-            libraryService.description = "city";
-            navigateTo('./create');
-            break;
-        case 1:
-            libraryService.description = "province";
-            navigateTo('./create');
-            break;
-        case 2:
-            libraryService.description = "country";
-            navigateTo('./create');
-            break;
-        case 3:
-            libraryService.description = "name_type";
-            navigateTo('./create');
-        break;
-    }
-}
-
-function viewModel(index)
-{
-    switch(index)
-    {
-        case 0:
-            libraryService.description = "city";
-            navigateTo('./view');
-            break;
-        case 1:
-            libraryService.description = "province";
-            navigateTo('./view');
-            break;
-        case 2:
-            libraryService.description = "country";
-            navigateTo('./view');
-            break;
-        case 3:
-            libraryService.description = "name_type";
-            navigateTo('./view');
-        break;
-    }
-}
-
-function updateModel(index)
-{
-    switch(index)
-    {
-        case 0:
-            libraryService.description = "city";
-            navigateTo('./update');
-            break;
-        case 1:
-            libraryService.description = "province";
-            navigateTo('./update');
-            break;
-        case 2:
-            libraryService.description = "country";
-            navigateTo('./update');
-            break;
-        case 3:
-            libraryService.description = "name_type";
-            navigateTo('./update');
-        break;
-    }
-}
-
-const locations = [
-    {
-        people: [
-            { name: 'City' },
-            { name: 'Province' },
-            { name: 'Country' },
-            { name: 'Name type' },
-
-        ],
+  </template>
+  
+  <script setup lang="ts">
+  import { ref, reactive, onMounted } from 'vue';
+  import { libraryService } from '~/models/Library';
+  import { apiService } from '~/routes/api/API';
+  
+  const state = reactive({
+    columnHeaders: [
+      { name: 'Select' },
+      { name: 'Description' },
+    ],
+    libraryData: {},
+    error: null,
+    isTableLoading: false,
+    sortData: {
+      sortField: 'id',
+      sortOrder: 'descend',
     },
-]
-</script>
+    datas: [],
+    searchQuery: '',
+    modeltype: 'city',
+  });
+  
+  const modelTypes = [
+    'barangay',
+    'branch',
+    'city',
+    'civil_status',
+    'gender_map',
+    'country',
+    'province',
+    'credit_status',
+    'personality_status_map',
+    'user_account_status',
+    'document_map',
+    'document_permission_map',
+    'name_type',
+    'customer_group',
+  ];
+  
+  let selectedLibraryId = ref(null); // Track selected library
+  
+  onMounted(() => {
+    fetchLibraries();
+  });
+  
+  function createLibrary() {
+    navigateTo('libraries/create');
+  }
+  
+  function updateLibrary() {
+    if (selectedLibraryId.value) {
+        let selectedDescription = null;
+  
+        // Iterate through the data using a for loop
+        for (let i = 0; i < state.datas?.data.length; i++) {
+          const library = state.datas.data[i];
+  
+          // Check if the current library's id matches the selectedLibraryId
+          if (library.id == parseInt(selectedLibraryId.value)?.toString()) {
+            selectedDescription = library.description;
+            break; // Exit the loop once we find the selected library
+          }
+        }
+  
+        libraryService.id = selectedLibraryId.value;
+        libraryService.description = state.modeltype;
+        libraryService.oldText = selectedDescription;
+        navigateTo('libraries/update');
+      }
+  }
+  
+  function deleteLibrary() {
+    if (selectedLibraryId.value) {
+      // Add logic for deletion
+      console.log('Delete library with id:', selectedLibraryId.value);
+    }
+  }
+  
+  async function fetchLibraries() {
+    state.isTableLoading = true;
+    state.error = null;
+    try {
+      const params = {};
+      const response = await apiService.get(params, state.modeltype);
+      state.datas = response;
+    } catch (error) {
+      state.error = error;
+    }
+    state.isTableLoading = false;
+  }
+  </script>
+  

@@ -8,13 +8,14 @@
         <!-- Model Type Field -->
         <div class="mb-4">
           <label for="modeltype" class="block text-sm font-medium text-gray-700">Model Type</label>
-          <input
+          <select
             v-model="form.modeltype"
-            type="text"
             id="modeltype"
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            placeholder="Enter Model Type"
-          />
+          >
+            <option value="" disabled>Select Model Type</option>
+            <option v-for="type in modelTypes" :key="type" :value="type">{{ type }}</option>
+          </select>
         </div>
 
         <!-- Description Field -->
@@ -29,11 +30,18 @@
           ></textarea>
         </div>
 
-        <!-- Submit Button -->
-        <div class="mt-6">
+        <!-- Buttons -->
+        <div class="flex justify-between mt-6">
+          <button
+            type="button"
+            @click="cancel"
+            class="w-1/2 bg-black text-white py-2 px-4 rounded-md shadow-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500"
+          >
+            Cancel
+          </button>
           <button
             type="submit"
-            class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            class="w-1/2 ml-2 bg-black text-white py-2 px-4 rounded-md shadow-sm hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
           >
             Submit
           </button>
@@ -53,9 +61,26 @@ import { ref } from 'vue';
 import { apiService } from '~/routes/api/API';
 import { libraryService } from '~/models/Library';
 
+const modelTypes = [
+  'barangay',
+  'branch',
+  'city',
+  'civil_status',
+  'gender_map',
+  'country',
+  'province',
+  'credit_status',
+  'personality_status_map',
+  'user_account_status',
+  'document_map',
+  'document_permission_map',
+  'name_type',
+  'customer_group',
+];
+
 const form = ref({
   id: '',
-  modeltype: libraryService.description,
+  modeltype: '', // Initialize with empty string for combo box
   description: ''
 });
 
@@ -64,20 +89,16 @@ const successMessage = ref<string | null>(null);
 // Function to handle form submission
 const submitForm = () => {
   if (form.value.modeltype && form.value.description) {
-    try
-    {
+    try {
       // Process form submission, e.g., send data to the backend API
       console.log('Form Data:', form.value);
 
-      debugger;
       create();
 
       // Clear the form
       form.value.modeltype = '';
       form.value.description = '';
-    }
-    catch(error: any)
-    {
+    } catch (error: any) {
       console.log(error);
     }
   } else {
@@ -86,22 +107,26 @@ const submitForm = () => {
   }
 };
 
-async function create()
-{
+async function create() {
   try {
-          const params = {
-              modeltype: form.value.modeltype.toLowerCase(),
-              description: form.value.description,
-          }
-          const response = await apiService.create(params);
-          if (response.data) {
-              alert("login successfully!");
-              navigateTo('./view');
-          }
-      } catch (error: any) {
-          alert("error: " + error);
-      }
+    const params = {
+      modeltype: form.value.modeltype.toLowerCase(),
+      description: form.value.description,
+    };
+    const response = await apiService.create(params);
+    if (response.data) {
+      alert("Created successfully!");
+      navigateTo('/libraries');
+    }
+  } catch (error: any) {
+    alert("Error: " + error);
+  }
 }
+
+const cancel = () => {
+  // Logic to handle cancellation
+  navigateTo('/libraries'); // Redirect to libraries or any other page
+};
 </script>
 
 <style scoped>
