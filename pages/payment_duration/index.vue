@@ -1,83 +1,99 @@
 <template>
     <NuxtLayout name="admin">
             <div class="p-4">
-                <div class="flex justify-between items-center mb-4">
-                    <div>
-                        <button @click="createNewEntry" class="w-20 h-10 bg-blue-500 text-white border font-serif border-black">
-                            Create
-                        </button>
-                    </div>
-                </div>
+                <div class="max-w-screen-xl mx-auto px-4 md:px-8">
+                    <div class="font-bold">Payment Duration</div>
 
-                <div class="w-full ">
-                    <div class="flex justify-between items-center bg-gray-800 text-white p-2 border-b border-black">
-                        <div class="font-bold">Payment Frequency</div>
-                        <div class="flex space-x-2">
-                            <button @click="createEntry" class="w-16 h-8 bg-blue-500 text-white border border-black">
-                                Create
+                    <!-- Action Buttons -->
+                    <div class="flex justify-between items-center mb-8 mt-8">
+
+                        <!-- Left: Action Buttons -->
+                        <div class="flex space-x-4">
+                            <button  class="px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-600"
+                            @click="createPaymentFrequency">
+                            Create
                             </button>
-                            <button @click="viewEntry" class="w-16 h-8 bg-green-500 text-white border border-black">
-                                View
+
+                            <button 
+                            type="button" 
+                            class="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
+                            v-if="selectedDurationID"
+                            @click="updateDuration"
+                            >
+                            Modify
                             </button>
-                            <button @click="updateEntry" class="w-16 h-8 bg-yellow-500 text-white border border-black">
-                                Update
+                            
+                            <button type="button" 
+                            class="px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600 "
+                            v-if="selectedDurationID"
+                            >
+                            Delete
+                            </button>
+                        </div>
+
+                        <!-- Right: Search Bar -->
+                        <div class="flex items-center space-x-2">
+                            <input
+                            type="text"
+                            placeholder="Search"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                            />
+                            <button class="px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
+                            Search
                             </button>
                         </div>
                     </div>
 
-                        <div class="mt-5">
-                            <Alert type="danger" :text="state.error?.message" v-if="state.error" />
-                                <div class="overflow-x-auto  ">
-                                    <Table class="w-full " 
-                                    :columnHeaders="state.columnHeaders" 
-                                    :data="state.freq" 
-                                    :isLoading="state.isTableLoading"
-                                    :sortData="state.sortData" 
-                                    >
-                                        <template #body
-                                            v-if="!(state.isTableLoading || (state.freq?.data === 0))">
-                                            
-                                            <tr v-for="(frequency, index) in state.freq?.data" :key="index" class="">
-                                                
-                                                <td class="py-2 border-b border-gray-300 ">
-                                                    <span>{{ frequency.id }}</span>
-                                                </td>
-                                                <td class="py-2 border-b border-gray-300  ">
-                                                    <span>{{ frequency.description }} </span>
-                                                </td>
-                                                <td class="py-2 border-b border-gray-300 ">
-                                                    <span>{{ frequency.days_interval }}</span>
-                                                </td>
-                                                <td class="py-2 border-b border-gray-300 ">
-                                                    <span>{{ frequency.notes }}</span>
-                                                </td>
-                                                <!-- <td class="border-b border-gray-300 cursor-pointer ">
-                                                    <FormButton class="bg-blue-600 hover:bg-blue-800 text-white rounded pl-5 pr-5"></FormButton>
-                                                </td> -->
-                                            </tr>
-                                        </template>
-                                    </Table>
-                                    </div>
-                                    <!-- <Pagination :data="state.datas" @previous="previous" @next="next" /> -->
-                                    <div class="ml-10 mb-5 ">
-                                </div>
-                    </div>
-
+                    <Table class="w-full  " 
+                        :columnHeaders="state.columnHeaders" 
+                        :data="state.duration" 
+                        :isLoading="state.isTableLoading"
+                        :sortData="state.sortData" 
+                        >
+                        <template #body
+                            v-if="!(state.isTableLoading || (state.duration?.data === 0))">
+                            
+                            <tr v-for="(duration, index) in state.duration?.data" :key="index" class="">
+                                
+                                <td class="py-2 border-b border-gray-300 ">
+                                    <input
+                                    type="radio"
+                                    :value="duration.id"
+                                    v-model="selectedDurationID"
+                                    class="cursor-pointer"
+                                    />
+                                </td>
+                                <td class="py-2 border-b border-gray-300  ">
+                                    <span>{{ duration.description }} </span>
+                                </td>
+                                <td class="py-2 border-b border-gray-300 ">
+                                    <span>{{ duration.number_of_payments }}</span>
+                                </td>
+                                <td class="py-2 border-b border-gray-300 ">
+                                    <span>{{ duration.notes }}</span>
+                                </td>
+                                <!-- <td class="border-b border-gray-300 cursor-pointer ">
+                                    <FormButton class="bg-blue-600 hover:bg-blue-800 text-white rounded pl-5 pr-5"></FormButton>
+                                </td> -->
+                            </tr>
+                        </template>
+                    </Table>
                 </div>
             </div>
     </NuxtLayout>
 </template>
 
+
 <script setup lang="ts">
     import { ref, reactive, onMounted } from 'vue'
     import { apiService } from '~/routes/api/API'
-
-
+    import { paymentDurationService } from '~/models/PaymentDuration'
+    
     const state = reactive({
         columnHeaders: [
             { name: 'ID' },
             { name: 'Description' },
-            { name: 'Days Interval' },
+            { name: 'Number of Payments' },
             { name: 'Notes' }
         ],
         error: null,
@@ -86,9 +102,11 @@
             sortField: 'id',
             sortOrder: 'descend',
         },
-        freq: [],
+        duration: [],
         searchQuery: '',
     })
+
+    let selectedDurationID = ref(null); // Track selected library
 
     
     async function fetchFreqandDuration() {
@@ -96,9 +114,9 @@
         state.error = null
         try {
             const params = {}
-            const response = await apiService.getPaymentFrequency(params)
-            state.freq = response
-            console.log(state.freq);
+            const response = await apiService.getPaymentduration(params)
+            state.duration = response
+            console.log(state.duration);
         } catch (error: any) {
             state.error = error
         }
@@ -107,5 +125,39 @@
     onMounted(() => {
         fetchFreqandDuration()
     })
+
+    function updateDuration(){
+        if (selectedDurationID.value) {
+        let numOfPayments = null;
+        let description = null;
+        let notes = null;
+
+        // Iterate through the data using a for loop
+        for (let i = 0; i < state.duration?.data.length; i++) {
+            const duration = state.duration.data[i];
+
+            // Check if the current library's id matches the selectedLibraryId
+            if (duration.id == parseInt(selectedDurationID.value)?.toString()) {
+                description = duration.description;
+                numOfPayments = duration.number_of_payments;
+                notes = duration.notes;
+            break; // Exit the loop once we find the selected library
+            }
+        }
+        paymentDurationService.id = selectedDurationID.value;
+        paymentDurationService.description = description;
+        paymentDurationService.number_of_payments = numOfPayments;
+        paymentDurationService.notes = notes;
+
+        console.log(paymentDurationService.id);
+        console.log(paymentDurationService.description);
+        console.log(paymentDurationService.number_of_payments);
+        console.log(paymentDurationService.notes);
+        navigateTo('payment_duration/update');
+        }
+    }
+    function createPaymentFrequency() {
+    navigateTo('payment_duration/create');
+    }
 
 </script>

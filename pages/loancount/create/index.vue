@@ -86,6 +86,7 @@ const submitForm = async () => {
       }
       const response = await apiService.createLoanCount(params);
       submitted.value = true;
+      alert("Create Success!");
       console.log({
           loanCount: loanCount.value,
           minAmount: minAmount.value,

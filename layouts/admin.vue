@@ -233,56 +233,59 @@
     
         { name: "Admin Panel", icon: UsersIcon, current: false,
             children: [
-                { name: "Staff", href: "/#", icon: UserIcon, current: false },
-                { name: "Staff Roles", href: "/#", icon: UserIcon, current: false },
-                { name: "Permission", href: "/Permission", icon: InboxIcon, current: false },
-                //  { name: "Staff Email Notification", href: "/#", icon: InboxIcon, current: false },
-                
+                // { name: "Staff", href: "/#", icon: UserIcon, current: false },
+                { name: "Libraries", href: "/Libraries", icon: UserIcon, current: false },
+                { name: "Permission", href: "/Permission", icon: UserIcon, current: false },
             ],
         },
         
         
-        { name: "Borrowers", icon: UsersIcon, current: false,
+        { name: "Customers", icon: UsersIcon, current: false,
             children: [
-                { name: "View Borrowers", href: "/customers", icon: ScaleIcon, current: false },
-                { name: "View Group Table", href: "/view_group_table", icon: ScaleIcon, current: false },
-                { name: "View Group Member", href: "/view_group_member", icon: ScaleIcon, current: false },
-                { name: "Add Borrower", href: "/#", icon: UserIcon, current: false },
-                { name: "View Borrowers Group", href: "/#", icon: UserIcon, current: false },
+                { name: "Customers", href: "/customers", icon: UserIcon, current: false },
+                { name: "Groups", href: "/Group", icon: ScaleIcon, current: false },
+            ],
+        },
+
+        { name: "Employees", icon: UsersIcon, current: false,
+            children: [
+                { name: "Employees", href: "/employees", icon: UserIcon, current: false },
             ],
         },
     
         { name: "Loan", icon: ShareIcon, current: false,
             children: [
-                { name: "Loan Application", href: "/loan_application", icon: CurrencyDollarIcon, current: false },
-                { name: "Loan Release", href: "/#", icon:  CreditCardIcon, current: false },
-                { name: "Payment Schedule", href: "/#", icon: CreditCardIcon, current: false },
+                { name: "Loan Count", href: "/loancount", icon: CurrencyDollarIcon, current: false },
+                { name: "Payment Duration", href: "/payment_duration", icon: CurrencyDollarIcon, current: false },
+                { name: "Payment Frequency", href: "/payment_frequency", icon: CurrencyDollarIcon, current: false },
+                { name: "Factor Rate", href: "/factor_rate", icon: CurrencyDollarIcon, current: false },
             ],
         },
     
         { name: "Release Schedules", icon: KeyIcon, current: false,
             children: [
-                { name: "Loan Application", href: "/#", icon: CurrencyDollarIcon, current: false },
-                { name: "Loan Release", href: "/#", icon:  CreditCardIcon, current: false },
-                { name: "Payment Schedule", href: "/#", icon: CreditCardIcon, current: false },
+                { name: "Loan Application", href: "", icon: CurrencyDollarIcon, current: false },
+                { name: "Loan Release", href: "", icon:  CreditCardIcon, current: false },
+                { name: "Payment Schedule", href: "", icon: CreditCardIcon, current: false },
             ],
         },
+        
         { name: "Payment", icon: FlagIcon, current: false,
             children: [
-                { name: "Loan Application", href: "/#", icon: CurrencyDollarIcon, current: false },
-                { name: "Loan Release", href: "/#", icon:  CreditCardIcon, current: false },
-                { name: "Payment Schedule", href: "/#", icon: CreditCardIcon, current: false },
+                { name: "Loan Application", href: "", icon: CurrencyDollarIcon, current: false },
+                { name: "Loan Release", href: "", icon:  CreditCardIcon, current: false },
+                { name: "Payment Schedule", href: "", icon: CreditCardIcon, current: false },
             ],
         },
         { name: "Report", icon: FireIcon, current: false,
             children: [
-                { name: "Loan Application", href: "/#", icon: CurrencyDollarIcon, current: false },
-                { name: "Loan Release", href: "/#", icon:  CreditCardIcon, current: false },
-                { name: "Payment Schedule", href: "/#", icon: CreditCardIcon, current: false },
+                { name: "Loan Application", href: "", icon: CurrencyDollarIcon, current: false },
+                { name: "Loan Release", href: "", icon:  CreditCardIcon, current: false },
+                { name: "Payment Schedule", href: "", icon: CreditCardIcon, current: false },
             ],
         },
         
-        { name: "Help", href: "/#", icon: BellAlertIcon , current: false },
+        { name: "Help", href: "", icon: BellAlertIcon , current: false },
     
     ];
     

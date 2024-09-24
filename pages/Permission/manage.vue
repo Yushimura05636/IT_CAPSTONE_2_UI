@@ -271,6 +271,7 @@ try {
   if (response) {
     formSuccess.value = true;
     console.log('The permission has updated successfully!');
+    alert('The permission has updated successfully!');
   }
 
   // Send to the database

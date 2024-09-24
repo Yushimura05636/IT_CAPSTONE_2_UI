@@ -236,6 +236,10 @@ class API extends BaseAPIService {
         return await this.request(`/libraries/customer_group`, 'GET', params)
     }
 
+    async getCustomerGroup1(params: object): Promise<any> {
+        return await this.request(`/group`, 'GET', params)
+    }
+
     async getCustomerGroupById(params: object, id: number): Promise<any> {
         return await this.request(`/group/${id}`, 'GET', params)
     }
