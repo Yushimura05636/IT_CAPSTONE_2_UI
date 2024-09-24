@@ -4,14 +4,6 @@
             <div class="p-4">
                 <div class="flex justify-between items-center mb-4">
                     <div>
-                        <select v-model="category" class="w-48 h-12 bg-white border border-black">
-                            <option value="city">City</option>
-                            <option value="province">Province</option>
-                            <option value="country">Country</option>
-                            <option value="nameType">Name Type</option>
-                        </select>
-                    </div>
-                    <div>
                         <button @click="createNewEntry" class="w-20 h-10 bg-blue-500 text-white border font-serif border-black">
                             Create
                         </button>
@@ -20,7 +12,7 @@
 
                 <div class="w-full border border-black">
                     <div class="flex justify-between items-center bg-gray-800 text-white p-2 border-b border-black">
-                        <div class="font-bold">Name</div>
+                        <div class="font-bold">Payment Duration</div>
                         <div class="flex space-x-2">
                             <button @click="createEntry" class="w-16 h-8 bg-blue-500 text-white border border-black">
                                 Create
@@ -36,19 +28,15 @@
                     <div class="p-2">
                         <div class="flex items-center space-x-2 py-1">
                             <input type="checkbox" v-model="cityChecked" class="form-checkbox h-5 w-5 text-blue-600">
-                            <div>City</div>
+                            <div>Description</div>
                         </div>
                         <div class="flex items-center space-x-2 py-1">
                             <input type="checkbox" v-model="provinceChecked" class="form-checkbox h-5 w-5 text-blue-600">
-                            <div>Province</div>
+                            <div>Days Interval</div>
                         </div>
                         <div class="flex items-center space-x-2 py-1">
-                            <input type="checkbox" v-model="countryChecked" class="form-checkbox h-5 w-5 text-blue-600">
-                            <div>Country</div>
-                        </div>
-                        <div class="flex items-center space-x-2 py-1">
-                            <input type="checkbox" v-model="nameTypeChecked" class="form-checkbox h-5 w-5 text-blue-600">
-                            <div>Name Type</div>
+                            <input type="checkbox" v-model="provinceChecked" class="form-checkbox h-5 w-5 text-blue-600">
+                            <div>Notes</div>
                         </div>
                     </div>
                 </div>
