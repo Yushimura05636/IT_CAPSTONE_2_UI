@@ -116,6 +116,7 @@
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { EmployeesService } from '~/models/Employee';
+import { PermissionService } from '~/models/Permission';
 import { apiService } from '~/routes/api/API';
 
 const route = useRoute();
@@ -184,6 +185,8 @@ const createEmployee = async () => {
     const employeeId = EmployeesService.id;
     
     const jsonObject = {
+      docId: PermissionService._EMPLOYEES,
+      perm: PermissionService._CREATE,
       employee: {
             sss_no: employee.value.sss_no,
             phic_no: employee.value.phnic_no,
@@ -216,11 +219,9 @@ const createEmployee = async () => {
             notes: personality.value.notes, // Get from personality ref, optional
         }
     };
-
-    ;
     await apiService.createEmployee(jsonObject);
     alert('Employee created successfully!');
-    navigateTo('/Libraries/EmployeeView'); // Redirect to the customer list page
+    navigateTo('/employees'); // Redirect to the customer list page
   } catch (error) {
     alert('Error updating employee: ' + error);
     console.error(error);

@@ -72,8 +72,8 @@
         </div>
 
         <div>
-          <label for="phnicNo" class="block text-gray-700">PHNIC NO</label>
-          <input v-model="employee.phnic_no" type="number" id="phnicNo" class="w-full border rounded-lg px-4 py-2" />
+          <label for="phicNo" class="block text-gray-700">PHIC NO</label>
+          <input v-model="employee.phic_no" type="number" id="phicNo" class="w-full border rounded-lg px-4 py-2" />
         </div>
 
         <div>
@@ -90,14 +90,9 @@
           <label for="dateResigned" class="block text-gray-700">Date Resigned</label>
           <input v-model="employee.date_resigned" type="date" id="dateResigned" class="w-full border rounded-lg px-4 py-2" />
         </div>
-
-        <div>
-          <label for="personalityId" class="block text-gray-700">Personality ID</label>
-          <input v-model="employee.personality_id" type="number" id="personalityId" class="w-full border rounded-lg px-4 py-2" />
-        </div>
       </div>
 
-      <div class="mt-4">
+      <div class="mt-4 py-5">
         <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500">
           Update Employee
         </button>
@@ -111,6 +106,7 @@
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { EmployeesService } from '~/models/Employee';
+import { PermissionService } from '~/models/Permission';
 import { apiService } from '~/routes/api/API';
 
 const route = useRoute();
@@ -142,7 +138,7 @@ const personality = ref({
 
 const employee = ref({
   sss_no : 0,
-  phnic_no : 0,
+  phic_no : 0,
   tin_no : 0,
   date_hired : new Date().toISOString().split('T')[0],
   date_resigned : new Date().toISOString().split('T')[0],
@@ -178,7 +174,8 @@ function formatDateToMySQL(date: any) {
 
 // Fetch employee data when the component is mounted
 async function fetchEmployeeData() {
-  const employeeId = EmployeesService.id;
+  try { 
+    const employeeId = EmployeesService.id;
   ;
   // Check if employeeId is defined and is a valid number
   if (!employeeId || isNaN(Number(employeeId))) {
@@ -186,10 +183,16 @@ async function fetchEmployeeData() {
     router.push('/Libraries/EmployeeView'); // Redirect to the employee list page or show an error
     return;
   }
-  const response = await apiService.getEmployeeById([], employeeId);
+  const response = await apiService.getEmployeeById({
+    docId: PermissionService._EMPLOYEES,
+    perm: PermissionService._VIEW,
+  }, employeeId);
   ; // Fetch employee data and set the initial values of the `personality` and `employee` objects
   Object.assign(employee.value, response.employee);
-  Object.assign(personality.value, response.personality)
+  Object.assign(personality.value, response.personality);
+  } catch (error) {
+    alert(error);
+  }
 }
 
 // Update employee data
@@ -206,6 +209,8 @@ const updateEmployee = async () => {
     alert(employee.value.personality_id);
     
     const jsonObject = {
+      docId: PermissionService._EMPLOYEES,
+      perm: PermissionService._UPDATE,
       employee: {
             sss_no: employee.value.sss_no,
             phic_no: employee.value.phnic_no,
@@ -238,11 +243,9 @@ const updateEmployee = async () => {
             notes: personality.value.notes, // Get from personality ref, optional
         }
     };
-
-    ;
     await apiService.updateEmployee(jsonObject, employeeId);
     alert('Employee updated successfully!');
-    navigateTo('/Libraries/EmployeeView'); // Redirect to the customer list page
+    navigateTo('/employees'); // Redirect to the customer list page
   } catch (error) {
     alert('Error updating employee: ' + error);
     console.error(error);

@@ -121,6 +121,8 @@
 import { EmployeesService } from '~/models/Employee';
 import { ref, computed } from 'vue'
 import { apiService } from '~/routes/api/API'
+import { PermissionService } from '../../models/Permission';
+import { Employee } from '../../models/Employee';
 
 
 const searchQuery = ref<string>('')
@@ -180,26 +182,44 @@ interface TableItem {
 }
 
 async function createEmployee() {
-  const response = await apiService.auth({});
+  try {
+    const response = await apiService.auth({
+      docId: PermissionService._EMPLOYEES,
+      perm: PermissionService._CREATE,
+    });
+  } catch (error) {
+    alert(error);
+  }
   navigateTo('employees/create');
 }
 
-function modifyEmployee() {
-  EmployeesService.id = parseInt(selectedEmployeeId.value?.toString());
-  navigateTo('employees/update');
+async function modifyEmployee() {
+  try {
+    EmployeesService.id = parseInt(selectedEmployeeId.value?.toString());
+    const response = await apiService.auth({
+      docId: PermissionService._EMPLOYEES,
+      perm: PermissionService._UPDATE,
+    });
+    navigateTo('employees/update');
+  } catch (error) {
+    alert(error);
+  }
 }
 
 async function fetchEmployees() {
   try {
-    const params = {}; // Your query params for the API
-    const response = await apiService.getEmployees(params); // Fetch customer data from API
+     // Your query params for the API
+    const response = await apiService.getEmployees({
+      docId: PermissionService._EMPLOYEES,
+      perm: PermissionService._VIEW,
+    }); // Fetch customer data from API
     state.datas = response;
     
     // Call the function to map the API data to tableItems
     storeResponseInTableItems();
 
   } catch (error) {
-    alert('Error fetching data from API: ' + error);
+    alert(error);
     console.error(error);
   }
 }

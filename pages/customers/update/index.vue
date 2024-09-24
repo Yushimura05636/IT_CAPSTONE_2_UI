@@ -1,125 +1,200 @@
 <template>
   <NuxtLayout name="admin">
-  <div class="bg-white p-4 md:p-8">
-    <h2 class="text-gray-800 text-xl font-bold mb-4">Edit Customer</h2>
+    <div class="bg-white p-4 md:p-8">
+      <h2 class="text-gray-800 text-xl font-bold mb-4">Create Customer</h2>
 
-    <form @submit.prevent="updateCustomer">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <!-- Personality Fields -->
-        <div>
-          <label for="firstName" class="block text-gray-700">First Name</label>
-          <input v-model="personality.first_name" type="text" id="firstName" class="w-full border rounded-lg px-4 py-2" required />
+      <form @submit.prevent="createCustomer">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Personality Fields -->
+          <div>
+            <label for="firstName" class="block text-gray-700">First Name</label>
+            <input v-model="personality.first_name" type="text" id="firstName" class="w-full border rounded-lg px-4 py-2" required />
+          </div>
+
+          <div>
+            <label for="lastName" class="block text-gray-700">Last Name</label>
+            <input v-model="personality.family_name" type="text" id="lastName" class="w-full border rounded-lg px-4 py-2" required />
+          </div>
+
+          <div>
+            <label for="middleName" class="block text-gray-700">Middle Name</label>
+            <input v-model="personality.middle_name" type="text" id="middleName" class="w-full border rounded-lg px-4 py-2" required />
+          </div>
+
+          <div>
+            <label for="email" class="block text-gray-700">Email</label>
+            <input v-model="personality.email_address" type="email" id="email" class="w-full border rounded-lg px-4 py-2" required />
+          </div>
+
+          <div>
+            <label for="telephone" class="block text-gray-700">Telephone#</label>
+            <input v-model="personality.telephone_no" type="text" id="telephone" class="w-full border rounded-lg px-4 py-2" />
+          </div>
+
+          <div>
+            <label for="birthday" class="block text-gray-700">Birthday</label>
+            <input v-model="personality.birthday" type="date" id="birthday" class="w-full border rounded-lg px-4 py-2" required />
+          </div>
+
+          <div>
+            <label for="gender" class="block text-gray-700">Gender</label>
+            <select v-model="personality.gender_code" id="gender" class="w-full border rounded-lg px-4 py-2">
+              <option value="0">Select</option>
+              <option value="1">Male</option>
+              <option value="2">Female</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="civilStatus" class="block text-gray-700">Civil Status</label>
+            <select v-model="personality.civil_status" id="civilStatus" class="w-full border rounded-lg px-4 py-2">
+              <option value="0">Select</option>
+              <option value="1">Single</option>
+              <option value="2">Married</option>
+              <option value="3">Divorced</option>
+              <option value="4">Widowed</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="houseStreet" class="block text-gray-700">House Street</label>
+            <input v-model="personality.house_street" type="text" id="houseStreet" class="w-full border rounded-lg px-4 py-2" />
+          </div>
+          
+          <div>
+            <label for="Cellphone No" class="block text-gray-700">Cellphone No</label>
+            <input v-model="personality.cellphone_no" type="text" id="cellphoneNo" class="w-full border rounded-lg px-4 py-2" />
+          </div>
+
+          <div>
+            <label for="purokZone" class="block text-gray-700">Purok Zone</label>
+            <input v-model="personality.purok_zone" type="text" id="purokZone" class="w-full border rounded-lg px-4 py-2" />
+          </div>
+
+          <div>
+            <label for="Postal Code" class="block text-gray-700">Postal Code</label>
+            <input v-model="personality.postal_code" type="text" id="postalCode" class="w-full border rounded-lg px-4 py-2" />
+          </div>
+
+          <!-- Additional Fields -->
+          <div>
+            <label for="barangayId" class="block text-gray-700">Barangay</label>
+            <select v-model="personality.barangay_id" id="barangayId" class="w-full border rounded-lg px-4 py-2">
+              <option v-for="barangay in state.barangays" :key="barangay.id" :value="barangay.id">
+                {{ barangay.description }}
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <label for="cityId" class="block text-gray-700">City</label>
+            <select v-model="personality.city_id" id="cityId" class="w-full border rounded-lg px-4 py-2">
+              <option v-for="city in state.cities" :key="city.id" :value="city.id">
+                {{ city.description }}
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <label for="countryId" class="block text-gray-700">Country</label>
+            <select v-model="personality.country_id" id="countryId" class="w-full border rounded-lg px-4 py-2">
+              <option v-for="country in state.countries" :key="country.id" :value="country.id">
+                {{ country.description }}
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <label for="provinceId" class="block text-gray-700">Province</label>
+            <select v-model="personality.province_id" id="provinceId" class="w-full border rounded-lg px-4 py-2">
+              <option v-for="province in state.provinces" :key="province.id" :value="province.id">
+                {{ province.description }}
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <label for="creditStatusId" class="block text-gray-700">Credit Status</label>
+            <select v-model="personality.credit_status_id" id="creditStatusId" class="w-full border rounded-lg px-4 py-2">
+              <option v-for="creditStatus in state.creditStatuses" :key="creditStatus.id" :value="creditStatus.id">
+                {{ creditStatus.description }}
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <label for="creditStatusId" class="block text-gray-700">Personality Status</label>
+            <select v-model="personality.personality_status_code" id="creditStatusId" class="w-full border rounded-lg px-4 py-2">
+              <option v-for="creditStatus in state.personality_status_code" :key="creditStatus.id" :value="creditStatus.id">
+                {{ creditStatus.description }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Customer Fields -->
+          <div>
+            <label for="groupId" class="block text-gray-700">Group Name</label>
+            <select v-model="customer.group_id" id="groupId" class="w-full border rounded-lg px-4 py-2" v-if="!state.isTableLoading">
+              <option v-for="groups in state.groups" :key="groups.id" :value="groups.id">
+                {{ groups.description }} 
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <label for="passbookNo" class="block text-gray-700">Passbook No</label>
+            <input v-model="customer.passbook_no" type="number" id="passbookNo" class="w-full border rounded-lg px-4 py-2" />
+          </div>
+
+          <div>
+            <label for="groupId" class="block text-gray-700">Loan Count</label>
+            <select v-model="customer.loan_count_id" id="groupId" class="w-full border rounded-lg px-4 py-2" v-if="!state.isTableLoading">
+              <option v-for="groups in state.loan_count" :key="groups.id" :value="groups.id">
+                {{ groups.loan_count }} 
+              </option>
+            </select>
+          </div>
+
+          <div>
+            <label for="dateTimeRegistered" class="block text-gray-700">Date Time Registered</label>
+            <input v-model="personality.datetime_registered" type="date" id="dateTimeRegistered" class="w-full border rounded-lg px-4 py-2" />
+          </div>
+
+          <div>
+            <label for="enableMortuary" class="block text-gray-700">Enable Mortuary</label>
+            <select v-model="customer.enable_mortuary" id="enable_mortuary" class="w-full border rounded-lg px-4 py-2">
+              <option value="0">Select</option>
+              <option value="1">Yes</option>
+              <option value="2">No</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="mortuaryCoverageStart" class="block text-gray-700">Mortuary Coverage Start</label>
+            <input v-model="customer.mortuary_coverage_start" type="date" id="mortuaryCoverageStart" class="w-full border rounded-lg px-4 py-2" />
+          </div>
+
+          <div>
+            <label for="mortuaryCoverageEnd" class="block text-gray-700">Mortuary Coverage End</label>
+            <input v-model="customer.mortuary_coverage_end" type="date" id="mortuaryCoverageEnd" class="w-full border rounded-lg px-4 py-2" />
+          </div>
         </div>
 
-        <div>
-          <label for="lastName" class="block text-gray-700">Last Name</label>
-          <input v-model="personality.family_name" type="text" id="lastName" class="w-full border rounded-lg px-4 py-2" required />
+        <div class="mt-4">
+          <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500">
+            Create Customer
+          </button>
         </div>
-
-        <div>
-          <label for="middleName" class="block text-gray-700">Middle Name</label>
-          <input v-model="personality.middle_name" type="text" id="middleName" class="w-full border rounded-lg px-4 py-2" required />
-        </div>
-
-        <div>
-          <label for="email" class="block text-gray-700">Email</label>
-          <input v-model="personality.email_address" type="email" id="email" class="w-full border rounded-lg px-4 py-2" required />
-        </div>
-
-        <div>
-          <label for="telephone" class="block text-gray-700">Telephone#</label>
-          <input v-model="personality.telephone_no" type="text" id="telephone" class="w-full border rounded-lg px-4 py-2" />
-        </div>
-
-        <div>
-          <label for="birthday" class="block text-gray-700">Birthday</label>
-          <input v-model="personality.birthday" type="date" id="birthday" class="w-full border rounded-lg px-4 py-2" required />
-        </div>
-
-        <div>
-          <label for="gender" class="block text-gray-700">Gender</label>
-          <select v-model="personality.gender_code" id="gender" class="w-full border rounded-lg px-4 py-2">
-            <option value="1">Male</option>
-            <option value="2">Female</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="civilStatus" class="block text-gray-700">Civil Status</label>
-          <select v-model="personality.civil_status" id="civilStatus" class="w-full border rounded-lg px-4 py-2">
-            <option value="0">Select</option>
-            <option value="1">Single</option>
-            <option value="2">Married</option>
-            <option value="3">Divorced</option>
-            <option value="4">Widowed</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="houseStreet" class="block text-gray-700">House Street</label>
-          <input v-model="personality.house_street" type="text" id="houseStreet" class="w-full border rounded-lg px-4 py-2" />
-        </div>
-
-        <div>
-          <label for="purokZone" class="block text-gray-700">Purok Zone</label>
-          <input v-model="personality.purok_zone" type="text" id="purokZone" class="w-full border rounded-lg px-4 py-2" />
-        </div>
-
-        <!-- Customer Fields -->
-        <div>
-          <label for="groupId" class="block text-gray-700">Group ID</label>
-          <input v-model="customer.group_id" type="number" id="groupId" class="w-full border rounded-lg px-4 py-2" />
-        </div>
-
-        <div>
-          <label for="passbookNo" class="block text-gray-700">Passbook No</label>
-          <input v-model="customer.passbook_no" type="number" id="passbookNo" class="w-full border rounded-lg px-4 py-2" />
-        </div>
-
-        <div>
-          <label for="loanCount" class="block text-gray-700">Loan Count</label>
-          <input v-model="customer.loan_count" type="number" id="loanCount" class="w-full border rounded-lg px-4 py-2" />
-        </div>
-
-        <div>
-          <label for="enableMortuary" class="block text-gray-700">Enable Mortuary</label>
-          <input v-model="customer.enable_mortuary" type="number" id="enableMortuary" class="w-full border rounded-lg px-4 py-2" />
-        </div>
-
-        <div>
-          <label for="mortuaryCoverageStart" class="block text-gray-700">Mortuary Coverage Start</label>
-          <input v-model="customer.mortuary_coverage_start" type="date" id="mortuaryCoverageStart" class="w-full border rounded-lg px-4 py-2" />
-        </div>
-
-        <div>
-          <label for="mortuaryCoverageEnd" class="block text-gray-700">Mortuary Coverage End</label>
-          <input v-model="customer.mortuary_coverage_end" type="date" id="mortuaryCoverageEnd" class="w-full border rounded-lg px-4 py-2" />
-        </div>
-      </div>
-
-      <div>
-          <label for="dateTimeRegistered" class="block text-gray-700">Date Time Registered</label>
-          <input v-model="personality.datetime_registered" type="date" id="dateTimeRegistered" class="w-full border rounded-lg px-4 py-2" />
-        </div>
-
-      <div class="mt-4">
-        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500">
-          Update Customer
-        </button>
-      </div>
-    </form>
-  </div>
-</NuxtLayout>
+      </form>
+    </div>
+  </NuxtLayout>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { ref, onMounted } from 'vue';
 import { CustomersService } from '~/models/Customer';
+import { PermissionService } from '~/models/Permission';
 import { apiService } from '~/routes/api/API';
-
-const route = useRoute();
-const router = useRouter();
 
 const personality = ref({
   first_name: '',
@@ -127,94 +202,208 @@ const personality = ref({
   middle_name: '',
   email_address: '',
   telephone_no: '',
-  birthday: new Date().toISOString().split('T')[0], // Set to current date
-  gender_code: 0, // Default or set as needed (1 for Male, 2 for Female)
-  civil_status: 0, // Default or set as needed
+  birthday: '',
+  gender_code: '',
+  civil_status: '',
   house_street: '',
+  cellphone_no: '',
   purok_zone: '',
   postal_code: '',
-  cellphone_no: '',
-  personality_status_code: 0,
-  barangay_id: 0,
-  city_id: 0,
-  country_id: 0,
-  province_id: 0,
-  credit_status_id: 0,
-  notes: undefined, // Optional
-  datetime_registered: new Date().toISOString().split('T')[0],
-  name_type_code: 0,
-})
+  barangay_id: '',
+  city_id: '',
+  country_id: '',
+  province_id: '',
+  credit_status_id: '',
+  datetime_registered: '',
+  name_type: 1, //for customer
+  personality_status_code: '',
+  notes: '',
+});
 
 const customer = ref({
-  group_id: 0, // Set as necessary
-  passbook_no: 0, // Set as necessary
-  loan_count: 0, // Set as necessary
-  enable_mortuary: 0, // Set as necessary
-  mortuary_coverage_start: undefined, // Optional
-  mortuary_coverage_end: undefined, // Optional
+  group_id: '',
+  passbook_no: '',
+  loan_count_id: 0,
+  enable_mortuary: '',
+  mortuary_coverage_start: '',
+  mortuary_coverage_end: '',
   personality_id: 0,
 });
 
+const state = ref({
+  barangays: [],
+  cities: [],
+  countries: [],
+  provinces: [],
+  creditStatuses: [],
+  groups: [],
+  personality_status_code: [],
+  loan_count: [],
+  isTableLoading: false,
+});
 
-// Call the fetch function
-fetchCustomerData();
+const fetchBarangays = async () => {
+  // Replace with your actual API call
+  try {
+    const response = await apiService.get({
+      docId: PermissionService._CUSTOMERS,
+      perm: PermissionService._VIEW,
+    }, "barangay");
 
-function formatDateTimeToMySQL(date: any) {
-  const pad = (num: any) => (num < 10 ? '0' + num : num);
-  const year = date.getFullYear();
-  const month = pad(date.getMonth() + 1);
-  const day = pad(date.getDate());
-  const hours = pad(date.getHours());
-  const minutes = pad(date.getMinutes());
-  const seconds = pad(date.getSeconds());
-  
-  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`; // Return as Y-m-d H:i:s
-}
+    state.value.barangays = response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-function formatDateToMySQL(date: any) {
-  const pad = (num: any) => (num < 10 ? '0' + num : num);
-  const year = date.getFullYear();
-  const month = pad(date.getMonth() + 1); // Months are zero-based
-  const day = pad(date.getDate());
-  const hours = pad(date.getHours());
-  const minutes = pad(date.getMinutes());
-  const seconds = pad(date.getSeconds());
-  
-  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-}
+const fetchCities = async () => {
+  // Replace with your actual API call
+  try {
+    const response = await apiService.get({
+      docId: PermissionService._CUSTOMERS,
+      perm: PermissionService._VIEW,
+    }, "city");
 
+    state.value.cities = response.data;
 
-// Fetch customer data when the component is mounted
-async function fetchCustomerData() {
-  const customerId = CustomersService.id;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const fetchCountries = async () => {
+  try {
+    const response = await apiService.get({
+      docId: PermissionService._CUSTOMERS,
+      perm: PermissionService._VIEW,
+    }, "country");
+
+    state.value.countries = response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const fetchProvinces = async () => {
+  // Replace with your actual API call
+  try {
+    const response = await apiService.get({
+      docId: PermissionService._CUSTOMERS,
+      perm: PermissionService._VIEW,
+    }, "province");
+
+    state.value.provinces = response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const fetchCreditStatuses = async () => {
+  // Replace with your actual API call
+  try {
+    const response = await apiService.get({
+      docId: PermissionService._CUSTOMERS,
+      perm: PermissionService._VIEW,
+    }, "credit_status");
+
+    state.value.creditStatuses = response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const fetchGroups = async () => {
+  // Replace with your actual API call
+  try {
+    const response = await apiService.get({
+      docId: PermissionService._CUSTOMERS,
+      perm: PermissionService._VIEW,
+    }, "customer_group");
+
+    state.value.groups = response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const fetchPersonalityStatusCode = async () => {
+  // Replace with your actual API call
+  try {
+    const response = await apiService.get({
+      docId: PermissionService._CUSTOMERS,
+      perm: PermissionService._VIEW,
+    }, "personality_status_map");
+
+    state.value.personality_status_code = response.data;
+  } catch (error) {
+    alert(error);
+  }
+};
+
+const fetchLoanCount = async () => {
+  // Replace with your actual API call
+  try {
+    const response = await apiService.getLoanCount({
+      docId: PermissionService._CUSTOMERS,
+      perm: PermissionService._VIEW,
+    });
+
+    state.value.loan_count = response.data;
+
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+onMounted(async () => {
+  await Promise.all([
+    fetchBarangays(),
+    fetchCities(),
+    fetchCountries(),
+    fetchProvinces(),
+    fetchCreditStatuses(),
+    fetchGroups(),
+    fetchPersonalityStatusCode(),
+    fetchLoanCount(),
+    fetchCustomer(),
+  ]);
+});
+
+const fetchCustomer = async () => {
+  try {
+    const customerId = CustomersService.id;
   ;
   // Check if customerId is defined and is a valid number
   if (!customerId || isNaN(Number(customerId))) {
     alert('Invalid customer ID');
-    navigateTo('/Libraries/CustomerView'); // Redirect to the customer list page or show an error
+    navigateTo('/customers'); // Redirect to the customer list page or show an error
     return;
   } // Assuming you pass the ID in the route
-  const response = await apiService.getCustomerById([],customerId);
+  const response = await apiService.getCustomerById({
+    docId: PermissionService._CUSTOMERS,
+    perm: PermissionService._VIEW,
+  },customerId);
   ; // Fetch customer data
   Object.assign(customer.value, response.customer);
   Object.assign(personality.value, response.personality) // Merge response data into customer
+  } catch (error) {
+    console.log(error);
+  }
+
+  debugger;
 }
 
-const updateCustomer = async () => {
+
+const createCustomer = async () => {
   try {
     const customerId = CustomersService.id;
-    // Check if customerId is defined and is a valid number
-    if (!customerId || isNaN(Number(customerId))) {
-      alert('Invalid customer ID');
-      router.push('/customer'); // Redirect to the customer list page or show an error
-      return;
-    }
-    
     const jsonObject = {
+      docId: PermissionService._CUSTOMERS,
+      perm: PermissionService._CREATE,
       customer: {
             group_id: customer.value.group_id,
             passbook_no: customer.value.passbook_no,
-            loan_count: customer.value.loan_count,
+            loan_count: customer.value.loan_count_id,
             enable_mortuary: customer.value.enable_mortuary,
             personality_id: customer.value.personality_id,
         },
@@ -232,7 +421,7 @@ const updateCustomer = async () => {
             telephone_no: personality.value.telephone_no, // Get from personality ref
             email_address: personality.value.email_address, // Get from personality ref
             cellphone_no: personality.value.cellphone_no, // Get from personality ref
-            name_type_code: personality.value.name_type_code, // Assuming this remains unchanged
+            name_type_code: personality.value.name_type, // Assuming this remains unchanged
             personality_status_code: personality.value.personality_status_code, // Get from personality ref
             barangay_id: personality.value.barangay_id, // Get from personality ref
             city_id: personality.value.city_id, // Get from personality ref
@@ -243,13 +432,17 @@ const updateCustomer = async () => {
         }
     };
 
-    ;
+    debugger;
     await apiService.updateCustomer(jsonObject, customerId);
     alert('Customer updated successfully!');
-    navigateTo('/Libraries/CustomerView'); // Redirect to the customer list page
+    navigateTo('/customers'); // Redirect to the customer list page
   } catch (error) {
     alert('Error updating customer: ' + error);
     console.error(error);
   }
 };
 </script>
+
+<style scoped>
+/* Add your styles here if needed */
+</style>

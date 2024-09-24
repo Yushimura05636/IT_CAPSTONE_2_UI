@@ -48,6 +48,11 @@ class API extends BaseAPIService {
         return await this.request(`/customers/${id}`, 'DELETE', params)
     }
 
+    //Loan Count
+    async getLoanCount(params: object): Promise<any> {
+        return await this.request(`/loancount`, 'POST', params);
+    }
+
     // Example API call
     async get(params: object, modeltype: string): Promise<any> {
     return await this.request(`/libraries/${modeltype}`, 'GET', params);
@@ -214,10 +219,9 @@ class API extends BaseAPIService {
         return await this.request(`/factorRate/${id}`, 'DELETE', params)
     }
 
-    
     //customer group
     async getCustomerGroup(params: object): Promise<any> {
-        return await this.request(`/group`, 'GET', params)
+        return await this.request(`/libraries/customer_group`, 'GET', params)
     }
 
     async getCustomerGroupById(params: object, id: number): Promise<any> {

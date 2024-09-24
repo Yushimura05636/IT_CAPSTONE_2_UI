@@ -122,6 +122,8 @@ import { CustomersService } from '~/models/Customer';
 import { ref, computed } from 'vue'
 import { apiService } from '~/routes/api/API'
 import { numeric } from '@vuelidate/validators';
+import { PermissionService } from '~/models/Permission';
+import Permission from '../non_used_components/Permission.vue';
 
 const searchQuery = ref<string>('')
 
@@ -145,13 +147,29 @@ const filteredTableItems = computed(() => {
   })
 })
 
-function createCustomer() {
-  navigateTo('customers/create');
+async function createCustomer() {
+  try {
+    const response = await apiService.auth({
+      docId: PermissionService._CUSTOMERS,
+      perm: PermissionService._CREATE,
+    });
+    navigateTo('/customers/create');
+  } catch (error) {
+    alert(error);
+  }
 }
 
-function modifyCustomer() {
-  CustomersService.id = parseInt(selectedEmployeeId.value?.toString());
-  navigateTo(`customers/update`)
+async function modifyCustomer() {
+  try {
+    CustomersService.id = parseInt(selectedEmployeeId.value?.toString());
+    const response = await apiService.auth({
+      docId: PermissionService._CUSTOMERS,
+      perm: PermissionService._UPDATE,
+    });
+    navigateTo(`customers/update`)
+  } catch (error) {
+    alert(error);
+  }
 }
 
 interface TableItem {
@@ -184,17 +202,23 @@ interface TableItem {
 // Fetching customers from the API
 async function fetchCustomers() {
   try {
-    const params = {}; // Your query params for the API
-    const response = await apiService.getCustomers(params); // Fetch customer data from API
+    const response = await apiService.getCustomers({
+      docId: PermissionService._CUSTOMERS,
+      perm: PermissionService._VIEW,
+    }); // Fetch customer data from API
 
     // Store API response in state (assuming API returns arrays)
     state.datas = response // An array of personality objects
 
     // Call the function to map the API data to tableItems
+    debugger;
+
     storeResponseInTableItems();
 
+    
+
   } catch (error) {
-    alert('Error fetching data from API: ' + error);
+    alert(error);
     console.error(error);
   }
 }
@@ -235,7 +259,7 @@ function storeResponseInTableItems() {
       mortuaryCoverageStart: customer.mortuary_coverage_start,
       mortuaryCoverageEnd: customer.mortuary_coverage_end,
     });
-
+    
     console.log(customer);
   }
 
