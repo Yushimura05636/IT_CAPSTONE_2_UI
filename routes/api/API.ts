@@ -50,7 +50,19 @@ class API extends BaseAPIService {
 
     //Loan Count
     async getLoanCount(params: object): Promise<any> {
+        return await this.request(`/loancount`, 'GET', params);
+    }
+
+    async getLoanCountById(params: object, id: any): Promise<any> {
+        return await this.request(`/loancount/${id}`, 'GET', params);
+    }
+
+    async createLoanCount(params: object): Promise<any> {
         return await this.request(`/loancount`, 'POST', params);
+    }
+
+    async updateLoanCount(params: object, id: any): Promise<any> {
+        return await this.request(`/loancount/${id}`, 'PUT', params);
     }
 
     // Example API call
