@@ -186,6 +186,11 @@ class API extends BaseAPIService {
         return await this.request(`/duration/${id}`, 'DELETE', params)
     }
 
+    //auth
+    async auth(params: object): Promise<any> {
+        return await this.request(`/auth`, 'POST', params)
+    }
+
     //factor rate
 
      //payment_duration

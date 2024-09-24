@@ -179,7 +179,7 @@ function formatDateToMySQL(date: any) {
 // Fetch employee data when the component is mounted
 async function fetchEmployeeData() {
   const employeeId = EmployeesService.id;
-  debugger;
+  ;
   // Check if employeeId is defined and is a valid number
   if (!employeeId || isNaN(Number(employeeId))) {
     alert('Invalid employee ID');
@@ -187,7 +187,7 @@ async function fetchEmployeeData() {
     return;
   }
   const response = await apiService.getEmployeeById([], employeeId);
-  debugger; // Fetch employee data and set the initial values of the `personality` and `employee` objects
+  ; // Fetch employee data and set the initial values of the `personality` and `employee` objects
   Object.assign(employee.value, response.employee);
   Object.assign(personality.value, response.personality)
 }
@@ -239,7 +239,7 @@ const updateEmployee = async () => {
         }
     };
 
-    debugger;
+    ;
     await apiService.updateEmployee(jsonObject, employeeId);
     alert('Employee updated successfully!');
     navigateTo('/Libraries/EmployeeView'); // Redirect to the customer list page

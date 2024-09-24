@@ -88,7 +88,7 @@ async function sendCustomerData()
     const response = await apiService.getCustomers(params);
     alert('Data sent successfully:' + response);
     state.data = response;
-    debugger;
+    ;
   } catch (error) {
     alert('Error sending data to Laravel API:' + error);
     console.error(error);

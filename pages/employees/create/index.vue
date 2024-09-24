@@ -217,7 +217,7 @@ const createEmployee = async () => {
         }
     };
 
-    debugger;
+    ;
     await apiService.createEmployee(jsonObject);
     alert('Employee created successfully!');
     navigateTo('/Libraries/EmployeeView'); // Redirect to the customer list page

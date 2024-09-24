@@ -179,7 +179,8 @@ interface TableItem {
 
 }
 
-function createEmployee() {
+async function createEmployee() {
+  const response = await apiService.auth({});
   navigateTo('employees/create');
 }
 

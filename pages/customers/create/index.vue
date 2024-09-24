@@ -244,7 +244,7 @@ const createCustomer = async () => {
         }
     };
 
-    debugger;
+    ;
     await apiService.createCustomer(jsonObject);
     alert('Customer create successfully!');
     navigateTo('/Libraries/CustomerView'); // Redirect to the customer list page

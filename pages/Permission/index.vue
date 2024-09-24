@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <NuxtLayout name="admin">
+        <div>
             <Head>
                 <Title>Users</Title>
             </Head>
@@ -45,6 +46,7 @@
                     </div>
             </div>
     </div>
+    </NuxtLayout>
 </template>
 
 
@@ -52,6 +54,8 @@
     import { ref, reactive, onMounted } from 'vue'
     import { apiService } from '~/routes/api/API'
     import { UserService } from '~/models/User';
+import { navigateTo } from 'nuxt/app';
+import { PermissionService } from '~/models/Permission';
 
 
     const state = reactive({
@@ -73,21 +77,39 @@
 
     async function fetchUsers() {
         state.isTableLoading = true
-        state.error = null
+        state.error = null;
+        ;
         try {
-            const params = {}
+            const params = {
+                docId: PermissionService._USERACCOUNT,
+                perm: PermissionService._VIEW,
+            };
+            const perms = await apiService.auth(params);
             const response = await apiService.getUser(params)
             state.users = response
             console.log(state.users);
             // assuming response.data is an array of users
         } catch (error: any) {
-            state.error = error
+            state.error = error;
+            state.isTableLoading = true;
         }
         state.isTableLoading = false
     }
-    function managePermissions(userId: number) {
-        UserService.usr_id = userId;
-        navigateTo('PermissionUpdate');
+
+    async function managePermissions(userId: number) {
+        try {
+            UserService.usr_id = userId;
+            const response = await apiService.auth(
+                {
+                    docId: PermissionService._USERACCOUNT,
+                    perm: PermissionService._UPDATE,
+                }
+            );
+            navigateTo('/permission/manage');
+        } catch (error: any) {
+            state.error = error;
+        }
+        state.isTableLoading = true;
     }
 
     // function managePermissions(userId: number) {

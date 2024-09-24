@@ -187,7 +187,7 @@ function formatDateToMySQL(date: any) {
 // Fetch customer data when the component is mounted
 async function fetchCustomerData() {
   const customerId = CustomersService.id;
-  debugger;
+  ;
   // Check if customerId is defined and is a valid number
   if (!customerId || isNaN(Number(customerId))) {
     alert('Invalid customer ID');
@@ -195,7 +195,7 @@ async function fetchCustomerData() {
     return;
   } // Assuming you pass the ID in the route
   const response = await apiService.getCustomerById([],customerId);
-  debugger; // Fetch customer data
+  ; // Fetch customer data
   Object.assign(customer.value, response.customer);
   Object.assign(personality.value, response.personality) // Merge response data into customer
 }
@@ -243,7 +243,7 @@ const updateCustomer = async () => {
         }
     };
 
-    debugger;
+    ;
     await apiService.updateCustomer(jsonObject, customerId);
     alert('Customer updated successfully!');
     navigateTo('/Libraries/CustomerView'); // Redirect to the customer list page

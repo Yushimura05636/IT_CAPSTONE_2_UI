@@ -1,5 +1,6 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gray-100">
+  <NuxtLayout name="admin">
+    <div class="min-h-screen flex items-center justify-center bg-gray-100">
     <div class="w-full max-w-md bg-white rounded-lg shadow-md p-8">
       <h1 class="text-2xl font-semibold mb-6 text-center">Create Form</h1>
 
@@ -54,6 +55,7 @@
       </div>
     </div>
   </div>
+  </NuxtLayout>
 </template>
 
 <script setup lang="ts">

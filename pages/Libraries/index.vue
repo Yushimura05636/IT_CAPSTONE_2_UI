@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <NuxtLayout name="admin">
+        <div>
       <Head>
         <Title>Libraries</Title>
       </Head>
@@ -90,7 +91,8 @@
         <Pagination :data="state.datas" @previous="previous" @next="next" />
         <div class="ml-10 mb-5"></div>
       </div>
-    </div>
+        </div>
+    </NuxtLayout>
   </template>
   
   <script setup lang="ts">
