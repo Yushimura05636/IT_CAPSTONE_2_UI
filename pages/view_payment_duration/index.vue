@@ -23,22 +23,34 @@
                             <button @click="updateEntry" class="w-16 h-8 bg-yellow-500 text-white border border-black">
                                 Update
                             </button>
-                        </div>
+                        </div>  
                     </div>
-                    <div class="p-2">
-                        <div class="flex items-center space-x-2 py-1">
-                            <input type="checkbox" v-model="cityChecked" class="form-checkbox h-5 w-5 text-blue-600">
-                            <div>Description</div>
-                        </div>
-                        <div class="flex items-center space-x-2 py-1">
-                            <input type="checkbox" v-model="provinceChecked" class="form-checkbox h-5 w-5 text-blue-600">
-                            <div>Number of Payments</div>
-                        </div>
-                        <div class="flex items-center space-x-2 py-1">
-                            <input type="checkbox" v-model="provinceChecked" class="form-checkbox h-5 w-5 text-blue-600">
-                            <div>Notes</div>
-                        </div>
-                    </div>
+                    <table class="min-w-full bg-white border border-gray-300">
+                        <thead>
+                            <th class="py-2 px-4 border-b">
+                                Description
+                            </th>
+                            <th class="py-2 px-4 border-b">
+                                Number of Payment
+                            </th>
+                            <th class="py-2 px-4 border-b">
+                                Notes
+                            </th>
+                        </thead>
+                        <tbody>
+                            <tr v-for="member in filteredMembers" :key="member.id">
+                                <td>
+                                    {{ member.groupName }}
+                                </td>
+                                <td>
+                                    {{ member.clientName }}
+                                </td>
+                                <td>
+                                    {{ member.Notes }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </main>

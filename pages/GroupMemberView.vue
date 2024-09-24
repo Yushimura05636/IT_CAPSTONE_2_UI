@@ -71,7 +71,7 @@
 
 
   
-  <script>
+  <script >
   import { ref, computed, onMounted } from 'vue';
   
   export default {

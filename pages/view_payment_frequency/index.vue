@@ -12,7 +12,7 @@
 
                 <div class="w-full border border-black">
                     <div class="flex justify-between items-center bg-gray-800 text-white p-2 border-b border-black">
-                        <div class="font-bold">Payment Duration</div>
+                        <div class="font-bold">Payment Frequency</div>
                         <div class="flex space-x-2">
                             <button @click="createEntry" class="w-16 h-8 bg-blue-500 text-white border border-black">
                                 Create
@@ -25,20 +25,32 @@
                             </button>
                         </div>
                     </div>
-                    <div class="p-2">
-                        <div class="flex items-center space-x-2 py-1">
-                            <input type="checkbox" v-model="cityChecked" class="form-checkbox h-5 w-5 text-blue-600">
-                            <div>Description</div>
-                        </div>
-                        <div class="flex items-center space-x-2 py-1">
-                            <input type="checkbox" v-model="provinceChecked" class="form-checkbox h-5 w-5 text-blue-600">
-                            <div>Days Interval</div>
-                        </div>
-                        <div class="flex items-center space-x-2 py-1">
-                            <input type="checkbox" v-model="provinceChecked" class="form-checkbox h-5 w-5 text-blue-600">
-                            <div>Notes</div>
-                        </div>
-                    </div>
+                    <table class="min-w-full bg-white border border-gray-300">
+                        <thead>
+                            <th class="py-2 px-4 border-b">
+                                Description
+                            </th>
+                            <th class="py-2 px-4 border-b">
+                               Days Interval
+                            </th>
+                            <th class="py-2 px-4 border-b">
+                                Notes
+                            </th>
+                        </thead>
+                        <tbody>
+                            <tr v-for="member in filteredMembers" :key="member.id">
+                                <td>
+                                    {{ member.groupName }}
+                                </td>
+                                <td>
+                                    {{ member.clientName }}
+                                </td>
+                                <td>
+                                    {{ member.Notes }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </main>
