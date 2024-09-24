@@ -193,11 +193,12 @@ const permissionMap = computed(() => {
           }
         }
     });
+    formSuccess.value = true;
     } else {
       state.error = 'Unexpected response format.';
     }
   } catch (error) {
-    showPopup(false);
+    formSuccess.value = false;
     state.error = 'Failed to fetch roles. Please try again.';
   } finally {
     state.isTableLoading = false;
@@ -258,6 +259,7 @@ const permissionMap = computed(() => {
     
 
     if (response) {
+      formSuccess.value = true;
       console.log('The permission has updated successfully!');
     }
 
@@ -265,6 +267,7 @@ const permissionMap = computed(() => {
     console.log("Predefined JSON structure:", jsonObject);
 
   } catch (error: any) {
+    formSuccess.value = false;
     console.log(error);
   }
 }

@@ -111,18 +111,21 @@ const factorRate = ref({
     const createFactorRate = async () => {
     try {
         const jsonObject = {
-
-        factorRate: {
             payment_frequency_id: parseInt(factorRate.value.payment_frequency_id?.toString()),
             payment_duration_id: parseInt(factorRate.value.payment_duration_id?.toString()),
             description: factorRate.value.description,
             value: parseFloat(factorRate.value.valueP.toString()).toFixed(8),
             notes: factorRate.value.notes,
-            },
         };
-        await apiService.createFactorRate(jsonObject);
-        alert('Factor rate created successfully!');
-        navigateTo('/hello/payment_duration'); // Redirect to the customer list page
+
+        const response =  await apiService.createFactorRate(jsonObject);
+        
+        if(response)
+        {
+            alert('Factor rate created successfully!');
+            navigateTo('/hello/payment_duration'); // Redirect to the customer list page
+        }
+
         } catch (error) {
             alert('Error creating Factor: ' + error);
             console.error(error);

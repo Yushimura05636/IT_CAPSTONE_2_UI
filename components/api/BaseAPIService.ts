@@ -43,9 +43,7 @@ class BaseAPIService {
                 case 429:
                     throw new APIError(error.response._data)
                 case 403:
-                    alert('Access denied. You do not have permission to this content.');
-                    this.redirectToHome();
-                    break;
+                    throw new APIError(error.response._data)
                 case 401:
                     this.revokeAccess()
                 case 500:
