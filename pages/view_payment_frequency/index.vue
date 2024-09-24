@@ -1,104 +1,249 @@
 <template>
     <NuxtLayout name="admin">
-        <main>
-            <div class="p-4">
-                <div class="flex justify-between items-center mb-4">
-                    <div>
-                        <button @click="createNewEntry" class="w-20 h-10 bg-blue-500 text-white border font-serif border-black">
-                            Create
-                        </button>
-                    </div>
-                </div>
-
-                <div class="w-full border border-black">
-                    <div class="flex justify-between items-center bg-gray-800 text-white p-2 border-b border-black">
-                        <div class="font-bold">Payment Frequency</div>
-                        <div class="flex space-x-2">
-                            <button @click="createEntry" class="w-16 h-8 bg-blue-500 text-white border border-black">
-                                Create
-                            </button>
-                            <button @click="viewEntry" class="w-16 h-8 bg-green-500 text-white border border-black">
-                                View
-                            </button>
-                            <button @click="updateEntry" class="w-16 h-8 bg-yellow-500 text-white border border-black">
-                                Update
-                            </button>
-                        </div>
-                    </div>
-                    <table class="min-w-full bg-white border border-gray-300">
-                        <thead>
-                            <th class="py-2 px-4 border-b">
-                                Description
-                            </th>
-                            <th class="py-2 px-4 border-b">
-                               Days Interval
-                            </th>
-                            <th class="py-2 px-4 border-b">
-                                Notes
-                            </th>
-                        </thead>
-                        <tbody>
-                            <tr v-for="member in filteredMembers" :key="member.id">
-                                <td>
-                                    {{ member.groupName }}
-                                </td>
-                                <td>
-                                    {{ member.clientName }}
-                                </td>
-                                <td>
-                                    {{ member.Notes }}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </main>
-    </NuxtLayout>
-</template>
-
-<script setup lang="ts">
-import { ref } from 'vue';
-
-const category = ref<string>('');
-const cityChecked = ref<boolean>(false);
-const provinceChecked = ref<boolean>(false);
-const countryChecked = ref<boolean>(false);
-const nameTypeChecked = ref<boolean>(false);
-
-const getFormData = () => ({
-  category: category.value,
-  cityChecked: cityChecked.value,
-  provinceChecked: provinceChecked.value,
-  countryChecked: countryChecked.value,
-  nameTypeChecked: nameTypeChecked.value,
-});
-
-const createNewEntry = () => {
-  const data = getFormData();
-  console.log('Creating new entry:', data);
-  alert(`Created a new entry with Category: ${data.category}`);
-};
-
-const createEntry = () => {
-  const data = getFormData();
-  console.log('Creating entry:', data);
-  alert(`Created entry for Country: ${data.countryChecked}`);
-};
-
-const viewEntry = () => {
-  const data = getFormData();
-  console.log('Viewing entry:', data);
-  alert(`Viewing entry for City: ${data.cityChecked}, Province: ${data.provinceChecked}`);
-};
-
-const updateEntry = () => {
-  const data = getFormData();
-  console.log('Updating entry:', data);
-  alert(`Updated entry for Name Type: ${data.nameTypeChecked}`);
-};
-</script>
-
-<style scoped>
-/* Add any component-specific styles here */
-</style>
+    <div class="max-w-screen-xl mx-auto px-4 md:px-8">
+      <!-- Title Section -->
+      <div class="items-start justify-between md:flex mt-8">
+        <div class="max-w-lg">
+          <h3 class="text-gray-800 text-xl font-bold sm:text-2xl mb-4">Payment Frequency</h3>
+        </div>
+      </div>
+  
+      <!-- Action Buttons -->
+      <div class="flex justify-between items-center mb-8">
+        <!-- Left: Action Buttons -->
+        <div class="flex space-x-4">
+          <button @click="createEmployee" class="px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-600">
+            Create
+          </button>
+          <button @click="modifyEmployee" :disabled="!selectedEmployeeId" class="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 disabled:opacity-50">
+            Modify
+          </button>
+          <button @click="deleteEmployee" :disabled="!selectedEmployeeId" class="px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600 disabled:opacity-50">
+            Delete
+          </button>
+        </div>
+  
+        <!-- Right: Search Bar -->
+        <div class="flex items-center space-x-2">
+          <input
+            v-model="searchQuery"
+            type="text"
+            placeholder="Search employees"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
+          />
+          <button class="px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
+            Search
+          </button>
+        </div>
+      </div>
+  
+      <!-- Employee Table -->
+      <div class="mt-12 shadow-sm border rounded-lg overflow-x-auto">
+        <table class="w-full table-auto text-sm text-left">
+          <thead class="bg-gray-50 text-gray-600 font-medium border-b">
+            <tr>
+              <th class="py-3 px-6">Select</th>
+              <th class="py-3 px-6">Description</th>
+              <th class="py-3 px-6">Days of Interval</th>
+              <th class="py-3 px-6">Notes</th>
+            </tr>
+          </thead>
+          <tbody class="text-gray-600 divide-y">
+            <tr v-for="(item, idx) in filteredTableItems" :key="idx">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <input type="radio" :value="item.employeeId" v-model="selectedEmployeeId" />
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ item.description }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ item.days_of_interval }}</td>
+              <td class="px-6 py-4 whitespace-nowrap">{{ item.notes }}</td>
+              <td class="text-right px-6 whitespace-nowrap"></td>
+              <td class="text-right px-6 whitespace-nowrap">
+                <button @click="editEmployee(item)" class="py-2 px-3 font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg">
+                  Edit
+                </button>
+              </td>
+            </tr>
+            <tr v-if="filteredTableItems.length === 0">
+              <td colspan="8" class="text-center py-4 text-gray-600">No data found</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </NuxtLayout>
+  </template>
+  
+  <script setup lang="ts">
+  import { EmployeesService } from '~/models/Employee';
+  import { ref, computed } from 'vue'
+  import { apiService } from '~/routes/api/API'
+  
+  
+  const searchQuery = ref<string>('')
+  
+  const tableItems = ref<TableItem[]>([]); // Initialize 
+  const selectedEmployeeId = ref<string | null>(null); // Track selected employee ID
+  
+  
+  const state = {
+    datas: [] as any[],
+    employees: [] as any[], // Array to store multiple customers
+    personalities: [] as any[], // Array to store multiple personalities
+  };
+  
+  const filteredTableItems = computed(() => {
+    return tableItems.value.filter(item => {
+      return Object.values(item).some(value =>
+        String(value).toLowerCase().includes(searchQuery.value.toLowerCase())
+      )
+    })
+  })
+  
+  const editEmployee = (item: TableItem) => {
+    EmployeesService.id = parseInt(item.employeeId);
+    navigateTo(`/Libraries/EmployeeUpdate`)
+    // console.log('Editing member:', item)
+  }
+  
+  
+  interface TableItem {
+    employeeId: string;
+    first_name: string;
+    family_name: string;
+    middle_name: string;
+    birthday: string;
+    civilStatus: string;
+    gender: string;
+    houseStreet: string;
+    purokZone: string;
+    postalCode: string;
+    telephoneNumber: string;
+    email: string;
+    cellphoneNo: string;
+    personalityStatus: string;
+    Barangay: string;
+    city: string;
+    country: string;
+    province: string;
+    dateCreated: string;
+    dateLastModified: string;
+    sssno: number;
+    phicno: number;
+    tinno: number;
+    datetime_hired: string;
+    datetime_resigned: string;
+  
+  }
+  
+  function createEmployee() {
+    navigateTo('employees/create');
+  }
+  
+  function modifyEmployee() {
+    EmployeesService.id = parseInt(selectedEmployeeId.value?.toString());
+    navigateTo('employees/update');
+  }
+  
+  async function fetchEmployees() {
+    try {
+      const params = {}; // Your query params for the API
+      const response = await apiService.getEmployees(params); // Fetch customer data from API
+      state.datas = response;
+      
+      // Call the function to map the API data to tableItems
+      storeResponseInTableItems();
+  
+    } catch (error) {
+      alert('Error fetching data from API: ' + error);
+      console.error(error);
+    }
+  }
+  
+  
+  // Function to map customer and personality data to tableItems
+  function storeResponseInTableItems() {
+    // Clear table items before pushing new data
+    tableItems.value = [];
+  
+    for (let i = 0; i < state.datas.data.length; i++)
+    {
+      const personality = state.datas.data[i].personality;
+      const employees = state.datas.data[i].employee;
+  
+      tableItems.value.push({
+  
+        //Personality Section
+        family_name: personality.family_name,
+        first_name: personality.first_name,
+        middle_name: personality.middle_name,
+        birthday: personality.birthday, // Make sure it's properly formatted
+        civilStatus: mapCivilStatus(personality.civil_status), // Map the civil_status code
+        gender: personality.gender_code === 1 ? 'Male' : 'Female', // Example: gender_code mapping
+        houseStreet: personality.house_street,
+        purokZone: personality.purok_zone,
+        postalCode: personality.postal_code,
+        telephoneNumber: personality.telephone_no,
+        email: personality.email_address,
+        cellphoneNo: personality.cellphone_no,
+        personalityStatus: mapPersonalityStatus(personality.personality_status_code), // Example mapping
+        Barangay: mapBarangay(personality.barangay_id), // Example: You might want to map IDs to names
+        city: mapCity(personality.city_id),
+        country: mapCountry(personality.country_id),
+        province: mapProvince(personality.province_id),
+        dateCreated: new Date().toISOString().split('T')[0], // Set current date as dateCreated
+        dateLastModified: new Date().toISOString().split('T')[0], // Set current date as dateLastModified
+        
+        //Employee Section
+        employeeId: employees.id.toString(), 
+        sssno: employees.sss_no,
+        phicno: employees.phic_no,
+        tinno: employees.tin_no,
+        datetime_hired: employees.datetime_hired,
+        datetime_resigned:  employees.datetime_resigned,
+  
+      });
+    }
+  }
+  
+  
+  function mapCivilStatus(civilStatusCode: number) {
+    const statuses: { [key: number]: string } = {
+      1: 'Single',
+      2: 'Married',
+      3: 'Divorced',
+      4: 'Widowed',
+    };
+    return statuses[civilStatusCode] || 'Unknown';
+  }
+  
+  // Example helper function for personality status
+  function mapPersonalityStatus(statusCode: number) {
+    const statuses: { [key: number]: string } = {
+      1: 'Active',
+      2: 'Inactive',
+      3: 'Suspended',
+    };
+    return statuses[statusCode] || 'Unknown';
+  }
+  
+  // Add your own mapping functions for barangay, city, province, etc.
+  function mapBarangay(barangayId: number) {
+    // Mapping logic for barangay IDs to names
+    return `Brgy ${barangayId}`;
+  }
+  
+  function mapCity(cityId: number) {
+    return `City ${cityId}`;
+  }
+  
+  function mapCountry(countryId: number) {
+    return `Country ${countryId}`;
+  }
+  
+  function mapProvince(provinceId: number) {
+    return `Province ${provinceId}`;
+  }
+  
+  fetchEmployees();
+  </script>
+  
