@@ -12,7 +12,7 @@
       <div class="flex justify-between items-center mb-8">
         <!-- Left: Action Buttons -->
         <div class="flex space-x-4">
-          <button @click="createEmployee" class="px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-600">
+          <button @click="createCustomer" class="px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-600">
             Create
           </button>
           <button @click="modifyEmployee" :disabled="!selectedEmployeeId" class="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 disabled:opacity-50">
@@ -244,6 +244,9 @@
     return `Province ${provinceId}`;
   }
   
+  function createCustomer() {
+  navigateTo('customer/create');
+}
   fetchEmployees();
   </script>
   
