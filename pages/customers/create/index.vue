@@ -77,12 +77,15 @@
         </div>
 
         <!-- Customer Fields -->
-        <div>
-          <label for="groupId" class="block text-gray-700">Group Name</label>
-          <select v-model="customer.group_id" type="text" class="w-full border rounded-lg px-4 py-2">
-          </select>
-          <!-- <input v-model="customer.group_id" type="text" id="groupId" class="w-full border rounded-lg px-4 py-2" /> -->
-        </div>
+          <div>
+            <label for="groupId" class="block text-gray-700">Group Name</label>
+            <select v-model="customer.group_id" type="text" class="w-full border rounded-lg px-4 py-2" v-if="!state.isTableLoading">
+              <option  v-for="groups in state.groups" :key="groups.id"  :value="groups.id" >
+                  {{ groups.description }}
+              </option>
+            </select>
+            <!-- <input v-model="customer.group_id" type="text" id="groupId" class="w-full border rounded-lg px-4 py-2" /> -->
+          </div>
 
         <div>
           <label for="passbookNo" class="block text-gray-700">Passbook No</label>
@@ -244,7 +247,7 @@ const createCustomer = async () => {
         }
     };
 
-    ;
+    debugger;
     await apiService.createCustomer(jsonObject);
     alert('Customer create successfully!');
     navigateTo('/Libraries/CustomerView'); // Redirect to the customer list page
@@ -253,4 +256,35 @@ const createCustomer = async () => {
     console.error(error);
   }
 };
+
+const state = reactive({
+    groups: [],
+    error: "error",
+    isTableLoading: true,
+    });
+
+    async function fetchGroups() {
+        try {
+            const params = {};
+            const groups = await apiService.getCustomerGroup(params)
+
+            console.log('test data' + groups);
+            // state.frequency = duration
+            if (groups && groups.data) {
+            state.groups = groups.data;
+
+            console.log(groups);
+            } else {
+            state.error = 'Unexpected response format.';
+                }
+            } catch (error) {
+                state.error = 'Failed to fetch roles. Please try again.';
+            } finally {
+                state.isTableLoading = false;
+            }
+        }
+onMounted(() => {
+  fetchGroups();
+});
+
 </script>

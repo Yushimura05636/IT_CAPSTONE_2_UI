@@ -214,6 +214,28 @@ class API extends BaseAPIService {
         return await this.request(`/factorRate/${id}`, 'DELETE', params)
     }
 
+    
+    //customer group
+    async getCustomerGroup(params: object): Promise<any> {
+        return await this.request(`/group`, 'GET', params)
+    }
+
+    async getCustomerGroupById(params: object, id: number): Promise<any> {
+        return await this.request(`/group/${id}`, 'GET', params)
+    }
+
+    async createCustomerGroup(params: object): Promise<any> {
+        return await this.request(`/group`, 'POST', params)
+    }
+
+    async updateCustomerGroup(params: object, id: number): Promise<any> {
+        return await this.request(`/group/${id}`, 'PUT', params)
+    }
+
+    async deleteCustomerGroup(params: object, id: number): Promise<any> {
+        return await this.request(`/group/${id}`, 'DELETE', params)
+    }
+
 }
 
 export const apiService = new API()
