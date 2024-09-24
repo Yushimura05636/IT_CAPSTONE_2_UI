@@ -9,25 +9,33 @@
   </div>
 
   <div class="max-w-screen-xl mx-auto px-4 md:px-8">
-    <div class="items-start justify-between md:flex">
-      <div class="max-w-lg">
-        <h3 class="text-gray-800 text-xl font-bold sm:text-2xl">Customers</h3>
+    <!-- Action Buttons -->
+    <div class="flex justify-between items-center mb-8">
+      <!-- Left: Action Buttons -->
+      <div class="flex space-x-4">
+        <button @click="createCustomer" class="px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-600">
+          Create
+        </button>
+        <button @click="modifyCustomer" :disabled="!selectedEmployeeId" class="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 disabled:opacity-50">
+          Modify
+        </button>
+        <button @click="deleteEmployee" :disabled="!selectedEmployeeId" class="px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600 disabled:opacity-50">
+          Delete
+        </button>
       </div>
-      <div class="mt-3 md:mt-0 flex flex-col items-start gap-y-4">
-        <FormButton @click="createCustomer" class="inline-block px-4 py-2 text-white duration-150 font-medium bg-indigo-600 rounded-lg hover:bg-indigo-500 active:bg-indigo-700 md:text-sm">
-        Add Customer
-        </FormButton>
-      </div>
-    </div>
 
-    <!-- Search Bar - Centered and Spaced Above Table -->
-    <div class="flex justify-center mt-8 mb-6">
-      <input
-        v-model="searchQuery"
-        type="text"
-        placeholder="Search customer"
-        class="px-4 py-2 border border-gray-300 rounded-lg"
-      />
+      <!-- Right: Search Bar -->
+      <div class="flex items-center space-x-2">
+        <input
+          v-model="searchQuery"
+          type="text"
+          placeholder="Search employees"
+          class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
+        />
+        <button class="px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
+          Search
+        </button>
+      </div>
     </div>
 
     <!-- Customer Table -->
@@ -35,6 +43,7 @@
       <table class="w-full table-auto text-sm text-left">
         <thead class="bg-gray-50 text-gray-600 font-medium border-b">
           <tr>
+            <th class="py-3 px-6">Select</th>
             <th class="py-3 px-6">Employee ID</th>
             <th class="py-3 px-6">Name</th>
             <th class="py-3 px-6">Email</th>
@@ -65,6 +74,9 @@
         </thead>
         <tbody class="text-gray-600 divide-y">
           <tr v-for="(item, idx) in filteredTableItems" :key="idx">
+            <td class="px-6 py-4 whitespace-nowrap">
+              <input type="radio" :value="item.employeeId" v-model="selectedEmployeeId" />
+            </td>
             <td class="px-6 py-4 whitespace-nowrap">{{ item.employeeId }}</td>
             <td class="px-6 py-4 whitespace-nowrap">{{ item.name }}</td>
             <td class="px-6 py-4 whitespace-nowrap">{{ item.email }}</td>
@@ -94,11 +106,6 @@
             </td>
             <td class="px-6 py-4 whitespace-nowrap">{{ item.mortuaryCoverageStart }}</td>
             <td class="px-6 py-4 whitespace-nowrap">{{ item.mortuaryCoverageEnd }}</td>
-            <td class="text-right px-6 whitespace-nowrap">
-              <button @click="editMember(item)" class="py-1.5 px-3 bg-blue-200 hover:bg-blue-300 rounded">
-                Edit
-              </button>
-            </td>
           </tr>
           <tr v-if="filteredTableItems.length === 0">
             <td colspan="11" class="text-center py-4 text-gray-600">No data found</td>
@@ -119,16 +126,13 @@ import { numeric } from '@vuelidate/validators';
 const searchQuery = ref<string>('')
 
 const tableItems = ref<TableItem[]>([]); // Initialize tableItems
+  const selectedEmployeeId = ref<string | null>(null);
 
 const state = {
   datas: [],
   customers: [],
   personality: [],
 };
-
-function createCustomer() {
-  navigateTo('./create');
-}
 
 // Fetch customers when necessary
 fetchCustomers();
@@ -141,10 +145,13 @@ const filteredTableItems = computed(() => {
   })
 })
 
-const editMember = (item: TableItem) => {
-  CustomersService.id = parseInt(item.employeeId);
-  navigateTo(`/create`)
-  console.log('Editing member:', item)
+function createCustomer() {
+  navigateTo('customers/create');
+}
+
+function modifyCustomer() {
+  CustomersService.id = parseInt(selectedEmployeeId.value?.toString());
+  navigateTo(`customers/update`)
 }
 
 interface TableItem {
@@ -177,7 +184,6 @@ interface TableItem {
 // Fetching customers from the API
 async function fetchCustomers() {
   try {
-    debugger;
     const params = {}; // Your query params for the API
     const response = await apiService.getCustomers(params); // Fetch customer data from API
 
@@ -187,7 +193,6 @@ async function fetchCustomers() {
     // Call the function to map the API data to tableItems
     storeResponseInTableItems();
 
-    alert('Data fetched successfully');
   } catch (error) {
     alert('Error fetching data from API: ' + error);
     console.error(error);
@@ -230,6 +235,8 @@ function storeResponseInTableItems() {
       mortuaryCoverageStart: customer.mortuary_coverage_start,
       mortuaryCoverageEnd: customer.mortuary_coverage_end,
     });
+
+    console.log(customer);
   }
 
   // // Loop through each customer and personality data (assuming they have matching indices)

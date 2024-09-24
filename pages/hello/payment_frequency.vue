@@ -1,12 +1,12 @@
 <template>
     <div>
             <Head>
-                <Title>Users</Title>
+                <Title>Payment Frequency</Title>
             </Head>
             
             <div class="sm:flex sm:items-center">
                 <div class="sm:flex-auto">
-                    <h1 class="m-6 text-base font-bold leading-6 text-gray-900">Users</h1>
+                    <h1 class="m-6 text-base font-bold leading-6 text-gray-900">Payment Frequency</h1>
                 </div>
             </div>
             
@@ -15,27 +15,30 @@
                     <div class="overflow-x-auto  ">
                             <Table class="w-full " 
                             :columnHeaders="state.columnHeaders" 
-                            :data="state.users" 
+                            :data="state.freq" 
                             :isLoading="state.isTableLoading"
                             :sortData="state.sortData" 
                             >
                                 <template #body
-                                    v-if="!(state.isTableLoading || (state.users?.data === 0))">
+                                    v-if="!(state.isTableLoading || (state.freq?.data === 0))">
                                     
-                                    <tr v-for="(user, index) in state.users?.data" :key="index" class="">
+                                    <tr v-for="(frequency, index) in state.freq?.data" :key="index" class="">
                                         
                                         <td class="py-2 border-b border-gray-300 ">
-                                            <span>{{ user.id }}</span>
+                                            <span>{{ frequency.id }}</span>
                                         </td>
                                         <td class="py-2 border-b border-gray-300  ">
-                                            <span>{{ user.first_name }} {{ user.middle_name }} {{ user.last_name }}</span>
+                                            <span>{{ frequency.description }} </span>
                                         </td>
                                         <td class="py-2 border-b border-gray-300 ">
-                                            <span>{{ user.email }}</span>
+                                            <span>{{ frequency.days_interval }}</span>
                                         </td>
-                                        <td class="border-b border-gray-300 cursor-pointer ">
-                                            <FormButton @click="managePermissions(user.id)" class="bg-blue-600 hover:bg-blue-800 text-white rounded pl-5 pr-5">Manage</FormButton>
+                                        <td class="py-2 border-b border-gray-300 ">
+                                            <span>{{ frequency.notes }}</span>
                                         </td>
+                                        <!-- <td class="border-b border-gray-300 cursor-pointer ">
+                                            <FormButton class="bg-blue-600 hover:bg-blue-800 text-white rounded pl-5 pr-5"></FormButton>
+                                        </td> -->
                                     </tr>
                                 </template>
                             </Table>
@@ -47,19 +50,17 @@
     </div>
 </template>
 
-
-    <script setup lang="ts">
+<script setup lang="ts">
     import { ref, reactive, onMounted } from 'vue'
     import { apiService } from '~/routes/api/API'
-    import { UserService } from '~/models/User';
 
 
     const state = reactive({
         columnHeaders: [
             { name: 'ID' },
-            { name: 'Full Name' },
-            { name: 'Email' },
-            { name: 'Action' }
+            { name: 'Description' },
+            { name: 'Days Interval' },
+            { name: 'Notes' }
         ],
         error: null,
         isTableLoading: false,
@@ -67,37 +68,26 @@
             sortField: 'id',
             sortOrder: 'descend',
         },
-        users: [],
+        freq: [],
         searchQuery: '',
     })
 
-    async function fetchUsers() {
+    
+    async function fetchFreqandDuration() {
         state.isTableLoading = true
         state.error = null
         try {
             const params = {}
-            const response = await apiService.getUser(params)
-            state.users = response
-            console.log(state.users);
-            // assuming response.data is an array of users
+            const response = await apiService.getPaymentFrequency(params)
+            state.freq = response
+            console.log(state.freq);
         } catch (error: any) {
             state.error = error
         }
         state.isTableLoading = false
     }
-    function managePermissions(userId: number) {
-        UserService.usr_id = userId;
-        navigateTo('PermissionUpdate');
-    }
-
-    // function managePermissions(userId: number) {
-    //     console.log('User ID:', userId); // Log the ID to check
-    //     navigateTo({ name: 'Permission', params: { id: userId } });
-    // }
-
     onMounted(() => {
-        fetchUsers()
+        fetchFreqandDuration()
     })
-    </script>
 
-
+</script>

@@ -42,6 +42,10 @@ class BaseAPIService {
                     throw new APIError(error.response._data)
                 case 429:
                     throw new APIError(error.response._data)
+                case 403:
+                    alert('Access denied. You do not have permission to this content.');
+                    this.redirectToHome();
+                    break;
                 case 401:
                     this.revokeAccess()
                 case 500:
@@ -59,6 +63,9 @@ class BaseAPIService {
     revokeAccess() {
         localStorage.removeItem("_token")
         navigateTo('/')
+    }
+    redirectToHome() {
+        navigateTo('/dashboard'); 
     }
 }
 

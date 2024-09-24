@@ -23,9 +23,9 @@ class API extends BaseAPIService {
         return await this.request(`/employees`, 'DELETE', params)
     }
 
-    async getEmplooyeIDnotInUser(params: object): Promise<any> {
-        return await this.request(`/emplooyeid`, 'GET', params)
-    }
+            async getEmplooyeIDnotInUser(params: object): Promise<any> {
+                return await this.request(`/emplooyeid`, 'GET', params)
+            }
 
     //this is the customer API route
     async getCustomers(params: object): Promise<any> {
@@ -142,6 +142,71 @@ class API extends BaseAPIService {
 
     async deleteUser(params: object, id: number): Promise<any> {
         return await this.request(`/users/${id}`, 'DELETE', params)
+    }
+
+    //payment_frequency
+    async getPaymentFrequency(params: object): Promise<any> {
+        return await this.request(`/frequency`, 'GET', params)
+    }
+
+    async getPaymentFrequencyById(params: object, id: number): Promise<any> {
+        return await this.request(`/frequency/${id}`, 'GET', params)
+    }
+
+        async createPaymentFrequency(params: object): Promise<any> {
+            return await this.request(`/frequency`, 'POST', params)
+        }
+
+    async updatePaymentFrequency(params: object, id: number): Promise<any> {
+        return await this.request(`/frequency/${id}`, 'PUT', params)
+    }
+
+    async deletePaymentFrequency(params: object, id: number): Promise<any> {
+        return await this.request(`/frequency/${id}`, 'DELETE', params)
+    }
+
+     //payment_duration
+    async getPaymentduration(params: object): Promise<any> {
+        return await this.request(`/duration`, 'GET', params)
+    }
+
+    async getPaymentdurationById(params: object, id: number): Promise<any> {
+        return await this.request(`/duration/${id}`, 'GET', params)
+    }
+
+        async createPaymentduration(params: object): Promise<any> {
+            return await this.request(`/duration`, 'POST', params)
+        }
+
+    async updatePaymentduration(params: object, id: number): Promise<any> {
+        return await this.request(`/duration/${id}`, 'PUT', params)
+    }
+
+    async deletePaymentduration(params: object, id: number): Promise<any> {
+        return await this.request(`/duration/${id}`, 'DELETE', params)
+    }
+
+    //factor rate
+
+     //payment_duration
+    async getFactorRate(params: object): Promise<any> {
+        return await this.request(`/factorRate`, 'GET', params)
+    }
+
+    async getFactorRateById(params: object, id: number): Promise<any> {
+        return await this.request(`/factorRate/${id}`, 'GET', params)
+    }
+
+    async createFactorRate(params: object): Promise<any> {
+        return await this.request(`/factorRate`, 'POST', params)
+    }
+
+    async updateFactorRate(params: object, id: number): Promise<any> {
+        return await this.request(`/factorRate/${id}`, 'PUT', params)
+    }
+
+    async deleteFactorRate(params: object, id: number): Promise<any> {
+        return await this.request(`/factorRate/${id}`, 'DELETE', params)
     }
 
 }
