@@ -63,53 +63,30 @@
                       class="w-5 h-5"
                     />
                   </td>
-  
-                  <!-- Document Column -->
+
+                  <!-- Document Name Column -->
                   <td class="px-6 py-4 whitespace-nowrap">
-                    {{ document.description }}
+                    <span class="text-sm text-gray-900">{{ document.description }}</span>
                   </td>
-  
-                  <!-- Permission Column -->
-                  <td class="px-6 py-4 whitespace-nowrap">
-                    <div class="flex space-x-4">
-                      <label class="flex items-center space-x-2">
-                        <input
-                          type="checkbox"
-                          :value="{ documentId: document.id, permission: 'view' }"
-                          v-model="documentPermissions"
-                          class="w-5 h-5"
-                        />
-                        <span>View</span>
-                      </label>
-                      <label class="flex items-center space-x-2">
-                        <input
-                          type="checkbox"
-                          :value="{ documentId: document.id, permission: 'create' }"
-                          v-model="documentPermissions"
-                          class="w-5 h-5"
-                        />
-                        <span>Create</span>
-                      </label>
-                      <label class="flex items-center space-x-2">
-                        <input
-                          type="checkbox"
-                          :value="{ documentId: document.id, permission: 'update' }"
-                          v-model="documentPermissions"
-                          class="w-5 h-5"
-                        />
-                        <span>Update</span>
-                      </label>
-                      <label class="flex items-center space-x-2">
-                        <input
-                          type="checkbox"
-                          :value="{ documentId: document.id, permission: 'delete' }"
-                          v-model="documentPermissions"
-                          class="w-5 h-5"
-                        />
-                        <span>Delete</span>
-                      </label>
-                    </div>
-                  </td>
+
+                <!-- Dynamic Permission Column -->
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="flex space-x-4">
+                    <label
+                      v-for="permission in state.tblpermission"
+                      :key="permission.id"
+                      class="flex items-center space-x-2"
+                    >
+                      <input
+                        type="checkbox"
+                        :value="{ documentId: document.id, permission: permission.description.toLowerCase() }"
+                        v-model="documentPermissions"
+                        class="w-5 h-5"
+                      />
+                      <span>{{ permission.description }}</span>
+                    </label>
+                  </div>
+                </td>
                 </tr>
               </tbody>
             </table>
@@ -122,16 +99,23 @@
           <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500">Save</button>
         </div>
       </form>
+      <!-- Result Popup -->
+    <FormResultPopup v-if="showResultPopup" :isSuccess="formSuccess" />
     </div>
   </template>
   
   <script setup lang="ts">
-  import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted } from 'vue';
   import { UserService } from '~/models/User';
   import { apiService } from '~/routes/api/API'; // Adjust path as necessary
+  import FormResultPopup from '~/components/form/ResultPopup.vue'; // Adjust path if needed
+
+const showResultPopup = ref(false);
+const formSuccess = ref(false);
   
   const state = reactive({
     permission: [],
+    tblpermission: [],
     document: [],
     user: [],
     error: "error",
@@ -164,53 +148,56 @@
     
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
+
+  // Create a dynamic permission map from `tblpermission`
+const permissionMap = computed(() => {
+  const map: Record<number, string> = {};
+  
+  // Dynamically fill the map with available permissions
+  state.tblpermission.forEach(permission => {
+    map[permission.id] = permission.description.toLowerCase(); // Assuming `id` is the numeric permission code and `description` is the permission name
+  });
+
+  return map;
+});
+
   
   async function fetchPermissionandDocuments() {
   try {
     const params = {};
+    const tblpermissions = await apiService.getPermission({});
     const permissions = await apiService.getUserPermission(params, UserService.usr_id);
     const documents = await apiService.getDocumentMap(params);
     const users = await apiService.getUserById(params, UserService.usr_id);
-    
-    if (permissions && permissions.data && documents && documents.data && users && users.data) {
+
+    if (tblpermissions && tblpermissions.data && permissions && permissions.data && documents && documents.data && users && users.data) {
       state.permission = permissions.data;
       state.document = documents.data;
       state.user = users.data;
+      state.tblpermission = tblpermissions.data;
 
       // Clear previous permissions
       documentPermissions.value = [];
 
-      // Iterate over permissions and documents
-      for (let i = 0; i < state.permission.length; i++) {
-        const documentId = state.permission[i].document_map_code; // Get the document ID from permissions
+      // Iterate over the permissions and documents dynamically
+      state.permission.forEach(userPermission => {
+        const documentId = userPermission.document_map_code; // Get the document ID from permissions
+        const document = state.document.find(doc => doc.id === documentId); // Find the corresponding document
 
-        // Find the corresponding document
-        const document = state.document.find(doc => doc.id === documentId);
         if (document) {
-          switch (state.permission[i].document_permission) {
-            case 4:
+          const permissionDescription = permissionMap.value[userPermission.document_permission]; // Get the dynamic permission name
+          if (permissionDescription) {
+            // Add the permission to the selected list
             selectedDocuments.value.push(document.id);
-              documentPermissions.value.push({ documentId: document.id, permission: 'view' });
-              break;
-            case 1:
-            selectedDocuments.value.push(document.id);
-              documentPermissions.value.push({ documentId: document.id, permission: 'create' });
-              break;
-            case 2:
-            selectedDocuments.value.push(document.id);
-              documentPermissions.value.push({ documentId: document.id, permission: 'update' });
-              break;
-            case 3:
-                selectedDocuments.value.push(document.id);
-              documentPermissions.value.push({ documentId: document.id, permission: 'delete' });
-              break;
+            documentPermissions.value.push({ documentId: document.id, permission: permissionDescription });
           }
         }
-      }
+    });
     } else {
       state.error = 'Unexpected response format.';
     }
   } catch (error) {
+    showPopup(false);
     state.error = 'Failed to fetch roles. Please try again.';
   } finally {
     state.isTableLoading = false;

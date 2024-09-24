@@ -34,17 +34,7 @@
     
                         <div class="sm:col-span-2">
                             <label for="valueP" class="block text-sm font-bold leading-6 text-gray-900">Value<span class="text-red-600">*</span></label>
-                            <select v-model="factorRate.valueP" id="valueP"  class="block w-full h-10 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm px-3 py-1.5">
-                                <option>
-                                    1
-                                </option>
-                                <option>
-                                    1
-                                </option>
-                                <option>
-                                    1
-                                </option>
-                            </select>
+                            <input v-model="factorRate.valueP"  type="number"  id="valueP "  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-xl sm:leading-6" />
                         </div>
     
                         <div class="sm:col-span-2">
@@ -86,6 +76,9 @@
             const params = {};
             const frequency = await apiService.getPaymentFrequency(params)
             const duration = await apiService.getPaymentduration(params)
+
+            console.log('payment freq' + frequency);
+            console.log('payment duration' + duration);
             // state.frequency = duration
             if (frequency && frequency.data ||duration && duration.data ) {
             state.frequency = frequency.data;
@@ -120,14 +113,13 @@ const factorRate = ref({
         const jsonObject = {
 
         factorRate: {
-            payment_frequency_id: Number(factorRate.payment_frequency_id),
-            payment_duration_id:Number(factorRate.payment_duration_id),
+            payment_frequency_id: parseInt(factorRate.value.payment_frequency_id?.toString()),
+            payment_duration_id: parseInt(factorRate.value.payment_duration_id?.toString()),
             description: factorRate.value.description,
-            value: parseFloat(factorRate.valueP),
+            value: parseFloat(factorRate.value.valueP.toString()).toFixed(8),
             notes: factorRate.value.notes,
             },
         };
-        debugger;
         await apiService.createFactorRate(jsonObject);
         alert('Factor rate created successfully!');
         navigateTo('/hello/payment_duration'); // Redirect to the customer list page
