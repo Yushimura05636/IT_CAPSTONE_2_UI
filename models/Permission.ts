@@ -6,6 +6,7 @@ class Permission {
     public _FACTORRATE = 5;
     public _PAYMENTDURATION = 6;
     public _PAYMENTFREQUENCY = 7;
+    public _LOANCOUNT = 8;
 
     //permission
     public _CREATE = "create"

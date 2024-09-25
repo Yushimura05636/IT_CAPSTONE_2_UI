@@ -235,6 +235,7 @@
             children: [
                 // { name: "Staff", href: "/#", icon: UserIcon, current: false },
                 { name: "Libraries", href: "/Libraries", icon: UserIcon, current: false },
+                { name: "Users", href: "/Users", icon: UserIcon, current: false },
                 { name: "Permission", href: "/Permission", icon: UserIcon, current: false },
             ],
         },

@@ -98,6 +98,7 @@
   <script setup lang="ts">
   import { ref, reactive, onMounted } from 'vue';
   import { libraryService } from '~/models/Library';
+import { PermissionService } from '~/models/Permission';
   import { apiService } from '~/routes/api/API';
   
   const state = reactive({
@@ -114,7 +115,7 @@
     },
     datas: [],
     searchQuery: '',
-    modeltype: 'city',
+    modeltype: 'customer_group',
   });
   
   const modelTypes = [
@@ -140,12 +141,25 @@
     fetchLibraries();
   });
   
-  function createLibrary() {
-    navigateTo('libraries/create');
+ async function createLibrary() {
+    try {
+      const response = await apiService.auth({
+        docId: PermissionService._LIBRARIES,
+        perm: PermissionService._CREATE,
+      })
+      navigateTo('libraries/create');
+    } catch (error) {
+      
+    }
   }
   
-  function updateLibrary() {
-    if (selectedLibraryId.value) {
+  async function updateLibrary() {
+    try {
+      const response = await apiService.auth({
+        docId: PermissionService._LIBRARIES,
+        perm: PermissionService._UPDATE,
+      });
+      if (selectedLibraryId.value) {
         let selectedDescription = null;
   
         // Iterate through the data using a for loop
@@ -164,6 +178,9 @@
         libraryService.oldText = selectedDescription;
         navigateTo('libraries/update');
       }
+    } catch (error) {
+      alert(error);
+    }
   }
   
   function deleteLibrary() {
@@ -177,7 +194,10 @@
     state.isTableLoading = true;
     state.error = null;
     try {
-      const params = {};
+      const params = {
+        docId: PermissionService._LIBRARIES,
+        perm: PermissionService._VIEW,
+      };
       const response = await apiService.get(params, state.modeltype);
       state.datas = response;
     } catch (error) {

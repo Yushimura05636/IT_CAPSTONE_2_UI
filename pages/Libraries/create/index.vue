@@ -62,6 +62,7 @@
 import { ref } from 'vue';
 import { apiService } from '~/routes/api/API';
 import { libraryService } from '~/models/Library';
+import { PermissionService } from '~/models/Permission';
 
 const modelTypes = [
   'barangay',
@@ -112,6 +113,8 @@ const submitForm = () => {
 async function create() {
   try {
     const params = {
+      docId: PermissionService._LIBRARIES,
+      perm: PermissionService._CREATE,
       modeltype: form.value.modeltype.toLowerCase(),
       description: form.value.description,
     };

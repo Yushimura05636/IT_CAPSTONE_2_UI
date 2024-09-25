@@ -47,6 +47,7 @@
     import { ref } from 'vue';
     import { apiService } from '~/routes/api/API'
     import { paymentDurationService } from '~/models/PaymentDuration'
+import { PermissionService } from '~/models/Permission';
 
     const form = ref({
     id: paymentDurationService.id,
@@ -77,6 +78,8 @@
     async function create() {
     try {
         const params = {
+        docId: PermissionService._PAYMENTDURATION,
+        perm: PermissionService._UPDATE,
         id: form.value.id,
         number_of_payments: form.value.numOfPayments,
         description: form.value.description,

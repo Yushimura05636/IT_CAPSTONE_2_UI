@@ -61,6 +61,7 @@
     
 <script setup lang="ts">
     import { ref } from 'vue';
+import { PermissionService } from '~/models/Permission';
     import { apiService } from '~/routes/api/API';
 
     const state = reactive({
@@ -73,8 +74,14 @@
     async function fetchFreqAndDura() {
         try {
             const params = {};
-            const frequency = await apiService.getPaymentFrequency(params)
-            const duration = await apiService.getPaymentduration(params)
+            const frequency = await apiService.getPaymentFrequency({
+                docId: PermissionService._PAYMENTFREQUENCY,
+                perm: PermissionService._VIEW,
+            })
+            const duration = await apiService.getPaymentduration({
+                docId: PermissionService._PAYMENTDURATION,
+                perm: PermissionService._VIEW,
+            })
 
             console.log('payment freq' + frequency);
             console.log('payment duration' + duration);
@@ -110,6 +117,8 @@ const factorRate = ref({
     const createFactorRate = async () => {
     try {
         const jsonObject = {
+            docId: PermissionService._FACTORRATE,
+            perm: PermissionService._CREATE,
             payment_frequency_id: parseInt(factorRate.value.payment_frequency_id?.toString()),
             payment_duration_id: parseInt(factorRate.value.payment_duration_id?.toString()),
             description: factorRate.value.description,

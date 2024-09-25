@@ -170,9 +170,9 @@ class API extends BaseAPIService {
         return await this.request(`/frequency/${id}`, 'GET', params)
     }
 
-        async createPaymentFrequency(params: object): Promise<any> {
-            return await this.request(`/frequency`, 'POST', params)
-        }
+    async createPaymentFrequency(params: object): Promise<any> {
+        return await this.request(`/frequency`, 'POST', params)
+    }
 
     async updatePaymentFrequency(params: object, id: number): Promise<any> {
         return await this.request(`/frequency/${id}`, 'PUT', params)

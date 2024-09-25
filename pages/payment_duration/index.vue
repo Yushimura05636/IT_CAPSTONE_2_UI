@@ -88,6 +88,7 @@
     import { ref, reactive, onMounted } from 'vue'
     import { apiService } from '~/routes/api/API'
     import { paymentDurationService } from '~/models/PaymentDuration'
+import { PermissionService } from '~/models/Permission';
     
     const state = reactive({
         columnHeaders: [
@@ -114,7 +115,10 @@
         state.error = null
         try {
             const params = {}
-            const response = await apiService.getPaymentduration(params)
+            const response = await apiService.getPaymentduration({
+                docId: PermissionService._PAYMENTDURATION,
+                perm: PermissionService._VIEW,
+            })
             state.duration = response
             console.log(state.duration);
         } catch (error: any) {
@@ -126,8 +130,13 @@
         fetchFreqandDuration()
     })
 
-    function updateDuration(){
-        if (selectedDurationID.value) {
+    async function updateDuration(){
+        try {
+            const response = await apiService.auth({
+                docId: PermissionService._PAYMENTDURATION,
+                perm: PermissionService._UPDATE,
+            })
+            if (selectedDurationID.value) {
         let numOfPayments = null;
         let description = null;
         let notes = null;
@@ -155,9 +164,20 @@
         console.log(paymentDurationService.notes);
         navigateTo('payment_duration/update');
         }
+        } catch (error) {
+            alert(error)
+        }
     }
-    function createPaymentFrequency() {
-    navigateTo('payment_duration/create');
+    async function createPaymentFrequency() {
+        try {
+            const response = await apiService.auth({
+                docId: PermissionService._USERACCOUNT,
+                perm: PermissionService._CREATE,
+            })
+            navigateTo('payment_duration/create');
+        } catch (error) {
+            alert(error);
+        }
     }
 
 </script>

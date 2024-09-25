@@ -88,6 +88,7 @@
     import { ref, reactive, onMounted } from 'vue'
     import { apiService } from '~/routes/api/API'
     import { paymentFrequencyService } from '~/models/PaymentFrequency'
+import { PermissionService } from '~/models/Permission';
     
 
 
@@ -115,7 +116,10 @@
         state.isTableLoading = true
         state.error = null
         try {
-            const params = {}
+            const params = {
+                docId: PermissionService._PAYMENTFREQUENCY,
+                perm: PermissionService._VIEW,
+            }
             const response = await apiService.getPaymentFrequency(params)
             state.frequency = response
             console.log(state.frequency);
@@ -129,8 +133,13 @@
     })
 
     
-    function updateFrequency(){
-        if (selectedFrequencyID.value) {
+    async function updateFrequency(){
+        try {
+            const response = await apiService.auth({
+                docId: PermissionService._PAYMENTFREQUENCY,
+                perm: PermissionService._UPDATE,
+            })
+            if (selectedFrequencyID.value) {
         let daysInterval = null;
         let description = null;
         let notes = null;
@@ -158,10 +167,21 @@
         console.log(paymentFrequencyService.notes);
         navigateTo('payment_frequency/update');
         }
+        } catch (error) {
+            alert(error);
+        }
     }
 
-    function createPaymentFrequency() {
-    navigateTo('payment_frequency/create');
+    async function createPaymentFrequency() {
+        try {
+            const response = await apiService.auth({
+                docId: PermissionService._PAYMENTFREQUENCY,
+                perm: PermissionService._CREATE,
+            })
+            navigateTo('/payment_frequency/create')
+        } catch (error) {
+            alert(error);
+        }
     }
 
 </script>

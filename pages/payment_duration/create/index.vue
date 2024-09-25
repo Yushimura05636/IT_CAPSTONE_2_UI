@@ -41,6 +41,7 @@
     
 <script setup lang="ts">
 import { ref } from 'vue';
+import { PermissionService } from '~/models/Permission';
 import { apiService } from '~/routes/api/API';
 
     function back() {
@@ -57,6 +58,8 @@ const paymentDuration = ref({
 
         try {
             const jsonObject = {
+                docId: PermissionService._PAYMENTDURATION,
+                perm: PermissionService._CREATE,
                 description: paymentDuration.value.description,
                 number_of_payments: paymentDuration.value.number_of_payments,
                 notes: paymentDuration.value.notes,

@@ -63,6 +63,7 @@
   
   <script setup lang="ts">
   import { ref, computed, onMounted } from 'vue';
+import { PermissionService } from '~/models/Permission';
 import { UserService } from '~/models/User';
   import { apiService } from '~/routes/api/API';
   
@@ -72,7 +73,10 @@ import { UserService } from '~/models/User';
 
   async function createloancount(){
     try {
-        //const response = await apiService.auth({});
+        const response = await apiService.auth({
+          docId: PermissionService._LOANCOUNT,
+          perm: PermissionService._CREATE,
+        });
         navigateTo('/loancount/create');
     } catch (error) {
         alert(error);
@@ -82,6 +86,10 @@ import { UserService } from '~/models/User';
   async function updateloancount()
   {
     try {
+        const response = await apiService.auth({
+          docId: PermissionService._LOANCOUNT,
+          perm: PermissionService._UPDATE,
+        });
         UserService.usr_id = selectedLoanId.value;
         navigateTo('/loancount/update');
     } catch (error) {
@@ -91,7 +99,10 @@ import { UserService } from '~/models/User';
   
   async function fetchloancount() {
       try {
-          const response = await apiService.getLoanCount({});
+          const response = await apiService.getLoanCount({
+            docId: PermissionService._LOANCOUNT,
+            permId: PermissionService._VIEW,
+          });
           state.loancount.value = response.data; // Update the reactive ref
       } catch (error) {
           console.error(error);
