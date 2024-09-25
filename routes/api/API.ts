@@ -256,6 +256,24 @@ class API extends BaseAPIService {
         return await this.request(`/group/${id}`, 'DELETE', params)
     }
 
+    //fee
+    async getFee(params: object): Promise<any> {
+        return await this.request(`/fee`, 'GET', params)
+    }
+    async getFeeById(params: object, id: number): Promise<any> {
+        return await this.request(`/fee/${id}`, 'GET', params)
+    }
+    
+    async createFee(params: object): Promise<any> {
+        return await this.request(`/fee`, 'POST', params)
+    }
+    async updateFee(params: object, id: number): Promise<any> {
+        return await this.request(`/fee/${id}`, 'PUT', params)
+    }
+    async deleteFee(params: object, id: number): Promise<any> {
+        return await this.request(`/fee/${id}`, 'DELETE', params)
+    }
+
 }
 
 export const apiService = new API()
