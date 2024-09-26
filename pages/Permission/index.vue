@@ -84,7 +84,6 @@ import { PermissionService } from '~/models/Permission';
                 docId: PermissionService._USERACCOUNT,
                 perm: PermissionService._VIEW,
             };
-            const perms = await apiService.auth(params);
             const response = await apiService.getUser(params)
             state.users = response
             console.log(state.users);
