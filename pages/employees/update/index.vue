@@ -45,15 +45,13 @@
         </div>
 
         <div>
-          <label for="civilStatus" class="block text-gray-700">Civil Status</label>
-          <select v-model="personality.civil_status" id="civilStatus" class="w-full border rounded-lg px-4 py-2">
-            <option value="0">Select</option>
-            <option value="1">Single</option>
-            <option value="2">Married</option>
-            <option value="3">Divorced</option>
-            <option value="4">Widowed</option>
-          </select>
-        </div>
+            <label for="civilStatus" class="block text-gray-700">Civil Status</label>
+            <select v-model="personality.civil_status" id="civilStatus" class="w-full border rounded-lg px-4 py-2">
+              <option v-for="status in civilStatuses" :key="status.value" :value="status.id">
+                {{ status.description }}
+              </option>
+            </select>
+          </div>
 
         <div>
           <label for="houseStreet" class="block text-gray-700">House Street</label>
@@ -106,21 +104,21 @@
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { EmployeesService } from '~/models/Employee';
-import { PermissionService } from '~/models/Permission';
 import { apiService } from '~/routes/api/API';
 
 const route = useRoute();
 const router = useRouter();
 
+// Personality data
 const personality = ref({
   first_name: '',
   family_name: '',
   middle_name: '',
   email_address: '',
   telephone_no: '',
-  birthday: new Date().toISOString().split('T')[0], // Set to current date
-  gender_code: 0, // Default or set as needed (1 for Male, 2 for Female)
-  civil_status: 0, // Default or set as needed
+  birthday: new Date().toISOString().split('T')[0], 
+  gender_code: 0,
+  civil_status: 0,
   house_street: '',
   purok_zone: '',
   postal_code: '',
@@ -131,11 +129,12 @@ const personality = ref({
   country_id: 0,
   province_id: 0,
   credit_status_id: 0,
-  notes: undefined, // Optional
+  notes: undefined,
   datetime_registered: new Date().toISOString().split('T')[0],
   name_type_code: 0,
-})
+});
 
+// Employee data
 const employee = ref({
   sss_no : 0,
   phic_no : 0,
@@ -145,48 +144,21 @@ const employee = ref({
   personality_id: 0,
 });
 
-// Call the fetch function
-fetchEmployeeData();
+// Civil Status Options for Combobox
+const civilStatuses = ref([]);
 
-function formatDateTimeToMySQL(date: any) {
-  const pad = (num: any) => (num < 10 ? '0' + num : num);
-  const year = date.getFullYear();
-  const month = pad(date.getMonth() + 1);
-  const day = pad(date.getDate());
-  const hours = pad(date.getHours());
-  const minutes = pad(date.getMinutes());
-  const seconds = pad(date.getSeconds());
-  
-  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`; // Return as Y-m-d H:i:s
-}
-
-function formatDateToMySQL(date: any) {
-  const pad = (num: any) => (num < 10 ? '0' + num : num);
-  const year = date.getFullYear();
-  const month = pad(date.getMonth() + 1); // Months are zero-based
-  const day = pad(date.getDate());
-  const hours = pad(date.getHours());
-  const minutes = pad(date.getMinutes());
-  const seconds = pad(date.getSeconds());
-  
-  return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-}
-
-// Fetch employee data when the component is mounted
+// Fetch employee data
 async function fetchEmployeeData() {
-  try { 
+  try {
     const employeeId = EmployeesService.id;
-  ;
-  // Check if employeeId is defined and is a valid number
-  if (!employeeId || isNaN(Number(employeeId))) {
-    alert('Invalid employee ID');
-    router.push('/Libraries/EmployeeView'); // Redirect to the employee list page or show an error
-    return;
-  }
-  const response = await apiService.getEmployeeById({}, employeeId);
-  ; // Fetch employee data and set the initial values of the `personality` and `employee` objects
-  Object.assign(employee.value, response.employee);
-  Object.assign(personality.value, response.personality);
+    if (!employeeId || isNaN(Number(employeeId))) {
+      alert('Invalid employee ID');
+      router.push('/Libraries/EmployeeView');
+      return;
+    }
+    const response = await apiService.getEmployeeById({}, employeeId);
+    Object.assign(employee.value, response.employee);
+    Object.assign(personality.value, response.personality);
   } catch (error) {
     alert(error);
   }
@@ -196,54 +168,66 @@ async function fetchEmployeeData() {
 const updateEmployee = async () => {
   try {
     const employeeId = EmployeesService.id;
-    // Check if customerId is defined and is a valid number
     if (!employeeId || isNaN(Number(employeeId))) {
       alert('Invalid employee ID');
-      router.push('/Libraries/EmployeeView'); // Redirect to the customer list page or show an error
+      router.push('/Libraries/EmployeeView');
       return;
     }
 
-    alert(employee.value.personality_id);
-    
     const jsonObject = {
       employee: {
-            sss_no: employee.value.sss_no,
-            phic_no: employee.value.phnic_no,
-            tin_no: employee.value.tin_no,
-            datetime_hired: employee.value.date_hired,
-            datetime_resigned: employee.value.date_resigned,
-            personality_id: employee.value.personality_id,
-        },
-        personality: {
-            datetime_registered: personality.value.datetime_registered,
-            family_name: personality.value.family_name, // Get from personality ref
-            middle_name: personality.value.middle_name, // Assuming this remains unchanged
-            first_name: personality.value.first_name, // Get from personality ref
-            birthday: personality.value.birthday, // Get from personality ref
-            civil_status: personality.value.civil_status, // Get from personality ref
-            gender_code: personality.value.gender_code, // Get from personality ref
-            house_street: personality.value.house_street, // Get from personality ref
-            purok_zone: personality.value.purok_zone, // Get from personality ref
-            postal_code: personality.value.postal_code, // Get from personality ref
-            telephone_no: personality.value.telephone_no, // Get from personality ref
-            email_address: personality.value.email_address, // Get from personality ref
-            cellphone_no: personality.value.cellphone_no, // Get from personality ref
-            name_type_code: personality.value.name_type_code, // Assuming this remains unchanged
-            personality_status_code: personality.value.personality_status_code, // Get from personality ref
-            barangay_id: personality.value.barangay_id, // Get from personality ref
-            city_id: personality.value.city_id, // Get from personality ref
-            country_id: personality.value.country_id, // Get from personality ref
-            province_id: personality.value.province_id, // Get from personality ref
-            credit_status_id: personality.value.credit_status_id, // Get from personality ref
-            notes: personality.value.notes, // Get from personality ref, optional
-        }
+        sss_no: employee.value.sss_no,
+        phic_no: employee.value.phic_no,
+        tin_no: employee.value.tin_no,
+        datetime_hired: employee.value.date_hired,
+        datetime_resigned: employee.value.date_resigned,
+        personality_id: employee.value.personality_id,
+      },
+      personality: {
+        datetime_registered: personality.value.datetime_registered,
+        family_name: personality.value.family_name,
+        middle_name: personality.value.middle_name,
+        first_name: personality.value.first_name,
+        birthday: personality.value.birthday,
+        civil_status: personality.value.civil_status,
+        gender_code: personality.value.gender_code,
+        house_street: personality.value.house_street,
+        purok_zone: personality.value.purok_zone,
+        postal_code: personality.value.postal_code,
+        telephone_no: personality.value.telephone_no,
+        email_address: personality.value.email_address,
+        cellphone_no: personality.value.cellphone_no,
+        name_type_code: personality.value.name_type_code,
+        personality_status_code: personality.value.personality_status_code,
+        barangay_id: personality.value.barangay_id,
+        city_id: personality.value.city_id,
+        country_id: personality.value.country_id,
+        province_id: personality.value.province_id,
+        credit_status_id: personality.value.credit_status_id,
+        notes: personality.value.notes,
+      }
     };
     await apiService.updateEmployee(jsonObject, employeeId);
     alert('Employee updated successfully!');
-    navigateTo('/employees'); // Redirect to the customer list page
+    router.push('/employees'); // Redirect after successful update
   } catch (error) {
     alert('Error updating employee: ' + error);
     console.error(error);
   }
 };
+
+async function fetchCivilStatus()
+{
+  try {
+    const response = await apiService.get({}, 'civil_status');
+    Object.assign(civilStatuses.value, response.data);
+  } catch (error) {
+    alert(error);
+  }
+}
+
+onMounted(() => {
+  fetchCivilStatus();
+  fetchEmployeeData();
+})
 </script>
