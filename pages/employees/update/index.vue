@@ -153,7 +153,7 @@ async function fetchEmployeeData() {
     const employeeId = EmployeesService.id;
     if (!employeeId || isNaN(Number(employeeId))) {
       alert('Invalid employee ID');
-      router.push('/Libraries/EmployeeView');
+      router.push('/employees');
       return;
     }
     const response = await apiService.getEmployeeById({}, employeeId);
