@@ -69,6 +69,9 @@ import { PermissionService } from '~/models/Permission';
 import { apiService } from '~/routes/api/API';
 import { useRouter } from 'vue-router';
 import { UserService } from '~/models/User';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
 
 const loanCount = ref<number | null>(null);
 const minAmount = ref<number | null>(null);
@@ -96,6 +99,13 @@ const submitForm = async () => {
       }
       const response = await apiService.updateLoanCount(params, UserService.usr_id);
       submitted.value = true;
+      toast.success("Loan count updated successfully!", {
+                autoClose: 2000,
+                });
+                // Introduce a delay before navigating
+                setTimeout(() => {
+                    navigateTo('/loancount');  
+                }, 2000);
       console.log({
           loanCount: loanCount.value,
           minAmount: minAmount.value,
@@ -108,7 +118,7 @@ const submitForm = async () => {
       minAmount.value = null;
       maxAmount.value = null;
 
-      router.push('/loancount'); // Using the router to navigate
+      // router.push('/loancount'); // Using the router to navigate
   }
 };
 

@@ -134,6 +134,8 @@
   
   <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 import { EmployeesService } from '~/models/Employee';
 import { PermissionService } from '~/models/Permission';
 import { UserService } from '~/models/User';
@@ -233,9 +235,18 @@ const submitForm = async () => {
 
       // Handle successful response
       if (response.data) {
-        successMessage.value = 'User updated successfully!'; // Updated success message
-        // Clear the form
-        cancel(); // Call the cancel function to reset the form
+        toast.success("User updated!", {
+          autoClose: 2000,
+          });
+          // Introduce a delay before navigating
+          setTimeout(() => {
+              cancel();
+            // navigateTo('/users');  
+          }, 2000);
+          // successMessage.value = 'User created successfully!';
+          // Clear the form
+          //  cancel(); // Call the cancel function to reset the form
+          // Call the cancel function to reset the form
       }
     } catch (error: any) {
       console.error('Error updating user:', error); // Updated error log message

@@ -68,6 +68,9 @@ import { ref } from 'vue';
 import { PermissionService } from '~/models/Permission';
 import { apiService } from '~/routes/api/API';
 import { useRouter } from 'vue-router';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
 
 const loanCount = ref<number | null>(null);
 const minAmount = ref<number | null>(null);
@@ -84,20 +87,27 @@ const submitForm = async () => {
       }
       const response = await apiService.createLoanCount(params);
       submitted.value = true;
-      alert("Create Success!");
+          toast.success("Loan count created successfully!", {
+                autoClose: 2000,
+                });
+                // Introduce a delay before navigating
+                setTimeout(() => {
+                    navigateTo('/loancount');  
+                }, 2000);
+                 // Redirect to the customer list page
       console.log({
           loanCount: loanCount.value,
           minAmount: minAmount.value,
           maxAmount: maxAmount.value
       });
   } catch (error) {
-      alert(error);
+      toast.error(error+"Error");
   } finally {
       loanCount.value = null;
       minAmount.value = null;
       maxAmount.value = null;
 
-      router.push('/loancount'); // Using the router to navigate
+      // router.push('/loancount'); // Using the router to navigate
   }
 };
 

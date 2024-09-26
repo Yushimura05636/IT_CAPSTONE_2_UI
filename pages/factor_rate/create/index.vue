@@ -61,7 +61,9 @@
     
 <script setup lang="ts">
     import { ref } from 'vue';
-import { PermissionService } from '~/models/Permission';
+    import { toast } from 'vue3-toastify';
+    import 'vue3-toastify/dist/index.css';
+    import { PermissionService } from '~/models/Permission';
     import { apiService } from '~/routes/api/API';
 
     const state = reactive({
@@ -122,12 +124,17 @@ const factorRate = ref({
         
         if(response)
         {
-            alert('Factor rate created successfully!');
-            navigateTo('/factor_rate'); // Redirect to the customer list page
+            toast.success("Factor rate created successfully!", {
+            autoClose: 2000,
+            });
+            // Introduce a delay before navigating
+            setTimeout(() => {
+                navigateTo('/factor_rate');  
+            }, 2000);
         }
 
         } catch (error) {
-            alert('Error creating Factor: ' + error);
+            toast.error('Error creating Factor: ' + error);
             console.error(error);
         }
     };

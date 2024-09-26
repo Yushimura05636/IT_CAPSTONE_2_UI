@@ -149,10 +149,7 @@ const filteredTableItems = computed(() => {
 
 async function createCustomer() {
   try {
-    const response = await apiService.authCustomersCreate({
-      docId: PermissionService.CUSTOMERS,
-      perm: PermissionService.CREATE
-    });
+    const response = await apiService.authCustomersCreate({});
     navigateTo('/customers/create');
   } catch (error) {
     alert(error);
@@ -161,11 +158,9 @@ async function createCustomer() {
 
 async function modifyCustomer() {
   try {
+    debugger;
     CustomersService.id = parseInt(selectedEmployeeId.value?.toString());
-    const response = await apiService.authCustomersUpdate({
-      docId: PermissionService.CUSTOMERS,
-      perm: PermissionService.UPDATE
-    });
+    const response = await apiService.authCustomersUpdate({});
     navigateTo(`customers/update`)
   } catch (error) {
     alert(error);

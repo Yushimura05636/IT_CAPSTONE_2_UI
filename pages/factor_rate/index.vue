@@ -137,8 +137,8 @@ import Permission from '../non_used_components/Permission.vue';
   async function createFactorRate() {
     try {
       await apiService.authFactorRatesCreate({
-        docId: PermissionService.FACTOR_RATES,
-        perm: PermissionService.CREATE
+        docId: PermissionService.FACTOR_RATES?.data.id,
+        perm: PermissionService.CREATE?.data.id
       });
       navigateTo('factor_rate/create');
     } catch (error) {
@@ -151,8 +151,8 @@ import Permission from '../non_used_components/Permission.vue';
       try {
         // Use selectedFrequencyID.value to update the specific factor rate
         const response = await apiService.authFactorRatesUpdate({
-          docId: PermissionService.FACTOR_RATES,
-          perm: PermissionService.UPDATE
+          docId: PermissionService.FACTOR_RATES?.data.id,
+          perm: PermissionService.UPDATE?.data.id
         });
 
         UserService.usbl_id = parseInt(selectedFrequencyID.value);

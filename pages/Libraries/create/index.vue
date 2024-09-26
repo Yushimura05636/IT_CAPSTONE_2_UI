@@ -63,6 +63,9 @@ import { ref } from 'vue';
 import { apiService } from '~/routes/api/API';
 import { libraryService } from '~/models/Library';
 import { PermissionService } from '~/models/Permission';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
 
 const modelTypes = [
   'barangay',
@@ -118,11 +121,17 @@ async function create() {
     };
     const response = await apiService.create(params);
     if (response.data) {
-      alert("Created successfully!");
-      navigateTo('/libraries');
+
+      toast.success("Created successfully!", {
+          autoClose: 2000,
+      });
+      // Introduce a delay before navigating
+      setTimeout(() => {
+          navigateTo('/libraries');
+      }, 2000);
     }
   } catch (error: any) {
-    alert("Error: " + error);
+    toast.error("Error: " + error);
   }
 }
 

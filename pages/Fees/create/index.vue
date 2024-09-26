@@ -48,6 +48,8 @@
     
 <script setup lang="ts">
 import { ref } from 'vue';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 import { apiService } from '~/routes/api/API';
 
     function back() {
@@ -76,12 +78,18 @@ import { apiService } from '~/routes/api/API';
             
             if(response)
             {
-                alert('Fee created successfully!');
-                navigateTo('/Fee'); // Redirect to the customer list page
+                toast.success("Fee rate created successfully!", {
+                autoClose: 2000,
+                });
+                // Introduce a delay before navigating
+                setTimeout(() => {
+                    navigateTo('/Fees');  
+                }, 2000);
+                 // Redirect to the customer list page
             }
 
             } catch (error) {
-                alert('Error creating Fee: ' + error);
+                toast.error('Error creating Fee: ' + error);
                 console.error(error);
             }
         };   

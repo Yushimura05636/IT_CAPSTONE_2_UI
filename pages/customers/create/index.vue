@@ -192,8 +192,11 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { toast } from 'vue3-toastify';
 import { PermissionService } from '~/models/Permission';
 import { apiService } from '~/routes/api/API';
+import 'vue3-toastify/dist/index.css';
+
 
 const personality = ref({
   first_name: '',
@@ -378,10 +381,15 @@ const createCustomer = async () => {
 
     debugger;
     await apiService.createCustomer(jsonObject);
-    alert('Customer create successfully!');
-    navigateTo('/customers'); // Redirect to the customer list page
+    toast.success("Customer create successfully!", {
+          autoClose: 2000,
+          });
+          // Introduce a delay before navigating
+          setTimeout(() => {
+            navigateTo('/customers');  
+          }, 2000); // Redirect to the customer list page
   } catch (error) {
-    alert('Error updating customer: ' + error);
+    toast.error('Error creating customer');
     console.error(error);
   }
 };

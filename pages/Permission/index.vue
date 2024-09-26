@@ -95,12 +95,7 @@ import { PermissionService } from '~/models/Permission';
     async function managePermissions(userId: number) {
         try {
             UserService.usr_id = userId;
-            const response = await apiService.authUsersUpdate(
-                {
-                    docId: PermissionService.USER_ACCOUNTS,
-                    perm: PermissionService.UPDATE
-                }
-            );
+            const response = await apiService.authUsersUpdate({});
             navigateTo('/permission/manage');
         } catch (error: any) {
             state.error = error;

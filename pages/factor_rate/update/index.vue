@@ -55,13 +55,16 @@
     </div>
   </template>
   
-  <script setup lang="ts">
+<script setup lang="ts">
   import { ref, reactive, onMounted } from 'vue';
   import { PermissionService } from '~/models/Permission';
   import { apiService } from '~/routes/api/API';
   import { useRoute } from 'vue-router'; // Importing useRoute for route parameters
   import { navigateTo } from 'nuxt/app';
-import { UserService } from '~/models/User';
+  import { UserService } from '~/models/User';
+  import { toast } from 'vue3-toastify';
+  import 'vue3-toastify/dist/index.css';
+
   
   const state = reactive({
     frequency: [],
@@ -148,11 +151,16 @@ import { UserService } from '~/models/User';
       const response = await apiService.updateFactorRate(jsonObject, jsonObject.id); // Adjust your API call here
   
       if (response) {
-        alert('Factor rate updated successfully!');
-        navigateTo('/factor_rate'); // Redirect to the desired page
+        toast.success("Factor rate updated successfully!", {
+            autoClose: 2000,
+            });
+            // Introduce a delay before navigating
+            setTimeout(() => {
+                navigateTo('/factor_rate');  
+            }, 2000);
       }
     } catch (error) {
-      alert('Error updating factor rate: ' + error);
+      toast.error('Error updating factor rate: ' + error);
       console.error(error);
     }
   };

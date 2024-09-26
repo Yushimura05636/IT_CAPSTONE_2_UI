@@ -130,10 +130,7 @@ import { PaymentFrequency } from '../../models/PaymentFrequency';
 
     async function updateDuration(){
         try {
-            const response = await apiService.authPaymentDurationsUpdate({
-                docId: PermissionService.PAYMENT_DURATION,
-                perm: PermissionService.UPDATE
-            })
+            const response = await apiService.authPaymentDurationsUpdate({})
             if (selectedDurationID.value) {
         let numOfPayments = null;
         let description = null;
@@ -169,8 +166,6 @@ import { PaymentFrequency } from '../../models/PaymentFrequency';
     async function createPaymentFrequency() {
         try {
             const response = await apiService.authPaymentFrequenciesCreate({
-                docId: PermissionService.PAYMENT_FREQUENCIES,
-                perm: PermissionService.CREATE
             })
             navigateTo('payment_duration/create');
         } catch (error) {

@@ -143,10 +143,7 @@ import { PermissionService } from '~/models/Permission';
   
  async function createLibrary() {
     try {
-      const response = await apiService.authLibrariesCreate({
-        docId: PermissionService.LIBRARIES,
-        perm: PermissionService.CREATE
-      })
+      const response = await apiService.authLibrariesCreate({})
       navigateTo('libraries/create');
     } catch (error) {
       alert(error);
@@ -155,10 +152,7 @@ import { PermissionService } from '~/models/Permission';
   
   async function updateLibrary() {
     try {
-      const response = await apiService.authLibrariesUpdate({
-        docId: PermissionService.LIBRARIES,
-        perm: PermissionService.UPDATE
-      });
+      const response = await apiService.authLibrariesUpdate({});
       if (selectedLibraryId.value) {
         let selectedDescription = null;
   

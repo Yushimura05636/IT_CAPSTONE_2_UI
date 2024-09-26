@@ -74,8 +74,8 @@
   async function createloancount(){
     try {
         const response = await apiService.authLoanCountsCreate({
-          docId: PermissionService.LOAN_COUNT,
-          perm: PermissionService.CREATE
+          docId: PermissionService.LOAN_COUNT?.data.id,
+          perm: PermissionService.CREATE?.data.id
         });
         navigateTo('/loancount/create');
     } catch (error) {
@@ -87,8 +87,8 @@
   {
     try {
         const response = await apiService.authLoanCountsUpdate({
-          docId: PermissionService.LOAN_COUNT,
-          perm: PermissionService.UPDATE
+          docId: PermissionService.LOAN_COUNT?.data.id,
+          perm: PermissionService.UPDATE?.data.id
         });
         UserService.usr_id = selectedLoanId.value;
         navigateTo('/loancount/update');

@@ -135,6 +135,8 @@
   
   <script setup lang="ts">
   import { ref, onMounted, watch } from 'vue';
+  import { toast } from 'vue3-toastify';
+  import 'vue3-toastify/dist/index.css';
   import { PermissionService } from '~/models/Permission';
   import { apiService } from '~/routes/api/API'; // Assuming you have this service
   
@@ -229,9 +231,16 @@
   
         // Handle successful response
         if (response.data) {
-          successMessage.value = 'User created successfully!';
+          toast.success("User created!", {
+          autoClose: 2000,
+          });
+          // Introduce a delay before navigating
+          setTimeout(() => {
+            navigateTo('/users');  
+          }, 2000);
+          // successMessage.value = 'User created successfully!';
           // Clear the form
-          cancel(); // Call the cancel function to reset the form
+          //  cancel(); // Call the cancel function to reset the form
         }
       } catch (error: any) {
         console.error('Error creating user:', error);

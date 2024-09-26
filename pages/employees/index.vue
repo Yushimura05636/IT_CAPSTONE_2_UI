@@ -184,10 +184,7 @@ interface TableItem {
 async function createEmployee() {
   try {
     debugger;
-    const response = await apiService.authEmployeesCreate({
-      docId: PermissionService.EMPLOYEES,
-      perm: PermissionService.CREATE
-    });
+    const response = await apiService.authEmployeesCreate({});
     navigateTo('employees/create');
   } catch (error) {
     alert(error);
@@ -198,10 +195,7 @@ async function modifyEmployee() {
   try {
     debugger;
     EmployeesService.id = parseInt(selectedEmployeeId.value?.toString());
-    const response = await apiService.authEmployeesUpdate({
-      docId: PermissionService.EMPLOYEES,
-      perm: PermissionService.UPDATE
-    });
+    const response = await apiService.authEmployeesUpdate({});
     navigateTo('employees/update');
   } catch (error) {
     alert(error);

@@ -103,6 +103,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 import { EmployeesService } from '~/models/Employee';
 import { apiService } from '~/routes/api/API';
 
@@ -208,10 +210,17 @@ const updateEmployee = async () => {
       }
     };
     await apiService.updateEmployee(jsonObject, employeeId);
-    alert('Employee updated successfully!');
-    router.push('/employees'); // Redirect after successful update
+          toast.success("Employee updated successfully!", {
+          autoClose: 2000,
+          });
+          // Introduce a delay before navigating
+          setTimeout(() => {
+            navigateTo('/employees');  
+          }, 2000);
+    // alert('Employee updated successfully!');
+    // router.push('/employees'); // Redirect after successful update
   } catch (error) {
-    alert('Error updating employee: ' + error);
+    toast.error('Error updating employee: ' + error);
     console.error(error);
   }
 };

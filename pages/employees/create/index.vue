@@ -115,6 +115,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 import { EmployeesService } from '~/models/Employee';
 import { PermissionService } from '~/models/Permission';
 import { apiService } from '~/routes/api/API';
@@ -218,10 +220,15 @@ const createEmployee = async () => {
         }
     };
     await apiService.createEmployee(jsonObject);
-    alert('Employee created successfully!');
-    navigateTo('/employees'); // Redirect to the customer list page
+    toast.success("Employee updated successfully!", {
+          autoClose: 2000,
+          });
+          // Introduce a delay before navigating
+          setTimeout(() => {
+            navigateTo('/employees');  
+          }, 2000);
   } catch (error) {
-    alert('Error updating employee: ' + error);
+    toast.error('Error updating employee: ' + error);
     console.error(error);
   }
 };

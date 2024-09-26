@@ -98,10 +98,7 @@ async function fetchUsers() {
 
 async function createUser() {
   try {
-    await apiService.authUsersCreate({
-      docId: PermissionService.USER_ACCOUNTS,
-      perm: PermissionService.CREATE
-    });
+    await apiService.authUsersCreate({});
     navigateTo('/users/create');
   } catch (error) {
     alert(error);
@@ -112,10 +109,7 @@ async function updateUser() {
   if (selectedUserId.value) { // Ensure a user is selected
     try {
       UserService.usr_id = parseInt(selectedUserId.value); // Get the selected user ID
-      await apiService.authUsersUpdate({
-        docId: PermissionService.USER_ACCOUNTS,
-        perm: PermissionService.UPDATE
-      });
+      await apiService.authUsersUpdate({});
       navigateTo(`/users/update/`); // Navigate to update page
     } catch (error) {
       alert(error);
@@ -128,10 +122,7 @@ async function updateUser() {
 async function managePermissions(userId: number) {
   try {
     UserService.usr_id = userId;
-    await apiService.authUsersUpdate({
-      docId: PermissionService.USER_ACCOUNTS,
-      perm: PermissionService.UPDATE
-    });
+    await apiService.authUsersUpdate({});
     navigateTo('/permission/manage');
   } catch (error: any) {
     state.error = error;

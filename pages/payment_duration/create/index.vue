@@ -41,8 +41,11 @@
     
 <script setup lang="ts">
 import { ref } from 'vue';
+import { toast } from 'vue3-toastify';
 import { PermissionService } from '~/models/Permission';
 import { apiService } from '~/routes/api/API';
+import 'vue3-toastify/dist/index.css';
+
 
     function back() {
             navigateTo('/payment_duration');
@@ -66,12 +69,17 @@ const paymentDuration = ref({
             
             if(response)
             {
-                alert('Payment Duration created successfully!');
-                navigateTo('/payment_duration'); // Redirect to the customer list page
+                toast.success("Payment Duration created successfully!", {
+                autoClose: 2000,
+                });
+                // Introduce a delay before navigating
+                setTimeout(() => {
+                    navigateTo('/payment_duration');  
+                }, 2000);
             }
 
             } catch (error) {
-                alert('Error creating Payment Duration: ' + error);
+                toast.error('Error creating Payment Duration: ' + error);
                 console.error(error);
             }
         };   

@@ -192,9 +192,12 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { toast } from 'vue3-toastify';
 import { CustomersService } from '~/models/Customer';
 import { PermissionService } from '~/models/Permission';
 import { apiService } from '~/routes/api/API';
+import 'vue3-toastify/dist/index.css';
+
 
 const personality = ref({
   first_name: '',
@@ -321,7 +324,6 @@ const fetchPersonalityStatusCode = async () => {
 
 const fetchLoanCount = async () => {
   // Replace with your actual API call
-  debugger;
   try {
     const response = await apiService.getLoanCount({});
 
@@ -363,8 +365,6 @@ const fetchCustomer = async () => {
   } catch (error) {
     console.log(error);
   }
-
-  debugger;
 }
 
 
@@ -404,12 +404,16 @@ const updateCustomer = async () => {
         }
     };
 
-    debugger;
     await apiService.updateCustomer(jsonObject, customerId);
-    alert('Customer updated successfully!');
-    navigateTo('/customers'); // Redirect to the customer list page
+    toast.success("Customer updated successfully!", {
+          autoClose: 2000,
+          });
+          // Introduce a delay before navigating
+          setTimeout(() => {
+            navigateTo('/customers'); // Redirect to the customer list page
+          }, 2000);
   } catch (error) {
-    alert('Error updating customer: ' + error);
+    toast.error('Error updating customer: ' + error);
     console.error(error);
   }
 };

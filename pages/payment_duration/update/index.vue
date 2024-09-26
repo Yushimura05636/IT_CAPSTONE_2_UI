@@ -47,7 +47,10 @@
     import { ref } from 'vue';
     import { apiService } from '~/routes/api/API'
     import { paymentDurationService } from '~/models/PaymentDuration'
-import { PermissionService } from '~/models/Permission';
+    import { PermissionService } from '~/models/Permission';
+    import { toast } from 'vue3-toastify';
+    import 'vue3-toastify/dist/index.css';
+
 
     const form = ref({
     id: paymentDurationService.id,
@@ -85,11 +88,16 @@ import { PermissionService } from '~/models/Permission';
         };
         const response = await apiService.updatePaymentduration(params, parseInt(form.value.id));
         if (response.data) {
-        alert("Update Success!");
-        navigateTo("/payment_duration");
+            toast.success("Payment Duration updated successfully!", {
+                autoClose: 2000,
+                });
+                // Introduce a delay before navigating
+                setTimeout(() => {
+                    navigateTo('/payment_duration');  
+                }, 2000);
         }
     } catch (error: any) {
-        alert("Error: " + error);
+        toast.error("Error: " + error);
     }
     }
 

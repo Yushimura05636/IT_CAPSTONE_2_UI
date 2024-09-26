@@ -91,6 +91,10 @@ class API extends BaseAPIService {
     async getPermissionById(params: object, id: number): Promise<any> {
         return await this.request(`/DOCUMENT_MAP_PERMISSIONS/${id}`, 'GET', params)
     }
+
+    async getPermissionByDescription(params: object, description: string): Promise<any> {
+        return await this.request(`/DOCUMENT_MAP_PERMISSIONS/description/${description}`, 'GET', params)
+    }
     
     async createPermission(params: object): Promise<any> {
         return await this.request(`/DOCUMENT_MAP_PERMISSIONS`, 'POST', params)
@@ -116,6 +120,10 @@ class API extends BaseAPIService {
 
     async getDocumentMapById(params: object, id: number): Promise<any> {
         return await this.request(`/DOCUMENT_MAPS/${id}`, 'GET', params)
+    }
+
+    async getDocumentMapByDescription(params: object, description: string): Promise<any> {
+        return await this.request(`/DOCUMENT_MAPS/description/${description}`, 'GET', params)
     }
 
     async createDocumentMap(params: object): Promise<any> {

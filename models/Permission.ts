@@ -1,109 +1,106 @@
+import { apiService } from "~/routes/api/API";
+
 class Permission {
     // Document map permissions (Button authorizations)
-    private _BUTTON_AUTHORIZATIONS = 2;
 
     // Action permissions
-    private _CREATE = 1;
-    private _UPDATE = 2;
-    private _DELETE = 3;
-    private _VIEW = 4;
+    private _CREATE = "CREATE";
+    private _UPDATE = "UPDATE";
+    private _DELETE = "DELETE";
+    private _VIEW = "VIEW";
 
     // Routes for different entities (Numeric values from database)
-    private _USER_ACCOUNTS = 1;
-    private _BUTTON_AUTHORIZATIONS_ROUTE = 2;
-    private _LIBRARIES = 3;
-    private _CUSTOMERS = 4;
-    private _CUSTOMER_GROUPS = 5;
-    private _EMPLOYEES = 6;
-    private _FACTOR_RATES = 7;
-    private _PAYMENT_DURATION = 8;
-    private _PAYMENT_FREQUENCIES = 9;
-    private _PERSONALITIES = 10;
-    private _DOCUMENT_MAPS = 11;
-    private _DOCUMENT_MAP_PERMISSIONS = 12;
-    private _DOCUMENT_PERMISSIONS = 13;
-    private _LOAN_COUNT = 14;
-    private _FACTOR_RATE = 15;
-    private _FEES = 16;
+    private _USER_ACCOUNTS = "USER_ACCOUNTS";
+    private _BUTTON_AUTHORIZATIONS = "BUTTON_AUTHORIZATIONS";
+    private _LIBRARIES = "LIBRARIES";
+    private _CUSTOMERS = "CUSTOMERS";
+    private _CUSTOMER_GROUPS = "CUSTOMER_GROUPS";
+    private _EMPLOYEES = "EMPLOYEES";
+    private _FACTOR_RATES = "FACTOR_RATES";
+    private _PAYMENT_DURATIONS = "PAYMENT_DURATIONS";
+    private _PAYMENT_FREQUENCIES = "PAYMENT_FREQUENCIES";
+    private _PERSONALITIES = "PERSONALITIES";
+    private _DOCUMENT_MAPS = "DOCUMENT_MAPS";
+    private _DOCUMENT_MAP_PERMISSIONS = "DOCUMENT_MAP_PERMISSIONS";
+    private _DOCUMENT_PERMISSIONS = "DOCUMENT_PERMISSIONS";
+    private _LOAN_COUNTS = "LOAN_COUNTS";
+    private _FEES = "FEES";
 
-    // Methods to get the constants
-    public get BUTTON_AUTHORIZATIONS() {
-        return this._BUTTON_AUTHORIZATIONS;
-    }
-
-    public get CREATE() {
+    // Getters for action permissions
+    get CREATE() {
         return this._CREATE;
     }
 
-    public get UPDATE() {
+    get UPDATE() {
         return this._UPDATE;
     }
 
-    public get DELETE() {
+    get DELETE() {
         return this._DELETE;
     }
 
-    public get VIEW() {
+    get VIEW() {
         return this._VIEW;
     }
 
-    public get USER_ACCOUNTS() {
+    // Getters for entity routes
+    get USER_ACCOUNTS() {
         return this._USER_ACCOUNTS;
     }
 
-    public get LIBRARIES() {
+    get BUTTON_AUTHORIZATIONS() {
+        return this._BUTTON_AUTHORIZATIONS;
+    }
+
+    get LIBRARIES() {
         return this._LIBRARIES;
     }
 
-    public get CUSTOMERS() {
+    get CUSTOMERS() {
         return this._CUSTOMERS;
     }
 
-    public get CUSTOMER_GROUPS() {
+    get CUSTOMER_GROUPS() {
         return this._CUSTOMER_GROUPS;
     }
 
-    public get EMPLOYEES() {
+    get EMPLOYEES() {
         return this._EMPLOYEES;
     }
 
-    public get FACTOR_RATES() {
+    get FACTOR_RATES() {
         return this._FACTOR_RATES;
     }
 
-    public get PAYMENT_DURATION() {
-        return this._PAYMENT_DURATION;
+    get PAYMENT_DURATIONS() {
+        return this._PAYMENT_DURATIONS;
     }
 
-    public get PAYMENT_FREQUENCIES() {
+    get PAYMENT_FREQUENCIES() {
         return this._PAYMENT_FREQUENCIES;
     }
 
-    public get PERSONALITIES() {
+    get PERSONALITIES() {
         return this._PERSONALITIES;
     }
 
-    public get DOCUMENT_MAPS() {
+    get DOCUMENT_MAPS() {
         return this._DOCUMENT_MAPS;
     }
 
-    public get DOCUMENT_MAP_PERMISSIONS() {
+    get DOCUMENT_MAP_PERMISSIONS() {
         return this._DOCUMENT_MAP_PERMISSIONS;
     }
 
-    public get DOCUMENT_PERMISSIONS() {
+    get DOCUMENT_PERMISSIONS() {
         return this._DOCUMENT_PERMISSIONS;
     }
 
-    public get LOAN_COUNT() {
-        return this._LOAN_COUNT;
+    get LOAN_COUNTS() {
+        return this._LOAN_COUNTS;
     }
 
-    public get FACTOR_RATE() {
-        return this._FACTOR_RATE;
-    }
-
-    public get FEES() {
+    get FEES() {
         return this._FEES;
     }
 }

@@ -47,7 +47,10 @@
     import { ref } from 'vue';
     import { apiService } from '~/routes/api/API'
     import { paymentFrequencyService } from '~/models/PaymentFrequency'
-import { PermissionService } from '~/models/Permission';
+    import { PermissionService } from '~/models/Permission';
+    import { toast } from 'vue3-toastify';
+    import 'vue3-toastify/dist/index.css';
+
 
     const form = ref({
     id: paymentFrequencyService.id,
@@ -85,11 +88,17 @@ import { PermissionService } from '~/models/Permission';
         };
         const response = await apiService.updatePaymentFrequency(params, parseInt(form.value.id));
         if (response.data) {
-        alert("Update Success!");
-        navigateTo("/payment_frequency");
+            toast.success("Payment Frequency Updated successfully!", {
+                autoClose: 2000,
+                });
+                // Introduce a delay before navigating
+                setTimeout(() => {
+                    navigateTo('/payment_frequency');  
+                }, 2000);
+                // Redirect to the customer list page
         }
     } catch (error: any) {
-        alert("Error: " + error);
+        toast.error("Error: " + error);
     }
     }
 

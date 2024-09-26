@@ -72,6 +72,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { toast } from 'vue3-toastify';
 import { libraryService } from '~/models/Library';
 import { PermissionService } from '~/models/Permission';
 import { apiService } from '~/routes/api/API';
@@ -112,11 +113,17 @@ async function update() { // Renamed from create to update
     };
     const response = await apiService.update(params, parseInt(form.value.id));
     if (response.data) {
-      alert("Edit successfully!");
-      navigateTo("/libraries");
+
+      toast.success("Edit successfully!", {
+          autoClose: 2000,
+      });
+      // Introduce a delay before navigating
+      setTimeout(() => {
+          navigateTo('/libraries');
+      }, 2000);
     }
   } catch (error: any) {
-    alert("Error: " + error);
+    toast.error("Error: " + error);
   }
 }
 

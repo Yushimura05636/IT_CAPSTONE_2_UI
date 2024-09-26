@@ -60,7 +60,6 @@ class BaseAPIService {
 
     revokeAccess() {
         localStorage.removeItem("_token")
-        navigateTo('/')
     }
     redirectToHome() {
         navigateTo('/dashboard'); 

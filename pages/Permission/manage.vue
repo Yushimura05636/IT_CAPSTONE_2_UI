@@ -115,6 +115,9 @@ import { UserService } from '~/models/User';
 import { apiService } from '~/routes/api/API'; // Adjust path as necessary
 import FormResultPopup from '~/components/form/ResultPopup.vue'; // Adjust path if needed
 import { PermissionService } from '~/models/Permission';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
 
 const showResultPopup = ref(false);
 const formSuccess = ref(false);
@@ -256,8 +259,13 @@ try {
 
   if (response) {
     formSuccess.value = true;
-    console.log('The permission has updated successfully!');
-    alert('The permission has updated successfully!');
+    toast.success("The permission has updated successfully!", {
+          autoClose: 2000,
+          });
+          // Introduce a delay before navigating
+          setTimeout(() => {
+            navigateTo('/permission');  
+          }, 2000);
   }
 
   // Send to the database
