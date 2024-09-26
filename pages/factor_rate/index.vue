@@ -150,8 +150,8 @@ import Permission from '../non_used_components/Permission.vue';
     if (selectedFrequencyID.value) {
       try {
         // Use selectedFrequencyID.value to update the specific factor rate
-        const response = await apiService.authUpdate({
-          docId: PermissionService.BUTTON_AUTHORIZATIONS,
+        const response = await apiService.authFactorRatesUpdate({
+          docId: PermissionService.FACTOR_RATES,
           perm: PermissionService.UPDATE
         });
 

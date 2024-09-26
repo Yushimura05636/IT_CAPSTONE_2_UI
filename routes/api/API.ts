@@ -219,23 +219,23 @@ class API extends BaseAPIService {
 
      //payment_duration
     async getFactorRate(params: object): Promise<any> {
-        return await this.request(`/FACTOR_RATE`, 'GET', params)
+        return await this.request(`/FACTOR_RATES`, 'GET', params)
     }
 
     async getFactorRateById(params: object, id: number): Promise<any> {
-        return await this.request(`/FACTOR_RATE/${id}`, 'GET', params)
+        return await this.request(`/FACTOR_RATES/${id}`, 'GET', params)
     }
 
     async createFactorRate(params: object): Promise<any> {
-        return await this.request(`/FACTOR_RATE`, 'POST', params)
+        return await this.request(`/FACTOR_RATES`, 'POST', params)
     }
 
     async updateFactorRate(params: object, id: number): Promise<any> {
-        return await this.request(`/FACTOR_RATE/${id}`, 'PUT', params)
+        return await this.request(`/FACTOR_RATES/${id}`, 'PUT', params)
     }
 
     async deleteFactorRate(params: object, id: number): Promise<any> {
-        return await this.request(`/FACTOR_RATE/${id}`, 'DELETE', params)
+        return await this.request(`/FACTOR_RATES/${id}`, 'DELETE', params)
     }
 
     //customer group
@@ -340,11 +340,11 @@ async authEmployeesUpdate(params: object): Promise<any> {
 
 // Factor Rates
 async authFactorRatesCreate(params: object): Promise<any> {
-    return await this.request(`/FACTORRATES/create`, 'PATCH', params);
+    return await this.request(`/FACTOR_RATES/create`, 'PATCH', params);
 }
 
 async authFactorRatesUpdate(params: object): Promise<any> {
-    return await this.request(`/FACTORRATES/update`, 'PATCH', params);
+    return await this.request(`/FACTOR_RATES/update`, 'PATCH', params);
 }
 
 // Payment Durations

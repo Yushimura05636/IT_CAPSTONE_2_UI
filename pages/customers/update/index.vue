@@ -321,6 +321,7 @@ const fetchPersonalityStatusCode = async () => {
 
 const fetchLoanCount = async () => {
   // Replace with your actual API call
+  debugger;
   try {
     const response = await apiService.getLoanCount({});
 
