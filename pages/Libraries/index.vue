@@ -143,21 +143,21 @@ import { PermissionService } from '~/models/Permission';
   
  async function createLibrary() {
     try {
-      const response = await apiService.auth({
-        docId: PermissionService._LIBRARIES,
-        perm: PermissionService._CREATE,
+      const response = await apiService.authCreate({
+        docId: PermissionService.BUTTON_AUTHORIZATIONS,
+        perm: PermissionService.CREATE
       })
       navigateTo('libraries/create');
     } catch (error) {
-      
+      alert(error);
     }
   }
   
   async function updateLibrary() {
     try {
-      const response = await apiService.auth({
-        docId: PermissionService._LIBRARIES,
-        perm: PermissionService._UPDATE,
+      const response = await apiService.authUpdate({
+        docId: PermissionService.BUTTON_AUTHORIZATIONS,
+        perm: PermissionService.UPDATE
       });
       if (selectedLibraryId.value) {
         let selectedDescription = null;
@@ -194,10 +194,7 @@ import { PermissionService } from '~/models/Permission';
     state.isTableLoading = true;
     state.error = null;
     try {
-      const params = {
-        docId: PermissionService._LIBRARIES,
-        perm: PermissionService._VIEW,
-      };
+      const params = {};
       const response = await apiService.get(params, state.modeltype);
       state.datas = response;
     } catch (error) {

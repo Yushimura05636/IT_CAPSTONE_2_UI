@@ -106,8 +106,6 @@ const submitForm = () => {
 async function update() { // Renamed from create to update
   try {
     const params = {
-      docId: PermissionService._LIBRARIES,
-      perm: PermissionService._CREATE,
       id: form.value.id,
       modeltype: form.value.modeltype,
       description: form.value.description,

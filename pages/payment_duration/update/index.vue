@@ -78,8 +78,6 @@ import { PermissionService } from '~/models/Permission';
     async function create() {
     try {
         const params = {
-        docId: PermissionService._PAYMENTDURATION,
-        perm: PermissionService._UPDATE,
         id: form.value.id,
         number_of_payments: form.value.numOfPayments,
         description: form.value.description,

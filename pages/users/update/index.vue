@@ -163,15 +163,9 @@ const successMessage = ref<string | null>(null);
 const fetchEmployees = async () => {
   try {
     // Fetch employee data from API
-    const response = await apiService.getUserById({
-      docId: PermissionService._USERACCOUNT,
-      perm: PermissionService._VIEW,
-    }, UserService.usr_id);
+    const response = await apiService.getUserById({}, UserService.usr_id);
 
-    const userEmail = await apiService.getEmployeeById({
-        docId: PermissionService._EMPLOYEES,
-      perm: PermissionService._VIEW,
-    }, response.data.employee_id);
+    const userEmail = await apiService.getEmployeeById({}, response.data.employee_id);
 
     form.value.first_name = response.data.first_name;
     form.value.family_name = response.data.last_name;
@@ -195,10 +189,7 @@ const fetchEmployees = async () => {
 const fetchStatuses = async () => {
   try {
     // Fetch status data from API
-    const response = await apiService.get({
-      docId: PermissionService._LIBRARIES,
-      perm: PermissionService._VIEW,
-    }, 'user_account_status'); // Ensure this API endpoint exists
+    const response = await apiService.get({}, 'user_account_status'); // Ensure this API endpoint exists
     statuses.value = response.data.map((status: any) => ({
       id: status.id,
       name: status.description,

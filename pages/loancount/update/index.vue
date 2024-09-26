@@ -90,8 +90,6 @@ async function fetchloancount() {
 const submitForm = async () => {
   try {
       const params = {
-          docId: PermissionService._CUSTOMERS,
-          perm: PermissionService._CREATE,
           loan_count: loanCount.value,
           min_amount: minAmount.value,
           max_amount: maxAmount.value

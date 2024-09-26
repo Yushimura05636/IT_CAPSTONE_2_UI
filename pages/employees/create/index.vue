@@ -185,8 +185,6 @@ const createEmployee = async () => {
     const employeeId = EmployeesService.id;
     
     const jsonObject = {
-      docId: PermissionService._EMPLOYEES,
-      perm: PermissionService._CREATE,
       employee: {
             sss_no: employee.value.sss_no,
             phic_no: employee.value.phnic_no,

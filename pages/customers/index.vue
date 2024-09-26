@@ -149,9 +149,9 @@ const filteredTableItems = computed(() => {
 
 async function createCustomer() {
   try {
-    const response = await apiService.auth({
-      docId: PermissionService._CUSTOMERS,
-      perm: PermissionService._CREATE,
+    const response = await apiService.authCustomersCreate({
+      docId: PermissionService.CUSTOMERS,
+      perm: PermissionService.CREATE
     });
     navigateTo('/customers/create');
   } catch (error) {
@@ -162,9 +162,9 @@ async function createCustomer() {
 async function modifyCustomer() {
   try {
     CustomersService.id = parseInt(selectedEmployeeId.value?.toString());
-    const response = await apiService.auth({
-      docId: PermissionService._CUSTOMERS,
-      perm: PermissionService._UPDATE,
+    const response = await apiService.authCustomersUpdate({
+      docId: PermissionService.CUSTOMERS,
+      perm: PermissionService.UPDATE
     });
     navigateTo(`customers/update`)
   } catch (error) {
@@ -202,10 +202,7 @@ interface TableItem {
 // Fetching customers from the API
 async function fetchCustomers() {
   try {
-    const response = await apiService.getCustomers({
-      docId: PermissionService._CUSTOMERS,
-      perm: PermissionService._VIEW,
-    }); // Fetch customer data from API
+    const response = await apiService.getCustomers({}); // Fetch customer data from API
 
     // Store API response in state (assuming API returns arrays)
     state.datas = response // An array of personality objects

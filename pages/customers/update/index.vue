@@ -245,10 +245,7 @@ const state = ref({
 const fetchBarangays = async () => {
   // Replace with your actual API call
   try {
-    const response = await apiService.get({
-      docId: PermissionService._CUSTOMERS,
-      perm: PermissionService._VIEW,
-    }, "barangay");
+    const response = await apiService.get({}, "barangay");
 
     state.value.barangays = response.data;
   } catch (error) {
@@ -259,10 +256,7 @@ const fetchBarangays = async () => {
 const fetchCities = async () => {
   // Replace with your actual API call
   try {
-    const response = await apiService.get({
-      docId: PermissionService._CUSTOMERS,
-      perm: PermissionService._VIEW,
-    }, "city");
+    const response = await apiService.get({}, "city");
 
     state.value.cities = response.data;
 
@@ -273,10 +267,7 @@ const fetchCities = async () => {
 
 const fetchCountries = async () => {
   try {
-    const response = await apiService.get({
-      docId: PermissionService._CUSTOMERS,
-      perm: PermissionService._VIEW,
-    }, "country");
+    const response = await apiService.get({}, "country");
 
     state.value.countries = response.data;
   } catch (error) {
@@ -287,10 +278,7 @@ const fetchCountries = async () => {
 const fetchProvinces = async () => {
   // Replace with your actual API call
   try {
-    const response = await apiService.get({
-      docId: PermissionService._CUSTOMERS,
-      perm: PermissionService._VIEW,
-    }, "province");
+    const response = await apiService.get({}, "province");
 
     state.value.provinces = response.data;
   } catch (error) {
@@ -301,10 +289,7 @@ const fetchProvinces = async () => {
 const fetchCreditStatuses = async () => {
   // Replace with your actual API call
   try {
-    const response = await apiService.get({
-      docId: PermissionService._CUSTOMERS,
-      perm: PermissionService._VIEW,
-    }, "credit_status");
+    const response = await apiService.get({}, "credit_status");
 
     state.value.creditStatuses = response.data;
   } catch (error) {
@@ -315,10 +300,7 @@ const fetchCreditStatuses = async () => {
 const fetchGroups = async () => {
   // Replace with your actual API call
   try {
-    const response = await apiService.get({
-      docId: PermissionService._CUSTOMERS,
-      perm: PermissionService._VIEW,
-    }, "customer_group");
+    const response = await apiService.get({}, "customer_group");
 
     state.value.groups = response.data;
   } catch (error) {
@@ -329,10 +311,7 @@ const fetchGroups = async () => {
 const fetchPersonalityStatusCode = async () => {
   // Replace with your actual API call
   try {
-    const response = await apiService.get({
-      docId: PermissionService._CUSTOMERS,
-      perm: PermissionService._VIEW,
-    }, "personality_status_map");
+    const response = await apiService.get({}, "personality_status_map");
 
     state.value.personality_status_code = response.data;
   } catch (error) {
@@ -343,10 +322,7 @@ const fetchPersonalityStatusCode = async () => {
 const fetchLoanCount = async () => {
   // Replace with your actual API call
   try {
-    const response = await apiService.getLoanCount({
-      docId: PermissionService._CUSTOMERS,
-      perm: PermissionService._VIEW,
-    });
+    const response = await apiService.getLoanCount({});
 
     state.value.loan_count = response.data;
 
@@ -379,10 +355,7 @@ const fetchCustomer = async () => {
     navigateTo('/customers'); // Redirect to the customer list page or show an error
     return;
   } // Assuming you pass the ID in the route
-  const response = await apiService.getCustomerById({
-    docId: PermissionService._CUSTOMERS,
-    perm: PermissionService._VIEW,
-  },customerId);
+  const response = await apiService.getCustomerById({},customerId);
   ; // Fetch customer data
   Object.assign(customer.value, response.customer);
   Object.assign(personality.value, response.personality) // Merge response data into customer
@@ -398,8 +371,6 @@ const updateCustomer = async () => {
   try {
     const customerId = CustomersService.id;
     const jsonObject = {
-      docId: PermissionService._CUSTOMERS,
-      perm: PermissionService._CREATE,
       customer: {
             group_id: customer.value.group_id,
             passbook_no: customer.value.passbook_no,

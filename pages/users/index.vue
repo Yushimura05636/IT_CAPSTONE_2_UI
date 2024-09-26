@@ -86,11 +86,7 @@ async function fetchUsers() {
   state.error = null;
 
   try {
-    const params = {
-      docId: PermissionService._USERACCOUNT,
-      perm: PermissionService._VIEW,
-    };
-    await apiService.auth(params);
+    const params = {};
     const response = await apiService.getUser(params);
     state.users = response;
     console.log(state.users);
@@ -102,9 +98,9 @@ async function fetchUsers() {
 
 async function createUser() {
   try {
-    await apiService.auth({
-      docId: PermissionService._USERACCOUNT,
-      perm: PermissionService._CREATE,
+    await apiService.authUsersCreate({
+      docId: PermissionService.USER_ACCOUNTS,
+      perm: PermissionService.CREATE
     });
     navigateTo('/users/create');
   } catch (error) {
@@ -116,9 +112,9 @@ async function updateUser() {
   if (selectedUserId.value) { // Ensure a user is selected
     try {
       UserService.usr_id = parseInt(selectedUserId.value); // Get the selected user ID
-      await apiService.auth({
-        docId: PermissionService._USERACCOUNT,
-        perm: PermissionService._UPDATE,
+      await apiService.authUsersUpdate({
+        docId: PermissionService.USER_ACCOUNTS,
+        perm: PermissionService.UPDATE
       });
       navigateTo(`/users/update/`); // Navigate to update page
     } catch (error) {
@@ -132,9 +128,9 @@ async function updateUser() {
 async function managePermissions(userId: number) {
   try {
     UserService.usr_id = userId;
-    await apiService.auth({
-      docId: PermissionService._USERACCOUNT,
-      perm: PermissionService._UPDATE,
+    await apiService.authUsersUpdate({
+      docId: PermissionService.USER_ACCOUNTS,
+      perm: PermissionService.UPDATE
     });
     navigateTo('/permission/manage');
   } catch (error: any) {

@@ -80,10 +80,7 @@ import { PermissionService } from '~/models/Permission';
         state.error = null;
         ;
         try {
-            const params = {
-                docId: PermissionService._USERACCOUNT,
-                perm: PermissionService._VIEW,
-            };
+            const params = {};
             const response = await apiService.getUser(params)
             state.users = response
             console.log(state.users);
@@ -98,10 +95,10 @@ import { PermissionService } from '~/models/Permission';
     async function managePermissions(userId: number) {
         try {
             UserService.usr_id = userId;
-            const response = await apiService.auth(
+            const response = await apiService.authUsersUpdate(
                 {
-                    docId: PermissionService._USERACCOUNT,
-                    perm: PermissionService._UPDATE,
+                    docId: PermissionService.USER_ACCOUNTS,
+                    perm: PermissionService.UPDATE
                 }
             );
             navigateTo('/permission/manage');

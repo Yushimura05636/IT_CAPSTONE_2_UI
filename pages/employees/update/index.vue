@@ -183,10 +183,7 @@ async function fetchEmployeeData() {
     router.push('/Libraries/EmployeeView'); // Redirect to the employee list page or show an error
     return;
   }
-  const response = await apiService.getEmployeeById({
-    docId: PermissionService._EMPLOYEES,
-    perm: PermissionService._VIEW,
-  }, employeeId);
+  const response = await apiService.getEmployeeById({}, employeeId);
   ; // Fetch employee data and set the initial values of the `personality` and `employee` objects
   Object.assign(employee.value, response.employee);
   Object.assign(personality.value, response.personality);
@@ -209,8 +206,6 @@ const updateEmployee = async () => {
     alert(employee.value.personality_id);
     
     const jsonObject = {
-      docId: PermissionService._EMPLOYEES,
-      perm: PermissionService._UPDATE,
       employee: {
             sss_no: employee.value.sss_no,
             phic_no: employee.value.phnic_no,

@@ -89,6 +89,7 @@
     import { apiService } from '~/routes/api/API'
     import { paymentDurationService } from '~/models/PaymentDuration'
 import { PermissionService } from '~/models/Permission';
+import { PaymentFrequency } from '../../models/PaymentFrequency';
     
     const state = reactive({
         columnHeaders: [
@@ -115,10 +116,7 @@ import { PermissionService } from '~/models/Permission';
         state.error = null
         try {
             const params = {}
-            const response = await apiService.getPaymentduration({
-                docId: PermissionService._PAYMENTDURATION,
-                perm: PermissionService._VIEW,
-            })
+            const response = await apiService.getPaymentduration({})
             state.duration = response
             console.log(state.duration);
         } catch (error: any) {
@@ -132,9 +130,9 @@ import { PermissionService } from '~/models/Permission';
 
     async function updateDuration(){
         try {
-            const response = await apiService.auth({
-                docId: PermissionService._PAYMENTDURATION,
-                perm: PermissionService._UPDATE,
+            const response = await apiService.authPaymentDurationsUpdate({
+                docId: PermissionService.PAYMENT_DURATION,
+                perm: PermissionService.UPDATE
             })
             if (selectedDurationID.value) {
         let numOfPayments = null;
@@ -170,9 +168,9 @@ import { PermissionService } from '~/models/Permission';
     }
     async function createPaymentFrequency() {
         try {
-            const response = await apiService.auth({
-                docId: PermissionService._USERACCOUNT,
-                perm: PermissionService._CREATE,
+            const response = await apiService.authPaymentFrequenciesCreate({
+                docId: PermissionService.PAYMENT_FREQUENCIES,
+                perm: PermissionService.CREATE
             })
             navigateTo('payment_duration/create');
         } catch (error) {

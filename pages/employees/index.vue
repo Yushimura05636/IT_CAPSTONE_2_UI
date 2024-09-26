@@ -183,22 +183,24 @@ interface TableItem {
 
 async function createEmployee() {
   try {
-    const response = await apiService.auth({
-      docId: PermissionService._EMPLOYEES,
-      perm: PermissionService._CREATE,
+    debugger;
+    const response = await apiService.authEmployeesCreate({
+      docId: PermissionService.EMPLOYEES,
+      perm: PermissionService.CREATE
     });
+    navigateTo('employees/create');
   } catch (error) {
     alert(error);
   }
-  navigateTo('employees/create');
 }
 
 async function modifyEmployee() {
   try {
+    debugger;
     EmployeesService.id = parseInt(selectedEmployeeId.value?.toString());
-    const response = await apiService.auth({
-      docId: PermissionService._EMPLOYEES,
-      perm: PermissionService._UPDATE,
+    const response = await apiService.authEmployeesUpdate({
+      docId: PermissionService.EMPLOYEES,
+      perm: PermissionService.UPDATE
     });
     navigateTo('employees/update');
   } catch (error) {
@@ -209,10 +211,7 @@ async function modifyEmployee() {
 async function fetchEmployees() {
   try {
      // Your query params for the API
-    const response = await apiService.getEmployees({
-      docId: PermissionService._EMPLOYEES,
-      perm: PermissionService._VIEW,
-    }); // Fetch customer data from API
+    const response = await apiService.getEmployees({}); // Fetch customer data from API
     state.datas = response;
     
     // Call the function to map the API data to tableItems

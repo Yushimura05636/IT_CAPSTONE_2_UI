@@ -132,15 +132,15 @@ class API extends BaseAPIService {
 
     //documentpermission
     async createDocumentPermission(params: object): Promise<any> {
-        return await this.request(`/DOCUMENT_PERMISSION`, 'POST', params)
+        return await this.request(`/DOCUMENT_PERMISSIONS`, 'POST', params)
     }
 
     async updateDocumentPermission(params: object, id: number): Promise<any> {
-        return await this.request(`/DOCUMENT_PERMISSION/${id}`, 'PUT', params)
+        return await this.request(`/DOCUMENT_PERMISSIONS/${id}`, 'PUT', params)
     }
     
     async deleteDocumentPermission(params: object, id: number): Promise<any> {
-        return await this.request(`/DOCUMENT_PERMISSION/${id}`, 'DELETE', params)
+        return await this.request(`/DOCUMENT_PERMISSIONS/${id}`, 'DELETE', params)
     }
 
     //users
@@ -207,8 +207,12 @@ class API extends BaseAPIService {
     }
 
     //auth
-    async auth(params: object): Promise<any> {
+    async authCreate(params: object): Promise<any> {
         return await this.request(`/USER_AUTH`, 'POST', params)
+    }
+
+    async authUpdate(params: object): Promise<any> {
+        return await this.request(`/USER_AUTH`, 'PUT', params)
     }
 
     //factor rate
@@ -276,6 +280,145 @@ class API extends BaseAPIService {
     async deleteFee(params: object, id: number): Promise<any> {
         return await this.request(`/FEES/${id}`, 'DELETE', params)
     }
+
+
+    //perm with empty return
+    
+    // User Authentication
+async authUserAuthCreate(params: object): Promise<any> {
+    return await this.request(`/USER_AUTH/create`, 'PATCH', params);
+}
+
+async authUserAuthUpdate(params: object): Promise<any> {
+    return await this.request(`/USER_AUTH/update`, 'PATCH', params);
+}
+
+// Users
+async authUsersCreate(params: object): Promise<any> {
+    return await this.request(`/USERS/create`, 'PATCH', params);
+}
+
+async authUsersUpdate(params: object): Promise<any> {
+    return await this.request(`/USERS/update`, 'PATCH', params);
+}
+
+// Libraries
+async authLibrariesCreate(params: object): Promise<any> {
+    return await this.request(`/LIBRARIES/create`, 'PATCH', params);
+}
+
+async authLibrariesUpdate(params: object): Promise<any> {
+    return await this.request(`/LIBRARIES/update`, 'PATCH', params);
+}
+
+// Customers
+async authCustomersCreate(params: object): Promise<any> {
+    return await this.request(`/CUSTOMERS/create`, 'PATCH', params);
+}
+
+async authCustomersUpdate(params: object): Promise<any> {
+    return await this.request(`/CUSTOMERS/update`, 'PATCH', params);
+}
+
+// Customer Groups
+async authCustomerGroupsCreate(params: object): Promise<any> {
+    return await this.request(`/CUSTOMER_GROUPS/create`, 'PATCH', params);
+}
+
+async authCustomerGroupsUpdate(params: object): Promise<any> {
+    return await this.request(`/CUSTOMER_GROUPS/update`, 'PATCH', params);
+}
+
+// Employees
+async authEmployeesCreate(params: object): Promise<any> {
+    return await this.request(`/EMPLOYEES/create`, 'PATCH', params);
+}
+
+async authEmployeesUpdate(params: object): Promise<any> {
+    return await this.request(`/EMPLOYEES/update`, 'PATCH', params);
+}
+
+// Factor Rates
+async authFactorRatesCreate(params: object): Promise<any> {
+    return await this.request(`/FACTORRATES/create`, 'PATCH', params);
+}
+
+async authFactorRatesUpdate(params: object): Promise<any> {
+    return await this.request(`/FACTORRATES/update`, 'PATCH', params);
+}
+
+// Payment Durations
+async authPaymentDurationsCreate(params: object): Promise<any> {
+    return await this.request(`/PAYMENT_DURATIONS/create`, 'PATCH', params);
+}
+
+async authPaymentDurationsUpdate(params: object): Promise<any> {
+    return await this.request(`/PAYMENT_DURATIONS/update`, 'PATCH', params);
+}
+
+// Payment Frequencies
+async authPaymentFrequenciesCreate(params: object): Promise<any> {
+    return await this.request(`/PAYMENT_FREQUENCIES/create`, 'PATCH', params);
+}
+
+async authPaymentFrequenciesUpdate(params: object): Promise<any> {
+    return await this.request(`/PAYMENT_FREQUENCIES/update`, 'PATCH', params);
+}
+
+// Document Permissions
+async authDocumentPermissionsCreate(params: object): Promise<any> {
+    return await this.request(`/DOCUMENT_PERMISSIONS/create`, 'PATCH', params);
+}
+
+async authDocumentPermissionsUpdate(params: object): Promise<any> {
+    return await this.request(`/DOCUMENT_PERMISSIONS/update`, 'PATCH', params);
+}
+
+// Document Maps
+async authDocumentMapsCreate(params: object): Promise<any> {
+    return await this.request(`/DOCUMENT_MAPS/create`, 'PATCH', params);
+}
+
+async authDocumentMapsUpdate(params: object): Promise<any> {
+    return await this.request(`/DOCUMENT_MAPS/update`, 'PATCH', params);
+}
+
+// Document Map Permissions
+async authDocumentMapPermissionsCreate(params: object): Promise<any> {
+    return await this.request(`/DOCUMENT_MAP_PERMISSIONS/create`, 'PATCH', params);
+}
+
+async authDocumentMapPermissionsUpdate(params: object): Promise<any> {
+    return await this.request(`/DOCUMENT_MAP_PERMISSIONS/update`, 'PATCH', params);
+}
+
+// Loan Counts
+async authLoanCountsCreate(params: object): Promise<any> {
+    return await this.request(`/LOAN_COUNTS/create`, 'PATCH', params);
+}
+
+async authLoanCountsUpdate(params: object): Promise<any> {
+    return await this.request(`/LOAN_COUNTS/update`, 'PATCH', params);
+}
+
+// Fees
+async authFeesCreate(params: object): Promise<any> {
+    return await this.request(`/FEES/create`, 'PATCH', params);
+}
+
+async authFeesUpdate(params: object): Promise<any> {
+    return await this.request(`/FEES/update`, 'PATCH', params);
+}
+
+// Personalities
+async authPersonalitiesCreate(params: object): Promise<any> {
+    return await this.request(`/PERSONALITIES/create`, 'PATCH', params);
+}
+
+async authPersonalitiesUpdate(params: object): Promise<any> {
+    return await this.request(`/PERSONALITIES/update`, 'PATCH', params);
+}
+
 
 }
 

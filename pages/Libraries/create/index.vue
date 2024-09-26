@@ -113,8 +113,6 @@ const submitForm = () => {
 async function create() {
   try {
     const params = {
-      docId: PermissionService._LIBRARIES,
-      perm: PermissionService._CREATE,
       modeltype: form.value.modeltype.toLowerCase(),
       description: form.value.description,
     };

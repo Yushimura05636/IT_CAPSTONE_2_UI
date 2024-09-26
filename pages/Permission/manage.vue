@@ -170,9 +170,8 @@ return map;
 
 async function fetchPermissionandDocuments() {
 try {
-  const perms = await apiService.auth({docId: 1, perm: "view"});
   const params = {};
-  const tblpermissions = await apiService.getPermission({});
+  const tblpermissions = await apiService.getPermission(params);
   const permissions = await apiService.getUserPermission(params, UserService.usr_id);
   const documents = await apiService.getDocumentMap(params);
   const users = await apiService.getUserById(params, UserService.usr_id);
@@ -202,9 +201,11 @@ try {
   });
   formSuccess.value = true;
   } else {
+    alert(error);
     state.error = 'Unexpected response format.';
   }
 } catch (error) {
+  alert(error);
   formSuccess.value = false;
   state.error = 'Failed to fetch roles. Please try again.';
 } finally {
@@ -246,22 +247,7 @@ try {
     DocumentPermissionMap: {
       data: documentPermissionMap,  // The document-permission mapping
     },
-    docId: PermissionService._USERACCOUNT,
-    perm: PermissionService._UPDATE,
   };
-
-  // //delete existing permission
-  // const del = await apiService.deleteDocumentPermission({}, state.user.id);
-
-  // if(del)
-  // {
-  //     console.log('deleted!');
-  // }
-
-  // for(let i = 0; i < 1000; i++)
-  // {
-  //     //wait
-  // }
 
   //create another permission
   //const response = await apiService.createDocumentPermission(jsonObject);

@@ -58,8 +58,6 @@ const paymentDuration = ref({
 
         try {
             const jsonObject = {
-                docId: PermissionService._PAYMENTDURATION,
-                perm: PermissionService._CREATE,
                 description: paymentDuration.value.description,
                 number_of_payments: paymentDuration.value.number_of_payments,
                 notes: paymentDuration.value.notes,

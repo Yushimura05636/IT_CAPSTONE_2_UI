@@ -74,14 +74,8 @@ import { PermissionService } from '~/models/Permission';
     async function fetchFreqAndDura() {
         try {
             const params = {};
-            const frequency = await apiService.getPaymentFrequency({
-                docId: PermissionService._PAYMENTFREQUENCY,
-                perm: PermissionService._VIEW,
-            })
-            const duration = await apiService.getPaymentduration({
-                docId: PermissionService._PAYMENTDURATION,
-                perm: PermissionService._VIEW,
-            })
+            const frequency = await apiService.getPaymentFrequency({})
+            const duration = await apiService.getPaymentduration({})
 
             console.log('payment freq' + frequency);
             console.log('payment duration' + duration);
@@ -117,8 +111,6 @@ const factorRate = ref({
     const createFactorRate = async () => {
     try {
         const jsonObject = {
-            docId: PermissionService._FACTORRATE,
-            perm: PermissionService._CREATE,
             payment_frequency_id: parseInt(factorRate.value.payment_frequency_id?.toString()),
             payment_duration_id: parseInt(factorRate.value.payment_duration_id?.toString()),
             description: factorRate.value.description,

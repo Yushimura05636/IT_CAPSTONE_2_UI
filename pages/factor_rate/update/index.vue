@@ -89,14 +89,8 @@ import { UserService } from '~/models/User';
     //factorRate.value.payment_duration_id
     // factorRate.value.payment_frequency_id
     try {
-      const frequency = await apiService.getPaymentFrequency({
-        docId: PermissionService._PAYMENTFREQUENCY,
-        perm: PermissionService._VIEW,  
-      });
-      const duration = await apiService.getPaymentduration({
-        docId: PermissionService._PAYMENTDURATION,
-        perm: PermissionService._VIEW,
-      });
+      const frequency = await apiService.getPaymentFrequency({});
+      const duration = await apiService.getPaymentduration({});
   
       if (frequency && frequency.data && duration && duration.data) {
         state.frequency = frequency.data;
@@ -120,10 +114,7 @@ import { UserService } from '~/models/User';
     const factorRateId = route.params.id; // Assuming the ID is passed as a route parameter
   
     try {
-      const response = await apiService.getFactorRateById({
-        docId: PermissionService._FACTORRATE,
-        perm: PermissionService._VIEW,
-      }, UserService.usbl_id); // Adjust this based on your API structure
+      const response = await apiService.getFactorRateById({}, UserService.usbl_id); // Adjust this based on your API structure
       if (response && response.data) {
         factorRate.value = response.data;
         getIds.freqId = response.data.payment_frequency_id
@@ -146,8 +137,6 @@ import { UserService } from '~/models/User';
   const updateFactorRate = async () => {
     try {
       const jsonObject = {
-        docId: PermissionService._FACTORRATE,
-        perm: PermissionService._UPDATE,
         id: factorRate.value.id, // Include the ID in the update request
         payment_frequency_id: parseInt(factorRate.value.payment_frequency_id?.toString()),
         payment_duration_id: parseInt(factorRate.value.payment_duration_id?.toString()),

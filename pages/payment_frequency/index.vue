@@ -116,10 +116,7 @@ import { PermissionService } from '~/models/Permission';
         state.isTableLoading = true
         state.error = null
         try {
-            const params = {
-                docId: PermissionService._PAYMENTFREQUENCY,
-                perm: PermissionService._VIEW,
-            }
+            const params = {}
             const response = await apiService.getPaymentFrequency(params)
             state.frequency = response
             console.log(state.frequency);
@@ -135,9 +132,9 @@ import { PermissionService } from '~/models/Permission';
     
     async function updateFrequency(){
         try {
-            const response = await apiService.auth({
-                docId: PermissionService._PAYMENTFREQUENCY,
-                perm: PermissionService._UPDATE,
+            const response = await apiService.authPaymentFrequenciesUpdate({
+                docId: PermissionService.PAYMENT_FREQUENCIES,
+                perm: PermissionService.UPDATE
             })
             if (selectedFrequencyID.value) {
         let daysInterval = null;
@@ -174,9 +171,9 @@ import { PermissionService } from '~/models/Permission';
 
     async function createPaymentFrequency() {
         try {
-            const response = await apiService.auth({
-                docId: PermissionService._PAYMENTFREQUENCY,
-                perm: PermissionService._CREATE,
+            const response = await apiService.authPaymentFrequenciesCreate({
+                docId: PermissionService.PAYMENT_FREQUENCIES,
+                perm: PermissionService.CREATE
             })
             navigateTo('/payment_frequency/create')
         } catch (error) {
