@@ -64,12 +64,14 @@
 </template>
 
 <script setup lang="ts">
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
 import { ref } from 'vue';
 import { PermissionService } from '~/models/Permission';
 import { apiService } from '~/routes/api/API';
 import { useRouter } from 'vue-router';
-import { toast } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
+
 
 
 const loanCount = ref<number | null>(null);

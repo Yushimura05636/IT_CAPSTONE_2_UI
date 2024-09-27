@@ -57,6 +57,9 @@
   
   
   <script setup lang="ts">
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
 import { ref, reactive, onMounted } from 'vue';
 import { apiService } from '~/routes/api/API';
 import { UserService } from '~/models/User';
@@ -65,7 +68,7 @@ import { PermissionService } from '~/models/Permission';
 
 const state = reactive({
   columnHeaders: [
-    { name: 'ID' },
+    { name: 'Select' },
     { name: 'Full Name' },
     { name: 'Email' },
   ],
@@ -101,7 +104,9 @@ async function createUser() {
     await apiService.authUsersCreate({});
     navigateTo('/users/create');
   } catch (error) {
-    alert(error);
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
   }
 }
 
@@ -112,7 +117,9 @@ async function updateUser() {
       await apiService.authUsersUpdate({});
       navigateTo(`/users/update/`); // Navigate to update page
     } catch (error) {
-      alert(error);
+      toast.error(error.message, {
+      autoClose: 5000,
+    })
     }
   } else {
     alert("Please select a user to update.");

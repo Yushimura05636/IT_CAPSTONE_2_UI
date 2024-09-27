@@ -118,6 +118,9 @@
 </template>
 
 <script setup lang="ts">
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
 import { EmployeesService } from '~/models/Employee';
 import { ref, computed } from 'vue'
 import { apiService } from '~/routes/api/API'
@@ -187,7 +190,9 @@ async function createEmployee() {
     const response = await apiService.authEmployeesCreate({});
     navigateTo('employees/create');
   } catch (error) {
-    alert(error);
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
   }
 }
 
@@ -198,7 +203,9 @@ async function modifyEmployee() {
     const response = await apiService.authEmployeesUpdate({});
     navigateTo('employees/update');
   } catch (error) {
-    alert(error);
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
   }
 }
 
@@ -212,8 +219,9 @@ async function fetchEmployees() {
     storeResponseInTableItems();
 
   } catch (error) {
-    alert(error);
-    console.error(error);
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
   }
 }
 

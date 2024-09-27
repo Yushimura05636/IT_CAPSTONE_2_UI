@@ -44,12 +44,15 @@
 </template>
 
 <script setup lang="ts">
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
     import { ref } from 'vue';
     import { apiService } from '~/routes/api/API'
     import { paymentFrequencyService } from '~/models/PaymentFrequency'
     import { PermissionService } from '~/models/Permission';
-    import { toast } from 'vue3-toastify';
-    import 'vue3-toastify/dist/index.css';
+    
+    
 
 
     const form = ref({

@@ -125,6 +125,9 @@
   </template>
   
   <script setup lang="ts">
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
   import { ref, reactive, computed, onMounted } from 'vue';
   import { UserService } from '~/models/User';
   import { apiService } from '~/routes/api/API'; // Adjust path as necessary
@@ -222,14 +225,18 @@
     const response = await apiService.createDocumentPermission(jsonObject);
 
     if (response) {
-      console.log('The permission has updated successfully!');
+      toast.success('The permission has updated succesfully!', {
+        autoClose: 5000,
+      })
     }
 
     // Send to the database
     console.log("Predefined JSON structure:", jsonObject);
 
   } catch (error: any) {
-    console.log(error);
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
   }
 }
 

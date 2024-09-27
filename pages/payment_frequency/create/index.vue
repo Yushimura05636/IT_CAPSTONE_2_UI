@@ -41,11 +41,14 @@
     
     
 <script setup lang="ts">
-import { ref } from 'vue';
 import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
+import { ref } from 'vue';
+
 import { PermissionService } from '~/models/Permission';
 import { apiService } from '~/routes/api/API';
-import 'vue3-toastify/dist/index.css';
+
 
 
     function back() {
@@ -83,7 +86,9 @@ import 'vue3-toastify/dist/index.css';
 
             } catch (error) {
                 toast.error('Error creating Payment Frequency: ' + error);
-                console.error(error);
+                toast.error(error.message, {
+        autoClose: 5000,
+      });
             }
         };   
 </script>

@@ -110,13 +110,15 @@
 </template>
 
 <script setup lang="ts">
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
 import { ref, reactive, computed, onMounted } from 'vue';
 import { UserService } from '~/models/User';
 import { apiService } from '~/routes/api/API'; // Adjust path as necessary
 import FormResultPopup from '~/components/form/ResultPopup.vue'; // Adjust path if needed
 import { PermissionService } from '~/models/Permission';
-import { toast } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
+
 
 
 const showResultPopup = ref(false);
@@ -204,11 +206,15 @@ try {
   });
   formSuccess.value = true;
   } else {
-    alert(error);
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
     state.error = 'Unexpected response format.';
   }
 } catch (error) {
-  alert(error);
+  toast.error(error.message, {
+      autoClose: 5000,
+    })
   formSuccess.value = false;
   state.error = 'Failed to fetch roles. Please try again.';
 } finally {
@@ -262,10 +268,6 @@ try {
     toast.success("The permission has updated successfully!", {
           autoClose: 2000,
           });
-          // Introduce a delay before navigating
-          setTimeout(() => {
-            navigateTo('/permission');  
-          }, 2000);
   }
 
   // Send to the database
@@ -274,8 +276,9 @@ try {
 } catch (error: any) {
   formSuccess.value = false;
   state.error = error;
-  alert(state.error);
-  console.log(error);
+  toast.error(error.message, {
+      autoClose: 5000,
+    })
 }
 }
 

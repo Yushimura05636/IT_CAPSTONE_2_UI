@@ -59,12 +59,14 @@
 </template>
 
 <script setup lang="ts">
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
 import { ref } from 'vue';
 import { apiService } from '~/routes/api/API';
 import { libraryService } from '~/models/Library';
 import { PermissionService } from '~/models/Permission';
-import { toast } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
+
 
 
 const modelTypes = [
@@ -105,7 +107,9 @@ const submitForm = () => {
       form.value.modeltype = '';
       form.value.description = '';
     } catch (error: any) {
-      console.log(error);
+      toast.error(error.message, {
+      autoClose: 5000,
+    })
     }
   } else {
     // Handle empty fields (optional)

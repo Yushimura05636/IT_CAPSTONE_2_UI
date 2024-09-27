@@ -82,6 +82,9 @@
 
 
 <script setup lang="ts">
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
     import { ref, reactive, onMounted } from 'vue'
     import { apiService } from '~/routes/api/API'
     import { paymentDurationService } from '~/models/PaymentDuration'

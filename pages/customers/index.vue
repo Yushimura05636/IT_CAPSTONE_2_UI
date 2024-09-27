@@ -118,12 +118,16 @@
 </template>
 
 <script setup lang="ts">
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
 import { CustomersService } from '~/models/Customer';
 import { ref, computed } from 'vue'
 import { apiService } from '~/routes/api/API'
 import { numeric } from '@vuelidate/validators';
 import { PermissionService } from '~/models/Permission';
 import Permission from '../non_used_components/Permission.vue';
+
 
 const searchQuery = ref<string>('')
 
@@ -151,8 +155,10 @@ async function createCustomer() {
   try {
     const response = await apiService.authCustomersCreate({});
     navigateTo('/customers/create');
-  } catch (error) {
-    alert(error);
+  } catch (error: any) {
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
   }
 }
 
@@ -163,7 +169,9 @@ async function modifyCustomer() {
     const response = await apiService.authCustomersUpdate({});
     navigateTo(`customers/update`)
   } catch (error) {
-    alert(error);
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
   }
 }
 
@@ -210,8 +218,9 @@ async function fetchCustomers() {
     
 
   } catch (error) {
-    alert(error);
-    console.error(error);
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
   }
 }
 

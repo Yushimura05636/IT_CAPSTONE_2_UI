@@ -47,9 +47,11 @@
     
     
 <script setup lang="ts">
-import { ref } from 'vue';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
+
+import { ref } from 'vue';
+
 import { apiService } from '~/routes/api/API';
 
     function back() {
@@ -90,7 +92,9 @@ import { apiService } from '~/routes/api/API';
 
             } catch (error) {
                 toast.error('Error creating Fee: ' + error);
-                console.error(error);
+                toast.error(error.message, {
+        autoClose: 5000,
+      });
             }
         };   
 </script>

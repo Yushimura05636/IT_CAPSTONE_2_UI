@@ -96,6 +96,9 @@
   </template>
   
   <script setup lang="ts">
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
   import { ref, reactive, onMounted } from 'vue';
   import { libraryService } from '~/models/Library';
 import { PermissionService } from '~/models/Permission';
@@ -146,7 +149,9 @@ import { PermissionService } from '~/models/Permission';
       const response = await apiService.authLibrariesCreate({})
       navigateTo('libraries/create');
     } catch (error) {
-      alert(error);
+      toast.error(error.message, {
+      autoClose: 5000,
+    })
     }
   }
   
@@ -173,7 +178,9 @@ import { PermissionService } from '~/models/Permission';
         navigateTo('libraries/update');
       }
     } catch (error) {
-      alert(error);
+      toast.error(error.message, {
+      autoClose: 5000,
+    })
     }
   }
   

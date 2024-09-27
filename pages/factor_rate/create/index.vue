@@ -60,9 +60,12 @@
     
     
 <script setup lang="ts">
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
     import { ref } from 'vue';
-    import { toast } from 'vue3-toastify';
-    import 'vue3-toastify/dist/index.css';
+    
+    
     import { PermissionService } from '~/models/Permission';
     import { apiService } from '~/routes/api/API';
 
@@ -135,7 +138,9 @@ const factorRate = ref({
 
         } catch (error) {
             toast.error('Error creating Factor: ' + error);
-            console.error(error);
+            toast.error(error.message, {
+        autoClose: 5000,
+      });
         }
     };
 

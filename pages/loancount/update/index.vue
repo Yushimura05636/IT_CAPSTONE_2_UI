@@ -64,13 +64,15 @@
 </template>
 
 <script setup lang="ts">
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
 import { ref } from 'vue';
 import { PermissionService } from '~/models/Permission';
 import { apiService } from '~/routes/api/API';
 import { useRouter } from 'vue-router';
 import { UserService } from '~/models/User';
-import { toast } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
+
 
 
 const loanCount = ref<number | null>(null);
@@ -86,7 +88,9 @@ async function fetchloancount() {
     minAmount.value = response.data.min_amount;
     maxAmount.value = response.data.max_amount;
   } catch (error) {
-    alert(error)
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
   }
 }
 
@@ -112,7 +116,9 @@ const submitForm = async () => {
           maxAmount: maxAmount.value
       });
   } catch (error) {
-      alert(error);
+      toast.error(error.message, {
+      autoClose: 5000,
+    })
   } finally {
       loanCount.value = null;
       minAmount.value = null;

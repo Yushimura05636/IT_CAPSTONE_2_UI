@@ -85,6 +85,9 @@
 
 
 <script setup lang="ts">
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
     import { ref, reactive, onMounted } from 'vue'
     import { apiService } from '~/routes/api/API'
     import { paymentDurationService } from '~/models/PaymentDuration'
@@ -93,7 +96,7 @@ import { PaymentFrequency } from '../../models/PaymentFrequency';
     
     const state = reactive({
         columnHeaders: [
-            { name: 'ID' },
+            { name: 'Select' },
             { name: 'Description' },
             { name: 'Number of Payments' },
             { name: 'Notes' }
@@ -120,7 +123,9 @@ import { PaymentFrequency } from '../../models/PaymentFrequency';
             state.duration = response
             console.log(state.duration);
         } catch (error: any) {
-            state.error = error
+            toast.error(error.message, {
+                autoClose: 5000,
+            })
         }
         state.isTableLoading = false
     }
@@ -160,7 +165,9 @@ import { PaymentFrequency } from '../../models/PaymentFrequency';
         navigateTo('payment_duration/update');
         }
         } catch (error) {
-            alert(error)
+            toast.error(error.message, {
+      autoClose: 5000,
+    })
         }
     }
     async function createPaymentFrequency() {
@@ -169,7 +176,9 @@ import { PaymentFrequency } from '../../models/PaymentFrequency';
             })
             navigateTo('payment_duration/create');
         } catch (error) {
-            alert(error);
+            toast.error(error.message, {
+      autoClose: 5000,
+    })
         }
     }
 

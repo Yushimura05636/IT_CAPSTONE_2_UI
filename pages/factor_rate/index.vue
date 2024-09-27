@@ -87,6 +87,9 @@
   </template>
   
   <script setup lang="ts">
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
   import { ref, reactive, onMounted } from 'vue';
   import { PermissionService } from '~/models/Permission';
   import { apiService } from '~/routes/api/API';
@@ -96,7 +99,7 @@ import Permission from '../non_used_components/Permission.vue';
   
   const state = reactive({
     columnHeaders: [
-      { name: 'ID' },
+      { name: 'Select' },
       { name: 'Payment Frequency' },
       { name: 'Payment Duration' },
       { name: 'Description' },
@@ -125,6 +128,9 @@ import Permission from '../non_used_components/Permission.vue';
       console.log(state.factorRate);
     } catch (error: any) {
       state.error = error;
+      toast.error(error.message, {
+        autoClose: 5000,
+      })
     }
     
     state.isTableLoading = false;
@@ -137,12 +143,12 @@ import Permission from '../non_used_components/Permission.vue';
   async function createFactorRate() {
     try {
       await apiService.authFactorRatesCreate({
-        docId: PermissionService.FACTOR_RATES?.data.id,
-        perm: PermissionService.CREATE?.data.id
       });
       navigateTo('factor_rate/create');
     } catch (error) {
-      alert(error);
+      toast.error(error.message, {
+      autoClose: 5000,
+    })
     }
   }
   
@@ -150,15 +156,14 @@ import Permission from '../non_used_components/Permission.vue';
     if (selectedFrequencyID.value) {
       try {
         // Use selectedFrequencyID.value to update the specific factor rate
-        const response = await apiService.authFactorRatesUpdate({
-          docId: PermissionService.FACTOR_RATES?.data.id,
-          perm: PermissionService.UPDATE?.data.id
-        });
+        const response = await apiService.authFactorRatesUpdate({});
 
         UserService.usbl_id = parseInt(selectedFrequencyID.value);
         navigateTo(`factor_rate/update`); // Pass the selected ID
       } catch (error) {
-        alert(error);
+        toast.error(error.message, {
+      autoClose: 5000,
+    })
       }
     } else {
       alert("Please select a factor rate to modify.");
@@ -174,7 +179,9 @@ import Permission from '../non_used_components/Permission.vue';
           alert("Factor rate deleted successfully!");
           fetchFactorRate(); // Refresh the list after deletion
         } catch (error) {
-          alert(error);
+          toast.error(error.message, {
+      autoClose: 5000,
+    })
         }
       }
     } else {

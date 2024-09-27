@@ -117,7 +117,9 @@ async function sendCustomerData()
     alert('Data sent successfully:' + response);
   } catch (error) {
     alert('Error sending data to Laravel API:' + error);
-    console.error(error);
+    toast.error(error.message, {
+        autoClose: 5000,
+      });
   }
 } 
 </script>

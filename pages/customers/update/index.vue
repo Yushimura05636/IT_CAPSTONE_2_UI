@@ -191,12 +191,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
 import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
+import { ref, onMounted } from 'vue';
+
 import { CustomersService } from '~/models/Customer';
 import { PermissionService } from '~/models/Permission';
 import { apiService } from '~/routes/api/API';
-import 'vue3-toastify/dist/index.css';
+
 
 
 const personality = ref({
@@ -252,7 +255,9 @@ const fetchBarangays = async () => {
 
     state.value.barangays = response.data;
   } catch (error) {
-    console.log(error);
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
   }
 };
 
@@ -264,7 +269,9 @@ const fetchCities = async () => {
     state.value.cities = response.data;
 
   } catch (error) {
-    console.log(error);
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
   }
 };
 
@@ -274,7 +281,9 @@ const fetchCountries = async () => {
 
     state.value.countries = response.data;
   } catch (error) {
-    console.log(error);
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
   }
 };
 
@@ -285,7 +294,9 @@ const fetchProvinces = async () => {
 
     state.value.provinces = response.data;
   } catch (error) {
-    console.log(error);
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
   }
 };
 
@@ -296,7 +307,9 @@ const fetchCreditStatuses = async () => {
 
     state.value.creditStatuses = response.data;
   } catch (error) {
-    console.log(error);
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
   }
 };
 
@@ -307,7 +320,9 @@ const fetchGroups = async () => {
 
     state.value.groups = response.data;
   } catch (error) {
-    console.log(error);
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
   }
 };
 
@@ -318,7 +333,9 @@ const fetchPersonalityStatusCode = async () => {
 
     state.value.personality_status_code = response.data;
   } catch (error) {
-    alert(error);
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
   }
 };
 
@@ -330,7 +347,9 @@ const fetchLoanCount = async () => {
     state.value.loan_count = response.data;
 
   } catch (error) {
-    console.log(error);
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
   }
 };
 
@@ -354,7 +373,9 @@ const fetchCustomer = async () => {
   ;
   // Check if customerId is defined and is a valid number
   if (!customerId || isNaN(Number(customerId))) {
-    alert('Invalid customer ID');
+    toast.error('Invalid Id!', {
+        autoClose: 5000,
+      })
     navigateTo('/customers'); // Redirect to the customer list page or show an error
     return;
   } // Assuming you pass the ID in the route
@@ -363,7 +384,9 @@ const fetchCustomer = async () => {
   Object.assign(customer.value, response.customer);
   Object.assign(personality.value, response.personality) // Merge response data into customer
   } catch (error) {
-    console.log(error);
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
   }
 }
 
@@ -414,7 +437,9 @@ const updateCustomer = async () => {
           }, 2000);
   } catch (error) {
     toast.error('Error updating customer: ' + error);
-    console.error(error);
+    toast.error(error.message, {
+        autoClose: 5000,
+      });
   }
 };
 </script>

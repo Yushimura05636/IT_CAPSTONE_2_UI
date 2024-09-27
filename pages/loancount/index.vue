@@ -62,6 +62,9 @@
   </template>
   
   <script setup lang="ts">
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
   import { ref, computed, onMounted } from 'vue';
   import { PermissionService } from '~/models/Permission';
   import { UserService } from '~/models/User';
@@ -73,27 +76,25 @@
 
   async function createloancount(){
     try {
-        const response = await apiService.authLoanCountsCreate({
-          docId: PermissionService.LOAN_COUNT?.data.id,
-          perm: PermissionService.CREATE?.data.id
-        });
+        const response = await apiService.authLoanCountsCreate({});
         navigateTo('/loancount/create');
     } catch (error) {
-        alert(error);
+        toast.error(error.message, {
+      autoClose: 5000,
+    })
     }
   }
 
   async function updateloancount()
   {
     try {
-        const response = await apiService.authLoanCountsUpdate({
-          docId: PermissionService.LOAN_COUNT?.data.id,
-          perm: PermissionService.UPDATE?.data.id
-        });
+        const response = await apiService.authLoanCountsUpdate({});
         UserService.usr_id = selectedLoanId.value;
         navigateTo('/loancount/update');
     } catch (error) {
-        alert(error);
+        toast.error(error.message, {
+      autoClose: 5000,
+    })
     }
   }
   
@@ -102,7 +103,9 @@
           const response = await apiService.getLoanCount({});
           state.loancount.value = response.data; // Update the reactive ref
       } catch (error) {
-          console.error(error);
+          toast.error(error.message, {
+        autoClose: 5000,
+      });
       }
   }
   

@@ -56,14 +56,17 @@
   </template>
   
 <script setup lang="ts">
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
   import { ref, reactive, onMounted } from 'vue';
   import { PermissionService } from '~/models/Permission';
   import { apiService } from '~/routes/api/API';
   import { useRoute } from 'vue-router'; // Importing useRoute for route parameters
   import { navigateTo } from 'nuxt/app';
   import { UserService } from '~/models/User';
-  import { toast } from 'vue3-toastify';
-  import 'vue3-toastify/dist/index.css';
+  
+  
 
   
   const state = reactive({
@@ -105,7 +108,9 @@
       }
     } catch (error) {
       state.error = 'Failed to fetch roles. Please try again.';
-      console.error(error);
+      toast.error(error.message, {
+        autoClose: 5000,
+      });
     } finally {
       state.isTableLoading = false;
     }
@@ -161,7 +166,9 @@
       }
     } catch (error) {
       toast.error('Error updating factor rate: ' + error);
-      console.error(error);
+      toast.error(error.message, {
+        autoClose: 5000,
+      });
     }
   };
   

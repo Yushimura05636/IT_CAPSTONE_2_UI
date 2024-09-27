@@ -191,11 +191,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
 import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
+import { ref, onMounted } from 'vue';
+
 import { PermissionService } from '~/models/Permission';
 import { apiService } from '~/routes/api/API';
-import 'vue3-toastify/dist/index.css';
+
 
 
 const personality = ref({
@@ -250,7 +253,9 @@ const fetchBarangays = async () => {
 
     state.value.barangays = response.data;
   } catch (error) {
-    console.log(error);
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
   }
 };
 
@@ -262,7 +267,9 @@ const fetchCities = async () => {
     state.value.cities = response.data;
 
   } catch (error) {
-    console.log(error);
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
   }
 };
 
@@ -272,7 +279,9 @@ const fetchCountries = async () => {
 
     state.value.countries = response.data;
   } catch (error) {
-    console.log(error);
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
   }
 };
 
@@ -282,7 +291,9 @@ const fetchProvinces = async () => {
     const response = await apiService.get({}, "province");
     state.value.provinces = response.data;
   } catch (error) {
-    console.log(error);
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
   }
 };
 
@@ -292,7 +303,9 @@ const fetchCreditStatuses = async () => {
     const response = await apiService.get({}, "credit_status");
     state.value.creditStatuses = response.data;
   } catch (error) {
-    console.log(error);
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
   }
 };
 
@@ -303,7 +316,9 @@ const fetchGroups = async () => {
 
     state.value.groups = response.data;
   } catch (error) {
-    console.log(error);
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
   }
 };
 
@@ -313,7 +328,9 @@ const fetchPersonalityStatusCode = async () => {
     const response = await apiService.get({}, "personality_status_map");
     state.value.personality_status_code = response.data;
   } catch (error) {
-    alert(error);
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
   }
 };
 
@@ -326,7 +343,9 @@ const fetchLoanCount = async () => {
 
     debugger;
   } catch (error) {
-    console.log(error);
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
   }
 };
 
@@ -390,7 +409,9 @@ const createCustomer = async () => {
           }, 2000); // Redirect to the customer list page
   } catch (error) {
     toast.error('Error creating customer');
-    console.error(error);
+    toast.error(error.message, {
+        autoClose: 5000,
+      });
   }
 };
 </script>

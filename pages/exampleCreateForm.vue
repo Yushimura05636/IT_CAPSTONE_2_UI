@@ -198,6 +198,9 @@
 </template>
 
 <script setup lang="ts">
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
 const form = ref({
   family_name: '',
   middle_name: '',

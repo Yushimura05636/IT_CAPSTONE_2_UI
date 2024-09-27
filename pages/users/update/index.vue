@@ -133,9 +133,11 @@
   </template>
   
   <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
+
+import { ref, onMounted, watch } from 'vue';
+
 import { EmployeesService } from '~/models/Employee';
 import { PermissionService } from '~/models/Permission';
 import { UserService } from '~/models/User';

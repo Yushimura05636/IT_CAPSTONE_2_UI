@@ -101,10 +101,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
+
+import { ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+
 import { EmployeesService } from '~/models/Employee';
 import { apiService } from '~/routes/api/API';
 
@@ -154,7 +156,9 @@ async function fetchEmployeeData() {
   try {
     const employeeId = EmployeesService.id;
     if (!employeeId || isNaN(Number(employeeId))) {
-      alert('Invalid employee ID');
+      toast.error('Invalid Id!', {
+        autoClose: 5000,
+      })
       router.push('/employees');
       return;
     }
@@ -162,7 +166,9 @@ async function fetchEmployeeData() {
     Object.assign(employee.value, response.employee);
     Object.assign(personality.value, response.personality);
   } catch (error) {
-    alert(error);
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
   }
 }
 
@@ -171,7 +177,9 @@ const updateEmployee = async () => {
   try {
     const employeeId = EmployeesService.id;
     if (!employeeId || isNaN(Number(employeeId))) {
-      alert('Invalid employee ID');
+      toast.error('Invalid Id!', {
+        autoClose: 5000,
+      })
       router.push('/Libraries/EmployeeView');
       return;
     }
@@ -221,7 +229,9 @@ const updateEmployee = async () => {
     // router.push('/employees'); // Redirect after successful update
   } catch (error) {
     toast.error('Error updating employee: ' + error);
-    console.error(error);
+    toast.error(error.message, {
+        autoClose: 5000,
+      });
   }
 };
 
@@ -231,7 +241,9 @@ async function fetchCivilStatus()
     const response = await apiService.get({}, 'civil_status');
     Object.assign(civilStatuses.value, response.data);
   } catch (error) {
-    alert(error);
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
   }
 }
 
