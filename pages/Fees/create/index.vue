@@ -55,7 +55,7 @@ import { ref } from 'vue';
 import { apiService } from '~/routes/api/API';
 
     function back() {
-        navigateTo('/Fee');
+        navigateTo('/Fees');
         }
         
     const Fee = ref({

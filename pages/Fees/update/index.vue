@@ -112,6 +112,6 @@ import 'vue3-toastify/dist/index.css';
     // Function to handle cancel action
     const cancel = () => {
     // Navigate to the libraries page or perform any other action
-    navigateTo("/Fee");
+    navigateTo("/Fees");
     };
 </script>

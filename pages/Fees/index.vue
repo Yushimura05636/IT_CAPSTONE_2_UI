@@ -112,7 +112,9 @@ import 'vue3-toastify/dist/index.css';
             state.fee = response
             console.log(state.fee);
         } catch (error: any) {
-            state.error = error
+            toast.error(error.message, {
+                autoClose: 5000,
+            })
         }
         state.isTableLoading = false
     }
@@ -120,8 +122,10 @@ import 'vue3-toastify/dist/index.css';
         fetchFee()
     })
 
-    function updateFee(){
-        if (selectedFeeID.value) {
+    async function updateFee(){
+        try {
+            const response = await apiService.authFeesUpdate({})
+            if (selectedFeeID.value) {
             let description = null;
             let amount = null;
             let isactive = null;
@@ -151,10 +155,22 @@ import 'vue3-toastify/dist/index.css';
         console.log(feeService.description);
         console.log(feeService.isActive);
         console.log(feeService.notes);
-        navigateTo('Fee/update');
+        navigateTo('Fees/update');
+        }
+        } catch (error) {
+            toast.error(error.message, {
+                autoClose: 5000,
+            })
         }
     }
-    function createFee() {
-    navigateTo('Fee/create');
+    async function createFee() {
+        try {
+            const response = await apiService.authFeesCreate({});
+            navigateTo('Fees/create');
+        } catch (error) {
+            toast.error(error.message, {
+                autoClose: 5000,
+            })
+        }
     }
 </script>

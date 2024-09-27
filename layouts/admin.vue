@@ -17,7 +17,7 @@
                                     </div>
                                 </TransitionChild>
                                 <!-- Sidebar component -->
-                                <div class="flex grow flex-col gap-y-3 overflow-y-auto bg-gray-900 px-4 pb-4 ring-1 ring-white/10">
+                                <div class="flex grow flex-col gap-y-3 overflow-y-auto bg-green-500 px-4 pb-4 ring-1 ring-white/10">
                                     <div class="flex h-16 shrink-0 items-center">
                                         <img class="h-6 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company"/>
                                     </div>
@@ -260,6 +260,7 @@
                 { name: "Payment Duration", href: "/payment_duration", icon: CurrencyDollarIcon, current: false },
                 { name: "Payment Frequency", href: "/payment_frequency", icon: CurrencyDollarIcon, current: false },
                 { name: "Factor Rate", href: "/factor_rate", icon: CurrencyDollarIcon, current: false },
+                { name: "Fees", href: "/Fees", icon: CurrencyDollarIcon, current: false },
             ],
         },
     

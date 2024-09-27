@@ -43,7 +43,7 @@
       <table class="w-full table-auto text-sm text-left">
         <thead class="bg-gray-50 text-gray-600 font-medium border-b">
           <tr>
-            <th class="py-3 px-6">Select</th>
+            <th class="py-3 px-6"></th>
             <th class="py-3 px-6">Employee ID</th>
             <th class="py-3 px-6">Name</th>
             <th class="py-3 px-6">Email</th>
