@@ -238,7 +238,7 @@ const updateEmployee = async () => {
 async function fetchCivilStatus()
 {
   try {
-    const response = await apiService.get({}, 'civil_status');
+    const response = await apiService.getNoAuth({}, 'civil_status');
     Object.assign(civilStatuses.value, response.data);
   } catch (error) {
     toast.error(error.message, {

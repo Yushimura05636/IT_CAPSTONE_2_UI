@@ -7,8 +7,24 @@ class API extends BaseAPIService {
         return await this.request(`/EMPLOYEES`, 'GET', params)
     }
 
+    async getEmployeesNoAuth(params: object): Promise<any> {
+        return await this.request(`/EMPLOYEES/findMany/`, 'GET', params)
+    }
+
+    async getNoUserEmployees(params: object): Promise<any> {
+        return await this.request(`/EMPLOYEES/NoUser`, 'GET', params)
+    }
+
+    async getNoUserEmployeesNoAuth(params: object): Promise<any> {
+        return await this.request(`/EMPLOYEES/NoAUTH/findMany/findNoUser`, 'GET', params)
+    }
+
     async getEmployeeById(params: object, id: number): Promise<any> {
         return await this.request(`/EMPLOYEES/${id}`, 'GET', params)
+    }
+
+    async getEmployeeByIdNoAuth(params: object, id: number): Promise<any> {
+        return await this.request(`/EMPLOYEES/findOne/${id}`, 'GET', params)
     }
 
     async createEmployee(params: object): Promise<any> {
@@ -68,6 +84,9 @@ class API extends BaseAPIService {
     // Example API call
     async get(params: object, modeltype: string): Promise<any> {
     return await this.request(`/LIBRARIES/${modeltype}`, 'GET', params);
+    }
+    async getNoAuth(params: object, modeltype: string): Promise<any>{
+        return await this.request(`/LIBRARIES/NoAUTH/${modeltype}`, 'GET', params);
     }
     async getOne(params: object, id: number): Promise<any> {
     return await this.request(`/LIBRARIES/findOne/${id}`, 'POST', params);
@@ -274,6 +293,9 @@ class API extends BaseAPIService {
     //fee
     async getFee(params: object): Promise<any> {
         return await this.request(`/FEES`, 'GET', params)
+    }
+    async getFeePatch(params: object, modeltype: string): Promise<any>{
+        return await this.request(`/FEES`, 'PATCH', params);
     }
     async getFeeById(params: object, id: number): Promise<any> {
         return await this.request(`/FEES/${id}`, 'GET', params)

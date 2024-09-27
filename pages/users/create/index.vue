@@ -167,7 +167,7 @@ import 'vue3-toastify/dist/index.css';
   const fetchEmployees = async () => {
     try {
       // Fetch employee data from API
-      const response = await apiService.getEmployees({});
+      const response = await apiService.getNoUserEmployeesNoAuth({});
   
       // Directly assign response data to employees state
       employees.value = response.data.map((entry: any) => ({
@@ -186,7 +186,7 @@ import 'vue3-toastify/dist/index.css';
   const fetchStatuses = async () => {
     try {
       // Fetch status data from API
-      const response = await apiService.get({}, 'user_account_status'); // Ensure this API endpoint exists
+      const response = await apiService.getNoAuth({}, 'user_account_status'); // Ensure this API endpoint exists
       statuses.value = response.data.map((status: any) => ({
         id: status.id,
         name: status.description,

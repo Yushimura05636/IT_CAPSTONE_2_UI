@@ -39,21 +39,17 @@
         <div>
           <label for="gender" class="block text-gray-700">Gender</label>
           <select v-model="personality.gender_code" id="gender" class="w-full border rounded-lg px-4 py-2">
-            <option value="1">Male</option>
-            <option value="2">Female</option>
+            <option v-for="gender in genders" :key="gender.id" :value="gender.id">{{ gender.description }}</option>
           </select>
         </div>
 
         <div>
           <label for="civilStatus" class="block text-gray-700">Civil Status</label>
           <select v-model="personality.civil_status" id="civilStatus" class="w-full border rounded-lg px-4 py-2">
-            <option value="0">Select</option>
-            <option value="1">Single</option>
-            <option value="2">Married</option>
-            <option value="3">Divorced</option>
-            <option value="4">Widowed</option>
+            <option v-for="status in civilStatuses" :key="status.id" :value="status.id">{{ status.description }}</option>
           </select>
         </div>
+
 
         <div>
           <label for="Cellphone No" class="block text-gray-700">Cellphone No</label>
@@ -126,6 +122,10 @@ import { apiService } from '~/routes/api/API';
 const route = useRoute();
 const router = useRouter();
 
+// Reactive variables for options
+const genders = ref([]);
+const civilStatuses = ref([]);
+
 const personality = ref({
   first_name: '',
   family_name: '',
@@ -158,6 +158,18 @@ const employee = ref({
   date_resigned : new Date().toISOString().split('T')[0],
   personality_id: 0,
 });
+
+const OptionsService = {
+  async fetchGenders() {
+    const response = await apiService.getNoAuth({},'gender_map'); // Adjust endpoint as needed
+    return response.data;
+  },
+  
+  async fetchCivilStatuses() {
+    const response = await apiService.getNoAuth({},'civil_status'); // Adjust endpoint as needed
+    return response.data;
+  },
+};
 
 function formatDateTimeToMySQL(date: any) {
   const pad = (num: any) => (num < 10 ? '0' + num : num);
@@ -236,4 +248,13 @@ const createEmployee = async () => {
       });
   }
 };
+
+onMounted(async () => {
+  try {
+    genders.value = await OptionsService.fetchGenders();
+    civilStatuses.value = await OptionsService.fetchCivilStatuses();
+  } catch (error) {
+    console.error('Error fetching options:', error);
+  }
+});
 </script>
