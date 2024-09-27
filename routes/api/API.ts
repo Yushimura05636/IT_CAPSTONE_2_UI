@@ -39,13 +39,21 @@ class API extends BaseAPIService {
         return await this.request(`/EMPLOYEES`, 'DELETE', params)
     }
 
-            async getEmplooyeIDnotInUser(params: object): Promise<any> {
-                return await this.request(`/EMPLOYEESID`, 'GET', params)
-            }
+    async getEmplooyeIDnotInUser(params: object): Promise<any> {
+        return await this.request(`/EMPLOYEESID`, 'GET', params)
+    }
 
     //this is the customer API route
     async getCustomers(params: object): Promise<any> {
         return await this.request(`/CUSTOMERS`, 'GET', params)
+    }
+
+    async getCustomerByIdNoAuth(params: object, id: number): Promise<any> {
+        return await this.request(`/CUSTOMERS/NoAUTH/${id}`, 'GET', params)
+    }
+
+    async getCustomersNoAuth(params: object): Promise<any> {
+        return await this.request(`/CUSTOMERS/NoAUTH`, 'GET', params)
     }
 
     async getCustomerById(params: object, id: number): Promise<any> {
@@ -67,6 +75,10 @@ class API extends BaseAPIService {
     //Loan Count
     async getLoanCount(params: object): Promise<any> {
         return await this.request(`/LOAN_COUNTS`, 'GET', params);
+    }
+
+    async getLoanCountNoAuth(params: object): Promise<any> {
+        return await this.request(`/LOAN_COUNTS/NoAUTH`, 'GET', params);
     }
 
     async getLoanCountById(params: object, id: any): Promise<any> {
@@ -196,8 +208,16 @@ class API extends BaseAPIService {
         return await this.request(`/PAYMENT_FREQUENCIES`, 'GET', params)
     }
 
+    async getPaymentFrequencyNoAuth(params: object): Promise<any> {
+        return await this.request(`/PAYMENT_FREQUENCIES/NoAUTH`, 'GET', params)
+    }
+
     async getPaymentFrequencyById(params: object, id: number): Promise<any> {
         return await this.request(`/PAYMENT_FREQUENCIES/${id}`, 'GET', params)
+    }
+
+    async getPaymentFrequencyByIdNoAuth(params: object, id: number): Promise<any> {
+        return await this.request(`/PAYMENT_FREQUENCIES/NoAUTH/${id}`, 'GET', params)
     }
 
     async createPaymentFrequency(params: object): Promise<any> {
@@ -217,13 +237,21 @@ class API extends BaseAPIService {
         return await this.request(`/PAYMENT_DURATIONS`, 'GET', params)
     }
 
+    async getPaymentdurationNoAuth(params: object): Promise<any> {
+        return await this.request(`/PAYMENT_DURATIONS/NoAUTH`, 'GET', params)
+    }
+
     async getPaymentdurationById(params: object, id: number): Promise<any> {
         return await this.request(`/PAYMENT_DURATIONS/${id}`, 'GET', params)
     }
 
-        async createPaymentduration(params: object): Promise<any> {
-            return await this.request(`/PAYMENT_DURATIONS`, 'POST', params)
-        }
+    async getPaymentdurationByIdNoAuth(params: object, id: number): Promise<any> {
+        return await this.request(`/PAYMENT_DURATIONS/NoAUTH/${id}`, 'GET', params)
+    }
+
+    async createPaymentduration(params: object): Promise<any> {
+        return await this.request(`/PAYMENT_DURATIONS`, 'POST', params)
+    }
 
     async updatePaymentduration(params: object, id: number): Promise<any> {
         return await this.request(`/PAYMENT_DURATIONS/${id}`, 'PUT', params)
@@ -253,6 +281,14 @@ class API extends BaseAPIService {
         return await this.request(`/FACTOR_RATES/${id}`, 'GET', params)
     }
 
+    async getFactorRateNoAuth(params: object): Promise<any> {
+        return await this.request(`/FACTOR_RATES/NoAUTH`, 'GET', params)
+    }
+
+    async getFactorRateByIdNoAuth(params: object, id: number): Promise<any> {
+        return await this.request(`/FACTOR_RATES/NoAUTH/${id}`, 'GET', params)
+    }
+
     async createFactorRate(params: object): Promise<any> {
         return await this.request(`/FACTOR_RATES`, 'POST', params)
     }
@@ -265,42 +301,19 @@ class API extends BaseAPIService {
         return await this.request(`/FACTOR_RATES/${id}`, 'DELETE', params)
     }
 
-    //customer group
-    async getCustomerGroup(params: object): Promise<any> {
-        return await this.request(`/LIBRARIES/customer_group`, 'GET', params)
-    }
-
-    async getCustomerGroup1(params: object): Promise<any> {
-        return await this.request(`/CUSTOMER_GROUPS`, 'GET', params)
-    }
-
-    async getCustomerGroupById(params: object, id: number): Promise<any> {
-        return await this.request(`/CUSTOMER_GROUPS/${id}`, 'GET', params)
-    }
-
-    async createCustomerGroup(params: object): Promise<any> {
-        return await this.request(`/CUSTOMER_GROUPS`, 'POST', params)
-    }
-
-    async updateCustomerGroup(params: object, id: number): Promise<any> {
-        return await this.request(`/CUSTOMER_GROUPS/${id}`, 'PUT', params)
-    }
-
-    async deleteCustomerGroup(params: object, id: number): Promise<any> {
-        return await this.request(`/CUSTOMER_GROUPS/${id}`, 'DELETE', params)
-    }
-
     //fee
     async getFee(params: object): Promise<any> {
         return await this.request(`/FEES`, 'GET', params)
     }
-    async getFeePatch(params: object, modeltype: string): Promise<any>{
-        return await this.request(`/FEES`, 'PATCH', params);
+    async getFeeNoAuth(params: object, modeltype: string): Promise<any>{
+        return await this.request(`/FEES/NoAUTH`, 'PATCH', params);
     }
     async getFeeById(params: object, id: number): Promise<any> {
         return await this.request(`/FEES/${id}`, 'GET', params)
     }
-    
+    async getFeeByIdNoAUTH(params: object, id: number): Promise<any> {
+        return await this.request(`/FEES/NoAUTH/${id}`, 'GET', params)
+    }
     async createFee(params: object): Promise<any> {
         return await this.request(`/FEES`, 'POST', params)
     }
