@@ -64,10 +64,10 @@
                   />
                 </td>
                 <td class="py-2 border-b border-gray-300">
-                  <span>{{ factorRate.payment_frequency_id }} </span>
+                  <span>{{ factorRate.payment_frequency.description }} </span>
                 </td>
                 <td class="py-2 border-b border-gray-300">
-                  <span>{{ factorRate.payment_duration_id }}</span>
+                  <span>{{ factorRate.payment_duration.description }}</span>
                 </td>
                 <td class="py-2 border-b border-gray-300">
                   <span>{{ factorRate.description }}</span>
