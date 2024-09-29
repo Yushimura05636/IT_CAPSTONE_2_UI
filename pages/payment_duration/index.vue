@@ -166,7 +166,7 @@ import { PaymentFrequency } from '../../models/PaymentFrequency';
         }
         } catch (error) {
             toast.error(error.message, {
-      autoClose: 5000,
+        autoClose: 5000,
     })
         }
     }
@@ -177,7 +177,7 @@ import { PaymentFrequency } from '../../models/PaymentFrequency';
             navigateTo('payment_duration/create');
         } catch (error) {
             toast.error(error.message, {
-      autoClose: 5000,
+        autoClose: 5000,
     })
         }
     }

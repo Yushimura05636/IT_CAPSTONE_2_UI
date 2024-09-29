@@ -22,6 +22,13 @@
         <button @click="deleteEmployee" :disabled="!selectedEmployeeId" class="px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600 disabled:opacity-50">
           Delete
         </button>
+        <button  @click="approveORreject"
+          :disabled="!selectedEmployeeId" 
+          class="px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-red-600 disabled:opacity-50"
+          @mouseenter="isHovered = true" 
+          @mouseleave="isHovered = false">
+          {{ isHovered ? 'Reject' : 'Approved' }}
+        </button>
       </div>
 
       <!-- Right: Search Bar -->
@@ -122,6 +129,8 @@ import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
 import { CustomersService } from '~/models/Customer';
+import { PersonalityService } from '~/models/Personality';
+
 import { ref, computed } from 'vue'
 import { apiService } from '~/routes/api/API'
 import { numeric } from '@vuelidate/validators';
@@ -129,10 +138,12 @@ import { PermissionService } from '~/models/Permission';
 import Permission from '../non_used_components/Permission.vue';
 
 
+const isHovered = ref(false);
+
 const searchQuery = ref<string>('')
 
-const tableItems = ref<TableItem[]>([]); // Initialize tableItems
-  const selectedEmployeeId = ref<string | null>(null);
+  const tableItems = ref<TableItem[]>([]); // Initialize tableItems
+  let selectedEmployeeId = ref(null);
 
 const state = {
   datas: [],
@@ -284,9 +295,12 @@ function mapCivilStatus(civilStatusCode: number) {
 // Example helper function for personality status
 function mapPersonalityStatus(statusCode: number) {
   const statuses: { [key: number]: string } = {
-    1: 'Active',
-    2: 'Inactive',
-    3: 'Suspended',
+    1: 'Pending',
+    2: 'Approved',
+    3: 'Reject',
+    4: 'Active',
+    5: 'Inactive',
+    //3: 'Suspended',
   };
   return statuses[statusCode] || 'Unknown';
 }
@@ -317,4 +331,25 @@ function mapCreditStatus(creditStatusId: number) {
   };
   return statuses[creditStatusId] || 'Unknown';
 }
+
+function approve(){
+  navigateTo("customers/approve");
+}
+
+async function approveORreject(){
+  try {
+    // debugger;
+    CustomersService.id = parseInt(selectedEmployeeId.value?.toString());
+    const response = await apiService.authCustomersUpdate({});
+    // console.log("test" + CustomersService.id);
+    navigateTo(`customers/approve`)
+  } catch (error) {
+    toast.error(error.message, {
+      autoClose: 5000,
+    })
+  }
+}
+
+
+
 </script>

@@ -140,7 +140,7 @@ const factorRate = ref({
             toast.error('Error creating Factor: ' + error);
             toast.error(error.message, {
         autoClose: 5000,
-      });
+        });
         }
     };
 

@@ -39,7 +39,6 @@
           <div>
             <label for="gender" class="block text-gray-700">Gender</label>
             <select v-model="personality.gender_code" id="gender" class="w-full border rounded-lg px-4 py-2">
-              <option value="0">Select</option>
               <option value="1">Male</option>
               <option value="2">Female</option>
             </select>
@@ -48,7 +47,6 @@
           <div>
             <label for="civilStatus" class="block text-gray-700">Civil Status</label>
             <select v-model="personality.civil_status" id="civilStatus" class="w-full border rounded-lg px-4 py-2">
-              <option value="0">Select</option>
               <option value="1">Single</option>
               <option value="2">Married</option>
               <option value="3">Divorced</option>
@@ -122,14 +120,14 @@
             </select>
           </div>
 
-          <div>
+          <!-- <div>
             <label for="creditStatusId" class="block text-gray-700">Personality Status</label>
             <select v-model="personality.personality_status_code" id="creditStatusId" class="w-full border rounded-lg px-4 py-2">
               <option v-for="creditStatus in state.personality_status_code" :key="creditStatus.id" :value="creditStatus.id">
                 {{ creditStatus.description }}
               </option>
             </select>
-          </div>
+          </div> -->
 
           <!-- Customer Fields -->
           <div>
@@ -221,7 +219,7 @@ const personality = ref({
   credit_status_id: '',
   datetime_registered: '',
   name_type: 1, //for customer
-  personality_status_code: '',
+  personality_status_code: 1, // pending
   notes: '',
 });
 
@@ -357,7 +355,7 @@ onMounted(async () => {
     fetchProvinces(),
     fetchCreditStatuses(),
     fetchGroups(),
-    fetchPersonalityStatusCode(),
+    // fetchPersonalityStatusCode(),
     fetchLoanCount(),
   ]);
 });
