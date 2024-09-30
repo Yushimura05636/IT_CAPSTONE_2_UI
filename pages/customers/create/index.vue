@@ -177,6 +177,49 @@
             <input v-model="customer.mortuary_coverage_end" type="date" id="mortuaryCoverageEnd" class="w-full border rounded-lg px-4 py-2" />
           </div>
         </div>
+        <div class="mt-4">
+          <table class="min-w-full table-auto">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2">Select Document</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="px-4 py-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" v-model="barangayCertificate" class="form-checkbox h-5 w-5 text-green-600" />
+                                <span class="ml-2 text-gray-700">Barangay Certificate</span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 py-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" v-model="birthCertificate" class="form-checkbox h-5 w-5 text-green-600" />
+                                <span class="ml-2 text-gray-700">Birth Certificate</span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 py-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" v-model="validID" class="form-checkbox h-5 w-5 text-green-600" />
+                                <span class="ml-2 text-gray-700">Valid ID</span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 py-2">
+                            <label class="flex items-center">
+                                <input type="checkbox" v-model="proofOfAddress" class="form-checkbox h-5 w-5 text-green-600" />
+                                <span class="ml-2 text-gray-700">Proof of Address</span>
+                            </label>
+                        </td>
+                    </tr>
+                </tbody>
+          </table>
+        </div>
 
         <div class="mt-4">
           <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500">
@@ -197,6 +240,10 @@ import { ref, onMounted } from 'vue';
 import { PermissionService } from '~/models/Permission';
 import { apiService } from '~/routes/api/API';
 
+const barangayCertificate = ref(false);
+const birthCertificate = ref(false);
+const validID = ref(false);
+const proofOfAddress = ref(false);
 
 
 const personality = ref({
@@ -219,7 +266,7 @@ const personality = ref({
   credit_status_id: '',
   datetime_registered: '',
   name_type: 1, //for customer
-  personality_status_code: 1, // pending
+  personality_status_code: '', // pending
   notes: '',
 });
 
@@ -361,8 +408,24 @@ onMounted(async () => {
 });
 
 
+
+
 const createCustomer = async () => {
   try {
+     // Check if all required documents (checkboxes) are checked
+    if (barangayCertificate.value && birthCertificate.value && validID.value && proofOfAddress.value) {
+      // If all checkboxes are checked, set personality_status_code to 2 (verified)
+      personality.value.personality_status_code = 2;
+    } else if(barangayCertificate.value || birthCertificate.value || validID.value || proofOfAddress.value) {
+      // If any checkbox is unchecked, set personality_status_code to 1 (pending)
+      personality.value.personality_status_code = 1;
+    // Exit the function early if not all checkboxes are checked
+    }else{
+      toast.error("Please check all required documents before proceeding", {
+        autoClose: 2000,
+      });
+      return; 
+    }
     const jsonObject = {
       customer: {
             group_id: customer.value.group_id,
