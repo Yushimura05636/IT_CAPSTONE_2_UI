@@ -42,14 +42,15 @@
         <!-- Combobox on the right -->
         <div class="flex-none">
           <label for="modelType" class="block text-sm font-medium text-gray-700">Select Model Type:</label>
+          
           <select
             id="modelType"
             v-model="state.modeltype"
             @change="fetchLibraries"
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-          >
-            <option v-for="type in modelTypes" :key="type" :value="type">{{ type }}</option>
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+            <option v-for="type in modelTypes" :key="type.value" :value="type.value">{{ type.label }}</option>
           </select>
+
         </div>
       </div>
   
@@ -122,22 +123,22 @@ import { PermissionService } from '~/models/Permission';
   });
   
   const modelTypes = [
-    'barangay',
-    'branch',
-    'city',
-    'civil_status',
-    'gender_map',
-    'country',
-    'province',
-    'credit_status',
-    'personality_status_map',
-    'user_account_status',
-    'document_map',
-    'document_permission_map',
-    'name_type',
-    'customer_group',
-  ];
-  
+  { value: 'barangay', label: 'Barangay' },
+  { value: 'branch', label: 'Branch' },
+  { value: 'city', label: 'City' },
+  { value: 'civil_status', label: 'Civil Status' },
+  { value: 'gender_map', label: 'Gender Map' },
+  { value: 'country', label: 'Country' },
+  { value: 'province', label: 'Province' },
+  { value: 'credit_status', label: 'Credit Status' },
+  { value: 'personality_status_map', label: 'Personality Status Map' },
+  { value: 'user_account_status', label: 'User Account Status' },
+  { value: 'document_map', label: 'Document Map' },
+  { value: 'document_permission_map', label: 'Document Permission Map' },
+  { value: 'name_type', label: 'Name Type' },
+  { value: 'customer_group', label: 'Customer Group' },
+];
+
   let selectedLibraryId = ref(null); // Track selected library
   
   onMounted(() => {

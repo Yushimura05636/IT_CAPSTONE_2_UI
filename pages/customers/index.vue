@@ -7,6 +7,15 @@
       </div>
     </header>
   </div>
+  <div class="max-w-screen-xl mx-auto px-4 md:px-8">
+    <!-- Title Section -->
+    <div class="items-start justify-between md:flex mt-8">
+      <div class="max-w-lg">
+        <h3 class="text-gray-800 text-xl font-bold sm:text-2xl mb-4">Customers</h3>
+      </div>
+    </div>
+    </div>
+  
 
   <div class="max-w-screen-xl mx-auto px-4 md:px-8">
     <!-- Action Buttons -->
@@ -29,6 +38,8 @@
           @mouseleave="isHovered = false">
           {{ isHovered ? 'Reject' : 'Approved' }}
         </button>
+
+        
       </div>
 
       <!-- Right: Search Bar -->
@@ -36,12 +47,12 @@
         <input
           v-model="searchQuery"
           type="text"
-          placeholder="Search employees"
+          placeholder="Search customers"
           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
         />
-        <button class="px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
+        <!-- <button class="px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
           Search
-        </button>
+        </button> -->
       </div>
     </div>
 
@@ -76,7 +87,7 @@
             <th class="py-3 px-6">Mortuary Coverage Start</th>
             <th class="py-3 px-6">Mortuary Coverage End</th>
             <th class="py-3 px-6">Notes</th>
-            <th class="py-3 px-6">Action</th>
+            <!-- <th class="py-3 px-6">Action</th> -->
           </tr>
         </thead>
         <tbody class="text-gray-600 divide-y">

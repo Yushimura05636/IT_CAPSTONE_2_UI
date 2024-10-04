@@ -244,7 +244,7 @@
         { name: "Customers", icon: UsersIcon, current: false,
             children: [
                 { name: "Customers", href: "/customers", icon: UserIcon, current: false },
-                { name: "Groups", href: "/Group", icon: ScaleIcon, current: false },
+                { name: "Groups", href: "/libraries", icon: ScaleIcon, current: false },
             ],
         },
 

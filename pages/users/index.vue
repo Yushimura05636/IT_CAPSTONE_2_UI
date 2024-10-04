@@ -18,7 +18,7 @@
             <input 
               v-model="state.searchQuery" 
               type="text" 
-              placeholder="Search loan count"
+              placeholder="Search users"
               class="p-2 border border-gray-300 rounded-l-md focus:outline-none"
             />
             <button class="bg-blue-500 text-white py-2 px-4 rounded-r-md">Search</button>

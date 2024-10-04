@@ -426,7 +426,7 @@ const createCustomer = async () => {
       });
       return; 
     }
-    const jsonObject = {
+    const jsonObject = { 
       customer: {
             group_id: customer.value.group_id,
             passbook_no: customer.value.passbook_no,

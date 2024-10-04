@@ -1,5 +1,12 @@
 <template>
   <NuxtLayout name="admin">
+    <div class="bg-white">
+    <header class="py-8 px-4 md:px-16">
+      <div class="container mx-auto flex justify-between items-center">
+        <img src="../../img/LendCash_Logo-removebg-preview.png" class="w-20" alt="logo" />
+      </div>
+    </header>
+  </div>
   <div class="max-w-screen-xl mx-auto px-4 md:px-8">
     <!-- Title Section -->
     <div class="items-start justify-between md:flex mt-8">
@@ -31,9 +38,9 @@
           placeholder="Search employees"
           class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
         />
-        <button class="px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
+        <!-- <button class="px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
           Search
-        </button>
+        </button> -->
       </div>
     </div>
 
@@ -68,7 +75,7 @@
             <th class="py-3 px-6">Date Created</th>
             <th class="py-3 px-6">Date Last Modified</th>
             <th class="py-3 px-6">Notes</th>
-            <th class="py-3 px-6">Action</th>
+            <!-- <th class="py-3 px-6">Action</th> -->
           </tr>
         </thead>
         <tbody class="text-gray-600 divide-y">
@@ -101,11 +108,6 @@
             <td class="px-6 py-4 whitespace-nowrap">{{ item.dateCreated }}</td>
             <td class="px-6 py-4 whitespace-nowrap">{{ item.dateLastModified }}</td>
             <td class="text-right px-6 whitespace-nowrap"></td>
-            <td class="text-right px-6 whitespace-nowrap">
-              <button @click="editEmployee(item)" class="py-2 px-3 font-medium text-indigo-600 hover:text-indigo-500 duration-150 hover:bg-gray-50 rounded-lg">
-                Edit
-              </button>
-            </td>
           </tr>
           <tr v-if="filteredTableItems.length === 0">
             <td colspan="8" class="text-center py-4 text-gray-600">No data found</td>
