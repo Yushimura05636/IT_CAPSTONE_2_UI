@@ -462,6 +462,10 @@ async authPersonalitiesUpdate(params: object): Promise<any> {
     return await this.request(`/PERSONALITIES/update`, 'PATCH', params);
 }
 
+async getCustomerByGroupId(params: object, id: number): Promise<any> {
+    return await this.request(`/test/${id}`, 'GET', params)
+}
+
 
 }
 

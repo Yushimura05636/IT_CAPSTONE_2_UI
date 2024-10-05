@@ -7,21 +7,25 @@
                     <form>
                         <div class="mb-4">
                             <label class="block text-gray-700">Group Name</label>
-                            <select  class="w-full border rounded-lg px-4 py-2">
-                                <option  v-for="group in state.groups" :key="group.id" :value="group.id">
+                            <select v-model="selectedGroupId" @change="fetchCustomers" class="w-full border rounded-lg px-4 py-2">
+                                <option v-for="group in state.groups" :key="group.id" :value="group.id">
                                     {{ group.description }}
                                 </option>
                             </select>
                         </div>
+
                         <div class="mb-4">
                             <label class="block text-gray-700">Customer Name</label>
                             <select class="w-full border border-gray-300 rounded p-2">
-                                <option v-for="customer in state.customers" :key="customer.customer.id" :value="customer.customer.id">
+                                <option v-if="state.customers.length === 0" disabled>No customers available</option>
+                                <option v-for="customer in state.customers" :key="customer.id" :value="customer.id">
                                     {{ customer.personality.first_name }}
+                                    {{ customer.personality.middle_name }}
+                                    {{ customer.personality.family_name }}
                                 </option>
                             </select>
                         </div>
-                       
+
                         <!-- <div class="mb-4">
                             <label class="block text-gray-700">Date Created</label>
                             <input
@@ -137,7 +141,7 @@
                         </div>
 
 
-                        <div class="mb-4">
+                        <!-- <div class="mb-4">
                             <label class="block text-gray-700">Payment Frequency</label>
                             <input type="number" class="w-full border rounded-lg px-4 py-2" />
                         </div>
@@ -147,7 +151,7 @@
                                 type="number"
                                 class="w-full border border-gray-300 rounded p-2"
                             />
-                        </div>
+                        </div> -->
 
 
                         <div class="mb-4">
@@ -218,9 +222,11 @@ const state = ref({
     isTableLoading: false,
 });
 
+
+
 onMounted(() => {
     fetchGroups();
-    fetchCustomers();
+    // fetchCustomers();
     fetchFactorRate();
 });
 
@@ -237,14 +243,18 @@ onMounted(() => {
     }
 };
 
+const selectedGroupId = ref(null);
+
     const fetchCustomers = async () => {
-    try {
-        const response = await apiService.getCustomers({});
-        state.value.customers = response.data;
-        console.log(response)
-        
-    } catch (error) {
-        toast.error(error.message, { autoClose: 5000 });
+        if (selectedGroupId.value) {
+        try {
+            const response = await apiService.getCustomerByGroupId({}, selectedGroupId.value);
+            state.value.customers = response.data;
+        } catch (error) {
+            toast.error(error.message, { autoClose: 5000 });
+        }
+    } else {
+        toast.error('Please select a group.', { autoClose: 5000 });
     }
 };
 
@@ -259,6 +269,12 @@ onMounted(() => {
             toast.error(error.message, { autoClose: 5000 });
         }
     };
+
+    watch(selectedGroupId, (newGroupId) => {
+    if (newGroupId) {
+        fetchCustomers();
+    }
+});
 
 </script>
 

@@ -239,6 +239,16 @@
                 { name: "Permission", href: "/Permission", icon: UserIcon, current: false },
             ],
         },
+        { name: "Variables", icon: UsersIcon, current: false,
+            children: [
+                { name: "Loan Count", href: "/loancount", icon: CurrencyDollarIcon, current: false },
+                { name: "Payment Duration", href: "/payment_duration", icon: CurrencyDollarIcon, current: false },
+                { name: "Payment Frequency", href: "/payment_frequency", icon: CurrencyDollarIcon, current: false },
+                { name: "Factor Rate", href: "/factor_rate", icon: CurrencyDollarIcon, current: false },
+                { name: "Fees", href: "/Fees", icon: CurrencyDollarIcon, current: false },
+            ],
+        },
+
         
         
         { name: "Customers", icon: UsersIcon, current: false,
@@ -253,17 +263,16 @@
                 { name: "Employees", href: "/employees", icon: UserIcon, current: false },
             ],
         },
+
     
         { name: "Loan", icon: ShareIcon, current: false,
             children: [
-                { name: "Loan Count", href: "/loancount", icon: CurrencyDollarIcon, current: false },
-                { name: "Payment Duration", href: "/payment_duration", icon: CurrencyDollarIcon, current: false },
-                { name: "Payment Frequency", href: "/payment_frequency", icon: CurrencyDollarIcon, current: false },
-                { name: "Factor Rate", href: "/factor_rate", icon: CurrencyDollarIcon, current: false },
-                { name: "Fees", href: "/Fees", icon: CurrencyDollarIcon, current: false },
+                { name: "Loan", href: "/loan_application", icon: CurrencyDollarIcon, current: false },
             ],
         },
     
+
+        
         { name: "Release Schedules", icon: KeyIcon, current: false,
             children: [
                 { name: "Loan Application", href: "", icon: CurrencyDollarIcon, current: false },
