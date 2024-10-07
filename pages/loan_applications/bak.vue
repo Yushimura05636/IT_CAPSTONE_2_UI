@@ -218,7 +218,7 @@ import { apiService } from '~/routes/api/API';
 const state = ref({
     groups: [],
     customers: [], 
-    factorRates: [], 
+    factorRates: [],
     isTableLoading: false,
 });
 

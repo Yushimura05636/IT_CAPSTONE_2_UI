@@ -267,7 +267,7 @@
     
         { name: "Loan", icon: ShareIcon, current: false,
             children: [
-                { name: "Loan", href: "/loan_application", icon: CurrencyDollarIcon, current: false },
+                { name: "Loan Application", href: "/loan_applications", icon: CurrencyDollarIcon, current: false },
             ],
         },
     

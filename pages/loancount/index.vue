@@ -89,7 +89,7 @@ import 'vue3-toastify/dist/index.css';
   {
     try {
         const response = await apiService.authLoanCountsUpdate({});
-        UserService.usr_id = selectedLoanId.value;
+        UserService.usbl_id = selectedLoanId.value;
         navigateTo('/loancount/update');
     } catch (error) {
         toast.error(error.message, {

@@ -99,6 +99,8 @@ import 'vue3-toastify/dist/index.css';
 import { authService } from '@/components/api/AuthService'
 import { useVuelidate } from "@vuelidate/core"
 import { required, helpers } from '@vuelidate/validators'
+import { apiService } from '~/routes/api/API';
+import { UserService } from '~/models/User';
 
 
 
@@ -132,13 +134,15 @@ async function login() {
                 email: state.email,
                 password: state.password,
             }
+
             const response = await authService.login(params)
+            
             if (response.data) {
                 localStorage.setItem("_token", response.data?.token)
                 toast.success("Login successfully!", {
                     autoClose: 1000,
                 });
-                
+
                 // Introduce a delay before navigating
                 setTimeout(() => {
                     navigateTo('/dashboard');

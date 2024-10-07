@@ -83,7 +83,7 @@ const router = useRouter(); // Using the router to navigate
 
 async function fetchloancount() {
   try {
-    const response = await apiService.getLoanCountById({}, UserService.usr_id);
+    const response = await apiService.getLoanCountById({}, UserService.usbl_id);
     loanCount.value = response.data.loan_count;
     minAmount.value = response.data.min_amount;
     maxAmount.value = response.data.max_amount;
@@ -101,7 +101,7 @@ const submitForm = async () => {
           min_amount: minAmount.value,
           max_amount: maxAmount.value
       }
-      const response = await apiService.updateLoanCount(params, UserService.usr_id);
+      const response = await apiService.updateLoanCount(params, UserService.usbl_id);
       submitted.value = true;
       toast.success("Loan count updated successfully!", {
                 autoClose: 2000,

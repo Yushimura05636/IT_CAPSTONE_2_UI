@@ -1,5 +1,6 @@
 export class Users {
   private _usr_id!: number;
+  private static _lgUsr_id!: number;
   private _usbl_id?: number | undefined;
   private _status_id!: number;
   private _last_name!: string;
@@ -23,6 +24,14 @@ export class Users {
 
   set usr_id(value: number) {
     this._usr_id = value;
+  }
+
+  get lgUsr_id(): number {
+    return Users._lgUsr_id;
+  }
+
+  set lgUsr_id(value: number) {
+    Users._lgUsr_id = value;
   }
   
   get status_id(): number {

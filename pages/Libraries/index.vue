@@ -137,6 +137,7 @@ import { PermissionService } from '~/models/Permission';
   { value: 'document_permission_map', label: 'Document Permission Map' },
   { value: 'name_type', label: 'Name Type' },
   { value: 'customer_group', label: 'Customer Group' },
+  { value: 'document_status_code', label: 'Document Status Code' },
 ];
 
   let selectedLibraryId = ref(null); // Track selected library

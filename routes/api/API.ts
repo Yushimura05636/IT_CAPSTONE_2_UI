@@ -305,8 +305,8 @@ class API extends BaseAPIService {
     async getFee(params: object): Promise<any> {
         return await this.request(`/FEES`, 'GET', params)
     }
-    async getFeeNoAuth(params: object, modeltype: string): Promise<any>{
-        return await this.request(`/FEES/NoAUTH`, 'PATCH', params);
+    async getFeeNoAuth(params: object): Promise<any>{
+        return await this.request(`/FEES/NoAUTH`, 'GET', params);
     }
     async getFeeById(params: object, id: number): Promise<any> {
         return await this.request(`/FEES/${id}`, 'GET', params)
@@ -322,6 +322,29 @@ class API extends BaseAPIService {
     }
     async deleteFee(params: object, id: number): Promise<any> {
         return await this.request(`/FEES/${id}`, 'DELETE', params)
+    }
+
+    //Loan Applications
+    async getLoanApplication(params: object): Promise<any> {
+        return await this.request(`/LOAN_APPLICATIONS`, 'GET', params)
+    }
+    async getLoanApplicationNoAUTH(params: object): Promise<any>{
+        return await this.request(`/LOAN_APPLICATIONS/NoAUTH`, 'GET', params);
+    }
+    async getLoanApplicationById(params: object, id: number): Promise<any> {
+        return await this.request(`/LOAN_APPLICATIONS/${id}`, 'GET', params)
+    }
+    async getLoanApplicationByIdNoAUTH(params: object, id: number): Promise<any> {
+        return await this.request(`/LOAN_APPLICATIONS/NoAUTH/${id}`, 'GET', params)
+    }
+    async createLoanApplication(params: object): Promise<any> {
+        return await this.request(`/LOAN_APPLICATIONS`, 'POST', params)
+    }
+    async updateLoanApplication(params: object, id: number): Promise<any> {
+        return await this.request(`/LOAN_APPLICATIONS/${id}`, 'PUT', params)
+    }
+    async deleteLoanApplication(params: object, id: number): Promise<any> {
+        return await this.request(`/LOAN_APPLICATIONS/${id}`, 'DELETE', params)
     }
 
 
@@ -460,6 +483,15 @@ async authPersonalitiesCreate(params: object): Promise<any> {
 
 async authPersonalitiesUpdate(params: object): Promise<any> {
     return await this.request(`/PERSONALITIES/update`, 'PATCH', params);
+}
+
+// Loan Applications
+async authLoanApplicationsCreate(params: object): Promise<any> {
+    return await this.request(`/LOAN_APPLICATIONS/create`, 'PATCH', params);
+}
+
+async authLoanApplicationsUpdate(params: object): Promise<any> {
+    return await this.request(`/LOAN_APPLICATIONS/update`, 'PATCH', params);
 }
 
 async getCustomerByGroupId(params: object, id: number): Promise<any> {

@@ -46,6 +46,7 @@ class BaseAPIService {
                     throw new APIError(error.response._data)
                 case 401:
                     this.revokeAccess()
+                    this.redirectToLogin()
                 case 500:
                     throw new APIError({
                         message: "Server error. Please try again. If the problem persists, contact your system administrator"
@@ -63,6 +64,9 @@ class BaseAPIService {
     }
     redirectToHome() {
         navigateTo('/dashboard'); 
+    }
+    redirectToLogin() {
+        navigateTo('/');
     }
 }
 
