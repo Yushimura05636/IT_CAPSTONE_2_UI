@@ -283,6 +283,8 @@
         
         { name: "Payment", icon: FlagIcon, current: false,
             children: [
+                { name: "Payments", href: "/Payment_Table/paymentTable", icon: CurrencyDollarIcon, current: false },
+                { name: "Payment Line", href: "/paymentLine_Table/Payment_Line", icon: CurrencyDollarIcon, current: false },
                 { name: "Loan Application", href: "", icon: CurrencyDollarIcon, current: false },
                 { name: "Loan Release", href: "", icon:  CreditCardIcon, current: false },
                 { name: "Payment Schedule", href: "", icon: CreditCardIcon, current: false },
