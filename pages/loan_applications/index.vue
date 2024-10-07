@@ -16,31 +16,34 @@
                     </div>
 
                     <!-- Table for Customer Names -->
-                    <div v-if="state.customers.length > 0" class="overflow-x-auto">
-                        <table class="min-w-full bg-white border border-gray-300 mb-4">
-                            <thead>
-                                <tr>
-                                    <th class="px-4 py-2 border text-left">Select</th>
-                                    <th class="px-4 py-2 border text-left">Customer Name</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="customer in state.customers" :key="customer.id" :value="customer.id">
-                                    <td class="px-4 py-2 border text-left">
-                                        <input
-                                            type="checkbox"
-                                            v-model="customer.isSelected"
-                                            :value="customer.id"
-                                            @change="onCheckboxChange(customer.id, $event.target.checked)"
-                                        />
-                                    </td>
-                                    <td class="px-4 py-2 border cursor-pointer" @click="loadCustomerData(customer.id)">
-                                        {{ customer.personality.first_name }} {{ customer.personality.middle_name }} {{ customer.personality.family_name }}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+<div v-if="state.customers.length > 0" class="overflow-x-auto">
+    <div class="max-h-60 overflow-y-auto">
+        <table class="min-w-full bg-white border border-gray-300 mb-4">
+            <thead>
+                <tr>
+                    <th class="px-4 py-2 border text-left">Select</th>
+                    <th class="px-4 py-2 border text-left">Customer Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="customer in state.customers" :key="customer.id" :value="customer.id">
+                    <td class="px-4 py-2 border text-left">
+                        <input
+                            type="checkbox"
+                            v-model="customer.isSelected"
+                            :value="customer.id"
+                            @change="onCheckboxChange(customer.id, $event.target.checked)"
+                        />
+                    </td>
+                    <td class="px-4 py-2 border cursor-pointer" @click="loadCustomerData(customer.id)">
+                        {{ customer.personality.first_name }} {{ customer.personality.middle_name }} {{ customer.personality.family_name }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 
                     <!-- Form Fields for the Selected Customer -->
                     <div v-if="selectedCheckCustomerId !== null">
@@ -53,6 +56,18 @@
                                 readonly
                             />
                         </div>
+
+                        <div class="mb-4">
+                            <label class="block text-gray-700">Co-Maker</label>
+                            <select
+                                v-model="customerData[selectedCheckCustomerId].coMaker"
+                                class="w-full border rounded-lg px-4 py-2">
+                                <option v-for="customer in availableCoMakers" :key="customer.id" :value="customer.id">
+                                    {{ customer.personality.first_name }} {{ customer.personality.middle_name }} {{ customer.personality.family_name }}
+                                </option>
+                            </select>
+                        </div>
+
                         <div class="mb-4">
                             <label class="block text-gray-700">Loan Amount</label>
                             <input
@@ -135,6 +150,7 @@
                         </div>
                         
                         <div v-if="state.fees.length > 0" class="overflow-x-auto">
+                            <div class="max-h-60 overflow-y-auto">
                             <table class="min-w-full bg-white border border-gray-300 mb-4">
     <thead>
         <tr>
@@ -158,6 +174,7 @@
         </tr>
     </tbody>
 </table>
+</div>
 </div>
 
 <div class="mb-4">
@@ -471,6 +488,7 @@ const submitForm = async () => {
                 notes: customer.comment || '', // Include comment if it exists, otherwise set it to an empty string
                 document_status_code: 'PENDING', // Means pending
                 fees: customer.selectedFees, // Include selected fees
+                coMaker: customer.coMaker,
             });
         }
     }
@@ -554,4 +572,9 @@ function onCheckboxChange(customerId, isChecked): any {
             // Handle logic for when the checkbox is unchecked
         }
     }
+
+    // Computed property to filter out the current customer from the co-makers list
+    const availableCoMakers = computed(() =>
+    state.value.customers.filter((customer) => customer.id !== selectedCheckCustomerId.value)
+    );
 </script>
