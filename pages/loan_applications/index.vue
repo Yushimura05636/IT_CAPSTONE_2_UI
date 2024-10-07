@@ -1,580 +1,346 @@
 <template>
     <NuxtLayout name="admin">
-        <main>
-            <div class="flex justify-center items-center bg-gray-100">
-                <div class="bg-white border border-gray-300 rounded-lg p-6 shadow-md w-full">
-                    <div class="text-center font-bold text-xl mb-4">Transaction Form</div>
+            <div class="p-4">
+                <div class="max-w-screen-xl mx-auto px-4 md:px-8">
+                    <div class="font-bold">Loan Applications</div>
 
-                    <!-- Group Name Combobox -->
-                    <div class="mb-4">
-                        <label class="block text-gray-700">Group Name</label>
-                        <select v-model="selectedGroupId" @change="fetchCustomers" class="w-full border rounded-lg px-4 py-2">
-                            <option v-for="group in state.groups" :key="group.id" :value="group.id">
-                                {{ group.description }}
-                            </option>
-                        </select>
-                    </div>
+                    <!-- Action Buttons -->
+                    <div class="flex justify-between items-center mb-8 mt-8">
 
-                    <!-- Table for Customer Names -->
-<div v-if="state.customers.length > 0" class="overflow-x-auto">
-    <div class="max-h-60 overflow-y-auto">
-        <table class="min-w-full bg-white border border-gray-300 mb-4">
-            <thead>
-                <tr>
-                    <th class="px-4 py-2 border text-left">Select</th>
-                    <th class="px-4 py-2 border text-left">Customer Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="customer in state.customers" :key="customer.id" :value="customer.id">
-                    <td class="px-4 py-2 border text-left">
-                        <input
-                            type="checkbox"
-                            v-model="customer.isSelected"
-                            :value="customer.id"
-                            @change="onCheckboxChange(customer.id, $event.target.checked)"
-                        />
-                    </td>
-                    <td class="px-4 py-2 border cursor-pointer" @click="loadCustomerData(customer.id)">
-                        {{ customer.personality.first_name }} {{ customer.personality.middle_name }} {{ customer.personality.family_name }}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+                        <!-- Left: Action Buttons -->
+                        <div class="flex space-x-4">
+                            <button  class="px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-600"
+                            @click="createLoanApplication">
+                            Create
+                            </button>
 
-
-                    <!-- Form Fields for the Selected Customer -->
-                    <div v-if="selectedCheckCustomerId !== null">
-                        <div class="mb-4">
-                            <label class="block text-gray-700">Loan Application No</label>
-                            <input
-                                v-model="customerData[selectedCheckCustomerId].loanApplicationNo"
-                                type="text"
-                                class="w-full border border-gray-300 rounded p-2"
-                                readonly
-                            />
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="block text-gray-700">Co-Maker</label>
-                            <select
-                                v-model="customerData[selectedCheckCustomerId].coMaker"
-                                class="w-full border rounded-lg px-4 py-2">
-                                <option v-for="customer in availableCoMakers" :key="customer.id" :value="customer.id">
-                                    {{ customer.personality.first_name }} {{ customer.personality.middle_name }} {{ customer.personality.family_name }}
-                                </option>
-                            </select>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="block text-gray-700">Loan Amount</label>
-                            <input
-                                v-model="customerData[selectedCheckCustomerId].loanAmount"
-                                type="number"
-                                class="w-full border border-gray-300 rounded p-2"
-                                @input="updateLoanAmount(selectedCheckCustomerId)" 
-                            />
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="block text-gray-700">Factor Rate</label>
-                            <select
-                                v-model="customerData[selectedCheckCustomerId].factorRate"
-                                @change="onFactorRateChange(customerData[selectedCheckCustomerId].factorRate)"
-                                class="w-full border rounded-lg px-4 py-2"
+                            <button 
+                            type="button" 
+                            class="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
+                            v-if="selectedLoanAppID"
+                            @click="updateLoanApp"
                             >
-                                <option v-for="factorRate in state.factorRates" :key="factorRate.id" :value="factorRate.id">
-                                    {{ factorRate.value }}
-                                </option>
-                            </select>
+                            Modify
+                            </button>
+                            
+                            <button type="button" 
+                            class="px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600 "
+                            v-if="selectedLoanAppID"
+                            >
+                            Delete
+                            </button>
+                            <button  @click="approveORreject"
+                            :disabled="!selectedLoanAppID" 
+                            class="px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-red-600 disabled:opacity-50"
+                            @mouseenter="isHovered = true" 
+                            @mouseleave="isHovered = false">
+                            {{ isHovered ? 'Reject' : 'Approved' }}
+                            </button>
                         </div>
 
-                        <div class="mb-4">
-                            <label class="block text-gray-700">Interest Amount</label>
+                        <!-- Right: Search Bar -->
+                        <div class="flex items-center space-x-2">
                             <input
-                                v-model="customerData[selectedCheckCustomerId].interestAmount"
-                                type="number"
-                                step="0.01"
-                                class="w-full border border-gray-300 rounded p-2"
+                            type="text"
+                            placeholder="Search"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
                             />
-                        </div>
-
-                        <!-- Add Amount Paid Field -->
-                        <div class="mb-4">
-                            <label class="block text-gray-700">Amount Paid</label>
-                            <input
-                                v-model="customerData[selectedCheckCustomerId].amountPaid"
-                                type="number"
-                                class="w-full border border-gray-300 rounded p-2"
-                                readonly
-                            />
-                        </div>
-
-
-                        <div class="mb-4">
-                            <label class="block text-gray-700">Release Schedule</label>
-                            <input
-                                v-model="customerData[selectedCheckCustomerId].releaseSchedule"
-                                type="date"
-                                class="w-full border border-gray-300 rounded p-2"
-                            />
-                        </div>
-
-                        <!-- Automatically Updated Fields -->
-                        <div class="mb-4">
-                            <label class="block text-gray-700">Payment Frequency</label>
-                            <select v-model="customerData[selectedCheckCustomerId].paymentFrequency" class="w-full border rounded-lg px-4 py-2">
-                                <option v-for="frequency in state.paymentFrequencies" :key="frequency.id" :value="frequency.id">
-                                    {{ frequency.description }}
-                                </option>
-                            </select>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="block text-gray-700">Duration</label>
-                            <select v-model="customerData[selectedCheckCustomerId].duration" class="w-full border rounded-lg px-4 py-2">
-                                <option v-for="duration in state.durations" :key="duration.id" :value="duration.id">
-                                    {{ duration.description }}
-                                </option>
-                            </select>
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="block text-gray-700">Comment</label>
-                            <textarea
-                                v-model="customerData[selectedCheckCustomerId].comment"
-                                class="w-full border border-gray-300 rounded p-2"
-                            ></textarea>
-                        </div>
-                        
-                        <div v-if="state.fees.length > 0" class="overflow-x-auto">
-                            <div class="max-h-60 overflow-y-auto">
-                            <table class="min-w-full bg-white border border-gray-300 mb-4">
-    <thead>
-        <tr>
-            <th class="px-4 py-2 border text-left">Select</th>
-            <th class="px-4 py-2 border text-left">Fee Description</th>
-            <th class="px-4 py-2 border text-left">Amount</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr v-for="fee in state.fees" :key="fee.id">
-            <td class="px-4 py-2 border text-left">
-                <input
-    type="checkbox"
-    :value="fee.id"
-    :checked="customerData[selectedCheckCustomerId].selectedFees.includes(fee.id)"
-    @change="updateSelectedFees(fee.id, $event.target.checked)"
-/>
-            </td>
-            <td class="px-4 py-2 border">{{ fee.description }}</td>
-            <td class="px-4 py-2 border">{{ fee.amount }}</td>
-        </tr>
-    </tbody>
-</table>
-</div>
-</div>
-
-<div class="mb-4">
-    <label class="block text-gray-700">Total Fees</label>
-    <input
-        v-model="customerData[selectedCheckCustomerId].totalFees"
-        type="number"
-        class="w-full border border-gray-300 rounded p-2"
-        readonly
-    />
-</div>
-                        <div class="text-center mt-4">
-                            <button @click.prevent="submitForm" class="bg-blue-500 text-white px-4 py-2 rounded">
-                                Submit
+                            <button class="px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
+                            Search
                             </button>
                         </div>
                     </div>
-                    
+
+                    <div class="overflow-x-auto">
+                        <Table class="w-full  " 
+                            :columnHeaders="state.columnHeaders" 
+                            :data="state.loanApp" 
+                            :isLoading="state.isTableLoading"
+                            :sortData="state.sortData" 
+                            >
+                            <template #body
+                                v-if="!(state.isTableLoading || (state.loanApp?.data === 0))">
+                                
+                                <tr v-for="(loanApp, index) in state.loanApp?.data" :key="index" class="">
+                                    
+                                    <td class="py-2 border-b border-gray-300 ">
+                                        <input
+                                        type="radio"
+                                        :value="loanApp.id"
+                                        v-model="selectedLoanAppID"
+                                        class="cursor-pointer"
+                                        />
+                                    </td>
+                                    <td class="py-2 border-b border-gray-300  ">
+                                        <span>{{ loanApp.customer_id }} </span>
+                                    </td>
+                                    <td class="py-2 border-b border-gray-300  ">
+                                        <span>{{ loanApp.group_id }} </span>
+                                    </td>
+                                    <td class="py-2 border-b border-gray-300  ">
+                                        <span>{{ loanApp.datetime_prepared }} </span>
+                                    </td>
+                                    <td class="py-2 border-b border-gray-300  ">
+                                        <span>{{ loanApp.document_status_code }} </span>
+                                    </td>
+                                    <td class="py-2 border-b border-gray-300  ">
+                                        <span>{{ loanApp.loan_application_no }} </span>
+                                    </td>
+                                    <td class="py-2 border-b border-gray-300  ">
+                                        <span>{{ loanApp.amount_loan }} </span>
+                                    </td>
+                                    <td class="py-2 border-b border-gray-300  ">
+                                        <span>{{ loanApp.factor_rate }} </span>
+                                    </td>
+                                    <td class="py-2 border-b border-gray-300  ">
+                                        <span>{{ loanApp.amount_interest }} </span>
+                                    </td>
+                                    <td class="py-2 border-b border-gray-300  ">
+                                        <span>{{ loanApp.amount_paid }} </span>
+                                    </td>
+                                    <td class="py-2 border-b border-gray-300  ">
+                                        <span>{{ loanApp.datetime_target_release }} </span>
+                                    </td>
+                                    <td class="py-2 border-b border-gray-300  ">
+                                        <span>{{ loanApp.datetime_fully_paid }} </span>
+                                    </td>
+                                    <td class="py-2 border-b border-gray-300  ">
+                                        <span>{{ loanApp.datetime_approved }} </span>
+                                    </td>
+                                    <td class="py-2 border-b border-gray-300  ">
+                                        <span>{{ loanApp.payment_frequency_id }} </span>
+                                    </td>
+                                    <td class="py-2 border-b border-gray-300  ">
+                                        <span>{{ loanApp.payment_duration_id }} </span>
+                                    </td>
+                                    <td class="py-2 border-b border-gray-300  ">
+                                        <span>{{ loanApp.approved_by_id }} </span>
+                                    </td>
+                                    <td class="py-2 border-b border-gray-300  ">
+                                        <span>{{ loanApp.prepared_by_id }} </span>
+                                    </td>
+                                    <td class="py-2 border-b border-gray-300  ">
+                                        <span>{{ loanApp.released_by_id }} </span>
+                                    </td>
+                                    <td class="py-2 border-b border-gray-300  ">
+                                        <span>{{ loanApp.last_modified_by_id }} </span>
+                                    </td>
+                                    <td class="py-2 border-b border-gray-300  ">
+                                        <span>{{ loanApp.notes }} </span>
+                                    </td>
+                                </tr>
+                            </template>
+                        </Table>
+                    </div>
                 </div>
             </div>
-        </main>
     </NuxtLayout>
 </template>
 
+
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
-import { UserService } from '~/models/User';
-import { apiService } from '~/routes/api/API';
 
-const state = ref({
-  groups: [],
-  customers: [],
-  factorRates: [],
-  paymentFrequencies: [],
-  durations: [],
-  fees: [],
-});
-
-const totalFees = ref(0);
-
-
-const selectedGroupId = ref(null);
-const selectedCustomerId = ref(null); // Currently selected customer
-const selectedCheckCustomerId = ref(null);
-// This will hold form data for each customer by their ID
-const customerData = reactive({});
-
-onMounted(() => {
-  fetchGroups();
-  fetchFactorRate();
-  fetchPaymentFrequencies();
-  fetchDurations();
-  fetchFees();
-});
-
-const fetchFees = async () => {
-    try {
-        const response = await apiService.getFeeNoAuth({});
-        state.value.fees = response.data;
-    } catch (error) {
-        toast.error(error.message, { autoClose: 5000 });
-    }
-}
-
-const fetchGroups = async () => {
-    try {
-        const response = await apiService.getNoAuth({}, "customer_group");
-        state.value.groups = response.data;
-    } catch (error) {
-        toast.error(error.message, { autoClose: 5000 });
-    }
-};
-
-const fetchCustomers = async () => {
-    selectedCustomerId.value = null;
-    customerData.value = {}; // Clear previous customer data
-    if (selectedGroupId.value) {
-        try {
-            // Optionally, you can also initialize customerData for new customers
-            state.value.customers.forEach(customer => {
-                customerData[customer.id] = {
-                    loanApplicationNo: generateLoanApplicationNo(),
-                    customerId: selectedCustomerId.value,
-                    loanAmount: '',
-                    isSelected: false,
-                    factorRate: '',
-                    interestAmount: '',
-                    amountPaid: '',
-                    releaseSchedule: '',
-                    paymentFrequency: '',
-                    duration: '',
-                    comment: '',
-                    selectedFees: [],
-                };
-            });
-            const response = await apiService.getCustomerByGroupId({}, selectedGroupId.value);
-            state.value.customers = response.data;
-
-
-        } catch (error) {
-            toast.error(error.message, { autoClose: 5000 });
-        }
-    } else {
-        toast.error('Please select a group.', { autoClose: 5000 });
-    }
-};
-
-const fetchFactorRate = async () => {
-    try {
-        const response = await apiService.getFactorRateNoAuth({});
-        state.value.factorRates = response.data;
-    } catch (error) {
-        toast.error(error.message, { autoClose: 5000 });
-    }
-};
-
-const fetchPaymentFrequencies = async () => {
-    try {
-        const response = await apiService.getPaymentFrequencyNoAuth({});
-        state.value.paymentFrequencies = response.data;
-    } catch (error) {
-        toast.error(error.message, { autoClose: 5000 });
-    }
-};
-
-// Fetch duration values from the server
-const fetchDurations = async () => {
-    try {
-        const response = await apiService.getPaymentdurationNoAuth({});
-        state.value.durations = response.data;
-    } catch (error) {
-        toast.error(error.message, { autoClose: 5000 });
-    }
-};
-
-// Fetch the fee library and filter only active fees
-const fetchFeeLibrary = async () => {
-  try {
-    const response = await apiService.getFeeNoAuth({});
-    state.value.fees = response.data; // Show only active fees
-  } catch (error) {
-    toast.error(error.message, { autoClose: 5000 });
-  }
-};
-
-const loadCustomerData = (customerId) => {
-
-    selectedCheckCustomerId.value = customerId;
-    try {
-        if (!customerData[customerId]) {
-        customerData[customerId] = {
-            loanApplicationNo: generateLoanApplicationNo(),
-            customerId: customerId,
-            isSelected: customerData[customerId].isSelected,
-            loanAmount: '',
-            factorRate: '',
-            interestAmount: '',
-            amountPaid: '',
-            releaseSchedule: '',
-            paymentFrequency: '',
-            duration: '',
-            comment: '',
-            selectedFees: [],  // Initialize selectedFees
-        };
-        console.log(customerData);
-    } else {
-        // Ensure selectedFees is initialized
-        if (!customerData[customerId].selectedFees) {
-            customerData[customerId].selectedFees = [];
-        }
-    }
-    } catch (error) {
-        toast.error(`Please select first the customer!`, { autoClose: 5000 });
-    }
-};
-
-const loadCustomerDatas = (customerId, isChecked) => {
-
-    selectedCheckCustomerId.value = customerId;
-    if (!customerData[customerId]) {
-        customerData[customerId] = {
-            loanApplicationNo: generateLoanApplicationNo(),
-            customerId: customerId,
-            isSelected: isChecked,
-            loanAmount: '',
-            factorRate: '',
-            interestAmount: '',
-            amountPaid: '',
-            releaseSchedule: '',
-            paymentFrequency: '',
-            duration: '',
-            comment: '',
-            selectedFees: [],  // Initialize selectedFees
-        };
-        console.log(customerData);
-    } else {
-        // Ensure selectedFees is initialized
-        customerData[customerId].isSelected = isChecked;
-        if (!customerData[customerId].selectedFees) {
-            customerData[customerId].selectedFees = [];
-        }
-    }
-};
-
-// Watch loanAmount and factorRate to recalculate interest and amount paid
-const calculateInterestAndAmountPaid = (loanAmount, factorRate) => {
-    if (loanAmount && factorRate) {
-        const interestAmount = loanAmount * (factorRate / 100); // Simple interest calculation
-        const amountPaid = loanAmount + interestAmount;
-        return { interestAmount, amountPaid };
-    }
-    return { interestAmount: 0, amountPaid: 0 };
-};
-
-// Watch the loanAmount field to update interestAmount and amountPaid
-const updateLoanAmount = (customerId) => {
-    const customer = customerData[customerId];
-    if (customer.loanAmount && customer.factorRateValue) {
-        const { interestAmount, amountPaid } = calculateInterestAndAmountPaid(
-            customer.loanAmount,
-            customer.factorRateValue // Use factorRateValue for calculation
-        );
-        customer.interestAmount = interestAmount;
-        customer.amountPaid = amountPaid;
-    }
-};
-
-
-// Watch the factor rate change to trigger recalculation
-const onFactorRateChange = async (selectedFactorRateId) => {
-    const factorRate = state.value.factorRates.find(rate => rate.id === selectedFactorRateId);
-    if (factorRate && selectedCheckCustomerId.value) {
-        const customer = customerData[selectedCheckCustomerId.value];
-
-        // Store the selected factorRate ID
-        customer.factorRate = factorRate.id; // This is the change
-        customer.factorRateValue = factorRate.value; // This is for calculation purposes only
-
-        // Auto-populate payment frequency and duration
-        customer.paymentFrequency = factorRate.payment_frequency_id || '';
-        customer.duration = factorRate.payment_duration_id || '';
-
-        // Recalculate interest and amount paid
-        updateLoanAmount(selectedCheckCustomerId.value);
-    }
-};
-
-
-// Watch for loanAmount input changes
-watch(() => customerData[selectedCustomerId.value]?.factorRate, (newFactorRate) => {
-    onFactorRateChange(newFactorRate);
-});
-
-function generateLoanApplicationNo(length = 8) {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let randomString = '';
-
-  // Create a random string
-  for (let i = 0; i < length; i++) {
-    randomString += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-
-  // Generate a random number (e.g., between 1000 and 9999)
-  const randomNumber = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
-
-  // Combine random string and number
-  return `LN-${randomString}${randomNumber}`;
-}
-
-
-// Handle form submission, including selected fees
-const submitForm = async () => {
-    debugger;
-    const allCustomerData = []; // Initialize an empty array to hold customer data
-
-    // Convert customerData object into an array
-    const customerDataArray = Object.values(customerData);
-
-    // Loop through the customer data array using a simple for loop
-    for (let i = 0; i < customerDataArray.length; i++) {
-        const customer = customerDataArray[i];
-
-        // Ensure the customer data is valid
-        if (
-            customer &&
-            customer.isSelected && // Check if the customer is selected
-            customer.customerId && 
-            customer.loanApplicationNo &&
-            customer.loanAmount &&
-            selectedGroupId.value &&
-            customer.factorRate &&
-            customer.interestAmount &&
-            customer.amountPaid &&
-            customer.paymentFrequency &&
-            customer.duration
-        ) {
-            allCustomerData.push({
-                customer_id: customer.customerId, 
-                loan_application_no: customer.loanApplicationNo,
-                amount_loan: customer.loanAmount,
-                group_id: selectedGroupId.value,
-                factor_rate: customer.factorRate,
-                amount_interest: customer.interestAmount,
-                amount_paid: customer.amountPaid,
-                datetime_target_release: customer.releaseSchedule,
-                datetime_prepared: new Date().toISOString(), // Empty because the database will cater the date when it's prepared
-                payment_frequency_id: customer.paymentFrequency,
-                payment_duration_id: customer.duration,
-                notes: customer.comment || '', // Include comment if it exists, otherwise set it to an empty string
-                document_status_code: 'PENDING', // Means pending
-                fees: customer.selectedFees, // Include selected fees
-                coMaker: customer.coMaker,
-            });
-        }
-    }
-
-    // Check if there is any customer data to submit
-    if (allCustomerData.length > 0) {
-        try {
-            // Send the data to the Laravel API
-            const response = await apiService.createLoanApplication({
-                allCustomerData, // Use allCustomerData here
-            });
-
-            if (response) {
-                toast.success('Transaction submitted successfully.', { autoClose: 5000 });
-                navigateTo('/loan_applications');
-            }
-        } catch (error) {
-            toast.error(`Submission failed: ${error.message}`, { autoClose: 5000 });
-        }
-    } else {
-        toast.error('No customer data to submit.', { autoClose: 5000 });
-    }
-};
-
-
-async function updateSelectedFees(feeId, isSelected) {
-    // Ensure selectedFees is initialized for the current customer
-    if (!customerData[selectedCheckCustomerId.value]) {
-        return;
-    }
+    import { ref, reactive, onMounted } from 'vue'
+    import { apiService } from '~/routes/api/API'
+    import { loanApplicationService } from '~/models/LoanApplication'
+    import { PermissionService } from '~/models/Permission';
+    import { PaymentFrequency } from '../../models/PaymentFrequency';
     
-    const selectedFees = customerData[selectedCheckCustomerId.value].selectedFees;
+    const state = reactive({
+        columnHeaders: [
+            { name: '' },
+            { name: 'Customer' },
+            { name: 'Group' },
+            { name: 'Date Time Prepared' },
+            { name: 'Status' },
+            { name: 'Loan Application No' },
+            { name: 'Amount Loan' },
+            { name: 'Factor Rate' },
+            { name: 'Amount Interest' },
+            { name: 'Amount Paid' },
+            { name: 'Date Time Target Release' },
+            { name: 'Date Time Fully Paid' },
+            { name: 'Date Time Approved' },
+            { name: 'Payment Frequency' },
+            { name: 'Payment Duration' },
+            { name: 'Approved by' },
+            { name: 'Prepared by' },
+            { name: 'Released by' },
+            { name: 'Last modified by' },
+            { name: 'Notes' },
+        ],
+        error: null,
+        isTableLoading: false,
+        sortData: {
+            sortField: 'id',
+            sortOrder: 'descend',
+        },
+        loanApp: [],
+        searchQuery: '',
+    })
 
-    if (isSelected) {
-        // Add fee ID to selectedFees array
-        if (!selectedFees.includes(feeId)) {
-            selectedFees.push(feeId);
-        }
-    } else {
-        // Remove fee ID from selectedFees array
-        const index = selectedFees.indexOf(feeId);
-        if (index > -1) {
-            selectedFees.splice(index, 1);
-        }
+    let selectedLoanAppID = ref(null); // Track selected library
+    const isHovered = ref(false);
+
+    
+    async function approveORreject(){
+    try {
+        // debugger;
+        loanApplicationService.id = parseInt(selectedLoanAppID.value?.toString());
+        const response = await apiService.authCustomersUpdate({});
+        // console.log("test" + CustomersService.id);
+        alert("Approved Logic Here");
+        // navigateTo(`customers/approve`)
+    } catch (error) {
+        toast.error(error.message, {
+        autoClose: 5000,
+        })
     }
-
-    // Optionally, you can calculate the total amount here if needed
-    calculateTotalFees();
 }
+    
+    
+    async function fetchFreqandDuration() {
+        state.isTableLoading = true
+        state.error = null
+        try {
+            const params = {}
+            const response = await apiService.getLoanApplication({})
+            state.loanApp = response
+            console.log(state.loanApp);
+        } catch (error: any) {
+            toast.error(error.message, {
+                autoClose: 5000,
+            })
+        }
+        state.isTableLoading = false
+    }
+    onMounted(() => {
+        fetchFreqandDuration()
+    })
 
-// Calculate total fees for the selected customer
-function calculateTotalFees() {
-    const customer = customerData[selectedCheckCustomerId.value];
-    if (customer && customer.selectedFees.length > 0) {
-        let total = 0;
+    async function updateLoanApp(){
+        try {
+            const response = await apiService.authPaymentDurationsUpdate({})
+            if (selectedLoanAppID.value) {
+                let customer_id = null;         //!update
+                let group_id = null;            
+                let datetime_prepared = null;   
+                let document_status_code = null;
+                let loan_application_no = null;
+                let amount_loan = null;
+                let factor_rate = null;
+                let amount_interest = null;
+                let amount_paid = null;
+                let datetime_target_release = null;
+                let datetime_fully_paid = null;
+                let datetime_approved = null;
+                let payment_frequency_id = null;
+                let payment_duration_id = null;
+                let approved_by_id = null;
+                let prepared_by_id = null;
+                let released_by_id = null;
+                let last_modified_by_id = null;
+                let notes = null;
 
-        for (let i = 0; i < customer.selectedFees.length; i++) {
-            const feeId = customer.selectedFees[i];
-            const fee = state.value.fees.find(f => f.id === feeId);
-            if (fee) {
-                total += parseFloat(fee.amount); // Ensure we are adding numbers, not concatenating strings
+        // Iterate through the data using a for loop
+        for (let i = 0; i < state.loanApp?.data.length; i++) {
+            const loanApp = state.loanApp.data[i];
+
+            // Check if the current library's id matches the selectedLibraryId
+            if (loanApp.id == parseInt(selectedLoanAppID.value)?.toString()) {
+                group_id = loanApp.group_id;
+                datetime_prepared = loanApp.datetime_prepared;
+                document_status_code = loanApp.document_status_code;
+                loan_application_no = loanApp.loan_application_no;
+                amount_loan = loanApp.amount_loan;
+                factor_rate = loanApp.factor_rate;
+                amount_interest = loanApp.amount_interest;
+                amount_paid = loanApp.amount_paid;
+                datetime_target_release = loanApp.datetime_target_release;
+                datetime_fully_paid = loanApp.datetime_fully_paid;
+                datetime_approved = loanApp.datetime_approved;
+                payment_frequency_id = loanApp.payment_frequency_id;
+                payment_duration_id = loanApp.payment_duration_id;
+                approved_by_id = loanApp.approved_by_id;
+                prepared_by_id = loanApp.prepared_by_id;
+                released_by_id = loanApp.released_by_id;
+                last_modified_by_id = loanApp.last_modified_by_id;
+                notes = loanApp.notes;
+            break; // Exit the loop once we find the selected library
             }
         }
 
-        customer.totalFees = parseFloat(total).toFixed(8); // Assign the total fees to the customer object
+        loanApplicationService.id = selectedLoanAppID.value;
+        loanApplicationService.group_id = group_id;
+        loanApplicationService.datetime_prepared = datetime_prepared;
+        loanApplicationService.document_status = document_status_code;
+        loanApplicationService.loan_application_no = loan_application_no;
+        loanApplicationService.amount_loan = amount_loan;
+        loanApplicationService.factor_rate = factor_rate;
+        loanApplicationService.amount_interest = amount_interest;
+        loanApplicationService.amount_paid = amount_paid;
+        loanApplicationService.datetime_target_release = datetime_target_release;
+        loanApplicationService.datetime_fully_paid = datetime_fully_paid;
+        loanApplicationService.datetime_approved = datetime_approved;
+        loanApplicationService.payment_frequency_id = payment_frequency_id;
+        loanApplicationService.payment_duration_id = payment_duration_id;
+        loanApplicationService.approved_by_id = approved_by_id;
+        loanApplicationService.prepared_by_id = prepared_by_id;
+        loanApplicationService.released_by_id = released_by_id;
+        loanApplicationService.last_modified_by_id = last_modified_by_id;
+        loanApplicationService.notes = notes;
 
-    } else {
-        customer.totalFees = 0; // Reset total if no fees are selected
+        console.log(loanApplicationService.id);
+        console.log(loanApplicationService.group_id = group_id);
+        console.log(loanApplicationService.datetime_prepared = datetime_prepared);
+        console.log(loanApplicationService.document_status = document_status_code);
+        console.log(loanApplicationService.loan_application_no = loan_application_no);
+        console.log(loanApplicationService.amount_loan = amount_loan);
+        console.log(loanApplicationService.factor_rate = factor_rate);
+        console.log(loanApplicationService.amount_interest = amount_interest);
+        console.log(loanApplicationService.amount_paid = amount_paid);
+        console.log(loanApplicationService.datetime_target_release = datetime_target_release);
+        console.log(loanApplicationService.datetime_fully_paid = datetime_fully_paid);
+        console.log(loanApplicationService.datetime_approved = datetime_approved);
+        console.log(loanApplicationService.payment_frequency_id = payment_frequency_id);
+        console.log(loanApplicationService.payment_duration_id = payment_duration_id);
+        console.log(loanApplicationService.approved_by_id = approved_by_id);
+        console.log(loanApplicationService.prepared_by_id = prepared_by_id);
+        console.log(loanApplicationService.released_by_id = released_by_id);
+        console.log(loanApplicationService.last_modified_by_id = last_modified_by_id);
+        console.log(loanApplicationService.notes = notes);
+        navigateTo('loan_applications/update');
+        }
+        } catch (error) {
+            toast.error(error.message, {
+        autoClose: 5000,
+    })
+        }
     }
-}
-
-function onCheckboxChange(customerId, isChecked): any {
-        if (isChecked) {
-            console.log('Checkbox checked for customer ID:', customerId);
-            loadCustomerDatas(customerId, isChecked);
-            console.log(customerData);
-            // You can also handle any additional logic for when the checkbox is checked
-        } else {
-            console.log('Checkbox unchecked for customer ID:', customerId);
-            loadCustomerDatas(customerId, isChecked);
-            // Handle logic for when the checkbox is unchecked
+    async function createLoanApplication() {
+        try {
+            // const response = await apiService.authPaymentFrequenciesCreate({
+            // })
+            navigateTo('loan_applications/create');
+        } catch (error) {
+            toast.error(error.message, {
+        autoClose: 5000,
+    })
         }
     }
 
-    // Computed property to filter out the current customer from the co-makers list
-    const availableCoMakers = computed(() =>
-    state.value.customers.filter((customer) => customer.id !== selectedCheckCustomerId.value)
-    );
+    async function updateLoanApplication() {
+        try {
+            // const response = await apiService.authPaymentFrequenciesCreate({
+            // })
+            navigateTo('loan_applications/update');
+        } catch (error) {
+            toast.error(error.message, {
+        autoClose: 5000,
+    })
+        }
+    }
+
 </script>

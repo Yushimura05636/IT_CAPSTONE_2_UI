@@ -34,7 +34,7 @@
     
                         <div class="sm:col-span-2">
                             <label for="valueP" class="block text-sm font-bold leading-6 text-gray-900">Value<span class="text-red-600">*</span></label>
-                            <input v-model="factorRate.valueP"  type="number"  id="valueP "  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-xl sm:leading-6" />
+                            <input v-model="factorRate.valueP"   step="0.01"  type="number"  id="valueP "  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-xl sm:leading-6" />
                         </div>
     
                         <div class="sm:col-span-2">
@@ -119,7 +119,7 @@ const factorRate = ref({
             payment_frequency_id: parseInt(factorRate.value.payment_frequency_id?.toString()),
             payment_duration_id: parseInt(factorRate.value.payment_duration_id?.toString()),
             description: factorRate.value.description,
-            value: parseInt(factorRate.value.valueP),
+            value: parseFloat(factorRate.value.valueP).toString(),
             notes: factorRate.value.notes,
         };
 
