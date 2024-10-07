@@ -34,7 +34,7 @@
                                             @change="onCheckboxChange(customer.id, $event.target.checked)"
                                         />
                                     </td>
-                                    <td class="px-4 py-2 border" @click="loadCustomerData(customer.id)">
+                                    <td class="px-4 py-2 border cursor-pointer" @click="loadCustomerData(customer.id)">
                                         {{ customer.personality.first_name }} {{ customer.personality.middle_name }} {{ customer.personality.family_name }}
                                     </td>
                                 </tr>
