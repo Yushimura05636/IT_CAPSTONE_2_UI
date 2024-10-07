@@ -28,13 +28,13 @@
                                 <tr v-for="customer in state.customers" :key="customer.id" :value="customer.id">
                                     <td class="px-4 py-2 border text-left">
                                         <input
-                                            type="radio"
-                                            v-model="selectedCustomerId"
+                                            type="checkbox"
+                                            v-model="customer.isSelected"
                                             :value="customer.id"
-                                            @change="loadCustomerData(customer.id)"
+                                            @change="onCheckboxChange(customer.id, $event.target.checked)"
                                         />
                                     </td>
-                                    <td class="px-4 py-2 border">
+                                    <td class="px-4 py-2 border" @click="loadCustomerData(customer.id)">
                                         {{ customer.personality.first_name }} {{ customer.personality.middle_name }} {{ customer.personality.family_name }}
                                     </td>
                                 </tr>
@@ -43,11 +43,11 @@
                     </div>
 
                     <!-- Form Fields for the Selected Customer -->
-                    <div v-if="selectedCustomerId !== null">
+                    <div v-if="selectedCheckCustomerId !== null">
                         <div class="mb-4">
                             <label class="block text-gray-700">Loan Application No</label>
                             <input
-                                v-model="customerData[selectedCustomerId].loanApplicationNo"
+                                v-model="customerData[selectedCheckCustomerId].loanApplicationNo"
                                 type="text"
                                 class="w-full border border-gray-300 rounded p-2"
                                 readonly
@@ -56,18 +56,18 @@
                         <div class="mb-4">
                             <label class="block text-gray-700">Loan Amount</label>
                             <input
-                                v-model="customerData[selectedCustomerId].loanAmount"
+                                v-model="customerData[selectedCheckCustomerId].loanAmount"
                                 type="number"
                                 class="w-full border border-gray-300 rounded p-2"
-                                @input="updateLoanAmount(selectedCustomerId)" 
+                                @input="updateLoanAmount(selectedCheckCustomerId)" 
                             />
                         </div>
 
                         <div class="mb-4">
                             <label class="block text-gray-700">Factor Rate</label>
                             <select
-                                v-model="customerData[selectedCustomerId].factorRate"
-                                @change="onFactorRateChange(customerData[selectedCustomerId].factorRate)"
+                                v-model="customerData[selectedCheckCustomerId].factorRate"
+                                @change="onFactorRateChange(customerData[selectedCheckCustomerId].factorRate)"
                                 class="w-full border rounded-lg px-4 py-2"
                             >
                                 <option v-for="factorRate in state.factorRates" :key="factorRate.id" :value="factorRate.id">
@@ -79,7 +79,7 @@
                         <div class="mb-4">
                             <label class="block text-gray-700">Interest Amount</label>
                             <input
-                                v-model="customerData[selectedCustomerId].interestAmount"
+                                v-model="customerData[selectedCheckCustomerId].interestAmount"
                                 type="number"
                                 step="0.01"
                                 class="w-full border border-gray-300 rounded p-2"
@@ -90,7 +90,7 @@
                         <div class="mb-4">
                             <label class="block text-gray-700">Amount Paid</label>
                             <input
-                                v-model="customerData[selectedCustomerId].amountPaid"
+                                v-model="customerData[selectedCheckCustomerId].amountPaid"
                                 type="number"
                                 class="w-full border border-gray-300 rounded p-2"
                                 readonly
@@ -101,7 +101,7 @@
                         <div class="mb-4">
                             <label class="block text-gray-700">Release Schedule</label>
                             <input
-                                v-model="customerData[selectedCustomerId].releaseSchedule"
+                                v-model="customerData[selectedCheckCustomerId].releaseSchedule"
                                 type="date"
                                 class="w-full border border-gray-300 rounded p-2"
                             />
@@ -110,7 +110,7 @@
                         <!-- Automatically Updated Fields -->
                         <div class="mb-4">
                             <label class="block text-gray-700">Payment Frequency</label>
-                            <select v-model="customerData[selectedCustomerId].paymentFrequency" class="w-full border rounded-lg px-4 py-2">
+                            <select v-model="customerData[selectedCheckCustomerId].paymentFrequency" class="w-full border rounded-lg px-4 py-2">
                                 <option v-for="frequency in state.paymentFrequencies" :key="frequency.id" :value="frequency.id">
                                     {{ frequency.description }}
                                 </option>
@@ -119,7 +119,7 @@
 
                         <div class="mb-4">
                             <label class="block text-gray-700">Duration</label>
-                            <select v-model="customerData[selectedCustomerId].duration" class="w-full border rounded-lg px-4 py-2">
+                            <select v-model="customerData[selectedCheckCustomerId].duration" class="w-full border rounded-lg px-4 py-2">
                                 <option v-for="duration in state.durations" :key="duration.id" :value="duration.id">
                                     {{ duration.description }}
                                 </option>
@@ -129,7 +129,7 @@
                         <div class="mb-4">
                             <label class="block text-gray-700">Comment</label>
                             <textarea
-                                v-model="customerData[selectedCustomerId].comment"
+                                v-model="customerData[selectedCheckCustomerId].comment"
                                 class="w-full border border-gray-300 rounded p-2"
                             ></textarea>
                         </div>
@@ -149,7 +149,7 @@
                 <input
     type="checkbox"
     :value="fee.id"
-    :checked="customerData[selectedCustomerId].selectedFees.includes(fee.id)"
+    :checked="customerData[selectedCheckCustomerId].selectedFees.includes(fee.id)"
     @change="updateSelectedFees(fee.id, $event.target.checked)"
 />
             </td>
@@ -163,7 +163,7 @@
 <div class="mb-4">
     <label class="block text-gray-700">Total Fees</label>
     <input
-        v-model="customerData[selectedCustomerId].totalFees"
+        v-model="customerData[selectedCheckCustomerId].totalFees"
         type="number"
         class="w-full border border-gray-300 rounded p-2"
         readonly
@@ -203,7 +203,7 @@ const totalFees = ref(0);
 
 const selectedGroupId = ref(null);
 const selectedCustomerId = ref(null); // Currently selected customer
-
+const selectedCheckCustomerId = ref(null);
 // This will hold form data for each customer by their ID
 const customerData = reactive({});
 
@@ -244,6 +244,7 @@ const fetchCustomers = async () => {
                     loanApplicationNo: generateLoanApplicationNo(),
                     customerId: selectedCustomerId.value,
                     loanAmount: '',
+                    isSelected: false,
                     factorRate: '',
                     interestAmount: '',
                     amountPaid: '',
@@ -305,10 +306,14 @@ const fetchFeeLibrary = async () => {
 };
 
 const loadCustomerData = (customerId) => {
-    if (!customerData[customerId]) {
+
+    selectedCheckCustomerId.value = customerId;
+    try {
+        if (!customerData[customerId]) {
         customerData[customerId] = {
             loanApplicationNo: generateLoanApplicationNo(),
             customerId: customerId,
+            isSelected: customerData[customerId].isSelected,
             loanAmount: '',
             factorRate: '',
             interestAmount: '',
@@ -319,8 +324,40 @@ const loadCustomerData = (customerId) => {
             comment: '',
             selectedFees: [],  // Initialize selectedFees
         };
+        console.log(customerData);
     } else {
         // Ensure selectedFees is initialized
+        if (!customerData[customerId].selectedFees) {
+            customerData[customerId].selectedFees = [];
+        }
+    }
+    } catch (error) {
+        toast.error(`Please select first the customer!`, { autoClose: 5000 });
+    }
+};
+
+const loadCustomerDatas = (customerId, isChecked) => {
+
+    selectedCheckCustomerId.value = customerId;
+    if (!customerData[customerId]) {
+        customerData[customerId] = {
+            loanApplicationNo: generateLoanApplicationNo(),
+            customerId: customerId,
+            isSelected: isChecked,
+            loanAmount: '',
+            factorRate: '',
+            interestAmount: '',
+            amountPaid: '',
+            releaseSchedule: '',
+            paymentFrequency: '',
+            duration: '',
+            comment: '',
+            selectedFees: [],  // Initialize selectedFees
+        };
+        console.log(customerData);
+    } else {
+        // Ensure selectedFees is initialized
+        customerData[customerId].isSelected = isChecked;
         if (!customerData[customerId].selectedFees) {
             customerData[customerId].selectedFees = [];
         }
@@ -354,8 +391,8 @@ const updateLoanAmount = (customerId) => {
 // Watch the factor rate change to trigger recalculation
 const onFactorRateChange = async (selectedFactorRateId) => {
     const factorRate = state.value.factorRates.find(rate => rate.id === selectedFactorRateId);
-    if (factorRate && selectedCustomerId.value) {
-        const customer = customerData[selectedCustomerId.value];
+    if (factorRate && selectedCheckCustomerId.value) {
+        const customer = customerData[selectedCheckCustomerId.value];
 
         // Store the selected factorRate ID
         customer.factorRate = factorRate.id; // This is the change
@@ -366,7 +403,7 @@ const onFactorRateChange = async (selectedFactorRateId) => {
         customer.duration = factorRate.payment_duration_id || '';
 
         // Recalculate interest and amount paid
-        updateLoanAmount(selectedCustomerId.value);
+        updateLoanAmount(selectedCheckCustomerId.value);
     }
 };
 
@@ -396,74 +433,76 @@ function generateLoanApplicationNo(length = 8) {
 // Handle form submission, including selected fees
 const submitForm = async () => {
     debugger;
-const allCustomerData = [];
+    const allCustomerData = []; // Initialize an empty array to hold customer data
 
-  // Loop through each customer ID and collect their data
-// Convert customerData object into an array
-const customerDataArray = Object.values(customerData);
-//const customerDataArray = (customerData);
+    // Convert customerData object into an array
+    const customerDataArray = Object.values(customerData);
 
-// Loop through the customer data array using a simple for loop
-for (let i = 0; i < customerDataArray.length; i++) {
-  const customer = customerDataArray[i];
-  
-  // Ensure the customer data is valid
-    if (
-        customer &&
-        customer.customerId && 
-        customer.loanApplicationNo &&
-        customer.loanAmount &&
-        selectedGroupId.value &&
-        customer.factorRate &&
-        customer.interestAmount &&
-        customer.amountPaid &&
-        customer.paymentFrequency &&
-        customer.duration
-    ) {
-    allCustomerData.push({
-        customer_id: customer.customerId, 
-        loan_application_no: customer.loanApplicationNo,
-        amount_loan: customer.loanAmount,
-        group_id: selectedGroupId.value,
-        factor_rate: customer.factorRate,
-        amount_interest: customer.interestAmount,
-        amount_paid: customer.amountPaid,
-        datetime_target_release: customer.releaseSchedule,
-        datetime_prepared: new Date().toISOString(), //Empty because the database will cater the date if when its prepared
-        payment_frequency_id : customer.paymentFrequency,
-        payment_duration_id : customer.duration,
-        notes: customer.comment || '',  // Include comment if it exists, otherwise set it to an empty string
-        document_status_code: 'PENDING',  // Means pending
-        fees: customer.selectedFees,
-    });
+    // Loop through the customer data array using a simple for loop
+    for (let i = 0; i < customerDataArray.length; i++) {
+        const customer = customerDataArray[i];
+
+        // Ensure the customer data is valid
+        if (
+            customer &&
+            customer.isSelected && // Check if the customer is selected
+            customer.customerId && 
+            customer.loanApplicationNo &&
+            customer.loanAmount &&
+            selectedGroupId.value &&
+            customer.factorRate &&
+            customer.interestAmount &&
+            customer.amountPaid &&
+            customer.paymentFrequency &&
+            customer.duration
+        ) {
+            allCustomerData.push({
+                customer_id: customer.customerId, 
+                loan_application_no: customer.loanApplicationNo,
+                amount_loan: customer.loanAmount,
+                group_id: selectedGroupId.value,
+                factor_rate: customer.factorRate,
+                amount_interest: customer.interestAmount,
+                amount_paid: customer.amountPaid,
+                datetime_target_release: customer.releaseSchedule,
+                datetime_prepared: new Date().toISOString(), // Empty because the database will cater the date when it's prepared
+                payment_frequency_id: customer.paymentFrequency,
+                payment_duration_id: customer.duration,
+                notes: customer.comment || '', // Include comment if it exists, otherwise set it to an empty string
+                document_status_code: 'PENDING', // Means pending
+                fees: customer.selectedFees, // Include selected fees
+            });
+        }
     }
-}
-  if (allCustomerData.length > 0) {
-    try {
-      // Send the data to Laravel API
-      const response = await apiService.createLoanApplication({
-        allCustomerData,
-      });
-      
-      if (response) {
-        toast.success('Transaction submitted successfully.', { autoClose: 5000 });
-        navigateTo('/loan_applications');
-      }
-    } catch (error) {
-      toast.error(`Submission failed: ${error.message}`, { autoClose: 5000 });
+
+    // Check if there is any customer data to submit
+    if (allCustomerData.length > 0) {
+        try {
+            // Send the data to the Laravel API
+            const response = await apiService.createLoanApplication({
+                allCustomerData, // Use allCustomerData here
+            });
+
+            if (response) {
+                toast.success('Transaction submitted successfully.', { autoClose: 5000 });
+                navigateTo('/loan_applications');
+            }
+        } catch (error) {
+            toast.error(`Submission failed: ${error.message}`, { autoClose: 5000 });
+        }
+    } else {
+        toast.error('No customer data to submit.', { autoClose: 5000 });
     }
-  } else {
-    toast.error('No customer data to submit.', { autoClose: 5000 });
-  }
 };
+
 
 async function updateSelectedFees(feeId, isSelected) {
     // Ensure selectedFees is initialized for the current customer
-    if (!customerData[selectedCustomerId.value]) {
+    if (!customerData[selectedCheckCustomerId.value]) {
         return;
     }
     
-    const selectedFees = customerData[selectedCustomerId.value].selectedFees;
+    const selectedFees = customerData[selectedCheckCustomerId.value].selectedFees;
 
     if (isSelected) {
         // Add fee ID to selectedFees array
@@ -484,7 +523,7 @@ async function updateSelectedFees(feeId, isSelected) {
 
 // Calculate total fees for the selected customer
 function calculateTotalFees() {
-    const customer = customerData[selectedCustomerId.value];
+    const customer = customerData[selectedCheckCustomerId.value];
     if (customer && customer.selectedFees.length > 0) {
         let total = 0;
 
@@ -502,4 +541,17 @@ function calculateTotalFees() {
         customer.totalFees = 0; // Reset total if no fees are selected
     }
 }
+
+function onCheckboxChange(customerId, isChecked): any {
+        if (isChecked) {
+            console.log('Checkbox checked for customer ID:', customerId);
+            loadCustomerDatas(customerId, isChecked);
+            console.log(customerData);
+            // You can also handle any additional logic for when the checkbox is checked
+        } else {
+            console.log('Checkbox unchecked for customer ID:', customerId);
+            loadCustomerDatas(customerId, isChecked);
+            // Handle logic for when the checkbox is unchecked
+        }
+    }
 </script>
