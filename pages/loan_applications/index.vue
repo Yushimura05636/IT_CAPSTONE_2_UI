@@ -20,7 +20,7 @@
                             v-if="selectedLoanAppID"
                             @click="updateLoanApp"
                             >
-                            Modify
+                            APPROVE
                             </button>
                             
                             <button type="button" 
@@ -28,13 +28,6 @@
                             v-if="selectedLoanAppID"
                             >
                             Delete
-                            </button>
-                            <button  @click="approveORreject"
-                            :disabled="!selectedLoanAppID" 
-                            class="px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-red-600 disabled:opacity-50"
-                            @mouseenter="isHovered = true" 
-                            @mouseleave="isHovered = false">
-                            {{ isHovered ? 'Reject' : 'Approved' }}
                             </button>
                         </div>
 

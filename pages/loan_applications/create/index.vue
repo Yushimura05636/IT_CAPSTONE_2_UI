@@ -495,6 +495,7 @@ const submitForm = async () => {
     // Check if there is any customer data to submit
     if (allCustomerData.length > 0) {
         try {
+            debugger;
             // Send the data to the Laravel API
             const response = await apiService.createLoanApplication({
                 allCustomerData, // Use allCustomerData here

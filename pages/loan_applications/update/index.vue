@@ -20,7 +20,7 @@
                     <div class="mb-4">
                         <label class="block text-gray-700">Factor Rate</label>
                         <select v-model="form.value.Loan_Application.factor_rate" class="w-full border rounded-lg px-4 py-2" @change="onFactorRateChange(form.value.Loan_Application.factor_rate)">
-                            <option v-for="factorRate in state.factorRates" :key="factorRate.id" :value="factorRate.value">
+                            <option v-for="factorRate in state.factorRates" :key="factorRate.id" :value="factorRate.id">
                                 {{ factorRate.value }}
                             </option>
                         </select>
@@ -142,7 +142,7 @@
 
                     <div class="text-center mt-4">
                         <button @click="submitForm" class="bg-blue-500 text-white px-4 py-2 rounded">
-                            Update
+                            Approve
                         </button>
                     </div>
                 </div>
@@ -183,8 +183,8 @@ onMounted(() => {
     fetchPaymentFrequencies();
     fetchDurations();
     fetchCoMakers();
-    fetchLoanApplication();
     fetchFees();
+    fetchLoanApplication();
 });
 
 const fetchLoanApplication = async () => {
@@ -195,6 +195,7 @@ const fetchLoanApplication = async () => {
         form.value.Loan_Application = response.data.loan_applications;
         feeForm.value.feeForm = response.data.fees;
         form.value.coMaker = comakerRealData.personality;
+        debugger;
 
     } catch (error) {
         toast.error(error.message, { autoClose: 5000 });
@@ -247,7 +248,6 @@ const fetchFactorRate = async () => {
     try {
         const response = await apiService.getFactorRateNoAuth({});
         state.value.factorRates = response.data;
-
     } catch (error) {
         toast.error(error.message, { autoClose: 5000 });
     }
@@ -326,7 +326,7 @@ const submitForm = async () => {
             }
 
             console.log(params);
-            await apiService.updateLoanApplication(params, params.id); // Ensure this matches your API method
+            await apiService.authLoanApplicationsApprove(params, params.id); // Ensure this matches your API method
 
             toast.success('Loan Application updated successfully!', { autoClose: 5000 });
         } catch (error) {

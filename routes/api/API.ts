@@ -34,7 +34,7 @@ class API extends BaseAPIService {
     async updateEmployee(params: object, id: number): Promise<any> {
         return await this.request(`/EMPLOYEES/${id}`, 'PUT', params)
     }
-    
+
     async deleteEmployee(params: object, id: number): Promise<any> {
         return await this.request(`/EMPLOYEES`, 'DELETE', params)
     }
@@ -118,7 +118,7 @@ class API extends BaseAPIService {
         return await this.request(`/DOCUMENT_MAP_PERMISSIONS`, 'GET', params)
     }
 
-    
+
     async getPermissionById(params: object, id: number): Promise<any> {
         return await this.request(`/DOCUMENT_MAP_PERMISSIONS/${id}`, 'GET', params)
     }
@@ -126,15 +126,15 @@ class API extends BaseAPIService {
     async getPermissionByDescription(params: object, description: string): Promise<any> {
         return await this.request(`/DOCUMENT_MAP_PERMISSIONS/description/${description}`, 'GET', params)
     }
-    
+
     async createPermission(params: object): Promise<any> {
         return await this.request(`/DOCUMENT_MAP_PERMISSIONS`, 'POST', params)
     }
-    
+
     async updatePermission(params: object, id: number): Promise<any> {
         return await this.request(`/DOCUMENT_MAP_PERMISSIONS/${id}`, 'PUT', params)
     }
-    
+
     async deletePermission(params: object, id: number): Promise<any> {
         return await this.request(`/DOCUMENT_MAP_PERMISSIONS/${id}`, 'DELETE', params)
     }
@@ -177,7 +177,7 @@ class API extends BaseAPIService {
     async updateDocumentPermission(params: object, id: number): Promise<any> {
         return await this.request(`/DOCUMENT_PERMISSIONS/${id}`, 'PUT', params)
     }
-    
+
     async deleteDocumentPermission(params: object, id: number): Promise<any> {
         return await this.request(`/DOCUMENT_PERMISSIONS/${id}`, 'DELETE', params)
     }
@@ -201,6 +201,69 @@ class API extends BaseAPIService {
 
     async deleteUser(params: object, id: number): Promise<any> {
         return await this.request(`/USERS/${id}`, 'DELETE', params)
+    }
+
+    //payment_frequency
+    async getPayment(params: object): Promise<any> {
+        return await this.request(`/PAYMENTS`, 'GET', params)
+    }
+
+    async getPaymentNoAuth(params: object): Promise<any> {
+        return await this.request(`/PAYMENTS/NoAUTH`, 'GET', params)
+    }
+
+    async getPaymentById(params: object, id: number): Promise<any> {
+        return await this.request(`/PAYMENTS/${id}`, 'GET', params)
+    }
+
+    async getPaymentByIdNoAuth(params: object, id: number): Promise<any> {
+        return await this.request(`/PAYMENTS/NoAUTH/${id}`, 'GET', params)
+    }
+
+    async createPayment(params: object): Promise<any> {
+        return await this.request(`/PAYMENTS`, 'POST', params)
+    }
+
+    async updatePayment(params: object, id: number): Promise<any> {
+        return await this.request(`/PAYMENTS/${id}`, 'PUT', params)
+    }
+
+    async deletePayment(params: object, id: number): Promise<any> {
+        return await this.request(`/PAYMENTS/${id}`, 'DELETE', params)
+    }
+
+    //payment
+    async getPaymentSchedule(params: object): Promise<any> {
+        return await this.request(`/PAYMENT_SCHEDULES`, 'GET', params)
+    }
+
+    async getPaymentScheduleNoAuth(params: object): Promise<any> {
+        return await this.request(`/PAYMENT_SCHEDULES/NoAUTH`, 'GET', params)
+    }
+
+    async getPaymentScheduleById(params: object, id: number): Promise<any> {
+        return await this.request(`/PAYMENT_SCHEDULES/${id}`, 'GET', params)
+    }
+
+    async getPaymentScheduleByIdNoAuth(params: object, id: number): Promise<any> {
+        return await this.request(`/PAYMENT_SCHEDULES/NoAUTH/${id}`, 'GET', params)
+    }
+
+    async createPaymentSchedule(params: object): Promise<any> {
+        return await this.request(`/PAYMENT_SCHEDULES`, 'POST', params)
+    }
+
+    async updatePaymentSchedule(params: object, id: number): Promise<any> {
+        return await this.request(`/PAYMENT_SCHEDULES/${id}`, 'PUT', params)
+    }
+
+    async deletePaymentSchedule(params: object, id: number): Promise<any> {
+        return await this.request(`/PAYMENT_SCHEDULES/${id}`, 'DELETE', params)
+    }
+
+    //payment line
+    async getPaymentLineNoAUTH(params: object): Promise<any> {
+        return await this.request(`/PAYMENT_LINES`, 'GET', params)
     }
 
     //payment_frequency
@@ -375,7 +438,7 @@ class API extends BaseAPIService {
 
 
     //perm with empty return
-    
+
     // User Authentication
 async authUserAuthCreate(params: object): Promise<any> {
     return await this.request(`/USER_AUTH/create`, 'PATCH', params);
@@ -518,6 +581,10 @@ async authLoanApplicationsCreate(params: object): Promise<any> {
 
 async authLoanApplicationsUpdate(params: object): Promise<any> {
     return await this.request(`/LOAN_APPLICATIONS/update`, 'PATCH', params);
+}
+
+async authLoanApplicationsApprove(params: object, id: number): Promise<any> {
+    return await this.request(`/LOAN_APPLICATIONS/approve/${id}`, 'PATCH', params);
 }
 
 async getCustomerByGroupId(params: object, id: number): Promise<any> {
