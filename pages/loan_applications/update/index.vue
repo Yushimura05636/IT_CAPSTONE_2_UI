@@ -195,7 +195,11 @@ const fetchLoanApplication = async () => {
         form.value.Loan_Application = response.data.loan_applications;
         feeForm.value.feeForm = response.data.fees;
         form.value.coMaker = comakerRealData.personality;
-        debugger;
+
+        //set id
+        form.value.coMaker.id = comakerRealData.personality.id
+        form.value.Loan_Application.factor_rate = parseInt(response.data.loan_applications.factor_rate);
+        
 
     } catch (error) {
         toast.error(error.message, { autoClose: 5000 });
@@ -329,6 +333,8 @@ const submitForm = async () => {
             await apiService.authLoanApplicationsApprove(params, params.id); // Ensure this matches your API method
 
             toast.success('Loan Application updated successfully!', { autoClose: 5000 });
+
+            navigateTo('/loan_applications/')
         } catch (error) {
             toast.error(error.message, { autoClose: 5000 });
         }

@@ -144,7 +144,7 @@ import Permission from '../non_used_components/Permission.vue';
     try {
       await apiService.authFactorRatesCreate({
       });
-      navigateTo('factor_rate/create');
+      navigateTo('/factor_rate/create');
     } catch (error) {
       toast.error(error.message, {
       autoClose: 5000,
@@ -159,7 +159,7 @@ import Permission from '../non_used_components/Permission.vue';
         const response = await apiService.authFactorRatesUpdate({});
 
         UserService.usbl_id = parseInt(selectedFrequencyID.value);
-        navigateTo(`factor_rate/update`); // Pass the selected ID
+        navigateTo(`/factor_rate/update`); // Pass the selected ID
       } catch (error) {
         toast.error(error.message, {
       autoClose: 5000,

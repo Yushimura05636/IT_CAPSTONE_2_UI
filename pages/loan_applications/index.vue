@@ -234,7 +234,7 @@ import 'vue3-toastify/dist/index.css';
         try {
             // const response = await apiService.authPaymentFrequenciesCreate({
             // })
-            navigateTo('loan_applications/create');
+            navigateTo('/loan_applications/create');
         } catch (error) {
             toast.error(error.message, {
         autoClose: 5000,
