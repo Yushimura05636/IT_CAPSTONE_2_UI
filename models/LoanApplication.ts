@@ -19,7 +19,23 @@ private _approved_by_id!: number;
 private _prepared_by_id!: number;
 private _released_by_id!: number;
 private _last_modified_by_id!: number;
+private _selectedFees!: any[];
+private _coMaker!: any;
 private _notes!: string;
+
+public get coMaker(): any {
+    return this._coMaker;
+}
+public set coMaker(value: any) {
+    this._coMaker = value;
+}
+
+public get selectedFees(): any[] {
+    return this._selectedFees;
+}
+public set selectedFees(value: any[]) {
+    this._selectedFees = value;
+}
 
 get id(): number {
     return this.__id;

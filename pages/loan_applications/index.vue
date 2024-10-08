@@ -59,74 +59,75 @@
                             :sortData="state.sortData" 
                             >
                             <template #body
-                                v-if="!(state.isTableLoading || (state.loanApp?.data === 0))">
+                                v-if="!(state.isTableLoading || (state.loanApp === 0))">
                                 
-                                <tr v-for="(loanApp, index) in state.loanApp?.data" :key="index" class="">
+                                <tr v-for="(loanApp, index) in state.loanApp" :key="index" class="">
                                     
                                     <td class="py-2 border-b border-gray-300 ">
                                         <input
                                         type="radio"
-                                        :value="loanApp.id"
+                                        :value="loanApp.Loan_Application.id"
                                         v-model="selectedLoanAppID"
                                         class="cursor-pointer"
                                         />
                                     </td>
                                     <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.customer_id }} </span>
+                                        <span>{{ loanApp.Loan_Application.customer_id }} </span>
                                     </td>
                                     <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.group_id }} </span>
+                                        <span>{{ loanApp.Loan_Application.group_id }} </span>
                                     </td>
                                     <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.datetime_prepared }} </span>
+                                        <span>{{ loanApp.Loan_Application.datetime_prepared }} </span>
                                     </td>
                                     <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.document_status_code }} </span>
+                                        <span>{{ loanApp.Loan_Application.document_status_code }} </span>
                                     </td>
                                     <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.loan_application_no }} </span>
+                                        <span>{{ loanApp.Loan_Application.loan_application_no }} </span>
                                     </td>
                                     <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.amount_loan }} </span>
+                                        <span>{{ loanApp.Loan_Application.amount_loan }} </span>
                                     </td>
                                     <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.factor_rate }} </span>
+                                        <span>{{ loanApp.Loan_Application.factor_rate }} </span>
                                     </td>
                                     <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.amount_interest }} </span>
+                                        <span>{{ loanApp.Loan_Application.amount_interest }} </span>
                                     </td>
                                     <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.amount_paid }} </span>
+                                        <span>{{ loanApp.Loan_Application.amount_paid }} </span>
                                     </td>
                                     <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.datetime_target_release }} </span>
+                                        <span>{{ loanApp.Loan_Application.datetime_target_release }} </span>
                                     </td>
                                     <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.datetime_fully_paid }} </span>
+                                        <span>{{ loanApp.Loan_Application.datetime_fully_paid }} </span>
                                     </td>
                                     <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.datetime_approved }} </span>
+                                        <span>{{ loanApp.Loan_Application.datetime_approved }} </span>
                                     </td>
                                     <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.payment_frequency_id }} </span>
+                                        <span>{{ loanApp.Loan_Application.payment_frequency_id }} </span>
                                     </td>
                                     <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.payment_duration_id }} </span>
+                                        <span>{{ loanApp.Loan_Application.payment_duration_id }} </span>
                                     </td>
                                     <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.approved_by_id }} </span>
+                                        <span>{{ loanApp.Loan_Application.approved_by_id }} </span>
                                     </td>
                                     <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.prepared_by_id }} </span>
+                                        <span>{{ loanApp.Loan_Application.prepared_by_id }} </span>
                                     </td>
                                     <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.released_by_id }} </span>
+                                        <span>{{ loanApp.Loan_Application.released_by_id }} </span>
                                     </td>
                                     <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.last_modified_by_id }} </span>
+                                        <span>{{ loanApp.Loan_Application.last_modified_by_id }} </span>
                                     </td>
+                                    
                                     <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.notes }} </span>
+                                        <span>{{ loanApp.Loan_Application.notes }} </span>
                                     </td>
                                 </tr>
                             </template>
@@ -187,7 +188,7 @@ import 'vue3-toastify/dist/index.css';
     
     async function approveORreject(){
     try {
-        // debugger;
+        
         loanApplicationService.id = parseInt(selectedLoanAppID.value?.toString());
         const response = await apiService.authCustomersUpdate({});
         // console.log("test" + CustomersService.id);
@@ -207,7 +208,8 @@ import 'vue3-toastify/dist/index.css';
         try {
             const params = {}
             const response = await apiService.getLoanApplication({})
-            state.loanApp = response
+            state.loanApp = response.data
+            
             console.log(state.loanApp);
         } catch (error: any) {
             toast.error(error.message, {
@@ -221,97 +223,13 @@ import 'vue3-toastify/dist/index.css';
     })
 
     async function updateLoanApp(){
+        
         try {
             const response = await apiService.authPaymentDurationsUpdate({})
             if (selectedLoanAppID.value) {
-                let customer_id = null;         //!update
-                let group_id = null;            
-                let datetime_prepared = null;   
-                let document_status_code = null;
-                let loan_application_no = null;
-                let amount_loan = null;
-                let factor_rate = null;
-                let amount_interest = null;
-                let amount_paid = null;
-                let datetime_target_release = null;
-                let datetime_fully_paid = null;
-                let datetime_approved = null;
-                let payment_frequency_id = null;
-                let payment_duration_id = null;
-                let approved_by_id = null;
-                let prepared_by_id = null;
-                let released_by_id = null;
-                let last_modified_by_id = null;
-                let notes = null;
-
-        // Iterate through the data using a for loop
-        for (let i = 0; i < state.loanApp?.data.length; i++) {
-            const loanApp = state.loanApp.data[i];
-
-            // Check if the current library's id matches the selectedLibraryId
-            if (loanApp.id == parseInt(selectedLoanAppID.value)?.toString()) {
-                group_id = loanApp.group_id;
-                datetime_prepared = loanApp.datetime_prepared;
-                document_status_code = loanApp.document_status_code;
-                loan_application_no = loanApp.loan_application_no;
-                amount_loan = loanApp.amount_loan;
-                factor_rate = loanApp.factor_rate;
-                amount_interest = loanApp.amount_interest;
-                amount_paid = loanApp.amount_paid;
-                datetime_target_release = loanApp.datetime_target_release;
-                datetime_fully_paid = loanApp.datetime_fully_paid;
-                datetime_approved = loanApp.datetime_approved;
-                payment_frequency_id = loanApp.payment_frequency_id;
-                payment_duration_id = loanApp.payment_duration_id;
-                approved_by_id = loanApp.approved_by_id;
-                prepared_by_id = loanApp.prepared_by_id;
-                released_by_id = loanApp.released_by_id;
-                last_modified_by_id = loanApp.last_modified_by_id;
-                notes = loanApp.notes;
-            break; // Exit the loop once we find the selected library
-            }
-        }
-
-        loanApplicationService.id = selectedLoanAppID.value;
-        loanApplicationService.group_id = group_id;
-        loanApplicationService.datetime_prepared = datetime_prepared;
-        loanApplicationService.document_status = document_status_code;
-        loanApplicationService.loan_application_no = loan_application_no;
-        loanApplicationService.amount_loan = amount_loan;
-        loanApplicationService.factor_rate = factor_rate;
-        loanApplicationService.amount_interest = amount_interest;
-        loanApplicationService.amount_paid = amount_paid;
-        loanApplicationService.datetime_target_release = datetime_target_release;
-        loanApplicationService.datetime_fully_paid = datetime_fully_paid;
-        loanApplicationService.datetime_approved = datetime_approved;
-        loanApplicationService.payment_frequency_id = payment_frequency_id;
-        loanApplicationService.payment_duration_id = payment_duration_id;
-        loanApplicationService.approved_by_id = approved_by_id;
-        loanApplicationService.prepared_by_id = prepared_by_id;
-        loanApplicationService.released_by_id = released_by_id;
-        loanApplicationService.last_modified_by_id = last_modified_by_id;
-        loanApplicationService.notes = notes;
-
-        console.log(loanApplicationService.id);
-        console.log(loanApplicationService.group_id = group_id);
-        console.log(loanApplicationService.datetime_prepared = datetime_prepared);
-        console.log(loanApplicationService.document_status = document_status_code);
-        console.log(loanApplicationService.loan_application_no = loan_application_no);
-        console.log(loanApplicationService.amount_loan = amount_loan);
-        console.log(loanApplicationService.factor_rate = factor_rate);
-        console.log(loanApplicationService.amount_interest = amount_interest);
-        console.log(loanApplicationService.amount_paid = amount_paid);
-        console.log(loanApplicationService.datetime_target_release = datetime_target_release);
-        console.log(loanApplicationService.datetime_fully_paid = datetime_fully_paid);
-        console.log(loanApplicationService.datetime_approved = datetime_approved);
-        console.log(loanApplicationService.payment_frequency_id = payment_frequency_id);
-        console.log(loanApplicationService.payment_duration_id = payment_duration_id);
-        console.log(loanApplicationService.approved_by_id = approved_by_id);
-        console.log(loanApplicationService.prepared_by_id = prepared_by_id);
-        console.log(loanApplicationService.released_by_id = released_by_id);
-        console.log(loanApplicationService.last_modified_by_id = last_modified_by_id);
-        console.log(loanApplicationService.notes = notes);
-        navigateTo('loan_applications/update');
+            loanApplicationService.id = selectedLoanAppID.value;
+        
+        navigateTo('/loan_applications/update');
         }
         } catch (error) {
             toast.error(error.message, {

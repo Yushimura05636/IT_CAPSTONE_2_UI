@@ -334,8 +334,11 @@ class API extends BaseAPIService {
     async getLoanApplicationById(params: object, id: number): Promise<any> {
         return await this.request(`/LOAN_APPLICATIONS/${id}`, 'GET', params)
     }
-    async getLoanApplicationByIdNoAUTH(params: object, id: number): Promise<any> {
-        return await this.request(`/LOAN_APPLICATIONS/NoAUTH/${id}`, 'GET', params)
+    async getLoanApplicationByLoanNo(params: object, id: number): Promise<any> {
+        return await this.request(`/LOAN_APPLICATIONS/loanno/${id}`, 'GET', params)
+    }
+    async getLoanApplicationByLoanNoNoAUTH(params: object, id: number): Promise<any> {
+        return await this.request(`/LOAN_APPLICATIONS/loanno/NoAUTH/${id}`, 'GET', params)
     }
     async createLoanApplication(params: object): Promise<any> {
         return await this.request(`/LOAN_APPLICATIONS`, 'POST', params)
@@ -345,6 +348,29 @@ class API extends BaseAPIService {
     }
     async deleteLoanApplication(params: object, id: number): Promise<any> {
         return await this.request(`/LOAN_APPLICATIONS/${id}`, 'DELETE', params)
+    }
+
+    //Loan Applications
+    async getLoanApplicationCoMaker(params: object): Promise<any> {
+        return await this.request(`/LOAN_APPLICATION_COMAKERS`, 'GET', params)
+    }
+    async getLoanApplicationCoMakerNoAUTH(params: object): Promise<any>{
+        return await this.request(`/LOAN_APPLICATION_COMAKERS/NoAUTH`, 'GET', params);
+    }
+    async getLoanApplicationCoMakerById(params: object, id: number): Promise<any> {
+        return await this.request(`/LOAN_APPLICATION_COMAKERS/${id}`, 'GET', params)
+    }
+    async getLoanApplicationCoMakerByIdNoAUTH(params: object, id: number): Promise<any> {
+        return await this.request(`/LOAN_APPLICATION_COMAKERS/NoAUTH/${id}`, 'GET', params)
+    }
+    async createLoanApplicationCoMaker(params: object): Promise<any> {
+        return await this.request(`/LOAN_APPLICATION_COMAKERS`, 'POST', params)
+    }
+    async updateLoanApplicationCoMaker(params: object, id: number): Promise<any> {
+        return await this.request(`/LOAN_APPLICATION_COMAKERS/${id}`, 'PUT', params)
+    }
+    async deleteLoanApplicationCoMaker(params: object, id: number): Promise<any> {
+        return await this.request(`/LOAN_APPLICATION_COMAKERS/${id}`, 'DELETE', params)
     }
 
 
