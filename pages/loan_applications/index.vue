@@ -20,7 +20,7 @@
                             v-if="selectedLoanAppID"
                             @click="updateLoanApp"
                             >
-                            APPROVE
+                            Modify
                             </button>
                             
                             <button type="button" 
@@ -28,6 +28,15 @@
                             v-if="selectedLoanAppID"
                             >
                             Delete
+                            </button>
+                            <button  
+                            v-if="getSelectedLoanApp()?.Loan_Application.document_status_code !== 2" 
+                            @click="approveORreject"
+                            :disabled="!selectedLoanAppID" 
+                            class="px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-red-600 disabled:opacity-50"
+                            @mouseenter="isHovered = true" 
+                            @mouseleave="isHovered = false">
+                            {{ isHovered ? 'Reject' : 'Approved' }}
                             </button>
                         </div>
 
@@ -74,7 +83,14 @@
                                         <span>{{ loanApp.Loan_Application.datetime_prepared }} </span>
                                     </td>
                                     <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.Loan_Application.document_status_code }} </span>
+                                        <span 
+                                            :class="{
+                                                'text-green-500': loanApp.Loan_Application.document_status_code === 2,
+                                                'text-red-500': loanApp.Loan_Application.document_status_code === 3,
+                                                'text-yellow-500': loanApp.Loan_Application.document_status_code === 1 // Optional: use a different color for pending
+                                                    }">
+                                                {{ loanApp.Loan_Application.document_status_code === 2 ? 'Approved' : loanApp.Loan_Application.document_status_code === 3 ? 'Rejected' : 'Pending' }}
+                                        </span>
                                     </td>
                                     <td class="py-2 border-b border-gray-300  ">
                                         <span>{{ loanApp.Loan_Application.loan_application_no }} </span>
@@ -133,14 +149,11 @@
 
 
 <script setup lang="ts">
-import { toast } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
-
+    import { toast } from 'vue3-toastify';
+    import 'vue3-toastify/dist/index.css';
     import { ref, reactive, onMounted } from 'vue'
     import { apiService } from '~/routes/api/API'
     import { loanApplicationService } from '~/models/LoanApplication'
-    import { PermissionService } from '~/models/Permission';
-    import { PaymentFrequency } from '../../models/PaymentFrequency';
     
     const state = reactive({
         columnHeaders: [
@@ -179,23 +192,13 @@ import 'vue3-toastify/dist/index.css';
     const isHovered = ref(false);
 
     
-    async function approveORreject(){
-    try {
-        
-        loanApplicationService.id = parseInt(selectedLoanAppID.value?.toString());
-        const response = await apiService.authCustomersUpdate({});
-        // console.log("test" + CustomersService.id);
-        alert("Approved Logic Here");
-        // navigateTo(`customers/approve`)
-    } catch (error) {
-        toast.error(error.message, {
-        autoClose: 5000,
-        })
+    function getSelectedLoanApp() {
+    return state.loanApp.find(
+        loanApp => loanApp.Loan_Application.id === selectedLoanAppID.value
+        );
     }
-}
-    
-    
-    async function fetchFreqandDuration() {
+
+    async function fetchLoanApplication() {
         state.isTableLoading = true
         state.error = null
         try {
@@ -212,8 +215,23 @@ import 'vue3-toastify/dist/index.css';
         state.isTableLoading = false
     }
     onMounted(() => {
-        fetchFreqandDuration()
+        fetchLoanApplication()
     })
+
+    async function approveORreject(){
+    try {
+        
+        loanApplicationService.id = parseInt(selectedLoanAppID.value?.toString());
+        // const response = await apiService.authCustomersUpdate({});
+        // console.log("test" + CustomersService.id);
+        navigateTo('/loan_applications/approve');
+        // navigateTo(`customers/approve`)
+    } catch (error) {
+        toast.error(error.message, {
+        autoClose: 5000,
+        })
+        }
+    }
 
     async function updateLoanApp(){
         
@@ -242,16 +260,5 @@ import 'vue3-toastify/dist/index.css';
         }
     }
 
-    async function updateLoanApplication() {
-        try {
-            // const response = await apiService.authPaymentFrequenciesCreate({
-            // })
-            navigateTo('loan_applications/update');
-        } catch (error) {
-            toast.error(error.message, {
-        autoClose: 5000,
-    })
-        }
-    }
 
 </script>

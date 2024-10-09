@@ -591,7 +591,9 @@ async getCustomerByGroupId(params: object, id: number): Promise<any> {
     return await this.request(`/test/${id}`, 'GET', params)
 }
 
-
+async getUserLogged(params: object): Promise<any> {
+    return await this.request(`/USER_LOGGED`, 'GET', params)
+}
 }
 
 export const apiService = new API()

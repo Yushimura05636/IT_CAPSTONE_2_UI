@@ -3,12 +3,13 @@
         <main>
             <div class="flex justify-center items-center bg-gray-100">
                 <div class="bg-white border border-gray-300 rounded-lg p-6 shadow-md w-full">
-                    <div class="text-center font-bold text-xl mb-4">Loan Application Update Form</div>
+                    <div class="text-center font-bold text-xl mb-4">Loan Application Approve Form</div>
 
                     <!-- Loan Amount -->
                     <div class="mb-4">
                         <label class="block text-gray-700">Loan Amount</label>
                         <input
+                            disabled
                             v-model="form.value.Loan_Application.amount_loan"
                             type="number"
                             class="w-full border border-gray-300 rounded p-2"
@@ -19,8 +20,8 @@
                     <!-- Factor Rate -->
                     <div class="mb-4">
                         <label class="block text-gray-700">Factor Rate</label>
-                        <select v-model="form.value.Loan_Application.factor_rate" class="w-full border rounded-lg px-4 py-2" @change="onFactorRateChange(form.value.Loan_Application.factor_rate)">
-                            <option v-for="factorRate in state.factorRates" :key="factorRate.id" :value="factorRate.id">
+                        <select disabled  v-model="form.value.Loan_Application.factor_rate" class="w-full border rounded-lg px-4 py-2" @change="onFactorRateChange(form.value.Loan_Application.factor_rate)">
+                            <option  disabled v-for="factorRate in state.factorRates" :key="factorRate.id" :value="factorRate.value">
                                 {{ factorRate.value }}
                             </option>
                         </select>
@@ -30,6 +31,7 @@
                     <div class="mb-4">
                         <label class="block text-gray-700">Interest Amount</label>
                         <input
+                            disabled
                             v-model="form.value.Loan_Application.amount_interest"
                             type="number"
                             step="0.01"
@@ -41,6 +43,7 @@
                     <div class="mb-4">
                         <label class="block text-gray-700">Amount Paid</label>
                         <input
+                            disabled
                             v-model="form.value.Loan_Application.amount_paid"
                             type="number"
                             class="w-full border border-gray-300 rounded p-2"
@@ -52,6 +55,7 @@
                     <div class="mb-4">
                         <label class="block text-gray-700">Release Schedule</label>
                         <input
+                            
                             v-model="form.value.Loan_Application.datetime_target_release"
                             type="date"
                             class="w-full border border-gray-300 rounded p-2"
@@ -61,8 +65,8 @@
                     <!-- Payment Frequency -->
                     <div class="mb-4">
                         <label class="block text-gray-700">Payment Frequency</label>
-                        <select v-model="form.value.Loan_Application.payment_frequency_id" class="w-full border rounded-lg px-4 py-2">
-                            <option v-for="frequency in state.paymentFrequencies" :key="frequency.id" :value="frequency.id">
+                        <select disabled v-model="form.value.Loan_Application.payment_frequency_id" class="w-full border rounded-lg px-4 py-2">
+                            <option disabled v-for="frequency in state.paymentFrequencies" :key="frequency.id" :value="frequency.id">
                                 {{ frequency.description }}
                             </option>
                         </select>
@@ -71,8 +75,8 @@
                     <!-- Duration -->
                     <div class="mb-4">
                         <label class="block text-gray-700">Duration</label>
-                        <select v-model="form.value.Loan_Application.payment_duration_id" class="w-full border rounded-lg px-4 py-2">
-                            <option v-for="duration in state.durations" :key="duration.id" :value="duration.id">
+                        <select disabled v-model="form.value.Loan_Application.payment_duration_id" class="w-full border rounded-lg px-4 py-2">
+                            <option disabled v-for="duration in state.durations" :key="duration.id" :value="duration.id">
                                 {{ duration.description }}
                             </option>
                         </select>
@@ -82,37 +86,39 @@
                     <div class="mb-4">
                         <label class="block text-gray-700">Comment</label>
                         <textarea
+                            
                             v-model="form.value.Loan_Application.notes"
                             class="w-full border border-gray-300 rounded p-2"
                         ></textarea>
                     </div>
 
                     <!-- Fees Section -->
-<div v-if="state.fees.length > 0" class="max-h-60 overflow-y-auto">
-    <table class="min-w-full bg-white border border-gray-300 mb-4">
-        <thead>
-            <tr>
-                <th class="px-4 py-2 border text-left">Select</th>
-                <th class="px-4 py-2 border text-left">Fee Description</th>
-                <th class="px-4 py-2 border text-left">Amount</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="fee in state.fees" :key="fee.id">
-                <td class="px-4 py-2 border text-left">
-                    <input
-                        type="checkbox"
-                        :value="fee.id"
-                        :checked="isFeeSelected(fee.id)"
-                        @change="updateSelectedFees(fee.id, $event.target.checked)"
-                    />
-                </td>
-                <td class="px-4 py-2 border">{{ fee.description }}</td>
-                <td class="px-4 py-2 border">{{ fee.amount }}</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+                    <div  v-if="state.fees.length > 0" class="max-h-60 overflow-y-auto">
+                        <table class="min-w-full bg-white border border-gray-300 mb-4">
+                            <thead>
+                                <tr>
+                                    <th  class="px-4 py-2 border text-left">Select</th>
+                                    <th class="px-4 py-2 border text-left">Fee Description</th>
+                                    <th class="px-4 py-2 border text-left">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr  v-for="fee in state.fees" :key="fee.id">
+                                    <td class="px-4 py-2 border text-left">
+                                        <input
+                                            type="checkbox"
+                                            :value="fee.id"
+                                            :checked="isFeeSelected(fee.id)"
+                                            @change="updateSelectedFees(fee.id, $event.target.checked)"
+                                            disabled  
+                                        />
+                                    </td>
+                                    <td class="px-4 py-2 border">{{ fee.description }}</td>
+                                    <td class="px-4 py-2 border">{{ fee.amount }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
                     <!-- Total Fees -->
 <div class="mb-4">
@@ -140,10 +146,13 @@
         </select>
     </div>
 
-                    <div class="text-center mt-4">
-                        <button @click="submitForm" class="bg-blue-500 text-white px-4 py-2 rounded">
-                            Approve
-                        </button>
+                        <div class="flex justify-end items-end mt-4">
+                            <button @click="submitForm(2)" class="bg-green-500 text-white px-4 py-2 rounded mr-2">
+                                Approved
+                            </button>
+                            <button @click="submitForm(3)" class="bg-red-500 text-white px-4 py-2 rounded">
+                                Reject
+                            </button>
                     </div>
                 </div>
             </div>
@@ -183,8 +192,9 @@ onMounted(() => {
     fetchPaymentFrequencies();
     fetchDurations();
     fetchCoMakers();
-    fetchFees();
     fetchLoanApplication();
+    fetchFees();
+    fetchUserLogin();
 });
 
 const fetchLoanApplication = async () => {
@@ -195,11 +205,6 @@ const fetchLoanApplication = async () => {
         form.value.Loan_Application = response.data.loan_applications;
         feeForm.value.feeForm = response.data.fees;
         form.value.coMaker = comakerRealData.personality;
-
-        //set id
-        form.value.coMaker.id = comakerRealData.personality.id
-        form.value.Loan_Application.factor_rate = parseInt(response.data.loan_applications.factor_rate);
-        
 
     } catch (error) {
         toast.error(error.message, { autoClose: 5000 });
@@ -252,6 +257,7 @@ const fetchFactorRate = async () => {
     try {
         const response = await apiService.getFactorRateNoAuth({});
         state.value.factorRates = response.data;
+
     } catch (error) {
         toast.error(error.message, { autoClose: 5000 });
     }
@@ -306,11 +312,40 @@ function calculateTotalFees() {
 //     }, 0);
 // };
 
-const submitForm = async () => {
+const currentUser = ref(null);
+
+const fetchUserLogin = async  ()=>{
+    try {
+        const response = await apiService.getUserLogged({}); // Call the new method
+        currentUser.value = response; // Store the user data
+        console.log('Current User:', currentUser.value); // For debugging
+    } catch (error) {
+        console.error('Failed to fetch user:', error);
+        // Handle error (e.g., show a notification)
+    }
+};
+
+
+const formatDate = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const day = String(d.getDate()).padStart(2, '0');
+    const hours = String(d.getHours()).padStart(2, '0');
+    const minutes = String(d.getMinutes()).padStart(2, '0');
+    const seconds = String(d.getSeconds()).padStart(2, '0');
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+};
+
+// Assign the formatted date if needed
+
+
+const submitForm = async (statusCode) => {
     if (form.value.Loan_Application.amount_loan && form.value.Loan_Application.factor_rate && form.value.Loan_Application.amount_interest && form.value.Loan_Application.amount_paid) {
         try {
             const params = {
-                document_status_code: form.value.Loan_Application.document_status_code,
+                document_status_code: statusCode,
                 loan_application_no: form.value.Loan_Application.loan_application_no,
                 group_id: form.value.Loan_Application.group_id,
                 customer_id: form.value.Loan_Application.customer_id,
@@ -327,12 +362,14 @@ const submitForm = async () => {
                 co_maker_id: form.value.coMaker.id,
                 last_modified_by_id: null,
                 prepared_by_id: form.value.Loan_Application.prepared_by_id,
+                approved_by_id: currentUser.value?.data?.id,
+                datetime_approved: formatDate(new Date()), 
             }
 
             console.log(params);
-            await apiService.authLoanApplicationsApprove(params, params.id); // Ensure this matches your API method
+            await apiService.updateLoanApplication(params, params.id); // Ensure this matches your API method
 
-            toast.success('Loan Application updated successfully!', { autoClose: 3000 });
+            toast.success(' Success!', { autoClose: 3000 });
             setTimeout(() => {
             navigateTo('/loan_applications');  
             }, 3000);
@@ -341,9 +378,11 @@ const submitForm = async () => {
             toast.error(error.message, { autoClose: 5000 });
         }
     } else {
-        toast.error('Please fill in all required fields', { autoClose: 5000 });
+        toast.error('Please fill in all required fields', { autoClose: 3000 });
     }
 };
+
+
 
 
 // Function to check if the fee is selected

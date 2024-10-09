@@ -485,7 +485,7 @@ const submitForm = async () => {
                 payment_frequency_id: customer.paymentFrequency,
                 payment_duration_id: customer.duration,
                 notes: customer.comment || '', // Include comment if it exists, otherwise set it to an empty string
-                document_status_code: 'PENDING', // Means pending
+                document_status_code: 'Pending', // Means pending
                 fees: customer.selectedFees, // Include selected fees
                 coMaker: customer.coMaker,
             });
@@ -502,8 +502,10 @@ const submitForm = async () => {
             });
 
             if (response) {
-                toast.success('Transaction submitted successfully.', { autoClose: 5000 });
-                navigateTo('/loan_applications');
+                toast.success('Transaction submitted successfully.', { autoClose: 3000 });
+                setTimeout(() => {
+                navigateTo('/loan_applications');  
+                }, 3000);
             }
         } catch (error) {
             toast.error(`Submission failed: ${error.message}`, { autoClose: 5000 });
