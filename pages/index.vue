@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white">
   <header class="py-8 px-4 md:px-16">
-    <div class="container mx-auto flex justify-between items-center animate__animated animate__fadeInDown">
+    <div class="container mx-auto flex justify-between items-center scroll-pop">
       <img src="../img/LendCash_Logo-removebg-preview.png" class="w-20" alt="logo">
       <nav class="hidden md:flex gap-10">
         <a href="features" class="text-gray-600 hover:text-gray-800 font-bold">Features</a>
@@ -11,12 +11,12 @@
       </nav>
       <div class="flex items-center  gap-4">
         <a href="login" class="text-black hover:text-gray-800 font-bold flex items-center">Log in</a>
-        <a href="register-form" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 animate__animated animate__pulse animate__infinite flex items-center">Sign Up</a>
+        <a href="register_step1" class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 animate__animated animate__pulse animate__infinite flex items-center">Sign Up</a>
       </div>
     </div>
   </header>
   <main class="py-16 px-4 md:px-16">
-    <div class="container mx-auto flex flex-col md:flex-row gap-16 animate__animated animate__fadeIn">
+    <div class="container mx-auto flex flex-col md:flex-row gap-16 scroll-pop">
       <div class="md:w-1/2">
         <h2 class="text-5xl font-bold text-gray-800 mb-4">LendCash Microfinance System for ERD Financial Solution</h2>
         <p class="text-lg text-gray-600 mb-8">An Online Microfinance Lending System designed to empower individuals and small businesses by providing quick and easy access to financial services.</p>
@@ -28,11 +28,11 @@
         <img src="../img/handsakebg_1sect.jpg" alt="LendCash" class="w-full h-auto rounded-lg shadow-lg">
       </div>
     </div>
-    <div class="container mx-auto mt-20 animate__animated animate__fadeInUp">
+    <div class="container mx-auto mt-20 scroll-pop">
       <h3 class="text-4xl font-bold text-gray-800 mb-4">LendCash Offers</h3>
       <p class="text-lg text-gray-600 mb-8">Creating Opportunities, One Microloan at a Time.</p>
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mt-8">
-        <div class="bg-white rounded-md p-6 shadow-lg animate__animated animate__fadeInUp animate__delay-1s">
+        <div class="bg-white rounded-md p-6 shadow-lg pop-in">
           <img src="../img/grouping.png" alt="Group Lending" class="w-16 h-16 mb-4">
           <h4 class="text-xl font-bold text-gray-800 mb-2">Group Lending</h4>
           <p class="text-gray-600">Offers small groups of individuals the opportunity to come together to access financial services, guaranteeing each other's loans and fostering a sense of shared responsibility and mutual support.</p>
@@ -246,7 +246,23 @@
 </template>
 
 <script>
+export default {
+  mounted() {
+    const elements = document.querySelectorAll('.scroll-pop');
+    
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('pop-in');
+        }
+      });
+    }, { threshold: 0.1 }); // Trigger when 10% of the element is visible
 
+    elements.forEach(element => {
+      observer.observe(element);
+    });
+  }
+};
 </script>
 
 <style>
@@ -256,5 +272,21 @@ body {
 
 .container {
   max-width: 1200px;
+}
+
+/* Slow motion pop-up effect */
+@keyframes slowPopIn {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.pop-in {
+  animation: slowPopIn 5s ease-in-out;
 }
 </style>
