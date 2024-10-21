@@ -587,6 +587,8 @@ async authLoanApplicationsApprove(params: object, id: number): Promise<any> {
     return await this.request(`/LOAN_APPLICATIONS/approve/${id}`, 'PATCH', params);
 }
 
+
+
 async getCustomerByGroupId(params: object, id: number): Promise<any> {
     return await this.request(`/test/${id}`, 'GET', params)
 }
@@ -594,6 +596,32 @@ async getCustomerByGroupId(params: object, id: number): Promise<any> {
 async getUserLogged(params: object): Promise<any> {
     return await this.request(`/USER_LOGGED`, 'GET', params)
 }
+
+
+    async getLoanRelease(params: object): Promise<any> {
+        return await this.request(`/LOAN_RELEASE`, 'GET', params)
+    }
+
+    async authLoanReleaseUpdate(params: object): Promise<any> {
+        return await this.request(`/LOAN_RELEASE/update`, 'PATCH', params);
+    }
+
+    async updateLoanRelease(params: object, id: number): Promise<any> {
+        return await this.request(`/LOAN_RELEASE/${id}`, 'PUT', params)
+    }
+
+
+    
+// async getLoanRelease(params: object): Promise<any> {
+//     return await this.request(`/LOAN_RELEASE`, 'GET', params)
+// }
+
+// async updateLoanRelease(params: object): Promise<any> {
+//     return await this.request(`/LOAN_RELEASE`, 'PUT', params)
+// }
+
+
+
 }
 
 export const apiService = new API()
