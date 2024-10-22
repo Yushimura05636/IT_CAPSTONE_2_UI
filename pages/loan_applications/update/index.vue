@@ -3,7 +3,7 @@
         <main>
             <div class="flex justify-center items-center bg-gray-100">
                 <div class="bg-white border border-gray-300 rounded-lg p-6 shadow-md w-full">
-                    <div class="text-center font-bold text-xl mb-4">Loan Application Update Form</div>
+                    <div class="text-center font-bold text-xl mb-4">Loan Application Approve Form</div>
 
                     <!-- Loan Amount -->
                     <div class="mb-4">
@@ -100,7 +100,7 @@
         <tbody>
             <tr v-for="fee in state.fees" :key="fee.id">
                 <td class="px-4 py-2 border text-left">
-                    <input
+                    <input disabled
                         type="checkbox"
                         :value="fee.id"
                         :checked="isFeeSelected(fee.id)"
@@ -133,9 +133,9 @@
             class="w-full border rounded-lg px-4 py-2"
         >
             <option value="" disabled>Select a Co-Maker</option>
-            
-            <option v-for="comaker in state.coMakers" :key="comaker.customer.id" :value="comaker.customer.id">
-                {{ comaker.personality.first_name}} {{ comaker.personality.first_name }} {{ comaker.personality.middle_name }}
+
+            <option disabled v-for="comaker in state.coMakers" :key="comaker.customer.id" :value="comaker.customer.id">
+                {{ comaker.personality.family_name}} {{ comaker.personality.first_name }} {{ comaker.personality.middle_name }}
             </option>
         </select>
     </div>
@@ -199,7 +199,7 @@ const fetchLoanApplication = async () => {
         //set id
         form.value.coMaker.id = comakerRealData.personality.id
         form.value.Loan_Application.factor_rate = parseInt(response.data.loan_applications.factor_rate);
-        
+
 
     } catch (error) {
         toast.error(error.message, { autoClose: 5000 });
@@ -219,7 +219,7 @@ const fetchFees = async () => {
 
         // Debug log the feeForm array
         console.log('Fee Form:', feeData.data.fees);
-        
+
         if (Array.isArray(feeForm.value.feeForm)) {
             // Debug log the feeForm array
         console.log('Fee Form:', feeData.data.fees);
@@ -227,10 +227,10 @@ const fetchFees = async () => {
                 // Debug log the feeForm array
         console.log('Fee Form:', form.value.Fees.length);
                 const feeItem = feeData.data.fees[i];
-                
+
                 for (let j = 0; j < state.value.fees.length; j++) {
                     const fee = state.value.fees[j];
-                    
+
                     if (fee.id === feeItem.fee_id) {
                         if (!feeData.data.fees.some((existingFee: any) => existingFee.id === fee.id)) {
                             form.value.Fees.push(fee);
@@ -280,11 +280,18 @@ const fetchDurations = async () => {
 // Calculate total fees for the selected customer
 function calculateTotalFees() {
     console.log();
+    debugger;
     if (feeForm.value.feeForm.length > 0) {
         let total = 0;
         for (let i = 0; i < feeForm.value.feeForm.length; i++) {
             const feeId = feeForm.value.feeForm[i];
-            const fee = state.value.fees.find(f => f.id === feeId.id);
+            let fee = null;
+for (let i = 0; i < state.value.fees.length; i++) {
+  if (state.value.fees[i].id === feeId.fee_id) {
+    fee = state.value.fees[i];
+    break;  // Exit the loop once the matching fee is found
+  }
+}
             if (fee) {
                 total += parseFloat(fee.amount); // Ensure we are adding numbers, not concatenating strings
             }
@@ -383,7 +390,7 @@ const fetchCoMakers = async () => {
     try {
         const response = await apiService.getCustomers({});
         state.value.coMakers = response.data; // Store fetched Co-Makers in state
-        
+
     } catch (error) {
         toast.error(error.message, { autoClose: 5000 });
     }

@@ -14,16 +14,16 @@
                             Create
                             </button>
 
-                            <button 
-                            type="button" 
+                            <button
+                            type="button"
                             class="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
                             v-if="selectedLoanAppID"
                             @click="updateLoanApp"
                             >
                             APPROVE
                             </button>
-                            
-                            <button type="button" 
+
+                            <button type="button"
                             class="px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600 "
                             v-if="selectedLoanAppID"
                             >
@@ -45,17 +45,17 @@
                     </div>
 
                     <div class="overflow-x-auto">
-                        <Table class="w-full  " 
-                            :columnHeaders="state.columnHeaders" 
-                            :data="state.loanApp" 
+                        <Table class="w-full  "
+                            :columnHeaders="state.columnHeaders"
+                            :data="state.loanApp"
                             :isLoading="state.isTableLoading"
-                            :sortData="state.sortData" 
+                            :sortData="state.sortData"
                             >
                             <template #body
                                 v-if="!(state.isTableLoading || (state.loanApp === 0))">
-                                
+
                                 <tr v-for="(loanApp, index) in state.loanApp" :key="index" class="">
-                                    
+
                                     <td class="py-2 border-b border-gray-300 ">
                                         <input
                                         type="radio"
@@ -63,12 +63,6 @@
                                         v-model="selectedLoanAppID"
                                         class="cursor-pointer"
                                         />
-                                    </td>
-                                    <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.Loan_Application.customer_id }} </span>
-                                    </td>
-                                    <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.Loan_Application.group_id }} </span>
                                     </td>
                                     <td class="py-2 border-b border-gray-300  ">
                                         <span>{{ loanApp.Loan_Application.datetime_prepared }} </span>
@@ -101,12 +95,6 @@
                                         <span>{{ loanApp.Loan_Application.datetime_approved }} </span>
                                     </td>
                                     <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.Loan_Application.payment_frequency_id }} </span>
-                                    </td>
-                                    <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.Loan_Application.payment_duration_id }} </span>
-                                    </td>
-                                    <td class="py-2 border-b border-gray-300  ">
                                         <span>{{ loanApp.Loan_Application.approved_by_id }} </span>
                                     </td>
                                     <td class="py-2 border-b border-gray-300  ">
@@ -118,7 +106,7 @@
                                     <td class="py-2 border-b border-gray-300  ">
                                         <span>{{ loanApp.Loan_Application.last_modified_by_id }} </span>
                                     </td>
-                                    
+
                                     <td class="py-2 border-b border-gray-300  ">
                                         <span>{{ loanApp.Loan_Application.notes }} </span>
                                     </td>
@@ -141,12 +129,10 @@ import 'vue3-toastify/dist/index.css';
     import { loanApplicationService } from '~/models/LoanApplication'
     import { PermissionService } from '~/models/Permission';
     import { PaymentFrequency } from '../../models/PaymentFrequency';
-    
+
     const state = reactive({
         columnHeaders: [
             { name: '' },
-            { name: 'Customer' },
-            { name: 'Group' },
             { name: 'Date Time Prepared' },
             { name: 'Status' },
             { name: 'Loan Application No' },
@@ -157,8 +143,6 @@ import 'vue3-toastify/dist/index.css';
             { name: 'Date Time Target Release' },
             { name: 'Date Time Fully Paid' },
             { name: 'Date Time Approved' },
-            { name: 'Payment Frequency' },
-            { name: 'Payment Duration' },
             { name: 'Approved by' },
             { name: 'Prepared by' },
             { name: 'Released by' },
@@ -178,10 +162,10 @@ import 'vue3-toastify/dist/index.css';
     let selectedLoanAppID = ref(null); // Track selected library
     const isHovered = ref(false);
 
-    
+
     async function approveORreject(){
     try {
-        
+
         loanApplicationService.id = parseInt(selectedLoanAppID.value?.toString());
         const response = await apiService.authCustomersUpdate({});
         // console.log("test" + CustomersService.id);
@@ -193,8 +177,8 @@ import 'vue3-toastify/dist/index.css';
         })
     }
 }
-    
-    
+
+
     async function fetchFreqandDuration() {
         state.isTableLoading = true
         state.error = null
@@ -202,7 +186,7 @@ import 'vue3-toastify/dist/index.css';
             const params = {}
             const response = await apiService.getLoanApplication({})
             state.loanApp = response.data
-            
+
             console.log(state.loanApp);
         } catch (error: any) {
             toast.error(error.message, {
@@ -216,12 +200,12 @@ import 'vue3-toastify/dist/index.css';
     })
 
     async function updateLoanApp(){
-        
+
         try {
             const response = await apiService.authPaymentDurationsUpdate({})
             if (selectedLoanAppID.value) {
             loanApplicationService.id = selectedLoanAppID.value;
-        
+
         navigateTo('/loan_applications/update');
         }
         } catch (error) {
