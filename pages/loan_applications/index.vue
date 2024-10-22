@@ -31,16 +31,16 @@
                             </button>
                         </div>
 
-                        <!-- Right: Search Bar -->
-                        <div class="flex items-center space-x-2">
-                            <input
-                            type="text"
-                            placeholder="Search"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
-                            />
-                            <button class="px-4 py-2 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700">
-                            Search
-                            </button>
+                        <div class="overflow-x-auto">
+        <!-- Search Bar -->
+        <div class="mb-4">
+            <input
+                type="text"
+                v-model="searchQuery"
+                placeholder="Search Loan Applications..."
+                class="border border-gray-300 rounded-md p-2 w-full"
+            />
+        </div>
                         </div>
                     </div>
 
@@ -54,7 +54,7 @@
                             <template #body
                                 v-if="!(state.isTableLoading || (state.loanApp === 0))">
 
-                                <tr v-for="(loanApp, index) in state.loanApp" :key="index" class="">
+                                <tr v-for="(loanApp, index) in filteredLoanApps()" :key="index" class="">
 
                                     <td class="py-2 border-b border-gray-300 ">
                                         <input
@@ -162,6 +162,8 @@ import 'vue3-toastify/dist/index.css';
     let selectedLoanAppID = ref(null); // Track selected library
     const isHovered = ref(false);
 
+    const searchQuery = ref(''); // Holds the search query
+
 
     async function approveORreject(){
     try {
@@ -237,5 +239,18 @@ import 'vue3-toastify/dist/index.css';
     })
         }
     }
+
+    function filteredLoanApps() {
+        debugger;
+        if (!this.searchQuery) {
+                return state.loanApp; // Return all if search is empty
+            }
+            const query = this.searchQuery.toLowerCase();
+            return this.state.loanApp.filter(loanApp =>
+                Object.values(loanApp.Loan_Application).some(value =>
+                    String(value).toLowerCase().includes(query)
+                )
+            );
+        };
 
 </script>
