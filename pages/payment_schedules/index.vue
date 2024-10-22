@@ -29,6 +29,7 @@
             <th class="py-2 px-4">Amount Due</th>
             <th class="py-2 px-4">Amount Interest</th>
             <th class="py-2 px-4">Amount Paid</th>
+            <th class="py-2 px-4">Amount Balance</th>
             <th class="py-2 px-4">Payment Status</th>
             <th class="py-2 px-4">Notes</th>
           </tr>
@@ -36,7 +37,7 @@
         <tbody>
           <tr v-for="(payment, index) in filteredPayments" :key="index">
             <td class="text-center py-2">
-              <input type="radio" name="select" v-model="selectedPayment" :value="getSelectedValue(payment)">
+              <input type="radio" name="select" v-model="selectedPayment" :value="payment.id" @change="getSelectedValue(payment)">
             </td>
             <td class="py-2 px-4">{{ payment.family_name }}</td>
             <td class="py-2 px-4">{{ payment.first_name }}</td>
@@ -45,6 +46,7 @@
             <td class="py-2 px-4">{{ payment.amount_due }}</td>
             <td class="py-2 px-4">{{ payment.amount_interest }}</td>
             <td class="py-2 px-4">{{ payment.amount_paid }}</td>
+            <td class="py-2 px-4">{{ payment.balance }}</td>
             <td class="py-2 px-4">{{ payment.payment_status_code }}</td>
             <td class="py-2 px-4">{{ payment.notes }}</td>
           </tr>
@@ -106,9 +108,6 @@
     <thead class="bg-gray-900 text-white">
       <tr>
         <th class="py-2 px-4">Select</th>
-        <th class="py-2 px-4">Payment Line ID</th>
-        <th class="py-2 px-4">Payment ID</th>
-        <th class="py-2 px-4">Payment Schedule ID</th>
         <th class="py-2 px-4">Balance</th>
         <th class="py-2 px-4">Amount Paid</th>
         <th class="py-2 px-4">Remarks</th>
@@ -121,9 +120,6 @@
         <td class="text-center py-2">
           <input type="radio" name="selectPaymentLine" v-model="selectedPaymentLine" :value="paymentLine.id">
         </td>
-        <td class="py-2 px-4">{{ paymentLine.id }}</td>
-        <td class="py-2 px-4">{{ paymentLine.payment_id }}</td>
-        <td class="py-2 px-4">{{ paymentLine.payment_schedule_id }}</td>
         <td class="py-2 px-4">{{ paymentLine.balance }}</td>
         <td class="py-2 px-4">{{ paymentLine.amount_paid }}</td>
         <td class="py-2 px-4">{{ paymentLine.remakrs }}</td>
@@ -161,6 +157,8 @@ const viewpayments = ref('');
 const viewpaymentLines = ref('');
 const selectedCustomer = ref('');
 
+const balance = ref('');
+
 // Computed property to filter payments based on search query
 const filteredPayments = computed(() => {
   if (!searchQuery.value) return payments.value;
@@ -178,7 +176,9 @@ const createPayment = () => {
 
 // Redirect to the create payment page for updating payment
 const updatePayment = () => {
+    debugger;
   if (selectedPayment.value) {
+    paymentScheduleService._id = selectedPayment.value;
     navigateTo('/payment_schedules/update')
   } else {
     alert('Please select a payment to update.');
@@ -186,8 +186,10 @@ const updatePayment = () => {
 };
 
 const getSelectedValue = (payment: any) => {
+    debugger;
   paymentScheduleService._id = payment.id
   paymentScheduleService.customer_id = payment.customer_id
+  paymentScheduleService.balance = payment.balance;
 
   return payment.id
 }

@@ -1,8 +1,9 @@
 <template>
-  <div class="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">
+  <NuxtLayout name="admin">
+    <div class="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">
     <h2 class="text-2xl font-bold mb-4">Payment Form</h2>
     <form @submit.prevent="submitPayment">
-    <div class="mb-4">
+    <!-- <div class="mb-4">
     <label for="loan-select" class="block text-sm font-medium text-gray-700">Loan Application No</label>
     <select
       id="loan-select"
@@ -14,7 +15,7 @@
         {{ loanApp.Loan_Application.loan_application_no }}
       </option>
     </select>
-  </div>
+  </div> -->
       <div class="mb-4">
         <label for="customer_fname" class="block text-sm font-medium text-gray-700">Customer First Name</label>
         <input
@@ -80,17 +81,30 @@
         />
       </div>
 
+
       <div class="mb-4">
-        <label for="amount_paid" class="block text-sm font-medium text-gray-700">Amount Paid</label>
-        <input
-          v-model="schedules.value.amount_paid"
+          <label for="balance" class="block text-sm font-medium text-gray-700">Balance</label>
+          <input
+          v-model="schedules.value.balance"
           type="number"
-          id="amount_paid"
-          required
+          id="balance"
+          readonly
           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-          placeholder="Enter Amount Paid"
-        />
-      </div>
+          placeholder="Enter Balance"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label for="amount_paid" class="block text-sm font-medium text-gray-700">Amount Paid</label>
+          <input
+            v-model="schedules.value.amount_paid"
+            type="number"
+            id="amount_paid"
+            required
+            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
+            placeholder="Enter Amount Paid"
+          />
+        </div>
 
       <div class="mb-4">
         <label for="loan_application_id" class="block text-sm font-medium text-gray-700">Amount Due Date</label>
@@ -127,11 +141,17 @@
         ></textarea>
       </div>
 
-      <button type="submit" class="w-full bg-blue-500 text-white font-semibold py-2 rounded-lg hover:bg-blue-600">
-        Submit Payment
-      </button>
+      <div class="flex justify-between mt-4 w-full">
+  <button type="submit" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-600 w-1/2 mr-2">
+    Submit Payment
+  </button>
+  <button type="button" @click="cancelForm" class="bg-gray-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-gray-600 w-1/2 ml-2">
+    Cancel
+  </button>
+</div>
     </form>
-  </div>
+    </div>
+  </NuxtLayout>
 </template>
 
 <script setup lang="ts">
@@ -180,7 +200,6 @@ const payment = ref({
 onMounted(() => {
   fetchCustomers();
   fetchSchedules();
-  fetchLoanApp();
 });
 
 const fetchLoanApp = async () => {
@@ -224,6 +243,8 @@ const fetchSchedules = async () => {
   try {
     const response = await apiService.getPaymentScheduleById({}, paymentScheduleService._id);
     schedules.value = response.data;
+    schedules.value.balance = paymentScheduleService.balance;
+    debugger;
     console.log('schedules: ', response)
   } catch (error) {
     console.error('Error fetching loans:', error);
@@ -265,6 +286,11 @@ const getLoanData = async (loan: any) => {
 
   return loan.Loan_Application.id
 }
+
+const cancelForm = () => {
+    navigateTo('/payment_schedules/');
+}
+
 </script>
 
 <style scoped>

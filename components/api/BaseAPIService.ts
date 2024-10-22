@@ -48,9 +48,7 @@ class BaseAPIService {
                     this.revokeAccess()
                     this.redirectToLogin()
                 case 500:
-                    throw new APIError({
-                        message: "Server error. Please try again. If the problem persists, contact your system administrator"
-                    })
+                    throw new APIError(error.response._data);
                 default:
                     throw new APIError({
                         message: "Something went wrong. Please try again. If the problem persists, contact your system administrator"
@@ -63,7 +61,7 @@ class BaseAPIService {
         localStorage.removeItem("_token")
     }
     redirectToHome() {
-        navigateTo('/dashboard'); 
+        navigateTo('/dashboard');
     }
     redirectToLogin() {
         navigateTo('/');

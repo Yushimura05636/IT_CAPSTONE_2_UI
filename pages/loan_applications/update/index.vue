@@ -140,11 +140,14 @@
         </select>
     </div>
 
-                    <div class="text-center mt-4">
-                        <button @click="submitForm" class="bg-blue-500 text-white px-4 py-2 rounded">
-                            Approve
-                        </button>
-                    </div>
+    <div class="flex justify-end mt-4">
+    <button @click="submitForm" class="bg-blue-500 text-white px-4 py-2 rounded">
+        Approve
+    </button>
+    <button @click="cancelForm" class="mx-2 bg-red-500 text-white px-4 py-2 rounded">
+        cancel
+    </button>
+</div>
                 </div>
             </div>
         </main>
@@ -313,6 +316,10 @@ for (let i = 0; i < state.value.fees.length; i++) {
 //     }, 0);
 // };
 
+const cancelForm = () => {
+    navigateTo('/loan_applications/');
+}
+
 const submitForm = async () => {
     if (form.value.Loan_Application.amount_loan && form.value.Loan_Application.factor_rate && form.value.Loan_Application.amount_interest && form.value.Loan_Application.amount_paid) {
         try {
@@ -343,6 +350,7 @@ const submitForm = async () => {
 
             navigateTo('/loan_applications/')
         } catch (error) {
+            debugger;
             toast.error(error.message, { autoClose: 5000 });
         }
     } else {

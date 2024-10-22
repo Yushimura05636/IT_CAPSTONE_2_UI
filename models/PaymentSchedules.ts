@@ -2,6 +2,15 @@
 export class PaymentSchedules {
     private __id!: number;
     private _customer_id!: number;
+    private _balance!: number;
+
+    public get balance(): number {
+        return this._balance;
+    }
+    public set balance(value: number) {
+        this._balance = value;
+    }
+
     public get customer_id(): number {
         return this._customer_id;
     }
