@@ -1,157 +1,177 @@
 <template>
   <div class="bg-white">
     <header class="py-8 px-4 md:px-16">
-      <div class="container mx-auto flex justify-between items-center">
-        <img src="../img/LendCash_Logo-removebg-preview.png" class="w-20" alt="logo">
-        <!-- <h1 class="text-3xl font-bold text-gray-800">LendCash</h1> -->
-        <nav class="hidden md:flex gap-10">
-          <a href="features" class="text-gray-600 hover:text-gray-800 font-bold">Features</a>
-          <a href="pricing" class="text-gray-600 hover:text-gray-800 font-bold">Pricing</a>
-          <a href="about" class="text-gray-600 hover:text-gray-800 font-bold">About</a>
-          <a href="/" class="text-gray-600 hover:text-gray-800 font-bold">Blog</a>
-          <a href="contact" class="text-gray-600 hover:text-gray-800 font-bold">Contact</a>
-          <!-- <a href="#" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Pro Version</a> -->
-        </nav>
+  <div class="container mx-auto flex justify-between items-center scroll-pop">
+    <div class="flex items-center gap-2"> <!-- Add a wrapper div with flex -->
+      <img src="../img/LendCash_Logo-removebg-preview.png" class="w-20" alt="logo">
+      <p class="text-lg text-green-600">LendCash</p> <!-- Adjust margin if needed -->
+    </div>
+    <nav class="hidden md:flex gap-10">
+      <a href="features" class="text-gray-600 hover:text-green-600 font-bold">Features</a>
+      <a href="about" class="text-gray-600 hover:text-green-600 font-bold">About</a>
+      <a href="blog" class="text-gray-600 hover:text-green-600 font-bold">Blog</a>
+      <a href="contact" class="text-gray-600 hover:text-green-600 font-bold">Contact</a>
+    </nav>
+    <div class="flex flex-col md:flex-row items-center gap-4 pop-in">
+      <a href="login" class="w-full md:w-auto text-black px-4 py-2 rounded-md hover:bg-green-600 font-bold flex justify-center items-center">Log in</a>
+      <a href="register_step1" class="w-full md:w-auto bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-900 animate__animated animate__pulse animate__infinite flex justify-center items-center">Sign Up</a>
+    </div>
+
+  </div>
+</header>
+
+  <main class="py-16 px-4 md:px-16">
+    <div class="container mx-auto flex flex-col md:flex-row gap-16 scroll-pop">
+      <div class="md:w-1/2">
+        <h2 class="text-5xl font-bold text-green-500 mb-4">LendCash Microfinance System for ERD Financial Solution</h2>
+        <p class="text-lg text-gray-600 mb-8">An Online Microfinance Lending System designed to empower individuals and small businesses by providing quick and easy access to financial services.</p>
         <div class="flex gap-4">
-          <a href="login" class="text-black hover:text-gray-800 font-bold">Log in</a>
-          <a href="register-form" class="text-black hover:text-green-900 font-bold">Sign Up</a>
-          <!-- <button class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Sign up</button> -->
+          <a href="register-form" class="bg-green-600 text-white px-6 py-3 rounded-md hover:bg-green-900 animate__animated animate__pulse animate__infinite">Apply Now!</a>
         </div>
       </div>
-    </header>
-    <main class="py-16 px-4 md:px-16">
-      <div class="container mx-auto flex flex-col md:flex-row gap-16">
-        <div class="md:w-1/2">
-          <h2 class="text-5xl font-bold text-gray-800 mb-4">LendCash Microfinance System for ERD Financial Solution </h2>
-          <p class="text-lg text-gray-600 mb-8">An Online Microfinance Lending System.</p>
-          <div class="flex gap-4">
-            <button class="bg-black text-white px-4 py-2 rounded-md hover:bg-green-900">Apply Now</button>
-            <!-- <button class="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300">GitHub Repo</button> -->
-          </div>
+      <div class="md:w-1/2 flex justify-center items-center animate__animated animate__zoomIn">
+        <img src="../img/handsakebg_1sect.jpg" alt="LendCash" class="w-full h-auto rounded-lg shadow-lg">
+      </div>
+    </div>
+
+    <div class="relative bg-cover bg-no-repeat" style="background-image: url('../img/rainingmoney.png');">
+  <div class="container mx-auto mt-20 scroll-pop text-center">
+    <h3 class="text-6xl font-bold text-green-500 mb-4">LendCash Offers</h3>
+    <p class="text-lg text-gray-600 mb-8">Creating Opportunities, One Microloan at a Time!</p>
+    
+    <div class="flex justify-center pop-in"> <!-- Flexbox added to center the grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-8">
+        
+        <div class="bg-white rounded-md p-6 shadow-lg pop-in flex flex-col items-center">
+          <img src="../img/grouping.png" alt="Group Lending" class="w-16 h-16 mb-4">
+          <h4 class="text-xl font-bold text-gray-800 mb-2 text-center">Group Lending</h4>
+          <p class="text-gray-600 text-center">Offers small groups of individuals the opportunity to come together to access financial services, guaranteeing each other's loans and fostering a sense of shared responsibility and mutual support.</p>
         </div>
-        <div class="md:w-1/2 flex justify-center items-center">
-          <img src="../img/handsakebg_1sect.jpg" alt="LendCash-Logo" class="w-50 h-50 float-right">
+
+        <div class="bg-white rounded-md p-6 shadow-lg pop-in flex flex-col items-center">
+          <img src="../img/no-hidden-fees.png" alt="No Surcharges" class="w-16 h-16 mb-4">
+          <h4 class="text-xl font-bold text-gray-800 mb-2 text-center">No Surcharges</h4>
+          <p class="text-gray-600 text-center">Providing loans and financial services without hidden fees ensures transparency, making financial products more accessible and affordable.</p>
+        </div>
+
+        <div class="bg-white rounded-md p-6 shadow-lg pop-in flex flex-col items-center">
+          <img src="../img/no-collaretal.png" alt="No Collateral" class="w-16 h-16 mb-4">
+          <h4 class="text-xl font-bold text-gray-800 mb-2 text-center">No Collateral</h4>
+          <p class="text-gray-600 text-center">Access credit and financial services without the need for collateral, enabling individuals, especially those with limited assets, to secure loans.</p>
+        </div>
+
+        <div class="bg-white rounded-md p-6 shadow-lg pop-in flex flex-col items-center">
+          <img src="../img/easy-loan-process.png" alt="Easy Loan Process" class="w-16 h-16 mb-4">
+          <h4 class="text-xl font-bold text-gray-800 mb-2 text-center">Easy Loan Process</h4>
+          <p class="text-gray-600 text-center">Our streamlined loan process makes borrowing simple, reducing the complexity and time typically involved so you can focus on what matters most.</p>
+        </div>
+
+        <div class="bg-white rounded-md p-6 shadow-lg pop-in flex flex-col items-center">
+          <img src="../img/loan-disbursement.png" alt="Quick Cash Disbursement" class="w-16 h-16 mb-4">
+          <h4 class="text-xl font-bold text-gray-800 mb-2 text-center">Quick Cash Disbursement</h4>
+          <p class="text-gray-600 text-center">Get access to funds when you need them the most. Our streamlined process ensures that you receive your cash swiftly and efficiently.</p>
+        </div>
+
+        <div class="bg-white rounded-md p-6 shadow-lg pop-in flex flex-col items-center">
+          <img src="../img/hassle-free.png" alt="Hassle-Free Requirements" class="w-16 h-16 mb-4">
+          <h4 class="text-xl font-bold text-gray-800 mb-2 text-center">Hassle-Free Requirements</h4>
+          <p class="text-gray-600 text-center">Simplified borrowing requirements make the process accessible and efficient for everyone, ensuring a smoother experience for both borrowers and lenders.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+    
+    <!-- Additional Content: How It Works Section -->
+    <section class="py-16 pop-in">
+      <div class="container mx-auto text-center">
+        <h3 class="text-4xl font-bold text-gray-800 mb-6 pop-in">How It Works</h3>
+        <p class="text-lg text-gray-600 mb-10">We make it easy for you to get access to funds when you need them the most. Here’s how you can get started:</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+          <div class="bg-white rounded-md p-6 shadow-lg pop-in">
+            <img src="../img/transaction.png" alt="Register" class="w-16 h-16 mb-4 mx-auto">
+            <h4 class="text-xl font-bold text-gray-800 mb-2">Step 1: Register</h4>
+            <p class="text-gray-600">Submit your basic information by filling in forms, and within 24 hours to receive notification from the company. </p>
+          </div>
+          <div class="bg-white rounded-md p-6 shadow-lg animate__animated animate__fadeInUp animate__delay-2s">
+            <img src="../img/no-hidden-fees.png" alt="Apply for Loan" class="w-16 h-16 mb-4 mx-auto">
+            <h4 class="text-xl font-bold text-gray-800 mb-2">Step 2: Apply for Loan</h4>
+            <p class="text-gray-600">Fill in  loan application form, and we’ll guide you through the process step-by-step.</p>
+          </div>
+          <div class="bg-white rounded-md p-6 shadow-lg animate__animated animate__fadeInUp animate__delay-3s">
+            <img src="../img/hassle-free.png" alt="Receive Funds" class="w-16 h-16 mb-4 mx-auto">
+            <h4 class="text-xl font-bold text-gray-800 mb-2">Step 3: Receive Funds</h4>
+            <p class="text-gray-600">Once approved, funds will be disbursed quickly so you can start using them immediately.</p>
+          </div>
         </div>
       </div>
-      <div class="container mx-auto mt-20">
-        <h3 class="text-4xl font-bold text-gray-800 mb-4">LendCash Offers</h3>
-        <p class="text-lg text-gray-600 mb-8">Creating Opportunities, One Microloan at a Time.</p>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mt-8">
-          <div class="bg-gray-100 rounded-md p-4 shadow-md items-center justify-center">
-            <img src="../img/grouping.png" alt="Icon 1" class="w-50 h-50">
-            <h4 class="text-xl font-bold text-gray-800 mb-2">Group Lending</h4>
-            <p class="text-gray-600">Offers small groups of individuals come together to access financial services. In this system, members guarantee each other's loans, fostering a sense of shared responsibility and mutual support.</p>
+    </section>
+    
+    
+    <!-- Additional Content: Frequently Asked Questions Section -->
+    <section class="py-16 pop-in">
+      <div class="container mx-auto text-center">
+        <h3 class="text-4xl font-bold text-gray-800 mb-6">Frequently Asked Questions</h3>
+        <p class="text-lg text-gray-600 mb-10">Got questions? We have the answers. Here are some of the most frequently asked questions:</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+          <div class="bg-white rounded-md p-6 shadow-lg animate__animated animate__fadeInUp animate__delay-1s">
+            <h4 class="text-xl font-bold text-gray-800 mb-4">What is LendCash?</h4>
+            <p class="text-gray-600">LendCash is an online microfinance platform that provides loans to individuals and small businesses without the need for collateral.</p>
           </div>
-          <div class="bg-gray-100 rounded-md p-4 shadow-md items-center justify-center">
-            <img src="../img/no-hidden-fees.png" alt="Icon 1" class="w-50 h-50 items-center">
-            <h4 class="text-xl font-bold text-gray-800 mb-2">No Surcharges</h4>
-            <p class="text-gray-600">Providing loans and financial services without additional fees beyond the agreed interest rates. This approach ensures that borrowers are not burdened with hidden costs or extra charges, making financial products more transparent and accessible.</p>
+          <div class="bg-white rounded-md p-6 shadow-lg animate__animated animate__fadeInUp animate__delay-2s">
+            <h4 class="text-xl font-bold text-gray-800 mb-4">How do I apply for a loan?</h4>
+            <p class="text-gray-600">You can apply for a loan by signing up, filling out a simple application form, and submitting your details for review.</p>
           </div>
-          <div class="bg-gray-100 rounded-md p-4 shadow-md items-center justify-center">
-            <img src="../img/no-collaretal.png" alt="Icon 1" class="w-50 h-50 items-center">
-            <h4 class="text-xl font-bold text-gray-800 mb-2">No Collateral</h4>
-            <p class="text-gray-600">Providing loans and financial services without requiring borrowers to pledge assets as security. This approach enables individuals, particularly those with limited or no assets, to access credit and other financial services.</p>
+          <div class="bg-white rounded-md p-6 shadow-lg animate__animated animate__fadeInUp animate__delay-3s">
+            <h4 class="text-xl font-bold text-gray-800 mb-4">Do I need to provide collateral?</h4>
+            <p class="text-gray-600">No, we do not require any collateral for the loans. We believe in empowering everyone, regardless of their assets.</p>
           </div>
-          <div class="bg-gray-100 rounded-md p-4 shadow-md items-center justify-center">
-            <img src="../img/easy-loan-process.png" alt="Icon 1" class="w-50 h-50 items-center">
-            <h4 class="text-xl font-bold text-gray-800 mb-2">Easy Loan Process</h4>
-            <p class="text-gray-600">Experience a seamless and straightforward loan process designed to make borrowing as easy as possible. Our easy loan process is tailored to reduce the complexity and time typically associated with securing a loan, so you can focus on what matters most.</p>
-          </div>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-          <div class="bg-gray-100 rounded-md p-4 shadow-md items-center justify-center">
-            <img src="../img/loan-disbursement.png" alt="Icon 1" class="w-50 h-50 items-center">
-            <h4 class="text-xl font-bold text-gray-800 mb-2">Quick Cash Disbursement</h4>
-            <p class="text-gray-600">When you need access to funds quickly, our quick cash disbursement service is here to meet your needs. We understand that timely financial support is crucial, and we’ve streamlined our process to ensure that you receive your cash swiftly and efficiently.</p>
-          </div>
-          <div class="bg-gray-100 rounded-md p-4 shadow-md items-center justify-center">
-            <img src="../img/hassle-free.png" alt="Icon 1" class="w-50 h-50 items-center">
-            <h4 class="text-xl font-bold text-gray-800 mb-2">Hassle Free Requirements</h4>
-            <p class="text-gray-600">Aim to simplify the borrowing process, making it more accessible and efficient for borrowers while ensuring that lenders can accurately assess risk and compliance. This approach reduces the complexity and time involved in securing a loan, creating a smoother experience for all parties.</p>
+          <div class="bg-white rounded-md p-6 shadow-lg animate__animated animate__fadeInUp animate__delay-4s">
+            <h4 class="text-xl font-bold text-gray-800 mb-4">How soon can I receive the funds?</h4>
+            <p class="text-gray-600">Once your loan is approved, funds are disbursed quickly—usually within 24-48 hours, depending on your bank.</p>
           </div>
         </div>
       </div>
-      <section class="py-14">
-        <div class="max-w-screen-xl mx-auto px-4 md:px-8">
-            <div class="max-w-xl sm:text-center md:mx-auto">
-              <div class="pb-6">
-                <img src="../img/LendCash_Logo-removebg-preview.png"  class="mx-auto w-20" />
-              </div>
-                <h3 class="text-gray-800 text-3xl font-semibold sm:text-4xl">
-                    See what others saying about us
-                </h3>
-                <p class="mt-3 text-gray-600">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc et est hendrerit, porta nunc vitae, gravida justo. Nunc fermentum magna lorem, euismod volutpat arcu volutpat et.
-                </p>
-            </div>
-            <div class="mt-12">
-                <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    <li v-for="(item, idx) in testimonials" :key="idx" class="bg-gray-100 p-4 rounded-xl">
-                        <figure>
-                            <div class="flex items-center gap-x-4">
-                                <img :src="item.avatar" class="w-16 h-16 rounded-full" />
-                                <div>
-                                    <span class="block text-gray-800 font-semibold">{{ item.name }}</span>
-                                    <span class="block text-gray-600 text-sm mt-0.5">{{ item.title }}</span>
-                                </div>
-                            </div>
-                            <blockquote>
-                                <p class="mt-6 text-gray-700">
-                                    {{ item.quote }}
-                                </p>
-                            </blockquote>
-                        </figure>
-                    </li>
-                </ul>
-            </div>
-        </div>
-      </section>
-    </main>
-    <footer class="pt-10 bg-gray-800">
+    </section>
+
+  </main>
+  <footer class="pt-10 bg-gray-800 pop-in">
     <div class="max-w-screen-xl mx-auto px-4 md:px-8">
       <div class="justify-between items-center gap-12 md:flex">
         <div class="flex-1 max-w-lg">
-          <h3 class="text-white text-2xl font-bold">
-            Get our beautiful newsletter straight to your inbox.
-          </h3>
-        </div>
-        <div class="flex-1 mt-6 md:mt-0">
-          <form @submit.prevent="onSubmit" class="flex items-center gap-x-3 md:justify-end">
-            <div class="relative">
-              <svg
-                class="w-6 h-6 text-gray-400 absolute left-3 inset-y-0 my-auto"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="{1.5}"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
-                />
-              </svg>
-              <input
-                type="email"
-                required
-                placeholder="Enter your email"
-                class="w-full pl-12 pr-3 py-2 text-gray-500 bg-white outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
-              />
-            </div>
-            <button class="block w-auto py-3 px-4 font-medium text-sm text-center text-white bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 active:shadow-none rounded-lg shadow">
-              Subscribe
-            </button>
-          </form>
-        </div>
-      </div>
+          </div>
+
+          </div>
       <div class="flex-1 mt-16 space-y-6 justify-between sm:flex md:space-y-0">
-        <ul v-for="(item, idx) in footerNavs" :key="idx" class="space-y-4 text-gray-300">
-          <h4 class="text-gray-200 font-semibold sm:pb-2">{{ item.label }}</h4>
-          <li v-for="(el, index) in item.items" :key="index">
-            <a :href="el.href" class="duration-150 hover:text-gray-400">{{ el.name }}</a>
-          </li>
-        </ul>
+        <div class="flex flex-col gap-6 text-gray-300">
+          <h4 class="text-gray-200 font-semibold">Company</h4>
+          <ul class="space-y-4">
+            <li><a href="#about" class="duration-150 hover:text-gray-400">About Us</a></li>
+            <li><a href="#team" class="duration-150 hover:text-gray-400">Our Team</a></li>
+            <li><a href="#careers" class="duration-150 hover:text-gray-400">Careers</a></li>
+            <li><a href="#press" class="duration-150 hover:text-gray-400">Press</a></li>
+          </ul>
+        </div>
+        <div class="flex flex-col gap-6 text-gray-300">
+          <h4 class="text-gray-200 font-semibold">Support</h4>
+          <ul class="space-y-4">
+            <li><a href="#faq" class="duration-150 hover:text-gray-400">FAQs</a></li>
+            <li><a href="#contact" class="duration-150 hover:text-gray-400">Contact Support</a></li>
+            <li><a href="#help" class="duration-150 hover:text-gray-400">Help Center</a></li>
+          </ul>
+        </div>
+        <div class="flex flex-col gap-6 text-gray-300">
+          <h4 class="text-gray-200 font-semibold">Legal</h4>
+          <ul class="space-y-4">
+            <li><a href="#privacy" class="duration-150 hover:text-gray-400">Privacy Policy</a></li>
+            <li><a href="#terms" class="duration-150 hover:text-gray-400">Terms of Service</a></li>
+            <li><a href="#security" class="duration-150 hover:text-gray-400">Security</a></li>
+          </ul>
+        </div>
       </div>
       <div class="mt-10 py-10 border-t border-gray-700 items-center justify-between sm:flex">
         <p class="text-gray-300">© 2024 LendCash. All rights reserved.</p>
@@ -197,7 +217,7 @@
           <a href="javascript:void()">
             <svg
               class="w-6 h-6 hover:text-gray-500 duration-150"
-              fill="none"
+              fill="currentColor"
               viewBox="0 0 48 48"
             >
               <g fill="currentColor" clip-path="url(#clip0_910_44)">
@@ -223,64 +243,56 @@
               fill="currentColor"
               viewBox="0 0 48 48"
             >
-              <g clip-path="url(#clip0_17_63)">
-                <path
-                  d="M24 4.322c6.413 0 7.172.028 9.694.14 2.343.104 3.61.497 4.453.825 1.116.432 1.922.957 2.756 1.791.844.844 1.36 1.64 1.79 2.756.329.844.723 2.12.826 4.454.112 2.53.14 3.29.14 9.693 0 6.413-.028 7.172-.14 9.694-.103 2.344-.497 3.61-.825 4.453-.431 1.116-.957 1.922-1.79 2.756-.845.844-1.642 1.36-2.757 1.791-.844.328-2.119.722-4.453.825-2.532.112-3.29.14-9.694.14-6.413 0-7.172-.028-9.694-.14-2.343-.103-3.61-.497-4.453-.825-1.115-.431-1.922-.956-2.756-1.79-.844-.844-1.36-1.641-1.79-2.757-.329-.844-.723-2.119-.826-4.453-.112-2.531-.14-3.29-.14-9.694 0-6.412.028-7.172.14-9.694.103-2.343.497-3.609.825-4.453.431-1.115.957-1.921 1.79-2.756.845-.844 1.642-1.36 2.757-1.79.844-.329 2.119-.722 4.453-.825 2.522-.113 3.281-.141 9.694-.141zM24 0c-6.516 0-7.331.028-9.89.14-2.55.113-4.304.526-5.822 1.116-1.585.619-2.926 1.435-4.257 2.775-1.34 1.332-2.156 2.672-2.775 4.247C.666 9.806.253 11.55.141 14.1.028 16.669 0 17.484 0 24s.028 7.331.14 9.89c.113 2.55.526 4.304 1.116 5.822.619 1.585 1.435 2.925 2.775 4.257a11.732 11.732 0 004.247 2.765c1.528.591 3.272 1.003 5.822 1.116 2.56.112 3.375.14 9.89.14 6.516 0 7.332-.028 9.891-.14 2.55-.113 4.303-.525 5.822-1.116a11.732 11.732 0 004.247-2.765 11.732 11.732 0 002.766-4.247c.59-1.528 1.003-3.272 1.115-5.822.113-2.56.14-3.375.14-9.89 0-6.516-.027-7.332-.14-9.891-.112-2.55-.525-4.303-1.115-5.822-.591-1.594-1.407-2.935-2.747-4.266a11.732 11.732 0 00-4.247-2.765C38.194.675 36.45.262 33.9.15 31.331.028 30.516 0 24 0z"
-                />
-                <path
-                  d="M24 11.672c-6.806 0-12.328 5.522-12.328 12.328 0 6.806 5.522 12.328 12.328 12.328 6.806 0 12.328-5.522 12.328-12.328 0-6.806-5.522-12.328-12.328-12.328zm0 20.325a7.998 7.998 0 010-15.994 7.998 7.998 0 010 15.994zM39.694 11.184a2.879 2.879 0 11-2.878-2.878 2.885 2.885 0 012.878 2.878z"
-                />
-              </g>
-              <defs>
-                <clipPath id="clip0_17_63">
-                  <path d="M0 0h48v48H0z" />
-                </clipPath>
-              </defs>
-            </svg>
-          </a>
+                <g clip-path="url(#clip0_17_63)">
+                  <path
+                    d="M24 4.322c6.413 0 7.172.028 9.694.14 2.343.104 3.61.497 4.453.825 1.116.432 1.922.957 2.756 1.791.844.844 1.36 1.64 1.79 2.756.329.844.723 2.12.826 4.454.112 2.53.14 3.29.14 9.693 0 6.413-.028 7.172-.14 9.694-.103 2.344-.497 3.61-.825 4.453-.431 1.116-.957 1.922-1.79 2.756-.845.844-1.642 1.36-2.757 1.791-.844.328-2.119.722-4.453.825-2.532.112-3.29.14-9.694.14-6.413 0-7.172-.028-9.694-.14-2.343-.103-3.61-.497-4.453-.825-1.115-.431-1.922-.956-2.756-1.79-.844-.844-1.36-1.641-1.79-2.757-.329-.844-.723-2.119-.826-4.453-.112-2.531-.14-3.29-.14-9.694 0-6.412.028-7.172.14-9.694.103-2.343.497-3.609.825-4.453.431-1.115.957-1.921 1.79-2.756.845-.844 1.642-1.36 2.757-1.79.844-.329 2.119-.722 4.453-.825 2.522-.113 3.281-.141 9.694-.141zM24 0c-6.516 0-7.331.028-9.89.14-2.55.113-4.304.526-5.822 1.116-1.585.619-2.926 1.435-4.257 2.775-1.34 1.332-2.156 2.672-2.775 4.247C.666 9.806.253 11.55.141 14.1.028 16.669 0 17.484 0 24s.028 7.331.14 9.89c.113 2.55.526 4.304 1.116 5.822.619 1.585 1.435 2.925 2.775 4.257a11.732 11.732 0 004.247 2.765c1.528.591 3.272 1.003 5.822 1.116 2.56.112 3.375.14 9.89.14 6.516 0 7.332-.028 9.891-.14 2.55-.113 4.303-.525 5.822-1.116a11.732 11.732 0 004.247-2.765 11.732 11.732 0 002.766-4.247c.59-1.528 1.003-3.272 1.115-5.822.113-2.56.14-3.375.14-9.89 0-6.516-.027-7.332-.14-9.891-.112-2.55-.525-4.303-1.115-5.822-.591-1.594-1.407-2.935-2.747-4.266a11.732 11.732 0 00-4.247-2.765C38.194.675 36.45.262 33.9.15 31.331.028 30.516 0 24 0z"
+                  />
+                  <path
+                    d="M24 11.672c-6.806 0-12.328 5.522-12.328 12.328 0 6.806 5.522 12.328 12.328 12.328 6.806 0 12.328-5.522 12.328-12.328 0-6.806-5.522-12.328-12.328-12.328zm0 20.325a7.998 7.998 0 010-15.994 7.998 7.998 0 010 15.994zM39.694 11.184a2.879 2.879 0 11-2.878-2.878 2.885 2.885 0 012.878 2.878z"
+                  />
+                </g>
+                <defs>
+                  <clipPath id="clip0_17_63">
+                    <path d="M0 0h48v48H0z" />
+                  </clipPath>
+                </defs>
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
-    </div>
-  </footer>
+    </footer>
   </div>
 </template>
 
 <script>
-export default {
-    data() {
-        return {
-            testimonials: [
-                {
-                    avatar: "https://scontent.fcgy1-1.fna.fbcdn.net/v/t39.30808-6/359522345_3677315609221786_2310243283905235556_n.jpg?_nc_cat=110&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeH6khA-JSL5k2spkEGbg-Mue4vlWqoJXyp7i-VaqglfKgi3G8P41Rpp3h0tbwawZqZFG6Z8Rir5C1VxE2FaA80D&_nc_ohc=8lMHSC7W4PAQ7kNvgEUCqFO&_nc_ht=scontent.fcgy1-1.fna&oh=00_AYCJ5wuDNsPbMMW3d4gQJfOTYDVojdEUH47uwU2IW4WjpQ&oe=66DD3051",
-                    name: "Heinz Kyle Hora",
-                    title: "Founder of MGG",
-                    quote: "Nice."
-                },
-                {
-                    avatar: "https://scontent.fcgy1-1.fna.fbcdn.net/v/t39.30808-6/448656158_1629887417845685_6398441375725225275_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeGeOFE4asStHUlOZco6oK80qfpuDRI2IeOp-m4NEjYh40Yfk9OO0p0f7HpySF7PqhcbrJBkcX2sr3R9Pn5858cV&_nc_ohc=Kc-Vzrd_MaMQ7kNvgHPtz4b&_nc_ht=scontent.fcgy1-1.fna&oh=00_AYB2rdBHgfFwsYFCQsUO500kJHlACjQT79cJNjy48G8RSg&oe=66DD354A",
-                    name: "Stephen Duray",
-                    title: "Founder of MGG",
-                    quote: "Nice."
-                },
-                {
-                    avatar: "https://scontent.fcgy1-1.fna.fbcdn.net/v/t1.15752-9/457869417_880139523982024_8057426980193137924_n.png?_nc_cat=104&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeHLQdw0XWAnaNothpVh5ogysuphZSIDa5my6mFlIgNrmSjUcm8ZpKHlFiLj_4_bzV7MJ7G-xEP9lN4RnQwoh_Ip&_nc_ohc=TTESbs8EOu0Q7kNvgHy49e8&_nc_ht=scontent.fcgy1-1.fna&oh=03_Q7cD1QEhuLSmpNsAiFORrI0fSu6jnTsBxH83driAhl4viXPJZg&oe=66FEF935",
-                    name: "Venn Lopez",
-                    title: "Founder of MGG",
-                    quote: "Nice."
-                },
-            ]
-        };
-    }
-}
+export default {};
 </script>
 
-<style>
-body {
-  font-family: 'Inter', sans-serif;
+<style scoped>
+/* Pop-in animation */
+@keyframes popIn {
+  0% {
+    transform: scale(2);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
+.pop-in {
+  animation: popIn 5s ease forwards;
+}
+
+/* Ensuring scroll animations are applied when elements appear */
+.scroll-pop {
+  animation: popIn 5s ease forwards;
+}
+
+/* Utility classes */
 .container {
   max-width: 1200px;
 }
-
 </style>
