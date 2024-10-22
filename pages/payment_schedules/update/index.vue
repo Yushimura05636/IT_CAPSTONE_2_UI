@@ -3,7 +3,7 @@
     <div class="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">
     <h2 class="text-2xl font-bold mb-4">Payment Form</h2>
     <form @submit.prevent="submitPayment">
-    <!-- <div class="mb-4">
+    <div class="mb-4">
     <label for="loan-select" class="block text-sm font-medium text-gray-700">Loan Application No</label>
     <select
       id="loan-select"
@@ -15,7 +15,7 @@
         {{ loanApp.Loan_Application.loan_application_no }}
       </option>
     </select>
-  </div> -->
+  </div>
       <div class="mb-4">
         <label for="customer_fname" class="block text-sm font-medium text-gray-700">Customer First Name</label>
         <input
@@ -200,6 +200,7 @@ const payment = ref({
 onMounted(() => {
   fetchCustomers();
   fetchSchedules();
+  fetchLoanApp();
 });
 
 const fetchLoanApp = async () => {
