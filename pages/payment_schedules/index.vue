@@ -22,6 +22,7 @@
         <thead class="bg-gray-900 text-white">
           <tr>
             <th class="py-2 px-4">Select</th>
+            <th class="py-2 px-4">Loan Application No</th>
             <th class="py-2 px-4">Family Name</th>
             <th class="py-2 px-4">First Name</th>
             <th class="py-2 px-4">Middle Name</th>
@@ -39,6 +40,7 @@
             <td class="text-center py-2">
               <input type="radio" name="select" v-model="selectedPayment" :value="payment.id" @change="getSelectedValue(payment)">
             </td>
+            <td class="py-2 px-4">{{ payment.loan_application_no }}</td>
             <td class="py-2 px-4">{{ payment.family_name }}</td>
             <td class="py-2 px-4">{{ payment.first_name }}</td>
             <td class="py-2 px-4">{{ payment.middle_name }}</td>
