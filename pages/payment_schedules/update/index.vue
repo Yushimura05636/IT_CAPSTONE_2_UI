@@ -106,6 +106,17 @@
       </div>
 
       <div class="mb-4">
+        <label for="status" class="block text-sm font-medium text-gray-700">Notes</label>
+        <input disabled
+          v-model="schedules.value.payment_status_code"
+          id="status"
+          rows="3"
+          class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
+          placeholder="UNPAID"
+        >
+      </div>
+
+      <div class="mb-4">
         <label for="notes" class="block text-sm font-medium text-gray-700">Notes</label>
         <textarea
           v-model="schedules.value.remarks"
@@ -174,7 +185,7 @@ onMounted(() => {
 
 const fetchLoanApp = async () => {
   try {
-    
+
     if(paymentScheduleService.customer_id == null)
     {
       navigateTo('/payment_schedules/')
@@ -191,7 +202,7 @@ const fetchLoanApp = async () => {
 
 const fetchCustomers = async () => {
   try {
-    
+
     if(paymentScheduleService.customer_id == null)
     {
       navigateTo('/payment_schedules/')
@@ -222,6 +233,11 @@ const fetchSchedules = async () => {
 
 const submitPayment = async () => {
   try {
+
+    if(schedules.value.payment_status_code == 'PAID')
+    {
+        alert('This schedule is already paid!');
+    }
 
     //amount paid
     const customer = customers.value

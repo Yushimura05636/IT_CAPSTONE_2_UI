@@ -403,6 +403,12 @@ class API extends BaseAPIService {
     async getLoanApplicationByLoanNoNoAUTH(params: object, id: number): Promise<any> {
         return await this.request(`/LOAN_APPLICATIONS/loanno/NoAUTH/${id}`, 'GET', params)
     }
+    async getLoanApplicationByCustomerId(params: object, id: number): Promise<any> {
+        return await this.request(`/LOAN_APPLICATIONS/customer/${id}`, 'GET', params)
+    }
+    async getLoanApplicationByCustomerIdNoAUTH(params: object, id: number): Promise<any> {
+        return await this.request(`/LOAN_APPLICATIONS/customer/NoAUTH/${id}`, 'GET', params)
+    }
     async createLoanApplication(params: object): Promise<any> {
         return await this.request(`/LOAN_APPLICATIONS`, 'POST', params)
     }

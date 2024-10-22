@@ -16,18 +16,20 @@
         class="border rounded px-4 py-2 w-1/2"
       />
     </div>
+
     <div class="overflow-auto">
       <table class="min-w-full bg-white">
         <thead class="bg-gray-900 text-white">
           <tr>
             <th class="py-2 px-4">Select</th>
-            <th class="py-2 px-4">Id</th>
-            <th class="py-2 px-4">Customer Id</th>
-            <th class="py-2 px-4">Loan Released Id</th>
+            <th class="py-2 px-4">Family Name</th>
+            <th class="py-2 px-4">First Name</th>
+            <th class="py-2 px-4">Middle Name</th>
             <th class="py-2 px-4">DateTime Due</th>
             <th class="py-2 px-4">Amount Due</th>
             <th class="py-2 px-4">Amount Interest</th>
             <th class="py-2 px-4">Amount Paid</th>
+            <th class="py-2 px-4">Payment Status</th>
             <th class="py-2 px-4">Notes</th>
           </tr>
         </thead>
@@ -36,9 +38,9 @@
             <td class="text-center py-2">
               <input type="radio" name="select" v-model="selectedPayment" :value="getSelectedValue(payment)">
             </td>
-            <td class="py-2 px-4">{{ payment.id }}</td>
-            <td class="py-2 px-4">{{ payment.customer_id }}</td>
-            <td class="py-2 px-4">{{ payment.loan_released_id }}</td>
+            <td class="py-2 px-4">{{ payment.family_name }}</td>
+            <td class="py-2 px-4">{{ payment.first_name }}</td>
+            <td class="py-2 px-4">{{ payment.middle_name }}</td>
             <td class="py-2 px-4">{{ payment.datetime_due }}</td>
             <td class="py-2 px-4">{{ payment.amount_due }}</td>
             <td class="py-2 px-4">{{ payment.amount_interest }}</td>
@@ -61,8 +63,9 @@
     <thead class="bg-gray-900 text-white">
       <tr>
         <th class="py-2 px-4">Select</th>
-        <th class="py-2 px-4">Payment ID</th>
-        <th class="py-2 px-4">Customer ID</th>
+        <th class="py-2 px-4">Family Name</th>
+        <th class="py-2 px-4">First Name</th>
+        <th class="py-2 px-4">Middle Name</th>
         <th class="py-2 px-4">Prepared At</th>
         <th class="py-2 px-4">Status Code</th>
         <th class="py-2 px-4">Prepared By</th>
@@ -77,8 +80,9 @@
         <td class="text-center py-2">
           <input type="radio" name="selectPayment" v-model="selectedPayment" :value="payment.id">
         </td>
-        <td class="py-2 px-4">{{ payment.id }}</td>
-        <td class="py-2 px-4">{{ payment.customer_id }}</td>
+        <td class="py-2 px-4">{{ payment.family_name }}</td>
+        <td class="py-2 px-4">{{ payment.first_name }}</td>
+        <td class="py-2 px-4">{{ payment.middle_name }}</td>
         <td class="py-2 px-4">{{ payment.prepared_at }}</td>
         <td class="py-2 px-4">{{ payment.document_status_code }}</td>
         <td class="py-2 px-4">{{ payment.prepared_by_id}}</td>
@@ -155,6 +159,7 @@ const searchQuery = ref('');
 const selectedPayment = ref<number | null>(null);
 const viewpayments = ref('');
 const viewpaymentLines = ref('');
+const selectedCustomer = ref('');
 
 // Computed property to filter payments based on search query
 const filteredPayments = computed(() => {
