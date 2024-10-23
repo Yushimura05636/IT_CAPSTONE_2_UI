@@ -169,6 +169,8 @@
 </template>
 
 <script setup lang="ts">
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 import { ref, onMounted } from 'vue';
 import { loanApplicationService } from '~/models/LoanApplication';
 import { paymentScheduleService } from '~/models/PaymentSchedules';
@@ -296,8 +298,14 @@ const submitPayment = async () => {
       loan,
     }
     const response = await apiService.createPayment(json); // Pass payment object
-    alert('success!');
-    navigateTo('/payment_schedules')
+    toast.success("Transaction successful!", {
+        autoClose: 5000,
+    });
+
+    setTimeout(()=>{
+        navigateTo('/payment_schedules')
+    }, 5000)
+
     // Handle success (e.g., show a success message, reset form, etc.)
   } catch (error) {
     console.error('Error submitting payment:', error);
