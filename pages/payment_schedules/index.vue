@@ -142,6 +142,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
+import { loanApplicationService } from '~/models/LoanApplication';
 import { paymentScheduleService } from '~/models/PaymentSchedules';
 import { apiService } from '~/routes/api/API';
 
@@ -181,6 +182,7 @@ const updatePayment = () => {
     debugger;
   if (selectedPayment.value) {
     paymentScheduleService._id = selectedPayment.value;
+
     navigateTo('/payment_schedules/update')
   } else {
     alert('Please select a payment to update.');
@@ -192,6 +194,7 @@ const getSelectedValue = (payment: any) => {
   paymentScheduleService._id = payment.id
   paymentScheduleService.customer_id = payment.customer_id
   paymentScheduleService.balance = payment.balance;
+  loanApplicationService.loan_application_no = payment.loan_application_no;
 
   return payment.id
 }

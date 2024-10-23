@@ -44,8 +44,8 @@
                         </div>
                     </div>
 
-                    <div class="overflow-x-auto">
-                        <Table class="w-full  "
+                    <div class="overflow-x-auto max-h-[30rem] overflow-y-auto">
+                        <Table class="w-full"
                             :columnHeaders="state.columnHeaders"
                             :data="state.loanApp"
                             :isLoading="state.isTableLoading"

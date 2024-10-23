@@ -3,7 +3,21 @@
     <div class="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">
     <h2 class="text-2xl font-bold mb-4">Payment Form</h2>
     <form @submit.prevent="submitPayment">
-    <div class="mb-4">
+        <div class="mb-4">
+    <label for="customer_fname" class="block text-sm font-medium text-gray-700">Customer First Name</label>
+    <span v-if="!comboboxLoan.value || isLoanNoLoading">Loading..</span>
+    <input v-else
+    readonly
+    v-model="comboboxLoan.value.loan_applications.loan_application_no"
+    type="text"
+    id="customer_fname"
+    required
+    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
+    placeholder="Enter Loan Application ID"
+    />
+</div>
+
+    <!-- <div class="mb-4">
     <label for="loan-select" class="block text-sm font-medium text-gray-700">Loan Application No</label>
     <select
       id="loan-select"
@@ -11,11 +25,11 @@
       class="mt-1 block w-full border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-200 focus:border-blue-500"
     >
       <option value="" disabled>Select a loan application</option>
-      <option v-for="loanApp in loanApps.value" :key="loanApp.Loan_Application.id" :value="getLoanData(loanApp)">
-        {{ loanApp.Loan_Application.loan_application_no }}
+      <option v-for="loanApp in loanApps.value" :key="loanApp.loan_applications.id" :value="getLoanData(loanApp)">
+        {{ loanApp.loan_applications.loan_application_no }}
       </option>
     </select>
-  </div>
+  </div> -->
       <div class="mb-4">
         <label for="customer_fname" class="block text-sm font-medium text-gray-700">Customer First Name</label>
         <input
@@ -156,6 +170,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { loanApplicationService } from '~/models/LoanApplication';
 import { paymentScheduleService } from '~/models/PaymentSchedules';
 import { apiService } from '~/routes/api/API';
 
@@ -195,6 +210,8 @@ const payment = ref({
   payment_schedule_id: null,
 });
 
+const isLoanNoLoading = ref(true);
+
 
 // Call fetchCustomers and fetchLoans when the component is mounted
 onMounted(() => {
@@ -210,13 +227,19 @@ const fetchLoanApp = async () => {
     {
       navigateTo('/payment_schedules/')
     }
-    const response = await apiService.getLoanApplicationNoAUTH({}); // Replace with your actual API endpoint
+    const response = await apiService.getLoanApplicationByLoanNo({}, loanApplicationService.loan_application_no); // Replace with your actual API endpoint
+    debugger;
     // Assuming your API returns a list of customers
     loanApps.value = response.data
-    console.log('loanApps: ', loanApps.value[0].Loan_Application.loan_application_no);
+    comboboxLoan.value = loanApps.value;
+    console.log('loanApps: ', loanApps.value.loan_applications.loan_application_no);
   } catch (error) {
     console.error('Error fetching customers:', error);
     // Handle error (e.g., show an error message)
+  }
+  finally
+  {
+    isLoanNoLoading.value = false;
   }
 }
 
@@ -245,7 +268,7 @@ const fetchSchedules = async () => {
     const response = await apiService.getPaymentScheduleById({}, paymentScheduleService._id);
     schedules.value = response.data;
     schedules.value.balance = paymentScheduleService.balance;
-    debugger;
+
     console.log('schedules: ', response)
   } catch (error) {
     console.error('Error fetching loans:', error);
@@ -284,8 +307,10 @@ const submitPayment = async () => {
 
 const getLoanData = async (loan: any) => {
   comboboxLoan.value = loan;
+    debugger;
+  comboboxLoan.value.loan_applications.loan_application_no;
 
-  return loan.Loan_Application.id
+  return 1;
 }
 
 const cancelForm = () => {

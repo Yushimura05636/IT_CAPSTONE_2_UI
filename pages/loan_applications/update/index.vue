@@ -193,14 +193,20 @@ onMounted(() => {
 const fetchLoanApplication = async () => {
     try {
         const response = await apiService.getLoanApplicationById({}, loanApplicationService.id);
+        debugger;
         const comakerData = await apiService.getLoanApplicationCoMakerByIdNoAUTH({}, response.data.loan_applications.id);
-        const comakerRealData = await apiService.getCustomerByIdNoAuth({}, comakerData.data.customer_id);
+        if(comakerData.data.length > 0)
+        {
+            const comakerRealData = await apiService.getCustomerByIdNoAuth({}, comakerData.data.customer_id);
+            form.value.coMaker = comakerRealData.personality;
+
+            //set id
+            form.value.coMaker.id = comakerRealData.customer.id
+        }
         form.value.Loan_Application = response.data.loan_applications;
         feeForm.value.feeForm = response.data.fees;
-        form.value.coMaker = comakerRealData.personality;
 
         //set id
-        form.value.coMaker.id = comakerRealData.personality.id
         form.value.Loan_Application.factor_rate = parseInt(response.data.loan_applications.factor_rate);
 
 
@@ -283,7 +289,7 @@ const fetchDurations = async () => {
 // Calculate total fees for the selected customer
 function calculateTotalFees() {
     console.log();
-    debugger;
+
     if (feeForm.value.feeForm.length > 0) {
         let total = 0;
         for (let i = 0; i < feeForm.value.feeForm.length; i++) {
@@ -350,7 +356,7 @@ const submitForm = async () => {
 
             navigateTo('/loan_applications/')
         } catch (error) {
-            debugger;
+
             toast.error(error.message, { autoClose: 5000 });
         }
     } else {

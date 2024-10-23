@@ -74,7 +74,7 @@
                                 v-model="customerData[selectedCheckCustomerId].loanAmount"
                                 type="number"
                                 class="w-full border border-gray-300 rounded p-2"
-                                @input="updateLoanAmount(selectedCheckCustomerId)" 
+                                @input="updateLoanAmount(selectedCheckCustomerId)"
                             />
                         </div>
 
@@ -148,7 +148,7 @@
                                 class="w-full border border-gray-300 rounded p-2"
                             ></textarea>
                         </div>
-                        
+
                         <div v-if="state.fees.length > 0" class="overflow-x-auto">
                             <div class="max-h-60 overflow-y-auto">
                                 <table class="min-w-full bg-white border border-gray-300 mb-4">
@@ -185,13 +185,23 @@
                                 class="w-full border border-gray-300 rounded p-2"/>
                         </div>
 
-                        <div class="text-center mt-4">
-                            <button @click.prevent="submitForm" class="bg-blue-500 text-white px-4 py-2 rounded">
-                                Submit
-                            </button>
-                        </div>
+                        <div class="flex justify-end mt-4 space-x-2">
+                        <button
+                            @click.prevent="submitForm"
+                            class="bg-blue-500 text-white px-4 py-2 rounded"
+                        >
+                            Submit
+                        </button>
+                        <button
+                            @click.prevent="cancelForm"
+                            class="bg-gray-500 text-white px-4 py-2 rounded"
+                        >
+                            Cancel
+                        </button>
                     </div>
-                    
+
+                    </div>
+
                 </div>
             </div>
         </main>
@@ -462,7 +472,7 @@ const submitForm = async () => {
         if (
             customer &&
             customer.isSelected && // Check if the customer is selected
-            customer.customerId && 
+            customer.customerId &&
             customer.loanApplicationNo &&
             customer.loanAmount &&
             selectedGroupId.value &&
@@ -473,7 +483,7 @@ const submitForm = async () => {
             customer.duration
         ) {
             allCustomerData.push({
-                customer_id: customer.customerId, 
+                customer_id: customer.customerId,
                 loan_application_no: customer.loanApplicationNo,
                 amount_loan: customer.loanAmount,
                 group_id: selectedGroupId.value,
@@ -519,7 +529,7 @@ async function updateSelectedFees(feeId, isSelected) {
     if (!customerData[selectedCheckCustomerId.value]) {
         return;
     }
-    
+
     const selectedFees = customerData[selectedCheckCustomerId.value].selectedFees;
 
     if (isSelected) {
@@ -576,5 +586,9 @@ function onCheckboxChange(customerId, isChecked): any {
     // Computed property to filter out the current customer from the co-makers list
     const availableCoMakers = computed(() =>
     state.value.customers.filter((customer) => customer.id !== selectedCheckCustomerId.value)
-    );
+);
+
+function cancelForm() {
+    navigateTo('/loan_applications/');
+}
 </script>
