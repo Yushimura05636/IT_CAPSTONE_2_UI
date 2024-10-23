@@ -68,7 +68,14 @@
                                         <span>{{ loanApp.Loan_Application.datetime_prepared }} </span>
                                     </td>
                                     <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.Loan_Application.document_status_code }} </span>
+                                        <span 
+                                            :class="{
+                                            'text-green-500': loanApp.Loan_Application.document_status_code == 2,
+                                            'text-red-500': loanApp.Loan_Application.document_status_code == 3,
+                                            'text-yellow-500': loanApp.Loan_Application.document_status_code == 1 // Optional: use a different color for pending
+                                            }">
+                                            {{ loanApp.Loan_Application.document_status_code ==2? 'Approved': loanApp.Loan_Application.document_status_code ==3? 'Rejected' :'Pending'  }} 
+                                        </span>
                                     </td>
                                     <td class="py-2 border-b border-gray-300  ">
                                         <span>{{ loanApp.Loan_Application.loan_application_no }} </span>

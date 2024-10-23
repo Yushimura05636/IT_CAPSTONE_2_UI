@@ -8,14 +8,32 @@
         <button @click="deletePayment" class="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
       </div>
     </div>
-    <div class="flex justify-center mb-4">
-      <input
-        v-model="searchQuery"
-        type="text"
-        placeholder="Search payments"
-        class="border rounded px-4 py-2 w-1/2"
-      />
+
+    <div class="flex space-x-4 mb-4 items-center">
+      <div class="w-1/2">
+        <label class="block text-gray-700">Customer</label>
+        <select 
+          v-model="selectedCustomerId" 
+          @change="fetchLoanSchedule" 
+          class="w-full border rounded-lg px-4 py-2">
+          <option v-for="(payment, index) in filteredPayments" :key="index" :value="payment.customer_id">
+            {{ payment.family_name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="w-1/2">
+        <label class="block text-gray-700">Search</label> <!-- Added label here -->
+        <input
+          v-model="searchQuery"
+          type="text"
+          placeholder="Search"
+          class="border rounded px-4 py-2 w-full"
+        />
+      </div>
     </div>
+
+
 
     <div class="overflow-auto">
       <table class="min-w-full bg-white">
@@ -75,8 +93,8 @@
         <th class="py-2 px-4">Prepared By</th>
         <th class="py-2 px-4">Amount Paid</th>
         <th class="py-2 px-4">Notes</th>
-        <th class="py-2 px-4">Created At</th>
-        <th class="py-2 px-4">Updated At</th>
+        <!-- <th class="py-2 px-4">Created At</th>
+        <th class="py-2 px-4">Updated At</th> -->
       </tr>
     </thead>
     <tbody>
@@ -92,8 +110,8 @@
         <td class="py-2 px-4">{{ payment.prepared_by_id}}</td>
         <td class="py-2 px-4">{{ payment.amount_paid }}</td>
         <td class="py-2 px-4">{{ payment.notes }}</td>
-        <td class="py-2 px-4">{{ payment.created_at }}</td>
-        <td class="py-2 px-4">{{ payment.updated_at }}</td>
+        <!-- <td class="py-2 px-4">{{ payment.created_at }}</td>
+        <td class="py-2 px-4">{{ payment.updated_at }}</td> -->
       </tr>
       <tr v-if="viewpayments.length === 0">
         <td colspan="10" class="text-center py-4 text-gray-500">No data found</td>
@@ -113,8 +131,8 @@
         <th class="py-2 px-4">Balance</th>
         <th class="py-2 px-4">Amount Paid</th>
         <th class="py-2 px-4">Remarks</th>
-        <th class="py-2 px-4">Created At</th>
-        <th class="py-2 px-4">Updated At</th>
+        <!-- <th class="py-2 px-4">Created At</th>
+        <th class="py-2 px-4">Updated At</th> -->
       </tr>
     </thead>
     <tbody>
@@ -124,9 +142,9 @@
         </td>
         <td class="py-2 px-4">{{ paymentLine.balance }}</td>
         <td class="py-2 px-4">{{ paymentLine.amount_paid }}</td>
-        <td class="py-2 px-4">{{ paymentLine.remakrs }}</td>
-        <td class="py-2 px-4">{{ paymentLine.created_at }}</td>
-        <td class="py-2 px-4">{{ paymentLine.updated_at }}</td>
+        <td class="py-2 px-4">{{ paymentLine.remarks }}</td>
+        <!-- <td class="py-2 px-4">{{ paymentLine.created_at }}</td>
+        <td class="py-2 px-4">{{ paymentLine.updated_at }}</td> -->
       </tr>
       <tr v-if="viewpaymentLines.length === 0">
         <td colspan="9" class="text-center py-4 text-gray-500">No data found</td>
@@ -159,6 +177,8 @@ const selectedPayment = ref<number | null>(null);
 const viewpayments = ref('');
 const viewpaymentLines = ref('');
 const selectedCustomer = ref('');
+const loanScheduleData = ref([]); // Store loan schedule data
+
 
 const balance = ref('');
 
@@ -217,7 +237,8 @@ const fetchLoanSchedules = async () => {
   try {
     const response = await apiService.getPaymentScheduleNoAuth({});
     payments.value = response.data;
-
+    console.log("Data:", JSON.stringify(response.data, null, 2));
+  
   } catch (error) {
   }
 }
@@ -244,7 +265,30 @@ onMounted(() => {
   fetchLoanSchedules();
   fetchPayment();
   fetchPaymentLine();
+  fetchLoanSchedule();
 })
+
+let selectedCustomerId = ref(); // Track selected factor rate ID
+
+const  showCustomerIdAlert = async () => {
+      if (selectedCustomerId.value) {
+        alert(`Selected Customer ID: ${selectedCustomerId.value}`);
+      }
+    }
+
+    const fetchLoanSchedule = async () => {
+      if (selectedCustomerId.value) {
+        try {
+          const params = {}; // Add any parameters you need for the request
+          const loanSchedule = await apiService.getLoanSchedulebyCustomerID(params, selectedCustomerId.value);
+          loanScheduleData.value = loanSchedule; // Store fetched loan schedule data
+          console.log("Loan Schedule Data:", loanSchedule); // Log the fetched loan schedule
+        } catch (error) {
+          console.error("Error fetching loan schedule:", error);
+        }
+      }
+    };
+
 
 </script>
 
