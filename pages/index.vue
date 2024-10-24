@@ -337,11 +337,15 @@ const testimonials = ref<Testimonial[]>([
 
 async function removeToken() {
     try {
-        // Remove the token from local storage
-        localStorage.removeItem('token'); // Adjust the key based on your implementation
+        const token = localStorage.getItem('token');
 
-        //remove laravel authentication toke
-        const response = await authService.logout();
+        if(token){
+            // Remove the token from local storage
+            localStorage.removeItem('token'); // Adjust the key based on your implementation
+
+            //remove laravel authentication toke
+            const response = await authService.logout();
+        }
     } catch (error) {
         toast.error(`${error}`, {
             autoClose: 3000,
