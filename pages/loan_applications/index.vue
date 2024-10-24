@@ -45,75 +45,78 @@
                     </div>
 
                     <div class="overflow-x-auto max-h-[30rem] overflow-y-auto">
-                        <Table class="w-full"
-                            :columnHeaders="state.columnHeaders"
-                            :data="state.loanApp"
-                            :isLoading="state.isTableLoading"
-                            :sortData="state.sortData"
-                            >
-                            <template #body
-                                v-if="!(state.isTableLoading || (state.loanApp === 0))">
+    <Table class="w-full"
+        :columnHeaders="state.columnHeaders"
+        :data="state.loanApp"
+        :isLoading="state.isTableLoading"
+        :sortData="state.sortData">
 
-                                <tr v-for="(loanApp, index) in filteredLoanApps()" :key="index" class="">
+        <!-- Remove the template #body and use v-for directly -->
+        <tr
+            v-for="(loanApp, index) in filteredLoanApps()"
+            :key="index"
+            class=""
+            v-if="!(state.isTableLoading || (state.loanApp === 0))">
 
-                                    <td class="py-2 border-b border-gray-300 ">
-                                        <input
-                                        type="radio"
-                                        :value="loanApp.Loan_Application.id"
-                                        v-model="selectedLoanAppID"
-                                        class="cursor-pointer"
-                                        />
-                                    </td>
-                                    <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.Loan_Application.datetime_prepared }} </span>
-                                    </td>
-                                    <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.Loan_Application.document_status_code }} </span>
-                                    </td>
-                                    <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.Loan_Application.loan_application_no }} </span>
-                                    </td>
-                                    <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.Loan_Application.amount_loan }} </span>
-                                    </td>
-                                    <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.Loan_Application.factor_rate }} </span>
-                                    </td>
-                                    <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.Loan_Application.amount_interest }} </span>
-                                    </td>
-                                    <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.Loan_Application.amount_paid }} </span>
-                                    </td>
-                                    <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.Loan_Application.datetime_target_release }} </span>
-                                    </td>
-                                    <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.Loan_Application.datetime_fully_paid }} </span>
-                                    </td>
-                                    <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.Loan_Application.datetime_approved }} </span>
-                                    </td>
-                                    <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.Loan_Application.approved_by_id }} </span>
-                                    </td>
-                                    <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.Loan_Application.prepared_by_id }} </span>
-                                    </td>
-                                    <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.Loan_Application.released_by_id }} </span>
-                                    </td>
-                                    <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.Loan_Application.last_modified_by_id }} </span>
-                                    </td>
+            <td class="py-2 border-b border-gray-300 ">
+                <input
+                    type="radio"
+                    :value="loanApp.Loan_Application.id"
+                    v-model="selectedLoanAppID"
+                    class="cursor-pointer"
+                />
+            </td>
+            <td class="py-2 border-b border-gray-300  ">
+                <span>{{ loanApp.Loan_Application.datetime_prepared }} </span>
+            </td>
+            <td class="py-2 border-b border-gray-300  ">
+                <span>{{ loanApp.Loan_Application.document_status_code }} </span>
+            </td>
+            <td class="py-2 border-b border-gray-300  ">
+                <span>{{ loanApp.Loan_Application.loan_application_no }} </span>
+            </td>
+            <td class="py-2 border-b border-gray-300  ">
+                <span>{{ loanApp.Loan_Application.amount_loan }} </span>
+            </td>
+            <td class="py-2 border-b border-gray-300  ">
+                <span>{{ loanApp.Loan_Application.factor_rate }} </span>
+            </td>
+            <td class="py-2 border-b border-gray-300  ">
+                <span>{{ loanApp.Loan_Application.amount_interest }} </span>
+            </td>
+            <td class="py-2 border-b border-gray-300  ">
+                <span>{{ loanApp.Loan_Application.amount_paid }} </span>
+            </td>
+            <td class="py-2 border-b border-gray-300  ">
+                <span>{{ loanApp.Loan_Application.datetime_target_release }} </span>
+            </td>
+            <td class="py-2 border-b border-gray-300  ">
+                <span>{{ loanApp.Loan_Application.datetime_fully_paid }} </span>
+            </td>
+            <td class="py-2 border-b border-gray-300  ">
+                <span>{{ loanApp.Loan_Application.datetime_approved }} </span>
+            </td>
+            <td class="py-2 border-b border-gray-300  ">
+                <span>{{ loanApp.Loan_Application.approved_by_id }} </span>
+            </td>
+            <td class="py-2 border-b border-gray-300  ">
+                <span>{{ loanApp.Loan_Application.prepared_by_id }} </span>
+            </td>
+            <td class="py-2 border-b border-gray-300  ">
+                <span>{{ loanApp.Loan_Application.released_by_id }} </span>
+            </td>
+            <td class="py-2 border-b border-gray-300  ">
+                <span>{{ loanApp.Loan_Application.last_modified_by_id }} </span>
+            </td>
 
-                                    <td class="py-2 border-b border-gray-300  ">
-                                        <span>{{ loanApp.Loan_Application.notes }} </span>
-                                    </td>
-                                </tr>
-                            </template>
-                        </Table>
-                    </div>
+            <td class="py-2 border-b border-gray-300  ">
+                <span>{{ loanApp.Loan_Application.notes }} </span>
+            </td>
+        </tr>
+
+    </Table>
+</div>
+
                 </div>
             </div>
     </NuxtLayout>
