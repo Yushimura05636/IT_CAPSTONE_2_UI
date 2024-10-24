@@ -208,7 +208,7 @@ import 'vue3-toastify/dist/index.css';
             if (selectedLoanAppID.value) {
             loanApplicationService.id = selectedLoanAppID.value;
 
-        navigateTo('/loan_applications/update');
+        navigateTo('/loan_applications/approve');
         }
         } catch (error) {
             toast.error(error.message, {

@@ -354,7 +354,9 @@ const submitForm = async () => {
 
             toast.success('Loan Application updated successfully!', { autoClose: 5000 });
 
-            navigateTo('/loan_applications/')
+            //get the necessary datas
+            loanApplicationService.loan_application_no = form.value.Loan_Application.loan_application_no;
+            navigateTo('/loan_applications/approve/receipt')
         } catch (error) {
 
             toast.error(error.message, { autoClose: 5000 });
