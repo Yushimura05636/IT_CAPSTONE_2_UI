@@ -17,7 +17,7 @@
                                     </div>
                                 </TransitionChild>
                                 <!-- Sidebar component -->
-                                <div class="flex grow flex-col gap-y-3 overflow-y-auto bg-green-500 px-4 pb-4 ring-1 ring-white/10">
+                                <div class="flex grow flex-col gap-y-3 overflow-y-auto bg-gray-500 px-4 pb-4 ring-1 ring-white/10">
                                     <div class="flex h-16 shrink-0 items-center">
                                         <img class="h-6 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company"/>
                                     </div>
@@ -47,7 +47,7 @@
                                                     </li>
                                                 </ul>
                                             </li>
-                                            
+
                                             <li class="mt-auto">
                                                 <a href="/settings" class="group -mx-2 flex gap-x-2 rounded-md p-2 text-xs font-semibold leading-4 text-gray-400 hover:bg-gray-800 hover:text-white">
                                                     <Cog6ToothIcon class="h-5 w-5 shrink-0" aria-hidden="true"/>
@@ -62,7 +62,7 @@
                     </div>
                 </Dialog>
             </TransitionRoot>
-        
+
             <!-- Sidebar for desktop -->
             <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-48 lg:flex-col">
                 <!-- Sidebar component -->
@@ -87,7 +87,7 @@
                                             </DisclosureButton>
                                             <DisclosurePanel as="ul" class="mt-1 px-1">
                                                 <div v-for="subItem in item.children" :key="subItem.name">
-                                                    <DisclosureButton as="a" :href="subItem.href" 
+                                                    <DisclosureButton as="a" :href="subItem.href"
                                                     :class="[subItem.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800', 'py-1 pr-2 pl-6 flex gap-x-2 rounded-md text-xs leading-4 font-semibold']">
                                                     <component :is="subItem.icon" class="h-4 w-4 shrink-0 text-gray-400" aria-hidden="true"/>
                                                     <span class="text-xs">{{ subItem.name }}</span>
@@ -98,8 +98,8 @@
                                     </li>
                                 </ul>
                             </li>
-                        
-                            
+
+
                             <li class="mt-auto">
                                 <a href="/settings" class="group -mx-2 flex gap-x-2 rounded-md p-2 text-xs font-semibold leading-4 text-gray-400 hover:bg-gray-800 hover:text-white">
                                     <Cog6ToothIcon class="h-5 w-5 shrink-0" aria-hidden="true"/>
@@ -111,7 +111,7 @@
                 </div>
             </div>
             </div>
-            
+
             <!--Header-->
             <div class="lg:pl-60">
                 <div class="sticky top-0 z-40 flex h-10 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
@@ -119,7 +119,7 @@
                         <span class="sr-only text-xs">Open sidebar</span>
                         <Bars3Icon class="h-6 w-6" aria-hidden="true"/>
                     </button>
-                    
+
                     <!-- Separator -->
                     <div class="h-6 w-1 bg-gray-900/10 lg:hidden" aria-hidden="true"></div>
                     <div class="flex flex-1 justify-end gap-x-2.5 self-stretch xs:gap-x-3">
@@ -128,10 +128,10 @@
                                 <span class="sr-only text-xs">View notifications</span>
                                 <BellIcon class="h-5 w-5" aria-hidden="true" />
                             </button>
-                            
+
                             <!-- Separator -->
                             <div class="hidden xs:block xs:h-5 xs:w-0.5 xs:bg-gray-900/10" aria-hidden="true"></div>
-    
+
                             <!-- Profile dropdown -->
                             <Menu as="div" class="relative">
                 <MenuButton class="flex items-center p-1">
@@ -159,9 +159,9 @@
             </Menu>
         </div>
             </div>
-    
-                </div> 
-                
+
+                </div>
+
                 <main class="py-5">
                     <div class="px-4 sm:px-6 ">
                         <!-- Your content -->
@@ -172,9 +172,9 @@
                     </div>
                 </main>
             </div>
-    
+
     </template>
-    
+
     <script setup>
     import { ref } from "vue";
     //   import DashboardCard from './DashboardCard.vue';
@@ -210,7 +210,7 @@
         DocumentTextIcon,
         ArrowLongLeftIcon,
         FlagIcon,
-    
+
     } from "@heroicons/vue/24/outline";
     import { ChevronRightIcon, ShareIcon } from "@heroicons/vue/20/solid";
     import {
@@ -223,14 +223,14 @@
     import { KeyIcon } from "@heroicons/vue/20/solid";
     import { FireIcon } from "@heroicons/vue/24/solid";
     import { BellAlertIcon } from "@heroicons/vue/20/solid";
-    
+
     const sidebarOpen = ref(false);
-    const openPeopleDropdown = ref(false); 
-    
-    
+    const openPeopleDropdown = ref(false);
+
+
     const navigation = [
         { name: "Dashboard", href: "/dashboard", icon: ChartPieIcon, current: false },
-    
+
         { name: "Admin Panel", icon: UsersIcon, current: false,
             children: [
                 // { name: "Staff", href: "/#", icon: UserIcon, current: false },
@@ -249,8 +249,8 @@
             ],
         },
 
-        
-        
+
+
         { name: "Customers", icon: UsersIcon, current: false,
             children: [
                 { name: "Customers", href: "/customers", icon: UserIcon, current: false },
@@ -264,15 +264,15 @@
             ],
         },
 
-    
+
         { name: "Loan", icon: ShareIcon, current: false,
             children: [
                 { name: "Loan Application", href: "/loan_applications", icon: CurrencyDollarIcon, current: false },
             ],
         },
-    
 
-        
+
+
         { name: "Release Schedules", icon: KeyIcon, current: false,
             children: [
                 { name: "Loan Application", href: "", icon: CurrencyDollarIcon, current: false },
@@ -280,7 +280,7 @@
                 { name: "Payment Schedule", href: "", icon: CreditCardIcon, current: false },
             ],
         },
-        
+
         { name: "Payment", icon: FlagIcon, current: false,
             children: [
             { name: "Payments", href: "/payments/", icon: CurrencyDollarIcon, current: false },
@@ -295,26 +295,26 @@
                 { name: "Payment Schedule", href: "", icon: CreditCardIcon, current: false },
             ],
         },
-        
+
         { name: "Help", href: "", icon: BellAlertIcon , current: false },
-    
+
     ];
-    
+
     const userNavigation = [
         { name: "Your profile", href: "/profile" },
         { name: "Sign out", href: "/" },
     ];
-    
+
     function togglePeopleDropdown() {
         openPeopleDropdown.value = !openPeopleDropdown.value;
     }
-    
+
     function closePeopleDropdown() {
         openPeopleDropdown.value = false;
     }
-    
+
     function navigateTo(href) {
         window.location.href = href;
-        closePeopleDropdown(); 
+        closePeopleDropdown();
     }
     </script>
