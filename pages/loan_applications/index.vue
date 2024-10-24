@@ -1,259 +1,162 @@
 <template>
     <NuxtLayout name="admin">
-            <div class="p-4">
-                <div class="max-w-screen-xl mx-auto px-4 md:px-8">
-                    <div class="font-bold">Loan Applications</div>
-
-                    <!-- Action Buttons -->
-                    <div class="flex justify-between items-center mb-8 mt-8">
-
-                        <!-- Left: Action Buttons -->
-                        <div class="flex space-x-4">
-                            <button  class="px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-600"
-                            @click="createLoanApplication">
-                            Create
-                            </button>
-
-                            <button
-                            type="button"
-                            class="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
-                            v-if="selectedLoanAppID"
-                            @click="updateLoanApp"
-                            >
-                            APPROVE
-                            </button>
-
-                            <button type="button"
-                            class="px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600 "
-                            v-if="selectedLoanAppID"
-                            >
-                            Delete
-                            </button>
-                        </div>
-
-                        <div class="overflow-x-auto">
-        <!-- Search Bar -->
-        <div class="mb-4">
-            <input
-                type="text"
-                v-model="searchQuery"
-                placeholder="Search Loan Applications..."
-                class="border border-gray-300 rounded-md p-2 w-full"
-            />
+        <div class="p-4">
+      <!-- Search bar and buttons -->
+      <div class="flex justify-between mb-4">
+        <!-- Search Input -->
+        <div>
+          <input
+            v-model="searchQuery"
+            type="text"
+            placeholder="Search loan applications..."
+            class="border border-gray-300 rounded p-2"
+          />
         </div>
-                        </div>
-                    </div>
+        <!-- Buttons for Create and View -->
+        <div>
+          <button @click="createLoanApplication" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            Create Loan Application
+          </button>
+          <button
+            :disabled="!selectedLoanAppID"
+            @click="viewLoanApplication"
+            class="bg-green-500 text-white px-4 py-2 rounded ml-2 hover:bg-green-600 disabled:bg-gray-300"
+          >
+            View Loan Application
+          </button>
+        </div>
+      </div>
 
-                    <div class="overflow-x-auto max-h-[30rem] overflow-y-auto">
-    <Table class="w-full"
-        :columnHeaders="state.columnHeaders"
-        :data="state.loanApp"
-        :isLoading="state.isTableLoading"
-        :sortData="state.sortData">
+      <!-- Table for displaying loan applications -->
+      <div class="overflow-x-auto max-h-[30rem] overflow-y-auto">
+        <div v-if="state.isTableLoading">
+          <p>Loading loan applications...</p>
+        </div>
 
-        <!-- Remove the template #body and use v-for directly -->
-        <tr
-            v-for="(loanApp, index) in filteredLoanApps()"
-            :key="index"
-            class=""
-            v-if="!(state.isTableLoading || (state.loanApp === 0))">
-
-            <td class="py-2 border-b border-gray-300 ">
+        <table v-else-if="state.loanApp.length > 0" class="w-full">
+          <thead>
+            <tr>
+              <th v-for="(header, index) in state.columnHeaders" :key="index" class="py-2 border-b border-gray-300">
+                {{ header.name }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(loanApp, index) in filteredLoanApps()" :key="index">
+              <td class="py-2 border-b border-gray-300">
                 <input
-                    type="radio"
-                    :value="loanApp.Loan_Application.id"
-                    v-model="selectedLoanAppID"
-                    class="cursor-pointer"
+                  type="radio"
+                  :value="loanApp.Loan_Application.id"
+                  v-model="selectedLoanAppID"
+                  class="cursor-pointer"
                 />
-            </td>
-            <td class="py-2 border-b border-gray-300  ">
-                <span>{{ loanApp.Loan_Application.datetime_prepared }} </span>
-            </td>
-            <td class="py-2 border-b border-gray-300  ">
-                <span>{{ loanApp.Loan_Application.document_status_code }} </span>
-            </td>
-            <td class="py-2 border-b border-gray-300  ">
-                <span>{{ loanApp.Loan_Application.loan_application_no }} </span>
-            </td>
-            <td class="py-2 border-b border-gray-300  ">
-                <span>{{ loanApp.Loan_Application.amount_loan }} </span>
-            </td>
-            <td class="py-2 border-b border-gray-300  ">
-                <span>{{ loanApp.Loan_Application.factor_rate }} </span>
-            </td>
-            <td class="py-2 border-b border-gray-300  ">
-                <span>{{ loanApp.Loan_Application.amount_interest }} </span>
-            </td>
-            <td class="py-2 border-b border-gray-300  ">
-                <span>{{ loanApp.Loan_Application.amount_paid }} </span>
-            </td>
-            <td class="py-2 border-b border-gray-300  ">
-                <span>{{ loanApp.Loan_Application.datetime_target_release }} </span>
-            </td>
-            <td class="py-2 border-b border-gray-300  ">
-                <span>{{ loanApp.Loan_Application.datetime_fully_paid }} </span>
-            </td>
-            <td class="py-2 border-b border-gray-300  ">
-                <span>{{ loanApp.Loan_Application.datetime_approved }} </span>
-            </td>
-            <td class="py-2 border-b border-gray-300  ">
-                <span>{{ loanApp.Loan_Application.approved_by_id }} </span>
-            </td>
-            <td class="py-2 border-b border-gray-300  ">
-                <span>{{ loanApp.Loan_Application.prepared_by_id }} </span>
-            </td>
-            <td class="py-2 border-b border-gray-300  ">
-                <span>{{ loanApp.Loan_Application.released_by_id }} </span>
-            </td>
-            <td class="py-2 border-b border-gray-300  ">
-                <span>{{ loanApp.Loan_Application.last_modified_by_id }} </span>
-            </td>
+              </td>
+              <td class="py-2 border-b border-gray-300">{{ loanApp.Loan_Application.datetime_prepared }}</td>
+              <td class="py-2 border-b border-gray-300">{{ loanApp.Loan_Application.document_status_code }}</td>
+              <td class="py-2 border-b border-gray-300">{{ loanApp.Loan_Application.loan_application_no }}</td>
+              <td class="py-2 border-b border-gray-300">{{ loanApp.Loan_Application.amount_loan }}</td>
+              <td class="py-2 border-b border-gray-300">{{ loanApp.Loan_Application.factor_rate }}</td>
+              <td class="py-2 border-b border-gray-300">{{ loanApp.Loan_Application.amount_interest }}</td>
+              <td class="py-2 border-b border-gray-300">{{ loanApp.Loan_Application.amount_paid }}</td>
+              <td class="py-2 border-b border-gray-300">{{ loanApp.Loan_Application.datetime_target_release }}</td>
+              <td class="py-2 border-b border-gray-300">{{ loanApp.Loan_Application.datetime_fully_paid }}</td>
+              <td class="py-2 border-b border-gray-300">{{ loanApp.Loan_Application.datetime_approved }}</td>
+              <td class="py-2 border-b border-gray-300">{{ loanApp.Loan_Application.approved_by_id }}</td>
+              <td class="py-2 border-b border-gray-300">{{ loanApp.Loan_Application.prepared_by_id }}</td>
+              <td class="py-2 border-b border-gray-300">{{ loanApp.Loan_Application.released_by_id }}</td>
+              <td class="py-2 border-b border-gray-300">{{ loanApp.Loan_Application.last_modified_by_id }}</td>
+              <td class="py-2 border-b border-gray-300">{{ loanApp.Loan_Application.notes }}</td>
+            </tr>
+          </tbody>
+        </table>
 
-            <td class="py-2 border-b border-gray-300  ">
-                <span>{{ loanApp.Loan_Application.notes }} </span>
-            </td>
-        </tr>
-
-    </Table>
-</div>
-
-                </div>
-            </div>
+        <div v-else>
+          <p>No loan applications available.</p>
+        </div>
+      </div>
+    </div>
     </NuxtLayout>
-</template>
+  </template>
 
+  <script setup lang="ts">
+  import { toast } from 'vue3-toastify';
+  import 'vue3-toastify/dist/index.css';
 
-<script setup lang="ts">
-import { toast } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
+  import { ref, reactive, onMounted } from 'vue'
+  import { apiService } from '~/routes/api/API'
+  import { loanApplicationService } from '~/models/LoanApplication'
 
-    import { ref, reactive, onMounted } from 'vue'
-    import { apiService } from '~/routes/api/API'
-    import { loanApplicationService } from '~/models/LoanApplication'
-    import { PermissionService } from '~/models/Permission';
-    import { PaymentFrequency } from '../../models/PaymentFrequency';
+  const state = reactive({
+    columnHeaders: [
+      { name: '' },
+      { name: 'Date Time Prepared' },
+      { name: 'Status' },
+      { name: 'Loan Application No' },
+      { name: 'Amount Loan' },
+      { name: 'Factor Rate' },
+      { name: 'Amount Interest' },
+      { name: 'Amount Paid' },
+      { name: 'Date Time Target Release' },
+      { name: 'Date Time Fully Paid' },
+      { name: 'Date Time Approved' },
+      { name: 'Approved by' },
+      { name: 'Prepared by' },
+      { name: 'Released by' },
+      { name: 'Last modified by' },
+      { name: 'Notes' },
+    ],
+    error: null,
+    isTableLoading: false,
+    loanApp: [],
+    searchQuery: '',
+  })
 
-    const state = reactive({
-        columnHeaders: [
-            { name: '' },
-            { name: 'Date Time Prepared' },
-            { name: 'Status' },
-            { name: 'Loan Application No' },
-            { name: 'Amount Loan' },
-            { name: 'Factor Rate' },
-            { name: 'Amount Interest' },
-            { name: 'Amount Paid' },
-            { name: 'Date Time Target Release' },
-            { name: 'Date Time Fully Paid' },
-            { name: 'Date Time Approved' },
-            { name: 'Approved by' },
-            { name: 'Prepared by' },
-            { name: 'Released by' },
-            { name: 'Last modified by' },
-            { name: 'Notes' },
-        ],
-        error: null,
-        isTableLoading: false,
-        sortData: {
-            sortField: 'id',
-            sortOrder: 'descend',
-        },
-        loanApp: [],
-        searchQuery: '',
-    })
+  let selectedLoanAppID = ref(null); // Track selected loan application ID
+  const searchQuery = ref(''); // Search query state
 
-    let selectedLoanAppID = ref(null); // Track selected library
-    const isHovered = ref(false);
-
-    const searchQuery = ref(''); // Holds the search query
-
-
-    async function approveORreject(){
+  // Fetch loan applications
+  async function fetchLoanApplication() {
+    state.isTableLoading = true
+    state.error = null
     try {
-
-        loanApplicationService.id = parseInt(selectedLoanAppID.value?.toString());
-        const response = await apiService.authCustomersUpdate({});
-        // console.log("test" + CustomersService.id);
-        alert("Approved Logic Here");
-        // navigateTo(`customers/approve`)
-    } catch (error) {
-        toast.error(error.message, {
+      const response = await apiService.getLoanApplication({})
+      state.loanApp = response.data
+    } catch (error: any) {
+      toast.error(error.message, {
         autoClose: 5000,
-        })
+      })
     }
-}
+    state.isTableLoading = false
+  }
 
-
-    async function fetchFreqandDuration() {
-        state.isTableLoading = true
-        state.error = null
-        try {
-            const params = {}
-            const response = await apiService.getLoanApplication({})
-            state.loanApp = response.data
-
-            console.log(state.loanApp);
-        } catch (error: any) {
-            toast.error(error.message, {
-                autoClose: 5000,
-            })
-        }
-        state.isTableLoading = false
+  // Filter loan applications based on search query
+  function filteredLoanApps() {
+    if (!searchQuery.value) {
+      return state.loanApp;
     }
-    onMounted(() => {
-        fetchFreqandDuration()
-    })
+    const query = searchQuery.value.toLowerCase();
+    return state.loanApp.filter(loanApp =>
+      Object.values(loanApp.Loan_Application).some(value =>
+        String(value).toLowerCase().includes(query)
+      )
+    );
+  }
 
-    async function updateLoanApp(){
+  // Navigate to create loan application page
+  function createLoanApplication() {
+    navigateTo('/loan_applications/create');
+  }
 
-        try {
-            const response = await apiService.authPaymentDurationsUpdate({})
-            if (selectedLoanAppID.value) {
-            loanApplicationService.id = selectedLoanAppID.value;
-
-        navigateTo('/loan_applications/approve');
-        }
-        } catch (error) {
-            toast.error(error.message, {
-        autoClose: 5000,
-    })
-        }
+  // Navigate to view loan application page
+  function viewLoanApplication() {
+    if (selectedLoanAppID.value) {
+        loanApplicationService.id = selectedLoanAppID.value;
+      navigateTo(`/loan_applications/view`);
     }
-    async function createLoanApplication() {
-        try {
-            // const response = await apiService.authPaymentFrequenciesCreate({
-            // })
-            navigateTo('/loan_applications/create');
-        } catch (error) {
-            toast.error(error.message, {
-        autoClose: 5000,
-    })
-        }
-    }
+  }
 
-    async function updateLoanApplication() {
-        try {
-            // const response = await apiService.authPaymentFrequenciesCreate({
-            // })
-            navigateTo('loan_applications/update');
-        } catch (error) {
-            toast.error(error.message, {
-        autoClose: 5000,
-    })
-        }
-    }
-
-    function filteredLoanApps() {
-        debugger;
-        if (!this.searchQuery) {
-                return state.loanApp; // Return all if search is empty
-            }
-            const query = this.searchQuery.toLowerCase();
-            return this.state.loanApp.filter(loanApp =>
-                Object.values(loanApp.Loan_Application).some(value =>
-                    String(value).toLowerCase().includes(query)
-                )
-            );
-        };
-
-</script>
+  // Fetch loan applications when component mounts
+  onMounted(() => {
+    fetchLoanApplication();
+  });
+  </script>
