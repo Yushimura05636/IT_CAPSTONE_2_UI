@@ -1,4 +1,5 @@
-<template>
+<template>]
+  <NuxtLayout name="admin">
     <div class="p-8">
       <div class="flex justify-between items-center mb-4">
         <h1 class="text-2xl font-bold">Payment Line</h1>
@@ -48,7 +49,8 @@
         </table>
       </div>
     </div>
-  </template>
+  </NuxtLayout>
+</template>
   
   <script setup lang="ts">
   import { ref, computed } from 'vue';

@@ -8,22 +8,27 @@
           <!-- Personality Fields -->
           <div>
             <label for="firstName" class="block text-gray-700">First Name</label>
-            <input v-model="personality.first_name" type="text" id="firstName" class="w-full border rounded-lg px-4 py-2" required />
+            <input v-model="personality.first_name" type="text" id="firstName" class="w-full border rounded-lg px-4 py-2" 
+            />
+            <span v-if="validationErrors.first_name" class="text-red-500 text-sm">{{ validationErrors.first_name }}</span>
           </div>
 
           <div>
             <label for="lastName" class="block text-gray-700">Last Name</label>
-            <input v-model="personality.family_name" type="text" id="lastName" class="w-full border rounded-lg px-4 py-2" required />
+            <input v-model="personality.family_name" type="text" id="lastName" class="w-full border rounded-lg px-4 py-2" />
+            <span v-if="validationErrors.family_name" class="text-red-500 text-sm">{{ validationErrors.family_name }}</span>
           </div>
 
           <div>
             <label for="middleName" class="block text-gray-700">Middle Name</label>
-            <input v-model="personality.middle_name" type="text" id="middleName" class="w-full border rounded-lg px-4 py-2" required />
+            <input v-model="personality.middle_name" type="text" id="middleName" class="w-full border rounded-lg px-4 py-2" />
+            <span v-if="validationErrors.middle_name" class="text-red-500 text-sm">{{ validationErrors.middle_name }}</span>
           </div>
 
           <div>
             <label for="email" class="block text-gray-700">Email</label>
-            <input v-model="personality.email_address" type="email" id="email" class="w-full border rounded-lg px-4 py-2" required />
+            <input v-model="personality.email_address" type="email" id="email" class="w-full border rounded-lg px-4 py-2" />
+            <span v-if="validationErrors.email_address" class="text-red-500 text-sm">{{ validationErrors.email_address }}</span>
           </div>
 
           <div>
@@ -33,91 +38,105 @@
 
           <div>
             <label for="birthday" class="block text-gray-700">Birthday</label>
-            <input v-model="personality.birthday" type="date" id="birthday" class="w-full border rounded-lg px-4 py-2" required />
+            <input v-model="personality.birthday" type="date" id="birthday" class="w-full border rounded-lg px-4 py-2"  />
+            <span v-if="validationErrors.birthday" class="text-red-500 text-sm">{{ validationErrors.birthday }}</span>
+
           </div>
 
           <div>
             <label for="gender" class="block text-gray-700">Gender</label>
-            <select v-model="personality.gender_code" id="gender" class="w-full border rounded-lg px-4 py-2">
+            <select v-model="personality.gender_code" id="gender" class="w-full border rounded-lg px-4 py-2" >
               <option value="1">Male</option>
               <option value="2">Female</option>
             </select>
+            <span v-if="validationErrors.gender_code" class="text-red-500 text-sm">{{ validationErrors.gender_code }}</span>
           </div>
 
           <div>
             <label for="civilStatus" class="block text-gray-700">Civil Status</label>
-            <select v-model="personality.civil_status" id="civilStatus" class="w-full border rounded-lg px-4 py-2">
+            <select v-model="personality.civil_status" id="civilStatus" class="w-full border rounded-lg px-4 py-2" >
               <option value="1">Single</option>
               <option value="2">Married</option>
               <option value="3">Divorced</option>
               <option value="4">Widowed</option>
             </select>
+            <span v-if="validationErrors.civil_status" class="text-red-500 text-sm">{{ validationErrors.civil_status }}</span>
           </div>
 
           <div>
             <label for="houseStreet" class="block text-gray-700">House Street</label>
-            <input v-model="personality.house_street" type="text" id="houseStreet" class="w-full border rounded-lg px-4 py-2" />
+            <input v-model="personality.house_street" type="text" id="houseStreet" class="w-full border rounded-lg px-4 py-2"  />
+            <span v-if="validationErrors.house_street" class="text-red-500 text-sm">{{ validationErrors.house_street }}</span>
+
           </div>
           
           <div>
             <label for="Cellphone No" class="block text-gray-700">Cellphone No</label>
-            <input v-model="personality.cellphone_no" type="text" id="cellphoneNo" class="w-full border rounded-lg px-4 py-2" />
+            <input v-model="personality.cellphone_no" type="text" id="cellphoneNo" class="w-full border rounded-lg px-4 py-2"  />
+            <span v-if="validationErrors.cellphone_no" class="text-red-500 text-sm">{{ validationErrors.cellphone_no }}</span>
           </div>
 
           <div>
             <label for="purokZone" class="block text-gray-700">Purok Zone</label>
-            <input v-model="personality.purok_zone" type="text" id="purokZone" class="w-full border rounded-lg px-4 py-2" />
+            <input v-model="personality.purok_zone" type="text" id="purokZone" class="w-full border rounded-lg px-4 py-2"  />
+            <span v-if="validationErrors.purok_zone" class="text-red-500 text-sm">{{ validationErrors.purok_zone }}</span>
           </div>
 
           <div>
             <label for="Postal Code" class="block text-gray-700">Postal Code</label>
-            <input v-model="personality.postal_code" type="text" id="postalCode" class="w-full border rounded-lg px-4 py-2" />
+            <input v-model="personality.postal_code" type="text" id="postalCode" class="w-full border rounded-lg px-4 py-2"/>
+            <span v-if="validationErrors.postal_code" class="text-red-500 text-sm">{{ validationErrors.postal_code }}</span>
           </div>
 
           <!-- Additional Fields -->
           <div>
             <label for="barangayId" class="block text-gray-700">Barangay</label>
-            <select v-model="personality.barangay_id" id="barangayId" class="w-full border rounded-lg px-4 py-2">
+            <select v-model="personality.barangay_id" id="barangayId" class="w-full border rounded-lg px-4 py-2" >
               <option v-for="barangay in state.barangays" :key="barangay.id" :value="barangay.id">
                 {{ barangay.description }}
               </option>
             </select>
+            <span v-if="validationErrors.barangay_id" class="text-red-500 text-sm">{{ validationErrors.barangay_id }}</span>
           </div>
 
           <div>
             <label for="cityId" class="block text-gray-700">City</label>
-            <select v-model="personality.city_id" id="cityId" class="w-full border rounded-lg px-4 py-2">
+            <select v-model="personality.city_id" id="cityId" class="w-full border rounded-lg px-4 py-2" >
               <option v-for="city in state.cities" :key="city.id" :value="city.id">
                 {{ city.description }}
               </option>
             </select>
+            <span v-if="validationErrors.city_id" class="text-red-500 text-sm">{{ validationErrors.city_id }}</span>
           </div>
 
           <div>
             <label for="countryId" class="block text-gray-700">Country</label>
-            <select v-model="personality.country_id" id="countryId" class="w-full border rounded-lg px-4 py-2">
+            <select v-model="personality.country_id" id="countryId" class="w-full border rounded-lg px-4 py-2" >
               <option v-for="country in state.countries" :key="country.id" :value="country.id">
                 {{ country.description }}
               </option>
             </select>
+            <span v-if="validationErrors.country_id" class="text-red-500 text-sm">{{ validationErrors.country_id }}</span>
           </div>
 
           <div>
             <label for="provinceId" class="block text-gray-700">Province</label>
-            <select v-model="personality.province_id" id="provinceId" class="w-full border rounded-lg px-4 py-2">
+            <select v-model="personality.province_id" id="provinceId" class="w-full border rounded-lg px-4 py-2" >
               <option v-for="province in state.provinces" :key="province.id" :value="province.id">
                 {{ province.description }}
               </option>
             </select>
+            <span v-if="validationErrors.province_id" class="text-red-500 text-sm">{{ validationErrors.province_id }}</span>
           </div>
 
           <div>
             <label for="creditStatusId" class="block text-gray-700">Credit Status</label>
-            <select v-model="personality.credit_status_id" id="creditStatusId" class="w-full border rounded-lg px-4 py-2">
+            <select v-model="personality.credit_status_id" id="creditStatusId" class="w-full border rounded-lg px-4 py-2" >
               <option v-for="creditStatus in state.creditStatuses" :key="creditStatus.id" :value="creditStatus.id">
                 {{ creditStatus.description }}
               </option>
             </select>
+            <span v-if="validationErrors.credit_status_id" class="text-red-500 text-sm">{{ validationErrors.credit_status_id }}</span>
           </div>
 
           <!-- <div>
@@ -137,11 +156,15 @@
                 {{ groups.description }} 
               </option>
             </select>
+            <span v-if="validationErrors.group_id" class="text-red-500 text-sm">{{ validationErrors.group_id }}</span>
+
           </div>
 
           <div>
             <label for="passbookNo" class="block text-gray-700">Passbook No</label>
             <input v-model="customer.passbook_no" type="number" id="passbookNo" class="w-full border rounded-lg px-4 py-2" />
+            <span v-if="validationErrors.passbook_no" class="text-red-500 text-sm">{{ validationErrors.passbook_no }}</span>
+
           </div>
 
           <div>
@@ -151,20 +174,24 @@
                 {{ groups.loan_count }} 
               </option>
             </select>
+            <span v-if="validationErrors.loan_count_id" class="text-red-500 text-sm">{{ validationErrors.loan_count_id }}</span>
+
           </div>
 
           <div>
             <label for="dateTimeRegistered" class="block text-gray-700">Date Time Registered</label>
             <input v-model="personality.datetime_registered" type="date" id="dateTimeRegistered" class="w-full border rounded-lg px-4 py-2" />
+            <span v-if="validationErrors.datetime_registered" class="text-red-500 text-sm">{{ validationErrors.datetime_registered }}</span>
+
           </div>
 
           <div>
             <label for="enableMortuary" class="block text-gray-700">Enable Mortuary</label>
-            <select v-model="customer.enable_mortuary" id="enable_mortuary" class="w-full border rounded-lg px-4 py-2">
-              <option value="0">Select</option>
+            <select v-model="customer.enable_mortuary" id="enable_mortuary" class="w-full border rounded-lg px-4 py-2 ">
               <option value="1">Yes</option>
               <option value="2">No</option>
             </select>
+            <span v-if="validationErrors.enable_mortuary" class="text-red-500 text-sm">{{ validationErrors.enable_mortuary }}</span>
           </div>
 
           <div>
@@ -265,7 +292,7 @@ const personality = ref({
   province_id: '',
   credit_status_id: '',
   datetime_registered: '',
-  name_type: 1, //for customer
+  name_type: 2, //for customer
   personality_status_code: '', // pending
   notes: '',
 });
@@ -386,7 +413,6 @@ const fetchLoanCount = async () => {
 
     state.value.loan_count = response.data;
 
-    debugger;
   } catch (error) {
     toast.error(error.message, {
       autoClose: 5000,
@@ -407,12 +433,164 @@ onMounted(async () => {
   ]);
 });
 
+const validationErrors = ref({
+  first_name: '',
+  family_name: '',
+  middle_name: '',
+  email_address: '',
+  telephone_no: '',
+  birthday: '',
+  gender_code: '',
+  civil_status: '',
+  house_street: '',
+  cellphone_no: '',
+  purok_zone: '',
+  postal_code: '',
+  barangay_id: '',
+  city_id: '',
+  country_id: '',
+  province_id: '',
+  credit_status_id: '',
+  datetime_registered: '',
+  name_type: 1, //for customer
+  personality_status_code: '', // pending
+  notes: '',
 
+  //customer 
+
+  group_id: '',
+  passbook_no: '',
+  loan_count_id: '',
+  enable_mortuary: '',
+  // You can add more error fields for other validations if needed.
+});
 
 
 const createCustomer = async () => {
   try {
-     // Check if all required documents (checkboxes) are checked
+    validationErrors.value.first_name = '';
+    validationErrors.value.family_name = '';
+    validationErrors.value.middle_name = '';
+    validationErrors.value.email_address = '';
+    validationErrors.value.telephone_no = '';
+    validationErrors.value.birthday = '';
+    validationErrors.value.gender_code = '';
+    validationErrors.value.civil_status = '';
+    validationErrors.value.house_street = '';
+    validationErrors.value.cellphone_no = '';
+    validationErrors.value.purok_zone = '';
+    validationErrors.value.postal_code = '';
+
+    validationErrors.value.barangay_id = '';
+    validationErrors.value.city_id = '';
+    validationErrors.value.country_id = '';
+    validationErrors.value.province_id = '';
+    validationErrors.value.credit_status_id = '';
+    validationErrors.value.datetime_registered = '';
+    validationErrors.value.personality_status_code = '';
+    validationErrors.value.group_id = '';
+    validationErrors.value.passbook_no = '';
+    validationErrors.value.loan_count_id = '';
+    validationErrors.value.enable_mortuary = '';
+
+
+    if(!personality.value.first_name){
+      validationErrors.value.first_name = 'First name must be filled up.';
+    }
+    if(!personality.value.family_name){
+      validationErrors.value.family_name = 'Family name must be filled up.';
+    }
+    if(!personality.value.middle_name){
+      validationErrors.value.middle_name = 'Middle name must be filled up.';
+    }
+    if(!personality.value.email_address){
+      validationErrors.value.email_address = 'Email address must be filled up.';
+    }
+    if(!personality.value.birthday){
+      validationErrors.value.birthday = 'Birthday must be select.';
+    }
+    if(!personality.value.gender_code){
+      validationErrors.value.gender_code = 'Gender must be select.';
+    }
+    if(!personality.value.civil_status){
+      validationErrors.value.civil_status = 'Civil Status must be select.';
+    }
+    if(!personality.value.house_street){
+      validationErrors.value.house_street = 'House Street must be filled up.';
+    }
+    if(!personality.value.cellphone_no){
+      validationErrors.value.cellphone_no = 'Cellphone No must be filled up.';
+    }
+    if(!personality.value.purok_zone){
+      validationErrors.value.purok_zone = 'Purok Zone must be filled up.';
+    }
+    if(!personality.value.postal_code){
+      validationErrors.value.postal_code = 'Postal Code must be filled up.';
+    }
+    if(!personality.value.barangay_id){
+      validationErrors.value.barangay_id = 'Barangay must be select.';
+    }
+    if(!personality.value.city_id){
+      validationErrors.value.city_id = 'City must be select.';
+    }
+    if(!personality.value.country_id){
+      validationErrors.value.country_id = 'Country must be select.';
+    }
+    if(!personality.value.province_id){
+      validationErrors.value.province_id = 'Province must be select.';
+    }
+    if(!personality.value.credit_status_id){
+      validationErrors.value.credit_status_id = 'Credit Status must be select.';
+    }
+    if(!personality.value.datetime_registered){
+      validationErrors.value.datetime_registered = 'Datetime Registered must be filled up.';
+    }
+
+    if(!customer.value.group_id){
+      validationErrors.value.group_id = 'Group must be select.';
+    }
+    if(!customer.value.passbook_no){
+      validationErrors.value.passbook_no = 'Passbook must be select.';
+    }
+    if(!customer.value.loan_count_id){
+      validationErrors.value.loan_count_id = 'Loan Count must be select.';
+    }
+    if(!customer.value.enable_mortuary){
+      validationErrors.value.enable_mortuary = 'Mortuary must be select.';
+    }
+    
+    
+    // // First Name validation
+    if (!personality.value.first_name   || 
+        !personality.value.family_name  || 
+        !personality.value.middle_name  || 
+        !personality.value.email_address|| 
+        !personality.value.birthday     ||
+        !personality.value.gender_code  ||
+        !personality.value.civil_status ||
+        !personality.value.house_street ||
+        !personality.value.cellphone_no ||
+        !personality.value.purok_zone   ||
+        !personality.value.postal_code  ||
+        !personality.value.barangay_id  ||
+        !personality.value.city_id      ||
+        !personality.value.province_id  ||
+        !personality.value.credit_status_id  ||
+
+        !customer.value.group_id  ||
+        !customer.value.passbook_no  ||
+        !customer.value.loan_count_id  ||
+        !customer.value.enable_mortuary  ||
+        // !customer.value.mortuary_coverage_start  ||
+        // !customer.value.mortuary_coverage_end  ||
+        !personality.value.datetime_registered  
+      )
+      {
+        toast.error("Please fill all the required fields.", { autoClose: 3000 });
+        return;
+      }
+
+    // Check if all required documents (checkboxes) are checked
     if (barangayCertificate.value && birthCertificate.value && validID.value && proofOfAddress.value) {
       // If all checkboxes are checked, set personality_status_code to 2 (verified)
       personality.value.personality_status_code = 2;
@@ -470,9 +648,9 @@ const createCustomer = async () => {
           }, 2000); // Redirect to the customer list page
   } catch (error) {
     toast.error('Error creating customer');
-    toast.error(error.message, {
-        autoClose: 5000,
-      });
+    // toast.error(error.message, {
+    //     autoClose: 5000,
+    //   });
   }
 };
 </script>

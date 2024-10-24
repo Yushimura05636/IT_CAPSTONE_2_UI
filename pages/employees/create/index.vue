@@ -8,22 +8,27 @@
         <!-- Personality Fields -->
         <div>
           <label for="firstName" class="block text-gray-700">First Name</label>
-          <input v-model="personality.first_name" type="text" id="firstName" class="w-full border rounded-lg px-4 py-2" required />
+          <input v-model="personality.first_name" type="text" id="firstName" class="w-full border rounded-lg px-4 py-2"  />
+          <span v-if="validationErrors.first_name" class="text-red-500 text-sm">{{ validationErrors.first_name }}</span>
+
         </div>
 
         <div>
           <label for="lastName" class="block text-gray-700">Last Name</label>
-          <input v-model="personality.family_name" type="text" id="lastName" class="w-full border rounded-lg px-4 py-2" required />
+          <input v-model="personality.family_name" type="text" id="lastName" class="w-full border rounded-lg px-4 py-2"  />
+          <span v-if="validationErrors.family_name" class="text-red-500 text-sm">{{ validationErrors.family_name }}</span>
         </div>
 
         <div>
           <label for="middleName" class="block text-gray-700">Middle Name</label>
-          <input v-model="personality.middle_name" type="text" id="middleName" class="w-full border rounded-lg px-4 py-2" required />
+          <input v-model="personality.middle_name" type="text" id="middleName" class="w-full border rounded-lg px-4 py-2"  />
+          <span v-if="validationErrors.middle_name" class="text-red-500 text-sm">{{ validationErrors.middle_name }}</span>
         </div>
 
         <div>
           <label for="email" class="block text-gray-700">Email</label>
-          <input v-model="personality.email_address" type="email" id="email" class="w-full border rounded-lg px-4 py-2" required />
+          <input v-model="personality.email_address" type="email" id="email" class="w-full border rounded-lg px-4 py-2"  />
+          <span v-if="validationErrors.email_address" class="text-red-500 text-sm">{{ validationErrors.email_address }}</span>
         </div>
 
         <div>
@@ -33,7 +38,10 @@
 
         <div>
           <label for="birthday" class="block text-gray-700">Birthday</label>
-          <input v-model="personality.birthday" type="date" id="birthday" class="w-full border rounded-lg px-4 py-2" required />
+          <input v-model="personality.birthday" type="date" id="birthday" class="w-full border rounded-lg px-4 py-2"  />
+          <span v-if="validationErrors.birthday" class="text-red-500 text-sm">{{ validationErrors.birthday }}</span>
+          <span v-if="validationErrors.cellphone_no" class="text-red-500 text-sm">{{ validationErrors.cellphone_no }}</span>
+
         </div>
 
         <div>
@@ -41,6 +49,7 @@
           <select v-model="personality.gender_code" id="gender" class="w-full border rounded-lg px-4 py-2">
             <option v-for="gender in genders" :key="gender.id" :value="gender.id">{{ gender.description }}</option>
           </select>
+          <span v-if="validationErrors.gender_code" class="text-red-500 text-sm">{{ validationErrors.gender_code }}</span>
         </div>
 
         <div>
@@ -48,53 +57,63 @@
           <select v-model="personality.civil_status" id="civilStatus" class="w-full border rounded-lg px-4 py-2">
             <option v-for="status in civilStatuses" :key="status.id" :value="status.id">{{ status.description }}</option>
           </select>
+          <span v-if="validationErrors.civil_status" class="text-red-500 text-sm">{{ validationErrors.civil_status }}</span>
         </div>
 
 
         <div>
           <label for="Cellphone No" class="block text-gray-700">Cellphone No</label>
           <input v-model="personality.cellphone_no" type="text" id="cellphoneNo" class="w-full border rounded-lg px-4 py-2" />
+          <span v-if="validationErrors.cellphone_no" class="text-red-500 text-sm">{{ validationErrors.cellphone_no }}</span>
         </div>
 
         <div>
           <label for="purokZone" class="block text-gray-700">Purok Zone</label>
           <input v-model="personality.purok_zone" type="text" id="purokZone" class="w-full border rounded-lg px-4 py-2" />
+          <span v-if="validationErrors.purok_zone" class="text-red-500 text-sm">{{ validationErrors.purok_zone }}</span>
         </div>
 
         <div>
           <label for="Postal Code" class="block text-gray-700">Postal Code</label>
           <input v-model="personality.postal_code" type="text" id="postalCode" class="w-full border rounded-lg px-4 py-2" />
+          <span v-if="validationErrors.postal_code" class="text-red-500 text-sm">{{ validationErrors.postal_code }}</span>
         </div>
 
         <div>
           <label for="houseStreet" class="block text-gray-700">House Street</label>
           <input v-model="personality.house_street" type="text" id="houseStreet" class="w-full border rounded-lg px-4 py-2" />
+          <span v-if="validationErrors.house_street" class="text-red-500 text-sm">{{ validationErrors.house_street }}</span>
         </div>
 
         <!-- Employee Fields -->
         <div>
           <label for="sssNo" class="block text-gray-700">SSS NO</label>
           <input v-model="employee.sss_no" type="number" id="sssNo" class="w-full border rounded-lg px-4 py-2" />
+            <span v-if="validationErrors.sss_no" class="text-red-500 text-sm">{{ validationErrors.sss_no }}</span>
         </div>
 
         <div>
           <label for="phnicNo" class="block text-gray-700">PHNIC NO</label>
           <input v-model="employee.phnic_no" type="number" id="phnicNo" class="w-full border rounded-lg px-4 py-2" />
+            <span v-if="validationErrors.phnic_no" class="text-red-500 text-sm">{{ validationErrors.phnic_no }}</span>
         </div>
 
         <div>
           <label for="tinNo" class="block text-gray-700">TIN NO</label>
           <input v-model="employee.tin_no" type="number" id="tinNo" class="w-full border rounded-lg px-4 py-2" />
+            <span v-if="validationErrors.tin_no" class="text-red-500 text-sm">{{ validationErrors.tin_no }}</span>
         </div>
 
         <div>
           <label for="dateHired" class="block text-gray-700">Date Hired</label>
           <input v-model="employee.date_hired" type="date" id="dateHired" class="w-full border rounded-lg px-4 py-2" />
+            <!-- <span v-if="validationErrors.date_hired" class="text-red-500 text-sm">{{ validationErrors.date_hired }}</span> -->
         </div>
 
         <div>
           <label for="dateResigned" class="block text-gray-700">Date Resigned</label>
           <input v-model="employee.date_resigned" type="date" id="dateResigned" class="w-full border rounded-lg px-4 py-2" />
+            <!-- <span v-if="validationErrors.date_resigned" class="text-red-500 text-sm">{{ validationErrors.date_resigned }}</span> -->
         </div>
       </div>
 
@@ -147,7 +166,7 @@ const personality = ref({
   credit_status_id: 0,
   notes: undefined, // Optional
   datetime_registered: new Date().toISOString().split('T')[0],
-  name_type_code: 0,
+  name_type_code: 1,
 })
 
 const employee = ref({
@@ -195,11 +214,131 @@ function formatDateToMySQL(date: any) {
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
+
+const validationErrors = ref({
+  first_name: '',
+  family_name: '',
+  middle_name: '',
+  email_address: '',
+  telephone_no: '',
+  birthday: '',
+  gender_code: '',
+  civil_status: '',
+  house_street: '',
+  cellphone_no: '',
+  purok_zone: '',
+  postal_code: '',
+
+  //employee
+  sss_no : 0,
+  phnic_no : 0,
+  tin_no : 0,
+  date_hired : new Date().toISOString().split('T')[0],
+  date_resigned : new Date().toISOString().split('T')[0],
+  personality_id: 0,
+  // You can add more error fields for other validations if needed.
+});
+
+
 // Update employee data
 const createEmployee = async () => {
   try {
     const employeeId = EmployeesService.id;
     
+    validationErrors.value.first_name = '';
+    validationErrors.value.family_name = '';
+    validationErrors.value.middle_name = '';
+    validationErrors.value.email_address = '';
+    validationErrors.value.telephone_no = '';
+    validationErrors.value.birthday = '';
+    validationErrors.value.gender_code = '';
+    validationErrors.value.civil_status = '';
+    validationErrors.value.house_street = '';
+    validationErrors.value.cellphone_no = '';
+    validationErrors.value.purok_zone = '';
+    validationErrors.value.postal_code = '';
+
+    validationErrors.value.sss_no = '';
+    validationErrors.value.phnic_no = '';
+    validationErrors.value.tin_no = '';
+    validationErrors.value.date_hired = '';
+    validationErrors.value.date_resigned = '';
+
+    if(!personality.value.first_name){
+      validationErrors.value.first_name = 'First name must be filled up.';
+    }
+    if(!personality.value.family_name){
+      validationErrors.value.family_name = 'Family name must be filled up.';
+    }
+    if(!personality.value.middle_name){
+      validationErrors.value.middle_name = 'Middle name must be filled up.';
+    }
+    if(!personality.value.email_address){
+      validationErrors.value.email_address = 'Email address must be filled up.';
+    }
+    if(!personality.value.birthday){
+      validationErrors.value.birthday = 'Birthday must be select.';
+    }
+    if(!personality.value.cellphone_no){
+      validationErrors.value.cellphone_no = 'Cellphone must be filled up.';
+    }
+    if(!personality.value.gender_code){
+      validationErrors.value.gender_code = 'Gender must be select.';
+    }
+    if(!personality.value.civil_status){
+      validationErrors.value.civil_status = 'Civil Status must be select.';
+    }
+    if(!personality.value.house_street){
+      validationErrors.value.house_street = 'House Street must be filled up.';
+    }
+    if(!personality.value.cellphone_no){
+      validationErrors.value.cellphone_no = 'Cellphone No must be filled up.';
+    }
+    if(!personality.value.purok_zone){
+      validationErrors.value.purok_zone = 'Purok Zone must be filled up.';
+    }
+    if(!personality.value.postal_code){
+      validationErrors.value.postal_code = 'Postal Code must be filled up.';
+    }
+
+    if(!employee.value.sss_no){
+      validationErrors.value.sss_no = 'SSS No. must be filled up.';
+    }
+    if(!employee.value.phnic_no){
+      validationErrors.value.phnic_no = 'Philhealth No. must be filled up.';
+    }
+    if(!employee.value.tin_no){
+      validationErrors.value.tin_no = 'TIN No must be filled up.';
+    }
+    if(!employee.value.date_hired){
+      validationErrors.value.date_hired = 'Date Hired must be filled up.';
+    }
+    if(!employee.value.date_resigned){
+      validationErrors.value.date_resigned = 'SSS must be filled up.';
+    }
+
+    if (!personality.value.first_name   || 
+        !personality.value.family_name  || 
+        !personality.value.middle_name  || 
+        !personality.value.email_address|| 
+        !personality.value.birthday     ||
+        !personality.value.gender_code  ||
+        !personality.value.civil_status ||
+        !personality.value.house_street ||
+        !personality.value.cellphone_no ||
+        !personality.value.purok_zone   ||
+        !personality.value.postal_code  || 
+
+        !employee.value.sss_no ||
+        !employee.value.phnic_no ||
+        !employee.value.tin_no 
+      )
+      {
+        toast.error("Please fill all the required fields.", { autoClose: 3000 });
+        return;
+      }
+
+
     const jsonObject = {
       employee: {
             sss_no: employee.value.sss_no,

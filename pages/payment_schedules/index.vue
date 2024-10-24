@@ -124,7 +124,7 @@
         </td>
         <td class="py-2 px-4">{{ paymentLine.balance }}</td>
         <td class="py-2 px-4">{{ paymentLine.amount_paid }}</td>
-        <td class="py-2 px-4">{{ paymentLine.remakrs }}</td>
+        <td class="py-2 px-4">{{ paymentLine.remarks }}</td>
         <td class="py-2 px-4">{{ paymentLine.created_at }}</td>
         <td class="py-2 px-4">{{ paymentLine.updated_at }}</td>
       </tr>
@@ -142,6 +142,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
+import { toast } from 'vue3-toastify';
 import { loanApplicationService } from '~/models/LoanApplication';
 import { paymentScheduleService } from '~/models/PaymentSchedules';
 import { apiService } from '~/routes/api/API';
@@ -185,7 +186,7 @@ const updatePayment = () => {
 
     navigateTo('/payment_schedules/update')
   } else {
-    alert('Please select a payment to update.');
+    toast.error('Please select a payment to update.');
   }
 };
 
