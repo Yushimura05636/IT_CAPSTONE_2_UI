@@ -29,7 +29,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <!-- Card 2 -->
                     <div class="w-full px-2 sm:w-1/4 xl:w-1/4 mb-4">
                         <div class="relative flex items-center justify-between px-4 py-3 shadow-md rounded-xl bg-white border border-gray-900 h-32">
@@ -52,7 +52,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <!-- Card 3 -->
                     <div class="w-full px-2 sm:w-1/4 xl:w-1/4 mb-4">
                         <div class="relative flex items-center justify-between px-4 py-3 shadow-md rounded-xl bg-white border border-gray-900 h-32">
@@ -74,7 +74,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <!-- Card 4 -->
                     <div class="w-full px-2 sm:w-1/4 xl:w-1/4 mb-4">
                         <div class="relative flex items-center justify-between px-4 py-3 shadow-md rounded-xl bg-white border border-gray-900 h-32">
@@ -118,7 +118,7 @@
                         </div>
 
                         <ul class="text-gray-600 text-sm">
-                            
+
                         </ul>
                     </div> -->
                 </div>
@@ -151,7 +151,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <!-- Card 2 -->
                     <div class="w-full px-2 sm:w-1/4 xl:w-1/4 mb-4">
                         <div class="relative flex items-center justify-between px-4 py-3 shadow-md rounded-xl bg-white border border-gray-900 h-32">
@@ -174,7 +174,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <!-- Card 3 -->
                     <div class="w-full px-2 sm:w-1/4 xl:w-1/4 mb-4">
                         <div class="relative flex items-center justify-between px-4 py-3 shadow-md rounded-xl bg-white border border-gray-900 h-32">
@@ -196,7 +196,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <!-- Card 4 -->
                     <div class="w-full px-2 sm:w-1/4 xl:w-1/4 mb-4">
                         <div class="relative flex items-center justify-between px-4 py-3 shadow-md rounded-xl bg-white border border-gray-900 h-32">
@@ -240,7 +240,7 @@
                         </div>
 
                         <ul class="text-gray-600 text-sm">
-                            
+
                         </ul>
                     </div> -->
                 </div>
@@ -273,7 +273,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <!-- Card 2 -->
                     <div class="w-full px-2 sm:w-1/4 xl:w-1/4 mb-4">
                         <div class="relative flex items-center justify-between px-4 py-3 shadow-md rounded-xl bg-white border border-gray-900 h-32">
@@ -296,7 +296,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <!-- Card 3 -->
                     <div class="w-full px-2 sm:w-1/4 xl:w-1/4 mb-4">
                         <div class="relative flex items-center justify-between px-4 py-3 shadow-md rounded-xl bg-white border border-gray-900 h-32">
@@ -318,7 +318,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <!-- Card 4 -->
                     <div class="w-full px-2 sm:w-1/4 xl:w-1/4 mb-4">
                         <div class="relative flex items-center justify-between px-4 py-3 shadow-md rounded-xl bg-white border border-gray-900 h-32">
@@ -362,7 +362,7 @@
                         </div>
 
                         <ul class="text-gray-600 text-sm">
-                            
+
                         </ul>
                     </div> -->
                 </div>
@@ -395,7 +395,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <!-- Card 2 -->
                     <div class="w-full px-2 sm:w-1/4 xl:w-1/4 mb-4">
                         <div class="relative flex items-center justify-between px-4 py-3 shadow-md rounded-xl bg-white border border-gray-900 h-32">
@@ -418,7 +418,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <!-- Card 3 -->
                     <div class="w-full px-2 sm:w-1/4 xl:w-1/4 mb-4">
                         <div class="relative flex items-center justify-between px-4 py-3 shadow-md rounded-xl bg-white border border-gray-900 h-32">
@@ -440,7 +440,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <!-- Card 4 -->
                     <div class="w-full px-2 sm:w-1/4 xl:w-1/4 mb-4">
                         <div class="relative flex items-center justify-between px-4 py-3 shadow-md rounded-xl bg-white border border-gray-900 h-32">
@@ -484,13 +484,13 @@
                         </div>
 
                         <ul class="text-gray-600 text-sm">
-                            
+
                         </ul>
                     </div> -->
                 </div>
             </div>
 
-            
+
         </main>
     </NuxtLayout>
 </div>
@@ -498,6 +498,7 @@
 
 <script setup>
 import { ref } from "vue";
+import { apiService } from '~/routes/api/API';
 //   import DashboardCard from './DashboardCard.vue';
 import {
 Dialog,
@@ -546,7 +547,7 @@ import { FireIcon } from "@heroicons/vue/24/solid";
 import { BellAlertIcon } from "@heroicons/vue/20/solid";
 
 const sidebarOpen = ref(false);
-const openPeopleDropdown = ref(false); 
+const openPeopleDropdown = ref(false);
 
 
 const navigation = [
@@ -558,7 +559,7 @@ const navigation = [
         { name: "Staff Roles", href: "/#", icon: UserIcon, current: false },
         { name: "Permission", href: "/#", icon: InboxIcon, current: false },
         //  { name: "Staff Email Notification", href: "/#", icon: InboxIcon, current: false },
-        
+
     ],
 },
 
@@ -621,6 +622,10 @@ openPeopleDropdown.value = false;
 
 function navigateTo(href) {
 window.location.href = href;
-closePeopleDropdown(); 
+closePeopleDropdown();
 }
+
+onMounted (() => {
+    alert(1);
+})
 </script>
