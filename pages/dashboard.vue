@@ -631,9 +631,18 @@ async function authorizedCheck() {
     try {
         const response = await apiService.getCustomersNoAuth({});
     } catch (error) {
+
+        //error
         toast.error(`${error}`, {
             autoClose: 3000,
         })
+
+        //set timeout
+        setTimeout(() => {
+            toast.error(`Re-directing to landing page`, {
+                autoClose: 3000,
+            })
+        }, 3000)
     }
     finally {
         response = null;
