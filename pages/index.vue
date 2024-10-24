@@ -67,7 +67,7 @@
           </div>
         </div>
       </div>
-      
+
       <!-- Additional Content: How It Works Section -->
       <section class="py-16 animate__animated animate__fadeInUp">
         <div class="container mx-auto text-center">
@@ -92,7 +92,7 @@
           </div>
         </div>
       </section>
-      
+
       <!-- Additional Content: Testimonials Section -->
       <section class="py-16 bg-gray-100 animate__animated animate__fadeIn">
         <div class="container mx-auto text-center">
@@ -116,7 +116,7 @@
           </div>
         </div>
       </section>
-      
+
       <!-- Additional Content: Frequently Asked Questions Section -->
       <section class="py-16 animate__animated animate__fadeInUp">
         <div class="container mx-auto text-center">
@@ -142,7 +142,7 @@
           </div>
         </div>
       </section>
-      
+
     </main>
     <footer class="pt-10 bg-gray-800 animate__animated animate__fadeInUp">
       <div class="max-w-screen-xl mx-auto px-4 md:px-8">
@@ -300,41 +300,71 @@
       </footer>
     </div>
   </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        testimonials: [
-          {
-            avatar: "https://mydramalist.com/people/17605-daniel-padilla",
-            name: "Heinz Kyle Hora",
-            title: "Founder of MGG",
-            quote: "LendCash has been an amazing support for our group. The process is so simple and transparent!"
-          },
-          {
-            avatar: "https://scontent.fcgy1-1.fna.fbcdn.net/v/t39.30808-6/448656158_1629887417845685_6398441375725225275_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeGeOFE4asStHUlOZco6oK80qfpuDRI2IeOp-m4NEjYh40Yfk9OO0p0f7HpySF7PqhcbrJBkcX2sr3R9Pn5858cV&_nc_ohc=Kc-Vzrd_MaMQ7kNvgHPtz4b&_nc_ht=scontent.fcgy1-1.fna&oh=00_AYB2rdBHgfFwsYFCQsUO500kJHlACjQT79cJNjy48G8RSg&oe=66DD354A",
-            name: "Stephen Duray",
-            title: "Founder of MGG",
-            quote: "The no-collateral feature made all the difference for us. LendCash truly empowers the community."
-          },
-          {
-            avatar: "https://scontent.fcgy1-1.fna.fbcdn.net/v/t1.15752-9/457869417_880139523982024_8057426980193137924_n.png?_nc_cat=104&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeHLQdw0XWAnaNothpVh5ogysuphZSIDa5my6mFlIgNrmSjUcm8ZpKHlFiLj_4_bzV7MJ7G-xEP9lN4RnQwoh_Ip&_nc_ohc=TTESbs8EOu0Q7kNvgHy49e8&_nc_ht=scontent.fcgy1-1.fna&oh=03_Q7cD1QEhuLSmpNsAiFORrI0fSu6jnTsBxH83driAhl4viXPJZg&oe=66FEF935",
-            name: "Venn Lopez",
-            title: "Founder of MGG",
-            quote: "Fast disbursement and hassle-free requirements! It couldn't be better."
-          }
-        ]
-      };
+
+  <script setup lang="ts">
+  import { toast } from 'vue3-toastify';
+  import 'vue3-toastify/dist/index.css';
+import { ref } from 'vue';
+import { authService } from '~/components/api/AuthService';
+
+interface Testimonial {
+  avatar: string;
+  name: string;
+  title: string;
+  quote: string;
+}
+
+const testimonials = ref<Testimonial[]>([
+  {
+    avatar: "https://mydramalist.com/people/17605-daniel-padilla",
+    name: "Heinz Kyle Hora",
+    title: "Founder of MGG",
+    quote: "LendCash has been an amazing support for our group. The process is so simple and transparent!"
+  },
+  {
+    avatar: "https://scontent.fcgy1-1.fna.fbcdn.net/v/t39.30808-6/448656158_1629887417845685_6398441375725225275_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeGeOFE4asStHUlOZco6oK80qfpuDRI2IeOp-m4NEjYh40Yfk9OO0p0f7HpySF7PqhcbrJBkcX2sr3R9Pn5858cV&_nc_ohc=Kc-Vzrd_MaMQ7kNvgHPtz4b&_nc_ht=scontent.fcgy1-1.fna&oh=00_AYB2rdBHgfFwsYFCQsUO500kJHlACjQT79cJNjy48G8RSg&oe=66DD354A",
+    name: "Stephen Duray",
+    title: "Founder of MGG",
+    quote: "The no-collateral feature made all the difference for us. LendCash truly empowers the community."
+  },
+  {
+    avatar: "https://scontent.fcgy1-1.fna.fbcdn.net/v/t1.15752-9/457869417_880139523982024_8057426980193137924_n.png?_nc_cat=104&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeHLQdw0XWAnaNothpVh5ogysuphZSIDa5my6mFlIgNrmSjUcm8ZpKHlFiLj_4_bzV7MJ7G-xEP9lN4RnQwoh_Ip&_nc_ohc=TTESbs8EOu0Q7kNvgHy49e8&_nc_ht=scontent.fcgy1-1.fna&oh=03_Q7cD1QEhuLSmpNsAiFORrI0fSu6jnTsBxH83driAhl4viXPJZg&oe=66FEF935",
+    name: "Venn Lopez",
+    title: "Founder of MGG",
+    quote: "Fast disbursement and hassle-free requirements! It couldn't be better."
+  }
+]);
+
+async function removeToken() {
+    try {
+        // Remove the token from local storage
+        localStorage.removeItem('token'); // Adjust the key based on your implementation
+
+        //remove laravel authentication toke
+        const response = await authService.logout();
+    } catch (error) {
+        toast.error(`${error}`, {
+            autoClose: 3000,
+        })
     }
-  };
-  </script>
-  
+    finally{
+        setTimeout(() => {
+            navigateTo('/')
+        }, 3000)
+    }
+}
+
+onMounted(() => {
+    removeToken();
+})
+</script>
+
+
   <style>
   body {
     font-family: 'Inter', sans-serif;
   }
-  
+
   .container {
     max-width: 1200px;
   }
