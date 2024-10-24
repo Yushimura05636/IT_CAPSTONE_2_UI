@@ -497,6 +497,8 @@
 </template>
 
 <script setup>
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 import { ref } from "vue";
 import { apiService } from '~/routes/api/API';
 //   import DashboardCard from './DashboardCard.vue';
@@ -625,7 +627,20 @@ window.location.href = href;
 closePeopleDropdown();
 }
 
+async function authorizedCheck() {
+    try {
+        const response = await apiService.getCustomersNoAuth({});
+    } catch (error) {
+        toast.error(`${error}`, {
+            autoClose: 3000,
+        })
+    }
+    finally {
+        response = null;
+    }
+}
+
 onMounted (() => {
-    alert(1);
+    authorizedCheck();
 })
 </script>
