@@ -20,7 +20,7 @@
           placeholder="Email"
           type="email"
           v-model="state.email"
-          
+
           class="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
         />
         <FormError
@@ -35,7 +35,7 @@
           name="password"
           type="password"
           v-model="state.password"
-          
+
           class="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
         />
         <FormError
@@ -62,12 +62,12 @@
           >Forgot password?</a
         >
       </div>
-      
+
         <button
         class="w-full px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150">
         Sign in
       </button>
-    
+
     </form>
     <button
       class="w-full flex items-center justify-center gap-x-3 py-2.5 border rounded-lg text-sm font-medium hover:bg-gray-50 duration-150 active:bg-gray-100"
@@ -101,8 +101,25 @@ import { useVuelidate } from "@vuelidate/core"
 import { required, helpers } from '@vuelidate/validators'
 import { apiService } from '~/routes/api/API';
 import { UserService } from '~/models/User';
+import { ApiBaseAPIService } from '#build/components';
 
+onMounted(() => {
+    showDetails();
+})
 
+function showDetails() {
+    try {
+        const runtimeConfig = useRuntimeConfig();
+
+        toast.error(`${runtimeConfig.public.apiBaseURL}`, {
+            autoClose: 5000,
+        })
+    } catch (error) {
+        toast.error(`${error}`, {
+            autoClose: 5000,
+        })
+    }
+}
 
 const state = reactive({
     email: null,
@@ -124,7 +141,7 @@ const rules = computed(() => {
 const v$ = useVuelidate(rules, state)
 
 async function login() {
-    
+
     state.error = null
     v$.value.$validate()
     if (!v$.value.$error) {
@@ -136,7 +153,7 @@ async function login() {
             }
 
             const response = await authService.login(params)
-            
+
             if (response.data) {
                 localStorage.setItem("_token", response.data?.token)
                 toast.success("Login successfully!", {
