@@ -132,7 +132,6 @@ async function updateUser() {
   }
 }
 
-<<<<<<< HEAD
 async function managePermissions(userId: number) {
   try {
     UserService.usr_id = userId;
@@ -146,8 +145,6 @@ async function managePermissions(userId: number) {
   }
 }
 
-=======
->>>>>>> 87fc0e8479572957fc5b3b1c6062660da2ad0a37
 onMounted(() => {
   fetchUsers();
 });
