@@ -100,8 +100,9 @@ async function fetchCustomers() {
     isLoading.value = true;
     const response = await apiService.getCustomers({});
     storeResponseInTableItems(response.data);
-  } catch (error) {
-    toast.error(`${error}`, {
+  } catch (error: any) {
+    debugger;
+    toast.error(`${error.message}`, {
         autoClose: 3000,
     });
   } finally {
