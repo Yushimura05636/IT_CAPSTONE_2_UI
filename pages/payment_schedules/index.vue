@@ -215,7 +215,7 @@ const deletePayment = () => {
 
 const fetchLoanSchedules = async () => {
   try {
-    const response = await apiService.getPaymentScheduleNoAuth({});
+    const response = await apiService.getPaymentSchedule({});
     payments.value = response.data;
 
   } catch (error) {
@@ -224,7 +224,7 @@ const fetchLoanSchedules = async () => {
 
 const fetchPayment = async () => {
   try {
-    const response = await apiService.getPaymentNoAuth({});
+    const response = await apiService.getPayment({});
     viewpayments.value = response.data;
 
   } catch (error) {
@@ -233,7 +233,7 @@ const fetchPayment = async () => {
 
 const fetchPaymentLine = async () => {
   try {
-    const response = await apiService.getPaymentLineNoAUTH({});
+    const response = await apiService.getPaymentLine({});
     viewpaymentLines.value = response.data;
 
   } catch (error) {

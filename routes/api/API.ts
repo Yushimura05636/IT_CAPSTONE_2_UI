@@ -267,8 +267,13 @@ class API extends BaseAPIService {
     }
 
     //payment line
-    async getPaymentLineNoAUTH(params: object): Promise<any> {
+    async getPaymentLine(params: object): Promise<any> {
         return await this.request(`/PAYMENT_LINES`, 'GET', params)
+    }
+
+    //payment line
+    async getPaymentLineNoAUTH(params: object): Promise<any> {
+        return await this.request(`/PAYMENT_LINES/NoAUTH`, 'GET', params)
     }
 
     //payment_frequency
