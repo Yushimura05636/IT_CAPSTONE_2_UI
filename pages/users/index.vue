@@ -15,16 +15,16 @@
             </button>
           </div>
           <div class="flex">
-            <input 
-              v-model="state.searchQuery" 
-              type="text" 
+            <input
+              v-model="state.searchQuery"
+              type="text"
               placeholder="Search users"
               class="p-2 border border-gray-300 rounded-l-md focus:outline-none"
             />
             <button class="bg-blue-500 text-white py-2 px-4 rounded-r-md">Search</button>
           </div>
         </div>
-  
+
         <!-- User Table -->
         <div class="overflow-x-auto">
           <table class="min-w-full bg-white border rounded-lg">
@@ -33,7 +33,7 @@
                 <th class="p-3 text-left">Select</th>
                 <th class="p-3 text-left">Full Name</th>
                 <th class="p-3 text-left">Email</th>
-                
+
               </tr>
             </thead>
             <tbody class="text-gray-700">
@@ -54,8 +54,8 @@
       </div>
     </NuxtLayout>
   </template>
-  
-  
+
+
   <script setup lang="ts">
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
@@ -104,7 +104,7 @@ async function createUser() {
     await apiService.authUsersCreate({});
     navigateTo('/users/create');
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -117,7 +117,7 @@ async function updateUser() {
       await apiService.authUsersUpdate({});
       navigateTo(`/users/update/`); // Navigate to update page
     } catch (error) {
-      toast.error(error.message, {
+      toast.error(`${error}`, {
       autoClose: 5000,
     })
     }

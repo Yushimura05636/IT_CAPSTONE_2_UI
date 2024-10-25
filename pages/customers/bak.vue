@@ -178,7 +178,7 @@ async function createCustomer() {
     const response = await apiService.authCustomersCreate({});
     navigateTo('/customers/create');
   } catch (error: any) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -191,7 +191,7 @@ async function modifyCustomer() {
     const response = await apiService.authCustomersUpdate({});
     navigateTo(`customers/update`)
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -240,7 +240,7 @@ async function fetchCustomers() {
 
 
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -355,7 +355,7 @@ async function approveORreject(){
     // console.log("test" + CustomersService.id);
     navigateTo(`customers/approve`)
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }

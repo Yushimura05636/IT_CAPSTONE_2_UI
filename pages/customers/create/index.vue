@@ -58,7 +58,7 @@
             <label for="houseStreet" class="block text-gray-700">House Street</label>
             <input v-model="personality.house_street" type="text" id="houseStreet" class="w-full border rounded-lg px-4 py-2" />
           </div>
-          
+
           <div>
             <label for="Cellphone No" class="block text-gray-700">Cellphone No</label>
             <input v-model="personality.cellphone_no" type="text" id="cellphoneNo" class="w-full border rounded-lg px-4 py-2" />
@@ -134,7 +134,7 @@
             <label for="groupId" class="block text-gray-700">Group Name</label>
             <select v-model="customer.group_id" id="groupId" class="w-full border rounded-lg px-4 py-2" v-if="!state.isTableLoading">
               <option v-for="groups in state.groups" :key="groups.id" :value="groups.id">
-                {{ groups.description }} 
+                {{ groups.description }}
               </option>
             </select>
           </div>
@@ -148,7 +148,7 @@
             <label for="groupId" class="block text-gray-700">Loan Count</label>
             <select v-model="customer.loan_count_id" id="groupId" class="w-full border rounded-lg px-4 py-2" v-if="!state.isTableLoading">
               <option v-for="groups in state.loan_count" :key="groups.id" :value="groups.id">
-                {{ groups.loan_count }} 
+                {{ groups.loan_count }}
               </option>
             </select>
           </div>
@@ -298,7 +298,7 @@ const fetchBarangays = async () => {
 
     state.value.barangays = response.data;
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -312,7 +312,7 @@ const fetchCities = async () => {
     state.value.cities = response.data;
 
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -324,7 +324,7 @@ const fetchCountries = async () => {
 
     state.value.countries = response.data;
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -336,7 +336,7 @@ const fetchProvinces = async () => {
     const response = await apiService.getNoAuth({}, "province");
     state.value.provinces = response.data;
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -348,7 +348,7 @@ const fetchCreditStatuses = async () => {
     const response = await apiService.getNoAuth({}, "credit_status");
     state.value.creditStatuses = response.data;
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -361,7 +361,7 @@ const fetchGroups = async () => {
 
     state.value.groups = response.data;
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -373,7 +373,7 @@ const fetchPersonalityStatusCode = async () => {
     const response = await apiService.getNoAuth({}, "personality_status_map");
     state.value.personality_status_code = response.data;
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -388,7 +388,7 @@ const fetchLoanCount = async () => {
 
     debugger;
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -424,9 +424,9 @@ const createCustomer = async () => {
       toast.error("Please check all required documents before proceeding", {
         autoClose: 2000,
       });
-      return; 
+      return;
     }
-    const jsonObject = { 
+    const jsonObject = {
       customer: {
             group_id: customer.value.group_id,
             passbook_no: customer.value.passbook_no,
@@ -466,11 +466,11 @@ const createCustomer = async () => {
           });
           // Introduce a delay before navigating
           setTimeout(() => {
-            navigateTo('/customers');  
+            navigateTo('/customers');
           }, 2000); // Redirect to the customer list page
   } catch (error) {
     toast.error('Error creating customer');
-    toast.error(error.message, {
+    toast.error(`${error}`, {
         autoClose: 5000,
       });
   }

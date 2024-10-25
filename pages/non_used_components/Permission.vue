@@ -1,11 +1,11 @@
 <template>
     <div class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
       <form @submit.prevent="submitForm" class="w-full max-w-4xl bg-white p-8 rounded-md shadow-md space-y-6">
-        
+
         <!-- User Information Section -->
         <div class="space-y-6">
           <h2 class="text-lg font-semibold text-gray-900">User Information</h2>
-  
+
           <!-- Full Name Field -->
           <div class="w-full">
             <label for="fullname" class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
@@ -17,7 +17,7 @@
               disabled
             />
           </div>
-  
+
           <!-- Email Field -->
           <div class="w-full">
             <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
@@ -30,17 +30,17 @@
             />
           </div>
         </div>
-  
+
         <!-- Document Permission Table Section -->
         <div class="space-y-6">
           <h2 class="text-lg font-semibold text-gray-900">Document Permissions</h2>
-  
+
           <!-- Check All / Uncheck All Buttons -->
           <div class="flex justify-end space-x-4 mb-4">
             <button type="button" @click="checkAll" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-500">Check All</button>
             <button type="button" @click="uncheckAll" class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-500">Uncheck All</button>
           </div>
-  
+
           <!-- Document Permission Table -->
           <div class="overflow-x-auto">
             <table class="min-w-full table-auto divide-y divide-gray-200">
@@ -62,12 +62,12 @@
                       class="w-5 h-5"
                     />
                   </td>
-  
+
                   <!-- Document Column -->
                   <td class="px-6 py-4 whitespace-nowrap">
                     {{ document.description }}
                   </td>
-  
+
                   <!-- Permission Column -->
                   <td class="px-6 py-4 whitespace-nowrap">
                     <div class="flex space-x-4">
@@ -114,7 +114,7 @@
             </table>
           </div>
         </div>
-  
+
         <!-- Submit Button -->
         <div class="flex justify-end space-x-4 mt-6">
           <button @click="back" type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancel</button>
@@ -123,7 +123,7 @@
       </form>
     </div>
   </template>
-  
+
   <script setup lang="ts">
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
@@ -131,7 +131,7 @@ import 'vue3-toastify/dist/index.css';
   import { ref, reactive, computed, onMounted } from 'vue';
   import { UserService } from '~/models/User';
   import { apiService } from '~/routes/api/API'; // Adjust path as necessary
-  
+
   const state = reactive({
     permission: [],
     document: [],
@@ -139,7 +139,7 @@ import 'vue3-toastify/dist/index.css';
     error: "error",
     isTableLoading: true,
   });
-  
+
   const selectedDocuments = ref([]); // Store selected document IDs
   const documentPermissions = ref([]); // Store selected permissions
 
@@ -151,7 +151,7 @@ import 'vue3-toastify/dist/index.css';
   const hours = pad(date.getHours());
   const minutes = pad(date.getMinutes());
   const seconds = pad(date.getSeconds());
-  
+
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`; // Return as Y-m-d H:i:s
   }
 
@@ -163,10 +163,10 @@ import 'vue3-toastify/dist/index.css';
     const hours = pad(date.getHours());
     const minutes = pad(date.getMinutes());
     const seconds = pad(date.getSeconds());
-    
+
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
   }
-  
+
   // Fetch permission and document data from API
   async function fetchPermissionandDocuments() {
     try {
@@ -174,7 +174,7 @@ import 'vue3-toastify/dist/index.css';
       const permissions = await apiService.getPermission(params);
       const documents = await apiService.getDocumentMap(params);
       const users = await apiService.getUserById(params, UserService.usr_id);
-      
+
       if (permissions && permissions.data && documents && documents.data && users && users.data) {
         state.permission = permissions.data;
         state.document = documents.data;
@@ -188,7 +188,7 @@ import 'vue3-toastify/dist/index.css';
       state.isTableLoading = false;
     }
   }
-  
+
   async function submitForm() {
   try {
     // Get the current date and time
@@ -234,13 +234,13 @@ import 'vue3-toastify/dist/index.css';
     console.log("Predefined JSON structure:", jsonObject);
 
   } catch (error: any) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
 }
 
-  
+
   function back() {
     navigateTo('userTable');
   }
@@ -268,11 +268,11 @@ function uncheckAll() {
   selectedDocuments.value = [];
   documentPermissions.value = [];
 }
-  
+
   // Fetch data on component mount
   onMounted(() => {
     fetchPermissionandDocuments();
   });
-  
+
   const fullName = computed(() => `${state.user.first_name} ${state.user.last_name} ${state.user.middle_name}`);
-  </script>  
+  </script>

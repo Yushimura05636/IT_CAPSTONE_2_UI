@@ -164,7 +164,7 @@ const OptionsService = {
     const response = await apiService.getNoAuth({},'gender_map'); // Adjust endpoint as needed
     return response.data;
   },
-  
+
   async fetchCivilStatuses() {
     const response = await apiService.getNoAuth({},'civil_status'); // Adjust endpoint as needed
     return response.data;
@@ -179,7 +179,7 @@ function formatDateTimeToMySQL(date: any) {
   const hours = pad(date.getHours());
   const minutes = pad(date.getMinutes());
   const seconds = pad(date.getSeconds());
-  
+
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`; // Return as Y-m-d H:i:s
 }
 
@@ -191,7 +191,7 @@ function formatDateToMySQL(date: any) {
   const hours = pad(date.getHours());
   const minutes = pad(date.getMinutes());
   const seconds = pad(date.getSeconds());
-  
+
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
@@ -199,7 +199,7 @@ function formatDateToMySQL(date: any) {
 const createEmployee = async () => {
   try {
     const employeeId = EmployeesService.id;
-    
+
     const jsonObject = {
       employee: {
             sss_no: employee.value.sss_no,
@@ -239,11 +239,11 @@ const createEmployee = async () => {
           });
           // Introduce a delay before navigating
           setTimeout(() => {
-            navigateTo('/employees');  
+            navigateTo('/employees');
           }, 2000);
   } catch (error) {
     toast.error('Error updating employee: ' + error);
-    toast.error(error.message, {
+    toast.error(`${error}`, {
         autoClose: 5000,
       });
   }

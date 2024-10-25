@@ -107,7 +107,7 @@ const submitForm = () => {
       form.value.modeltype = '';
       form.value.description = '';
     } catch (error: any) {
-      toast.error(error.message, {
+      toast.error(`${error}`, {
       autoClose: 5000,
     })
     }

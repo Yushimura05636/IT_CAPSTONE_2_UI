@@ -79,7 +79,7 @@ import 'vue3-toastify/dist/index.css';
         const response = await apiService.authLoanCountsCreate({});
         navigateTo('/loan_counts/create');
     } catch (error) {
-        toast.error(error.message, {
+        toast.error(`${error}`, {
       autoClose: 5000,
     })
     }
@@ -92,7 +92,7 @@ import 'vue3-toastify/dist/index.css';
         UserService.usbl_id = selectedLoanId.value;
         navigateTo('/loan_counts/update');
     } catch (error) {
-        toast.error(error.message, {
+        toast.error(`${error}`, {
       autoClose: 5000,
     })
     }
@@ -103,7 +103,7 @@ import 'vue3-toastify/dist/index.css';
           const response = await apiService.getLoanCount({});
           state.loancount.value = response.data; // Update the reactive ref
       } catch (error) {
-          toast.error(error.message, {
+          toast.error(`${error}`, {
         autoClose: 5000,
       });
       }

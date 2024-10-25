@@ -122,7 +122,7 @@
       const response = await apiService.getLoanApplication({})
       state.loanApp = response.data
     } catch (error: any) {
-      toast.error(error.message, {
+      toast.error(`${error}`, {
         autoClose: 5000,
       })
     }

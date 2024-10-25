@@ -59,7 +59,7 @@
                                 v-model="customerData[selectedCheckCustomerId].loanAmount"
                                 type="number"
                                 class="w-full border border-gray-300 rounded p-2"
-                                @input="updateLoanAmount(selectedCheckCustomerId)" 
+                                @input="updateLoanAmount(selectedCheckCustomerId)"
                             />
                         </div>
 
@@ -133,7 +133,7 @@
                                 class="w-full border border-gray-300 rounded p-2"
                             ></textarea>
                         </div>
-                        
+
                         <div v-if="state.fees.length > 0" class="overflow-x-auto">
                             <table class="min-w-full bg-white border border-gray-300 mb-4">
     <thead>
@@ -175,7 +175,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                 </div>
             </div>
         </main>
@@ -220,7 +220,7 @@ const fetchFees = async () => {
         const response = await apiService.getFeeNoAuth({});
         state.value.fees = response.data;
     } catch (error) {
-        toast.error(error.message, { autoClose: 5000 });
+        toast.error(`${error}`, { autoClose: 5000 });
     }
 }
 
@@ -229,7 +229,7 @@ const fetchGroups = async () => {
         const response = await apiService.getNoAuth({}, "customer_group");
         state.value.groups = response.data;
     } catch (error) {
-        toast.error(error.message, { autoClose: 5000 });
+        toast.error(`${error}`, { autoClose: 5000 });
     }
 };
 
@@ -260,7 +260,7 @@ const fetchCustomers = async () => {
 
 
         } catch (error) {
-            toast.error(error.message, { autoClose: 5000 });
+            toast.error(`${error}`, { autoClose: 5000 });
         }
     } else {
         toast.error('Please select a group.', { autoClose: 5000 });
@@ -272,7 +272,7 @@ const fetchFactorRate = async () => {
         const response = await apiService.getFactorRateNoAuth({});
         state.value.factorRates = response.data;
     } catch (error) {
-        toast.error(error.message, { autoClose: 5000 });
+        toast.error(`${error}`, { autoClose: 5000 });
     }
 };
 
@@ -281,7 +281,7 @@ const fetchPaymentFrequencies = async () => {
         const response = await apiService.getPaymentFrequencyNoAuth({});
         state.value.paymentFrequencies = response.data;
     } catch (error) {
-        toast.error(error.message, { autoClose: 5000 });
+        toast.error(`${error}`, { autoClose: 5000 });
     }
 };
 
@@ -291,7 +291,7 @@ const fetchDurations = async () => {
         const response = await apiService.getPaymentdurationNoAuth({});
         state.value.durations = response.data;
     } catch (error) {
-        toast.error(error.message, { autoClose: 5000 });
+        toast.error(`${error}`, { autoClose: 5000 });
     }
 };
 
@@ -301,7 +301,7 @@ const fetchFeeLibrary = async () => {
     const response = await apiService.getFeeNoAuth({});
     state.value.fees = response.data; // Show only active fees
   } catch (error) {
-    toast.error(error.message, { autoClose: 5000 });
+    toast.error(`${error}`, { autoClose: 5000 });
   }
 };
 
@@ -446,7 +446,7 @@ const submitForm = async () => {
         if (
             customer &&
             customer.isSelected && // Check if the customer is selected
-            customer.customerId && 
+            customer.customerId &&
             customer.loanApplicationNo &&
             customer.loanAmount &&
             selectedGroupId.value &&
@@ -457,7 +457,7 @@ const submitForm = async () => {
             customer.duration
         ) {
             allCustomerData.push({
-                customer_id: customer.customerId, 
+                customer_id: customer.customerId,
                 loan_application_no: customer.loanApplicationNo,
                 amount_loan: customer.loanAmount,
                 group_id: selectedGroupId.value,
@@ -488,7 +488,7 @@ const submitForm = async () => {
                 navigateTo('/loan_applications');
             }
         } catch (error) {
-            toast.error(`Submission failed: ${error.message}`, { autoClose: 5000 });
+            toast.error(`Submission failed: ${`${error}`}`, { autoClose: 5000 });
         }
     } else {
         toast.error('No customer data to submit.', { autoClose: 5000 });
@@ -501,7 +501,7 @@ async function updateSelectedFees(feeId, isSelected) {
     if (!customerData[selectedCheckCustomerId.value]) {
         return;
     }
-    
+
     const selectedFees = customerData[selectedCheckCustomerId.value].selectedFees;
 
     if (isSelected) {

@@ -60,7 +60,7 @@
             <label for="houseStreet" class="block text-gray-700">House Street</label>
             <input v-model="personality.house_street" type="text" id="houseStreet" class="w-full border rounded-lg px-4 py-2" />
           </div>
-          
+
           <div>
             <label for="Cellphone No" class="block text-gray-700">Cellphone No</label>
             <input v-model="personality.cellphone_no" type="text" id="cellphoneNo" class="w-full border rounded-lg px-4 py-2" />
@@ -136,7 +136,7 @@
             <label for="groupId" class="block text-gray-700">Group Name</label>
             <select v-model="customer.group_id" id="groupId" class="w-full border rounded-lg px-4 py-2" v-if="!state.isTableLoading">
               <option v-for="groups in state.groups" :key="groups.id" :value="groups.id">
-                {{ groups.description }} 
+                {{ groups.description }}
               </option>
             </select>
           </div>
@@ -150,7 +150,7 @@
             <label for="groupId" class="block text-gray-700">Loan Count</label>
             <select v-model="customer.loan_count" id="groupId" class="w-full border rounded-lg px-4 py-2" v-if="!state.isTableLoading">
               <option v-for="groups in state.loan_count" :key="groups.id" :value="groups.id">
-                {{ groups.loan_count }} 
+                {{ groups.loan_count }}
               </option>
             </select>
           </div>
@@ -255,7 +255,7 @@ const fetchBarangays = async () => {
 
     state.value.barangays = response.data;
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -269,7 +269,7 @@ const fetchCities = async () => {
     state.value.cities = response.data;
 
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -281,7 +281,7 @@ const fetchCountries = async () => {
 
     state.value.countries = response.data;
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -294,7 +294,7 @@ const fetchProvinces = async () => {
 
     state.value.provinces = response.data;
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -307,7 +307,7 @@ const fetchCreditStatuses = async () => {
 
     state.value.creditStatuses = response.data;
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -320,7 +320,7 @@ const fetchGroups = async () => {
 
     state.value.groups = response.data;
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -333,7 +333,7 @@ const fetchPersonalityStatusCode = async () => {
 
     state.value.personality_status_code = response.data;
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -347,7 +347,7 @@ const fetchLoanCount = async () => {
     state.value.loan_count = response.data;
 
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -384,7 +384,7 @@ const fetchCustomer = async () => {
   Object.assign(customer.value, response.customer);
   Object.assign(personality.value, response.personality) // Merge response data into customer
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -437,7 +437,7 @@ const updateCustomer = async () => {
           }, 2000);
   } catch (error) {
     toast.error('Error updating customer: ' + error);
-    toast.error(error.message, {
+    toast.error(`${error}`, {
         autoClose: 5000,
       });
   }

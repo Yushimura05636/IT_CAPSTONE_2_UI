@@ -211,7 +211,7 @@ const fetchLoanApplication = async () => {
 
 
     } catch (error) {
-        toast.error(error.message, { autoClose: 5000 });
+        toast.error(`${error}`, { autoClose: 5000 });
     }
 };
 
@@ -252,7 +252,7 @@ const fetchFees = async () => {
         }
 
     } catch (error) {
-        toast.error(error.message, { autoClose: 5000 });
+        toast.error(`${error}`, { autoClose: 5000 });
     }
 };
 
@@ -262,7 +262,7 @@ const fetchFactorRate = async () => {
         const response = await apiService.getFactorRateNoAuth({});
         state.value.factorRates = response.data;
     } catch (error) {
-        toast.error(error.message, { autoClose: 5000 });
+        toast.error(`${error}`, { autoClose: 5000 });
     }
 };
 
@@ -272,7 +272,7 @@ const fetchPaymentFrequencies = async () => {
         state.value.paymentFrequencies = response.data;
 
     } catch (error) {
-        toast.error(error.message, { autoClose: 5000 });
+        toast.error(`${error}`, { autoClose: 5000 });
     }
 };
 
@@ -282,7 +282,7 @@ const fetchDurations = async () => {
         state.value.durations = response.data;
 
     } catch (error) {
-        toast.error(error.message, { autoClose: 5000 });
+        toast.error(`${error}`, { autoClose: 5000 });
     }
 };
 
@@ -359,7 +359,7 @@ const submitForm = async () => {
             navigateTo('/loan_applications/view/receipt')
         } catch (error) {
 
-            toast.error(error.message, { autoClose: 5000 });
+            toast.error(`${error}`, { autoClose: 5000 });
         }
     } else {
         toast.error('Please fill in all required fields', { autoClose: 5000 });
@@ -408,7 +408,7 @@ const fetchCoMakers = async () => {
         state.value.coMakers = response.data; // Store fetched Co-Makers in state
 
     } catch (error) {
-        toast.error(error.message, { autoClose: 5000 });
+        toast.error(`${error}`, { autoClose: 5000 });
     }
 };
 

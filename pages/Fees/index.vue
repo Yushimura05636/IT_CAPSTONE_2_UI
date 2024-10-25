@@ -31,17 +31,17 @@
 
         <!-- Fees Table -->
             <div class="overflow-x-auto">
-                <Table class="w-full  " 
-                    :columnHeaders="state.columnHeaders" 
-                    :data="state.fee" 
+                <Table class="w-full  "
+                    :columnHeaders="state.columnHeaders"
+                    :data="state.fee"
                     :isLoading="state.isTableLoading"
-                    :sortData="state.sortData" 
+                    :sortData="state.sortData"
                     >
                     <template #body
                         v-if="!(state.isTableLoading || (state.fee?.data === 0))">
-                        
+
                         <tr v-for="(fee, index) in state.fee?.data" :key="index" class="">
-                            
+
                             <td class="py-2 border-b border-gray-300 ">
                                 <input
                                 type="radio"
@@ -78,10 +78,10 @@
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
-    import { ref, reactive, onMounted } from 'vue'  
+    import { ref, reactive, onMounted } from 'vue'
     import { apiService } from '~/routes/api/API'
     import { feeService } from '~/models/Fee'
-    
+
     const state = reactive({
         columnHeaders: [
             { name: 'Select' },
@@ -102,7 +102,7 @@ import 'vue3-toastify/dist/index.css';
 
     let selectedFeeID = ref(null); // Track selected library
 
-    
+
     async function fetchFee() {
         state.isTableLoading = true
         state.error = null
@@ -112,7 +112,7 @@ import 'vue3-toastify/dist/index.css';
             state.fee = response
             console.log(state.fee);
         } catch (error: any) {
-            toast.error(error.message, {
+            toast.error(`${error}`, {
                 autoClose: 5000,
             })
         }
@@ -158,7 +158,7 @@ import 'vue3-toastify/dist/index.css';
         navigateTo('Fees/update');
         }
         } catch (error) {
-            toast.error(error.message, {
+            toast.error(`${error}`, {
                 autoClose: 5000,
             })
         }
@@ -168,7 +168,7 @@ import 'vue3-toastify/dist/index.css';
             const response = await apiService.authFeesCreate({});
             navigateTo('Fees/create');
         } catch (error) {
-            toast.error(error.message, {
+            toast.error(`${error}`, {
                 autoClose: 5000,
             })
         }

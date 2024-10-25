@@ -134,7 +134,7 @@ async function createItem() {
     const response = await apiService.authCustomersCreate({});
     navigateTo('/customers/create');
   } catch (error: any) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }

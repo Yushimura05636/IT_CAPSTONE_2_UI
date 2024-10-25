@@ -24,7 +24,7 @@
                     </div>
                 </div>
             </div>
-    
+
             <div class="mt-6 flex items-center justify-end gap-x-6">
                 <button type="button" class="text-sm font-bold leading-6 text-gray-900" @click="back">
                     <a>Cancel</a>
@@ -107,7 +107,7 @@ function handleSubmit() {
 const fetchCustomer = async () => {
     try {
         const customerId = CustomersService.id;
-        
+
         // Check if customerId is defined and is a valid number
         if (!customerId || isNaN(Number(customerId))) {
             toast.error('Invalid Id!', {
@@ -116,20 +116,20 @@ const fetchCustomer = async () => {
             navigateTo('/customers'); // Redirect to the customer list page or show an error
             return;
         }
-        
+
         // Fetch customer data
         const response = await apiService.getCustomerById({}, customerId);
-        
+
         // Merge response data into customer and personality
         Object.assign(customer.value, response.customer);
-        Object.assign(personality.value, response.personality); 
+        Object.assign(personality.value, response.personality);
 
         // Log the updated customer and personality data
         console.log("Updated Customer Data:", customer.value);
         console.log("Updated Personality Data:", personality.value);
 
     } catch (error) {
-        toast.error(error.message, {
+        toast.error(`${error}`, {
             autoClose: 5000,
         });
     }
@@ -174,7 +174,7 @@ const updateCustomer = async () => {
         await apiService.updateCustomer(jsonObject, customerId);
     } catch (error) {
         toast.error('Error updating customer: ' + error);
-        toast.error(error.message, {
+        toast.error(`${error}`, {
             autoClose: 5000,
         });
     }

@@ -2,7 +2,7 @@
   <NuxtLayout name="admin">
     <div class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
     <form @submit.prevent="submitForm" class="w-full max-w-4xl bg-white p-8 rounded-md shadow-md space-y-6">
-      
+
       <!-- User Information Section -->
       <div class="space-y-6">
         <h2 class="text-lg font-semibold text-gray-900">User Information</h2>
@@ -156,7 +156,7 @@ function formatDateToMySQL(date: any) {
   const hours = pad(date.getHours());
   const minutes = pad(date.getMinutes());
   const seconds = pad(date.getSeconds());
-  
+
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
@@ -206,13 +206,13 @@ try {
   });
   formSuccess.value = true;
   } else {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
     state.error = 'Unexpected response format.';
   }
 } catch (error) {
-  toast.error(error.message, {
+  toast.error(`${error}`, {
       autoClose: 5000,
     })
   formSuccess.value = false;
@@ -261,7 +261,7 @@ try {
   //create another permission
   //const response = await apiService.createDocumentPermission(jsonObject);
   const response = await apiService.updateDocumentPermission(jsonObject, 1);
-  
+
 
   if (response) {
     formSuccess.value = true;
@@ -276,7 +276,7 @@ try {
 } catch (error: any) {
   formSuccess.value = false;
   state.error = error;
-  toast.error(error.message, {
+  toast.error(`${error}`, {
       autoClose: 5000,
     })
 }
@@ -317,4 +317,4 @@ onMounted(() => {
 });
 
 const fullName = computed(() => `${state.user.first_name} ${state.user.last_name} ${state.user.middle_name}`);
-</script>  
+</script>

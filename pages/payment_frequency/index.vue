@@ -14,16 +14,16 @@
                             Create
                             </button>
 
-                            <button 
-                            type="button" 
+                            <button
+                            type="button"
                             class="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
                             v-if="selectedFrequencyID"
                             @click="updateFrequency"
                             >
                             Modify
                             </button>
-                            
-                            <button type="button" 
+
+                            <button type="button"
                             class="px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600 "
                             v-if="selectedFrequencyID"
                             >
@@ -44,17 +44,17 @@
                         </div>
                     </div>
 
-                    <Table class="w-full  " 
-                        :columnHeaders="state.columnHeaders" 
-                        :data="state.frequency" 
+                    <Table class="w-full  "
+                        :columnHeaders="state.columnHeaders"
+                        :data="state.frequency"
                         :isLoading="state.isTableLoading"
-                        :sortData="state.sortData" 
+                        :sortData="state.sortData"
                         >
                         <template #body
                             v-if="!(state.isTableLoading || (state.frequency?.data === 0))">
-                            
+
                             <tr v-for="(frequency, index) in state.frequency?.data" :key="index" class="">
-                                
+
                                 <td class="py-2 border-b border-gray-300 ">
                                     <input
                                     type="radio"
@@ -92,7 +92,7 @@ import 'vue3-toastify/dist/index.css';
     import { apiService } from '~/routes/api/API'
     import { paymentFrequencyService } from '~/models/PaymentFrequency'
 import { PermissionService } from '~/models/Permission';
-    
+
 
 
     const state = reactive({
@@ -114,7 +114,7 @@ import { PermissionService } from '~/models/Permission';
 
     let selectedFrequencyID = ref(null); // Track selected library
 
-    
+
     async function fetchFreqandDuration() {
         state.isTableLoading = true
         state.error = null
@@ -124,7 +124,7 @@ import { PermissionService } from '~/models/Permission';
             state.frequency = response
             console.log(state.frequency);
         } catch (error: any) {
-            toast.error(error.message, {
+            toast.error(`${error}`, {
                 autoClose: 5000,
             })
         }
@@ -134,7 +134,7 @@ import { PermissionService } from '~/models/Permission';
         fetchFreqandDuration()
     })
 
-    
+
     async function updateFrequency(){
         try {
             const response = await apiService.authPaymentFrequenciesUpdate({})
@@ -167,7 +167,7 @@ import { PermissionService } from '~/models/Permission';
         navigateTo('payment_frequency/update');
         }
         } catch (error) {
-            toast.error(error.message, {
+            toast.error(`${error}`, {
       autoClose: 5000,
     })
         }
@@ -178,7 +178,7 @@ import { PermissionService } from '~/models/Permission';
             const response = await apiService.authPaymentFrequenciesCreate({})
             navigateTo('/payment_frequency/create')
         } catch (error) {
-            toast.error(error.message, {
+            toast.error(`${error}`, {
       autoClose: 5000,
     })
         }

@@ -113,7 +113,7 @@ const fetchLoanSchedules = async () => {
     const response = await apiService.getPaymentScheduleNoAuth({});
     payments.value = response.data;
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
         autoClose: 5000,
       });
   }

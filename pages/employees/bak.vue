@@ -192,7 +192,7 @@ async function createEmployee() {
     const response = await apiService.authEmployeesCreate({});
     navigateTo('employees/create');
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }

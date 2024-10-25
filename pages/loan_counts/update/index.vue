@@ -88,7 +88,7 @@ async function fetchloancount() {
     minAmount.value = response.data.min_amount;
     maxAmount.value = response.data.max_amount;
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -116,7 +116,7 @@ const submitForm = async () => {
           maxAmount: maxAmount.value
       });
   } catch (error) {
-      toast.error(error.message, {
+      toast.error(`${error}`, {
       autoClose: 5000,
     })
   } finally {

@@ -30,13 +30,13 @@
                             <input v-model="factorRate.description"  type="text"  id="description"  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-xl sm:leading-6" />
                             </div>
                         </div>
-                        
-    
+
+
                         <div class="sm:col-span-2">
                             <label for="valueP" class="block text-sm font-bold leading-6 text-gray-900">Value<span class="text-red-600">*</span></label>
                             <input v-model="factorRate.valueP"   step="0.01"  type="number"  id="valueP "  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-xl sm:leading-6" />
                         </div>
-    
+
                         <div class="sm:col-span-2">
                             <label for="notes" class="block text-sm font-bold leading-6 text-gray-900">Notes <span class="text-red-600">*</span></label>
                             <div class="mt-2">
@@ -46,7 +46,7 @@
                     </div>
                 </div>
             </div>
-    
+
             <div class="mt-6 flex items-center justify-end gap-x-6">
             <button type="button" class="text-sm font-bold leading-6 text-gray-900"
                 @click="back">
@@ -57,15 +57,15 @@
         </form>
     </div>
 </template>
-    
-    
+
+
 <script setup lang="ts">
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
     import { ref } from 'vue';
-    
-    
+
+
     import { PermissionService } from '~/models/Permission';
     import { apiService } from '~/routes/api/API';
 
@@ -124,7 +124,7 @@ const factorRate = ref({
         };
 
         const response =  await apiService.createFactorRate(jsonObject);
-        
+
         if(response)
         {
             toast.success("Factor rate created successfully!", {
@@ -132,13 +132,13 @@ const factorRate = ref({
             });
             // Introduce a delay before navigating
             setTimeout(() => {
-                navigateTo('/factor_rate');  
+                navigateTo('/factor_rate');
             }, 2000);
         }
 
         } catch (error) {
             toast.error('Error creating Factor: ' + error);
-            toast.error(error.message, {
+            toast.error(`${error}`, {
         autoClose: 5000,
         });
         }

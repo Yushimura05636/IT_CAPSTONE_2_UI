@@ -14,16 +14,16 @@
                             Create
                             </button>
 
-                            <button 
-                            type="button" 
+                            <button
+                            type="button"
                             class="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
                             v-if="selectedDurationID"
                             @click="updateDuration"
                             >
                             Modify
                             </button>
-                            
-                            <button type="button" 
+
+                            <button type="button"
                             class="px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600 "
                             v-if="selectedDurationID"
                             >
@@ -44,17 +44,17 @@
                         </div>
                     </div>
 
-                    <Table class="w-full  " 
-                        :columnHeaders="state.columnHeaders" 
-                        :data="state.duration" 
+                    <Table class="w-full  "
+                        :columnHeaders="state.columnHeaders"
+                        :data="state.duration"
                         :isLoading="state.isTableLoading"
-                        :sortData="state.sortData" 
+                        :sortData="state.sortData"
                         >
                         <template #body
                             v-if="!(state.isTableLoading || (state.duration?.data === 0))">
-                            
+
                             <tr v-for="(duration, index) in state.duration?.data" :key="index" class="">
-                                
+
                                 <td class="py-2 border-b border-gray-300 ">
                                     <input
                                     type="radio"
@@ -93,7 +93,7 @@ import 'vue3-toastify/dist/index.css';
     import { paymentDurationService } from '~/models/PaymentDuration'
 import { PermissionService } from '~/models/Permission';
 import { PaymentFrequency } from '../../models/PaymentFrequency';
-    
+
     const state = reactive({
         columnHeaders: [
             { name: 'Select' },
@@ -113,7 +113,7 @@ import { PaymentFrequency } from '../../models/PaymentFrequency';
 
     let selectedDurationID = ref(null); // Track selected library
 
-    
+
     async function fetchFreqandDuration() {
         state.isTableLoading = true
         state.error = null
@@ -123,7 +123,7 @@ import { PaymentFrequency } from '../../models/PaymentFrequency';
             state.duration = response
             console.log(state.duration);
         } catch (error: any) {
-            toast.error(error.message, {
+            toast.error(`${error}`, {
                 autoClose: 5000,
             })
         }
@@ -165,7 +165,7 @@ import { PaymentFrequency } from '../../models/PaymentFrequency';
         navigateTo('payment_duration/update');
         }
         } catch (error) {
-            toast.error(error.message, {
+            toast.error(`${error}`, {
         autoClose: 5000,
     })
         }
@@ -176,7 +176,7 @@ import { PaymentFrequency } from '../../models/PaymentFrequency';
             })
             navigateTo('payment_duration/create');
         } catch (error) {
-            toast.error(error.message, {
+            toast.error(`${error}`, {
         autoClose: 5000,
     })
         }

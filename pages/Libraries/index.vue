@@ -4,13 +4,13 @@
       <Head>
         <Title>Libraries</Title>
       </Head>
-  
+
       <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
           <h1 class="m-6 text-base font-bold leading-6 text-gray-900">Libraries</h1>
         </div>
       </div>
-  
+
       <!-- Action Buttons on the left -->
       <div class="flex justify-between items-center mb-4">
         <div class="flex space-x-4">
@@ -38,11 +38,11 @@
             Delete
           </button>
         </div>
-  
+
         <!-- Combobox on the right -->
         <div class="flex-none">
           <label for="modelType" class="block text-sm font-medium text-gray-700">Select Model Type:</label>
-          
+
           <select
             id="modelType"
             v-model="state.modeltype"
@@ -53,10 +53,10 @@
 
         </div>
       </div>
-  
+
       <div class="mt-2">
         <Alert type="danger" :text="state.error?.message" v-if="state.error" />
-        
+
         <!-- Scrollable Table Container -->
         <div class="overflow-x-auto">
           <div class="min-w-full max-h-96 overflow-y-auto"> <!-- Add max-h for vertical scroll if needed -->
@@ -88,14 +88,14 @@
             </Table>
           </div>
         </div>
-  
+
         <Pagination :data="state.datas" @previous="previous" @next="next" />
         <div class="ml-10 mb-5"></div>
       </div>
         </div>
     </NuxtLayout>
   </template>
-  
+
   <script setup lang="ts">
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
@@ -104,7 +104,7 @@ import 'vue3-toastify/dist/index.css';
   import { libraryService } from '~/models/Library';
 import { PermissionService } from '~/models/Permission';
   import { apiService } from '~/routes/api/API';
-  
+
   const state = reactive({
     columnHeaders: [
       { name: 'Select' },
@@ -121,7 +121,7 @@ import { PermissionService } from '~/models/Permission';
     searchQuery: '',
     modeltype: 'customer_group',
   });
-  
+
   const modelTypes = [
   { value: 'barangay', label: 'Barangay' },
   { value: 'branch', label: 'Branch' },
@@ -141,58 +141,58 @@ import { PermissionService } from '~/models/Permission';
 ];
 
   let selectedLibraryId = ref(null); // Track selected library
-  
+
   onMounted(() => {
     fetchLibraries();
   });
-  
+
  async function createLibrary() {
     try {
       const response = await apiService.authLibrariesCreate({})
       navigateTo('libraries/create');
     } catch (error) {
-      toast.error(error.message, {
+      toast.error(`${error}`, {
       autoClose: 5000,
     })
     }
   }
-  
+
   async function updateLibrary() {
     try {
       const response = await apiService.authLibrariesUpdate({});
       if (selectedLibraryId.value) {
         let selectedDescription = null;
-  
+
         // Iterate through the data using a for loop
         for (let i = 0; i < state.datas?.data.length; i++) {
           const library = state.datas.data[i];
-  
+
           // Check if the current library's id matches the selectedLibraryId
           if (library.id == parseInt(selectedLibraryId.value)?.toString()) {
             selectedDescription = library.description;
             break; // Exit the loop once we find the selected library
           }
         }
-  
+
         libraryService.id = selectedLibraryId.value;
         libraryService.description = state.modeltype;
         libraryService.oldText = selectedDescription;
         navigateTo('libraries/update');
       }
     } catch (error) {
-      toast.error(error.message, {
+      toast.error(`${error}`, {
       autoClose: 5000,
     })
     }
   }
-  
+
   function deleteLibrary() {
     if (selectedLibraryId.value) {
       // Add logic for deletion
       console.log('Delete library with id:', selectedLibraryId.value);
     }
   }
-  
+
   async function fetchLibraries() {
     state.isTableLoading = true;
     state.error = null;
@@ -206,4 +206,3 @@ import { PermissionService } from '~/models/Permission';
     state.isTableLoading = false;
   }
   </script>
-  

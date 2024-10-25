@@ -10,7 +10,7 @@
                             <label for="description" class="block text-sm font-bold leading-6 text-gray-900">Description<span class="text-red-600">*</span></label>
                             <input v-model="Fee.description" type="text"  id="description "  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-l sm:leading-6 pl-2" />
                         </div>
-    
+
                         <div class="sm:col-span-2">
                             <label for="amount" class="block text-sm font-bold leading-6 text-gray-900">Amount <span class="text-red-600">*</span></label>
                             <div class="mt-2">
@@ -33,7 +33,7 @@
                     </div>
                 </div>
             </div>
-    
+
             <div class="mt-6 flex items-center justify-end gap-x-6">
             <button type="button" class="text-sm font-bold leading-6 text-gray-900"
                 @click="back()">
@@ -44,8 +44,8 @@
         </form>
     </div>
 </template>
-    
-    
+
+
 <script setup lang="ts">
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
@@ -57,7 +57,7 @@ import { apiService } from '~/routes/api/API';
     function back() {
         navigateTo('/Fees');
         }
-        
+
     const Fee = ref({
         description: '',
         amount: 0,
@@ -77,7 +77,7 @@ import { apiService } from '~/routes/api/API';
             };
                 const response =  await apiService.createFee(jsonObject);
                 console.log("test" + jsonObject);
-            
+
             if(response)
             {
                 toast.success("Fee rate created successfully!", {
@@ -85,16 +85,16 @@ import { apiService } from '~/routes/api/API';
                 });
                 // Introduce a delay before navigating
                 setTimeout(() => {
-                    navigateTo('/Fees');  
+                    navigateTo('/Fees');
                 }, 2000);
                  // Redirect to the customer list page
             }
 
             } catch (error) {
                 toast.error('Error creating Fee: ' + error);
-                toast.error(error.message, {
+                toast.error(`${error}`, {
         autoClose: 5000,
       });
             }
-        };   
+        };
 </script>
