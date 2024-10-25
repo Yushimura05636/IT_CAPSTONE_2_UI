@@ -118,7 +118,7 @@ const cancelForm = () => {
   loanCount.value = null;
   minAmount.value = null;
   maxAmount.value = null;
-  router.push('/loancount'); // Redirect to the loan count page
+  router.push('/loan_counts'); // Redirect to the loan count page
 };
 </script>
 
