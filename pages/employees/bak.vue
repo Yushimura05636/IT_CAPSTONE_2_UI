@@ -205,7 +205,7 @@ async function modifyEmployee() {
     const response = await apiService.authEmployeesUpdate({});
     navigateTo('employees/update');
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -221,7 +221,7 @@ async function fetchEmployees() {
     storeResponseInTableItems();
 
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }

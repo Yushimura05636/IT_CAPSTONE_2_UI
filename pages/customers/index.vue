@@ -98,10 +98,12 @@ onMounted(async () => {
 async function fetchCustomers() {
   try {
     isLoading.value = true;
-    const response = await apiService.getCustomersNoAuth({});
+    const response = await apiService.getCustomers({});
     storeResponseInTableItems(response.data);
   } catch (error) {
-    toast.error('Failed to load customers data');
+    toast.error(`${error}`, {
+        autoClose: 3000,
+    });
   } finally {
     isLoading.value = false;
   }
