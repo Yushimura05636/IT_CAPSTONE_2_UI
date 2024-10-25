@@ -144,7 +144,7 @@
 
   // Navigate to create loan application page
   function createLoanApplication() {
-    navigateTo('/loan_applications/create');
+    navigateTo('create');
   }
 
   // Navigate to view loan application page

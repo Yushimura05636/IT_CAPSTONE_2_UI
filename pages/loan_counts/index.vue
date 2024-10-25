@@ -26,7 +26,7 @@
           </button>
         </div>
       </div>
-  
+
       <!-- Loan Table -->
       <div class="overflow-x-auto">
         <table class="min-w-full bg-white border-collapse border border-gray-200 rounded-lg shadow-sm">
@@ -60,7 +60,7 @@
     </div>
     </NuxtLayout>
   </template>
-  
+
   <script setup lang="ts">
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
@@ -69,7 +69,7 @@ import 'vue3-toastify/dist/index.css';
   import { PermissionService } from '~/models/Permission';
   import { UserService } from '~/models/User';
   import { apiService } from '~/routes/api/API';
-  
+
   const state = {
       loancount: ref([]), // Make it a ref to keep it reactive
   }
@@ -77,7 +77,7 @@ import 'vue3-toastify/dist/index.css';
   async function createloancount(){
     try {
         const response = await apiService.authLoanCountsCreate({});
-        navigateTo('/loancount/create');
+        navigateTo('create');
     } catch (error) {
         toast.error(error.message, {
       autoClose: 5000,
@@ -90,14 +90,14 @@ import 'vue3-toastify/dist/index.css';
     try {
         const response = await apiService.authLoanCountsUpdate({});
         UserService.usbl_id = selectedLoanId.value;
-        navigateTo('/loancount/update');
+        navigateTo('update');
     } catch (error) {
         toast.error(error.message, {
       autoClose: 5000,
     })
     }
   }
-  
+
   async function fetchloancount() {
       try {
           const response = await apiService.getLoanCount({});
@@ -108,10 +108,10 @@ import 'vue3-toastify/dist/index.css';
       });
       }
   }
-  
+
   const searchQuery = ref('');
   const selectedLoanId = ref<number | null>(null);
-  
+
   // Computed property to filter loans based on search query
   const filteredLoans = computed(() => {
       if (!searchQuery.value) return state.loancount.value; // Reference the reactive state
@@ -119,7 +119,7 @@ import 'vue3-toastify/dist/index.css';
           loan.loan_count.toString().includes(searchQuery.value)
       );
   });
-  
+
   // Format currency
   const formatCurrency = (amount: number) => {
       return new Intl.NumberFormat('en-US', {
@@ -127,36 +127,35 @@ import 'vue3-toastify/dist/index.css';
           currency: 'USD',
       }).format(amount);
   };
-  
+
   onMounted(() => {
       fetchloancount();
   });
   </script>
-  
+
   <style scoped>
   .mt-16 {
       margin-top: 4rem; /* Adjusted margin for better spacing */
   }
-  
+
   table {
       border-collapse: separate;
       border-spacing: 0;
   }
-  
+
   th {
       border-bottom: 2px solid #e2e8f0;
   }
-  
+
   td {
       border-bottom: 1px solid #e2e8f0;
   }
-  
+
   button {
       transition: background-color 0.2s ease, box-shadow 0.2s ease;
   }
-  
+
   button:hover {
       box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   }
   </style>
-  
