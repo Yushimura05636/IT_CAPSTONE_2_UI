@@ -117,13 +117,26 @@ async function login() {
             const response = await authService.login(params)
             if (response.data) {
                 localStorage.setItem("_token", response.data?.token)
-                alert("login successfully!");
-                navigateTo('/dashboard')
+                toast.success("Login successfully!", {
+                    autoClose: 1000,
+                });
+
+                // Introduce a delay before navigating
+                setTimeout(() => {
+                    navigateTo('/dashboard');
+                }, 1000);
             }
         } catch (error: any) {
-            alert("something is wrong! please contact your adminstrator!");
-            alert("error: " + state.error);
-            state.error = error
+          state.error = error
+            toast.error("Something is wrong! please contact your adminstrator!", {
+                    autoClose: 3000,
+                });
+            toast.error(`${error}`, {
+                autoClose: 4000,
+            });
+            setTimeout(() => {
+                    navigateTo('/login');
+                }, 4000);
         }
         state.isPageLoading = false
     }
