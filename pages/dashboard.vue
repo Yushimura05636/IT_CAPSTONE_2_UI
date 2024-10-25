@@ -643,10 +643,10 @@ async function authorizedCheck() {
 
         //set timeout
         setTimeout(() => {
-        }, 5000)
+            //go to landing page
+            navigateTo(`/`);
+        }, 10000)
 
-        //go to landing page
-        navigateTo(`/`);
     }
     finally {
         response = null;
