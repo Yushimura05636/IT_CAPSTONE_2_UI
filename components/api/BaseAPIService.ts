@@ -6,6 +6,7 @@ class BaseAPIService {
         let config: any = null
         if (method === 'GET') {
             // GET
+            debugger;
             config = {
                 baseURL: runtimeConfig.public.apiBaseURL,
                 method: method,
