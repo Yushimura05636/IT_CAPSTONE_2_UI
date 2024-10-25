@@ -274,20 +274,11 @@
 
 
 
-<<<<<<< HEAD
         // { name: "Release Schedules", icon: KeyIcon, current: false,
         //     children: [
         //         { name: "Loan Application", href: "", icon: CurrencyDollarIcon, current: false },
         //     ],
         // },
-=======
-        { name: "Release Schedules", icon: KeyIcon, current: false,
-            children: [
-                { name: "Loan Release", href: "/loan_release", icon:  CreditCardIcon, current: false },
-
-            ],
-        },
->>>>>>> 87fc0e8479572957fc5b3b1c6062660da2ad0a37
 
         { name: "Payment", icon: FlagIcon, current: false,
             children: [
@@ -296,7 +287,7 @@
             { name: "Payment Schedule", href: "/payment_schedules", icon: CreditCardIcon, current: false },
             ],
         },
-        
+
         { name: "Report", icon: FireIcon, current: false,
             children: [
                 { name: "Loan Application", href: "", icon: CurrencyDollarIcon, current: false },
