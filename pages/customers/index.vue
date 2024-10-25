@@ -1,60 +1,101 @@
 <template>
-    <NuxtLayout name="admin">
-        <div class="flex justify-between items-center mb-4">
-      <!-- Buttons on the left -->
-      <div class="flex space-x-2">
-        <button @click="createItem" class="bg-blue-500 text-white px-4 py-2 rounded">Create</button>
-        <button @click="viewSelected" :disabled="!selectedId" class="bg-green-500 text-white px-4 py-2 rounded">View</button>
-        <button @click="updateSelected" :disabled="!selectedId" class="bg-yellow-500 text-white px-4 py-2 rounded">Update</button>
+  <NuxtLayout name="admin">
+    <div class="p-6 max-w-screen-lg mx-auto bg-white shadow-lg rounded-lg">
+      <!-- Header -->
+      <div class="text-2xl font-bold mb-4 text-gray-800">Customers</div>
+
+      <!-- Action Bar -->
+      <div class="flex flex-col md:flex-row justify-between items-center mb-6 space-y-4 md:space-y-0">
+        <!-- Buttons on the left -->
+        <div class="flex space-x-2 justify-center md:justify-start">
+          <button
+            @click="createItem"
+            class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition"
+          >
+            Create
+          </button>
+          <button
+            @click="viewSelected"
+            :disabled="!selectedId"
+            class="px-4 py-2 bg-green-500 text-white rounded-lg shadow hover:bg-green-600 transition disabled:opacity-50"
+          >
+            View
+          </button>
+          <button
+            @click="updateSelected"
+            :disabled="!selectedId"
+            class="px-4 py-2 bg-yellow-500 text-white rounded-lg shadow hover:bg-yellow-600 transition disabled:opacity-50"
+          >
+            Update
+          </button>
+        </div>
+
+        <!-- Search Input on the right -->
+        <div class="w-full md:w-1/2 relative">
+          <input
+            v-model="searchQuery"
+            placeholder="Search customers..."
+            class="w-full border border-gray-300 rounded-lg px-4 py-2 shadow-sm focus:border-blue-500 focus:outline-none"
+            type="text"
+          />
+          <span class="absolute right-4 top-3 text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path
+                fill-rule="evenodd"
+                d="M12.9 14.32a8 8 0 111.414-1.414l4.286 4.285a1 1 0 01-1.415 1.415l-4.285-4.286zM8 14a6 6 0 100-12 6 6 0 000 12z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </span>
+        </div>
       </div>
 
-      <!-- Search Input on the right -->
-      <input
-        v-model="searchQuery"
-        placeholder="Search..."
-        class="border px-2 py-1 rounded"
-        type="text"
-      />
+      <!-- Table -->
+      <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-200 rounded-lg">
+          <thead class="bg-gray-200 text-gray-600 uppercase text-sm">
+            <tr>
+              <th class="px-4 py-2 border">Select</th>
+              <th class="px-4 py-2 border">Name</th>
+              <th class="px-4 py-2 border">Email</th>
+              <th class="px-4 py-2 border">Phone Number</th>
+              <th class="px-4 py-2 border">Birthday</th>
+              <th class="px-4 py-2 border">Gender</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Loading State -->
+            <tr v-if="isLoading">
+              <td colspan="6" class="text-center py-4 text-gray-500">Loading...</td>
+            </tr>
+
+            <!-- No Data State -->
+            <tr v-else-if="filteredTableItems.length === 0">
+              <td colspan="6" class="text-center py-4 text-gray-500">No data</td>
+            </tr>
+
+            <!-- Data Rows -->
+            <tr
+              v-else
+              v-for="item in filteredTableItems"
+              :key="item.customerId"
+              class="hover:bg-gray-50 transition"
+            >
+              <td class="px-4 py-2 border text-center">
+                <input type="radio" :value="item.customerId" v-model="selectedId" />
+              </td>
+              <td class="px-4 py-2 border">{{ item.name }}</td>
+              <td class="px-4 py-2 border">{{ item.email }}</td>
+              <td class="px-4 py-2 border">{{ item.telephoneNumber }}</td>
+              <td class="px-4 py-2 border">{{ item.birthday }}</td>
+              <td class="px-4 py-2 border">{{ item.gender }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-
-    <!-- Table -->
-    <table class="min-w-full border-collapse border">
-      <thead>
-        <tr>
-          <th class="px-4 py-2 border">Select</th>
-          <th class="px-4 py-2 border">Name</th>
-          <th class="px-4 py-2 border">Email</th>
-          <th class="px-4 py-2 border">Phone Number</th>
-          <th class="px-4 py-2 border">Birthday</th>
-          <th class="px-4 py-2 border">Gender</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Loading State -->
-        <tr v-if="isLoading">
-          <td colspan="9" class="text-center py-4">Loading...</td>
-        </tr>
-
-        <!-- No Data State -->
-        <tr v-else-if="filteredTableItems.length === 0">
-          <td colspan="9" class="text-center py-4">No data</td>
-        </tr>
-
-        <!-- Data Rows -->
-        <tr v-else v-for="item in filteredTableItems" :key="item.customerId">
-          <td class="px-4 py-2 border text-center">
-            <input type="radio" :value="item.customerId" v-model="selectedId" />
-          </td>
-          <td class="px-4 py-2 border">{{ item.name }}</td>
-          <td class="px-4 py-2 border">{{ item.email }}</td>
-          <td class="px-4 py-2 border">{{ item.telephoneNumber }}</td>
-          <td class="px-4 py-2 border">{{ item.birthday }}</td>
-          <td class="px-4 py-2 border">{{ item.gender }}</td>
-        </tr>
-      </tbody>
-    </table>
-    </NuxtLayout>
-  </template>
+  </NuxtLayout>
+</template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
@@ -66,7 +107,7 @@ import { apiService } from '~/routes/api/API';
 const searchQuery = ref<string>('');
 const tableItems = ref<TableItem[]>([]);
 const isLoading = ref(true);
-const selectedId = ref<string | null>(null); // For tracking the selected row
+const selectedId = ref<string | null>(null);
 
 interface TableItem {
   customerId: string;
@@ -75,11 +116,8 @@ interface TableItem {
   telephoneNumber: string;
   birthday: string;
   gender: string;
-  groupName: string;
-  city: string;
 }
 
-// Computed property for search functionality
 const filteredTableItems = computed(() => {
   return tableItems.value.filter(item =>
     Object.values(item).some(value =>
@@ -88,70 +126,52 @@ const filteredTableItems = computed(() => {
   );
 });
 
-// Fetch data when the component is mounted
 onMounted(async () => {
   await fetchCustomers();
   isLoading.value = false;
 });
 
-// Fetch customers from API
 async function fetchCustomers() {
   try {
     isLoading.value = true;
     const response = await apiService.getCustomers({});
     storeResponseInTableItems(response.data);
   } catch (error: any) {
-    debugger;
-    toast.error(`${error.message}`, {
-        autoClose: 3000,
-    });
+    toast.error(`${error.message}`, { autoClose: 3000 });
   } finally {
     isLoading.value = false;
   }
 }
 
-// Function to map API response to table items
 function storeResponseInTableItems(data: any[]) {
-  tableItems.value = [];
-  for (let i = 0; i < data.length; i++) {
-    debugger;
-    const customer = data[i];
-    tableItems.value.push({
-      customerId: customer.customer.id.toString(),
-      name: `${customer.personality.first_name} ${customer.personality.family_name}`,
-      email: customer.personality.email_address,
-      telephoneNumber: customer.personality.telephone_no,
-      birthday: customer.personality.birthday,
-      gender: parseInt(customer.personality.gender_code) === 1 ? 'Male' : 'Female',
-      groupName: customer.customer.group_id,
-      city: customer.personality.city_id,
-    });
-  }
+  tableItems.value = data.map(customer => ({
+    customerId: customer.customer.id.toString(),
+    name: `${customer.personality.first_name} ${customer.personality.family_name}`,
+    email: customer.personality.email_address,
+    telephoneNumber: customer.personality.telephone_no,
+    birthday: customer.personality.birthday,
+    gender: parseInt(customer.personality.gender_code) === 1 ? 'Male' : 'Female',
+  }));
 }
 
-// Button actions
 async function createItem() {
-    try {
-    const response = await apiService.authCustomersCreate({});
+  try {
+    await apiService.authCustomersCreate({});
     navigateTo('/customers/create');
   } catch (error: any) {
-    toast.error(`${error}`, {
-      autoClose: 5000,
-    })
+    toast.error(`${error}`, { autoClose: 5000 });
   }
 }
 
 async function viewSelected() {
-  try {
-    if (selectedId.value) {
-        CustomersService.id = parseInt(selectedId.value?.toString());
-        const response = await apiService.authCustomersUpdate({});
-        navigateTo(`customers/update`)
+  if (selectedId.value) {
+    try {
+      CustomersService.id = parseInt(selectedId.value);
+      await apiService.authCustomersUpdate({});
+      navigateTo(`customers/update`);
+    } catch (error) {
+      toast.error(`${error}`, { autoClose: 5000 });
     }
-  } catch (error) {
-    toast.error(`${error}`, {
-        autoClose: 5000,
-    })
   }
 }
 
@@ -170,7 +190,7 @@ table {
 
 th,
 td {
-  padding: 8px;
+  padding: 12px;
   border: 1px solid #ddd;
   text-align: left;
 }
@@ -179,11 +199,11 @@ td {
   display: flex;
 }
 
-.justify-between {
-  justify-content: space-between;
-}
-
 .space-x-2 > * + * {
   margin-left: 0.5rem;
+}
+
+button:disabled {
+  cursor: not-allowed;
 }
 </style>

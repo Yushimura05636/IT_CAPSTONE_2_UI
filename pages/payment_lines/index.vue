@@ -1,107 +1,112 @@
 <template>
-    <div class="p-8">
-      <div class="flex justify-between items-center mb-4">
-        <h1 class="text-2xl font-bold">Payment Line</h1>
-        <div class="flex space-x-2">
-          <button @click="createPaymentLine" class="bg-green-500 text-white px-4 py-2 rounded">Create</button>
-          <button @click="updatePaymentLine" class="bg-blue-300 text-white px-4 py-2 rounded">Update</button>
-          <button @click="deletePaymentLine" class="bg-red-300 text-white px-4 py-2 rounded">Delete</button>
+    <NuxtLayout name="admin">
+      <div class="p-8">
+        <!-- Header and Action Buttons -->
+        <div class="flex flex-col sm:flex-row justify-between items-center mb-4 space-y-4 sm:space-y-0">
+          <h1 class="text-2xl font-bold">Payment Line</h1>
+          <div class="flex space-x-2">
+            <button @click="" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+              Update
+            </button>
+            <button @click="" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
+              Delete
+            </button>
+          </div>
+        </div>
+  
+        <!-- Search Bar -->
+        <div class="flex justify-center mb-4">
+          <input
+            type="text"
+            placeholder="Search payment lines"
+            v-model="state.searchQuery"
+            class="border rounded px-4 py-2 w-full sm:w-1/2 focus:outline-none focus:border-blue-500 transition"
+          />
+        </div>
+  
+        <!-- Table Container -->
+        <div class="overflow-x-auto">
+          <Table
+            class="w-full"
+            :columnHeaders="state.columnHeaders"
+            :data="state.paymentLine"
+            :isLoading="state.isTableLoading"
+            :sortData="state.sortData"
+          >
+            <template #body v-if="!(state.isTableLoading || (state.paymentLine?.data === 0))">
+              <tr v-for="(paymentLine, index) in state.paymentLine?.data" :key="index" class="hover:bg-gray-50 transition">
+                <td class="py-2 px-4 border-b border-gray-300">
+                  <input type="radio" :value="paymentLine.id" v-model="selectedPaymentLine" class="cursor-pointer" />
+                </td>
+                <td class="py-2 px-4 border-b border-gray-300">
+                  <span>{{ paymentLine.payment_id }} </span>
+                </td>
+                <td class="py-2 px-4 border-b border-gray-300">
+                  <span>{{ paymentLine.payment_schedule_id }}</span>
+                </td>
+                <td class="py-2 px-4 border-b border-gray-300">
+                  <span>{{ paymentLine.balance }}</span>
+                </td>
+                <td class="py-2 px-4 border-b border-gray-300">
+                  <span>{{ paymentLine.amount_paid }}</span>
+                </td>
+                <td class="py-2 px-4 border-b border-gray-300">
+                  <span>{{ paymentLine.remarks }}</span>
+                </td>
+              </tr>
+              <tr v-if="state.paymentLine.data.length === 0">
+                <td colspan="6" class="text-center py-6 text-gray-500">No payment lines found</td>
+              </tr>
+            </template>
+          </Table>
         </div>
       </div>
-      <div class="flex justify-center mb-4">
-        <input
-          v-model="searchQuery"
-          type="text"
-          placeholder="Search payment lines"
-          class="border rounded px-4 py-2 w-1/2"
-        />
-      </div>
-      <div class="overflow-x-auto">
-        <table class="min-w-full bg-white">
-          <thead class="bg-gray-800 text-white">
-            <tr>
-              <th class="py-2 px-4">Select</th>
-              <th class="py-2 px-4">Payment Line ID</th>
-              <th class="py-2 px-4">Payment</th>
-              <th class="py-2 px-4">Payment Schedule</th>
-              <th class="py-2 px-4">Balance</th>
-              <th class="py-2 px-4">Amount Paid</th>
-              <th class="py-2 px-4">Remarks</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(line, index) in filteredPaymentLines" :key="index">
-              <td class="text-center py-2">
-                <input type="radio" name="select" v-model="selectedPaymentLine" :value="line.id">
-              </td>
-              <td class="py-2 px-4">{{ line.id }}</td>
-              <td class="py-2 px-4">{{ line.payment }}</td>
-              <td class="py-2 px-4">{{ line.paymentSchedule }}</td>
-              <td class="py-2 px-4">{{ line.balance }}</td>
-              <td class="py-2 px-4">{{ line.amountPaid }}</td>
-              <td class="py-2 px-4">{{ line.remarks }}</td>
-            </tr>
-            <tr v-if="filteredPaymentLines.length === 0">
-              <td colspan="7" class="text-center py-4">No data found</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+    </NuxtLayout>
   </template>
   
   <script setup lang="ts">
-  import { ref, computed } from 'vue';
-  import { useRouter } from 'vue-router';
+  import { toast } from 'vue3-toastify';
+  import 'vue3-toastify/dist/index.css';
   
-  const router = useRouter();
+  import { ref, reactive, onMounted } from 'vue';
+  import { apiService } from '~/routes/api/API';
   
-  // Payment line data (fetch real data here or pass via props)
-  const paymentLines = ref<any[]>([]); // Replace any[] with the proper type
-  
-  // Search functionality
-  const searchQuery = ref('');
-  const selectedPaymentLine = ref<number | null>(null);
-  
-  // Computed property to filter payment lines based on search query
-  const filteredPaymentLines = computed(() => {
-    if (!searchQuery.value) return paymentLines.value;
-    return paymentLines.value.filter((line) =>
-      Object.values(line).some((value) =>
-        String(value).toLowerCase().includes(searchQuery.value.toLowerCase())
-      )
-    );
+  const state = reactive({
+    columnHeaders: [
+      { name: 'Select' },
+      { name: 'Payment ID' },
+      { name: 'Payment Schedule ID' },
+      { name: 'Balance' },
+      { name: 'Amount Paid' },
+      { name: 'Remarks' },
+    ],
+    error: null,
+    isTableLoading: false,
+    sortData: {
+      sortField: 'id',
+      sortOrder: 'descend',
+    },
+    paymentLine: [],
+    searchQuery: '',
   });
   
-  // Create payment line (add your create logic here)
-  const createPaymentLine = () => {
-    router.push('/paymentLine_Table/createPayLine'); // Change route or trigger modal
-  };
+  let selectedPaymentLine = ref(null);
   
-  // Update payment line (add your update logic here)
-  const updatePaymentLine = () => {
-    if (selectedPaymentLine.value) {
-      router.push(`/paymentLine_Table/updatePayLine/${selectedPaymentLine.value}`); // Redirect to update
-    } else {
-      alert('Please select a payment line to update.');
+  async function fetchPaymentLine() {
+    state.isTableLoading = true;
+    state.error = null;
+    try {
+      const response = await apiService.getPaymentLineNoAUTH({});
+      state.paymentLine = response;
+    } catch (error: any) {
+      toast.error(error.message, { autoClose: 5000 });
     }
-  };
+    state.isTableLoading = false;
+  }
   
-  // Delete payment line (add your delete logic here)
-  const deletePaymentLine = () => {
-    if (selectedPaymentLine.value) {
-      const index = paymentLines.value.findIndex(
-        (line) => line.id === selectedPaymentLine.value
-      );
-      if (index !== -1) {
-        paymentLines.value.splice(index, 1); // Remove payment line from list
-        selectedPaymentLine.value = null;
-        alert('Payment line deleted successfully.');
-      }
-    } else {
-      alert('Please select a payment line to delete.');
-    }
-  };
+  onMounted(() => {
+    fetchPaymentLine();
+  });
   </script>
   
   <style scoped>

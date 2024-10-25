@@ -603,9 +603,53 @@ async authLoanApplicationsApprove(params: object, id: number): Promise<any> {
     return await this.request(`/LOAN_APPLICATIONS/approve/${id}`, 'PATCH', params);
 }
 
-async getCustomerByGroupId(params: object, id: number): Promise<any> {
+    async authLoanReleaseUpdate(params: object): Promise<any> {
+        return await this.request(`/LOAN_RELEASES/update`, 'PATCH', params);
+    }
+    // Payment 
+    async authPaymentUpdate(params: object): Promise<any> {
+        return await this.request(`/PAYMENTS/update`, 'PATCH', params);
+    }
+
+
+    //loan release
+    async getLoanRelease(params: object): Promise<any> {
+        return await this.request(`/LOAN_RELEASES`, 'GET', params)
+    }
+    async getLoanReleaseNoAuth(params: object): Promise<any> {
+        return await this.request(`/LOAN_RELEASES/NoAUTH`, 'GET', params)
+    }
+    async getLoanReleaseById(params: object, id: number): Promise<any> {
+        return await this.request(`/LOAN_RELEASES/${id}`, 'GET', params)
+    }
+    async getLoanReleaseByIdNoAuth(params: object, id: number): Promise<any> {
+        return await this.request(`/LOAN_RELEASES/NoAUTH/${id}`, 'GET', params)
+    }
+    async createLoanRelease(params: object): Promise<any> {
+        return await this.request(`/LOAN_RELEASES`, 'POST', params)
+    }
+    async updateLoanRelease(params: object, id: number): Promise<any> {
+        return await this.request(`/LOAN_RELEASES/${id}`, 'PUT', params)
+    }
+    async deleteLoanRelease(params: object, id: number): Promise<any> {
+        return await this.request(`/LOAN_RELEASES/${id}`, 'DELETE', params)
+    }
+
+    // async getLoanRelease(params: object): Promise<any> {
+    //     return await this.request(`/LOAN_RELEASE`, 'GET', params)
+    // }
+    // async updateLoanRelease(params: object): Promise<any> {
+    //     return await this.request(`/LOAN_RELEASE`, 'PUT', params)
+    // }
+
+    async getCustomerByGroupId(params: object, id: number): Promise<any> {
     return await this.request(`/test/${id}`, 'GET', params)
-}
+    }
+
+
+    async getLoanSchedulebyCustomerID(params: object, id: number): Promise<any> {
+    return await this.request(`/loan-test/${id}`, 'GET', params)
+    }
 
 
 }
