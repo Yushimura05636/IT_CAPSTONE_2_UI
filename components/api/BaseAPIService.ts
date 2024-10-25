@@ -6,7 +6,7 @@ class BaseAPIService {
         let config: any = null
         if (method === 'GET') {
             // GET
-            debugger;
+
             config = {
                 baseURL: runtimeConfig.public.apiBaseURL,
                 method: method,
@@ -46,8 +46,10 @@ class BaseAPIService {
                 case 403:
                     throw new APIError(error.response._data)
                 case 401:
-                    this.revokeAccess()
-                    this.redirectToLogin()
+                    setTimeout(() => {
+                        this.revokeAccess()
+                        this.redirectToLogin()
+                    }, 5000);
                 case 500:
                     throw new APIError(error.response._data);
                 default:

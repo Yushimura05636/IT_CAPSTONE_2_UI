@@ -641,12 +641,6 @@ async function authorizedCheck() {
             autoClose: 3000,
         })
 
-        //set timeout
-        setTimeout(() => {
-            //go to landing page
-            navigateTo(`/`);
-        }, 10000)
-
     }
     finally {
         response = null;
