@@ -241,7 +241,7 @@
         },
         { name: "Variables", icon: UsersIcon, current: false,
             children: [
-                { name: "Loan Count", href: "/loancount", icon: CurrencyDollarIcon, current: false },
+                { name: "Loan Count", href: "/loan_counts", icon: CurrencyDollarIcon, current: false },
                 { name: "Payment Duration", href: "/payment_duration", icon: CurrencyDollarIcon, current: false },
                 { name: "Payment Frequency", href: "/payment_frequency", icon: CurrencyDollarIcon, current: false },
                 { name: "Factor Rate", href: "/factor_rate", icon: CurrencyDollarIcon, current: false },
