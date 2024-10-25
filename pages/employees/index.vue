@@ -113,7 +113,9 @@ import { EmployeesService } from '~/models/Employee';
       const response = await apiService.getEmployees({});
       storeResponseInTableItems(response.data);
     } catch (error) {
-      toast.error('Failed to load employees data');
+      toast.error(`${error}`, {
+        autoClose: 3000,
+      });
     } finally {
       isLoading.value = false;
     }
