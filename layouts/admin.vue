@@ -275,11 +275,11 @@
 
 
 
-        { name: "Release Schedules", icon: KeyIcon, current: false,
-            children: [
-                { name: "Loan Application", href: "", icon: CurrencyDollarIcon, current: false },
-            ],
-        },
+        // { name: "Release Schedules", icon: KeyIcon, current: false,
+        //     children: [
+        //         { name: "Loan Application", href: "", icon: CurrencyDollarIcon, current: false },
+        //     ],
+        // },
 
         { name: "Payment", icon: FlagIcon, current: false,
             children: [
