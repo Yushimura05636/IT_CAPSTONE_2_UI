@@ -1,71 +1,77 @@
 <template>
-  <div class="p-8">
-    <div class="flex justify-between items-center mb-4">
-      <h1 class="text-2xl font-bold">Payments</h1>
-      <div class="flex space-x-2">
-        <button @click="createPayment" class="bg-green-500 text-white px-4 py-2 rounded">Create</button>
-        <button @click="updatePayment" class="bg-yellow-500 text-white px-4 py-2 rounded">Update</button>
-        <button @click="deletePayment" class="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
+  <NuxtLayout name="admin">
+    <div class="p-8">
+      <div class="flex justify-between items-center mb-4">
+        <h1 class="text-2xl font-bold">Payments</h1>
+        <div class="flex space-x-2">
+          <button @click="updatePayment" class="bg-yellow-500 text-white px-4 py-2 rounded">Update</button>
+          <button @click="" class="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
+        </div>
+      </div>
+      <div class="flex justify-center mb-4">
+        <input
+          v-model="searchQuery"
+          type="text"
+          placeholder="Search payments"
+          class="border rounded px-4 py-2 w-1/2"
+        />
+      </div>
+      <div class="overflow-x-auto">
+        <Table class="w-full table-auto border-collapse " 
+          :columnHeaders="state.columnHeaders" 
+          :data="state.payment" 
+          :isLoading="state.isTableLoading"
+          :sortData="state.sortData" 
+          >
+          <template #body
+              v-if="!(state.isTableLoading || (state.payment?.data === 0))">
+              <tr v-for="(payments, index) in state.payment?.data" :key="index" class=" px-4  py-2">
+                  
+                  <td class="py-2 border-b border-gray-300 ">
+                      <input
+                      type="radio"
+                      :value="payments.id"
+                      v-model="selectedPaymentID"
+                      class="cursor-pointer"
+                      />
+                  </td>
+                  <td class="px-4  py-2 border-b border-gray-300  ">
+                      <span>{{ payments.customer_id}} </span>
+                  </td>
+                  <td class="px-4  py-2 border-b border-gray-300 ">
+                      <span>{{payments.prepared_at }}</span>
+                  </td>
+                  <td class="px-4  py-2 border-b border-gray-300 ">
+                      <span>{{ payments.document_status_code}}</span>
+                  </td>
+                  <td class="px-4  py-2 border-b border-gray-300 ">
+                      <span>{{payments.prepared_by_id }}</span>
+                  </td>
+                  <td class="px-4  py-2 border-b border-gray-300 ">
+                      <span>{{ payments.amount_paid}}</span>
+                  </td>
+                  <td class="px-4  py-2 border-b border-gray-300 ">
+                      <span>{{ payments.notes}}</span>
+                  </td>
+              </tr>
+          </template>
+        </Table>
       </div>
     </div>
-    <div class="flex justify-center mb-4">
-      <input
-        v-model="searchQuery"
-        type="text"
-        placeholder="Search payments"
-        class="border rounded px-4 py-2 w-1/2"
-      />
-    </div>
-    <div class="overflow-x-auto">
-      <table class="min-w-full bg-white">
-        <thead class="bg-gray-900 text-white">
-          <tr>
-            <th class="py-2 px-4">Select</th>
-            <th class="py-2 px-4">Payment ID</th>
-            <th class="py-2 px-4">Customer Name</th>
-            <th class="py-2 px-4">Date Created</th>
-            <th class="py-2 px-4">Date Prepared</th>
-            <th class="py-2 px-4">Document Status</th>
-            <th class="py-2 px-4">Prepared By</th>
-            <th class="py-2 px-4">Amount Paid</th>
-            <th class="py-2 px-4">Notes</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(payment, index) in filteredPayments" :key="index">
-            <td class="text-center py-2">
-              <input type="radio" name="select" v-model="selectedPayment" :value="payment.id">
-            </td>
-            <td class="py-2 px-4">{{ payment.data.id }}</td>
-            <td class="py-2 px-4">{{ payment.data.customerName }}</td>
-            <td class="py-2 px-4">{{ payment.data.dateCreated }}</td>
-            <td class="py-2 px-4">{{ payment.data.datePrepared }}</td>
-            <td class="py-2 px-4">{{ payment.data.documentStatus }}</td>
-            <td class="py-2 px-4">{{ payment.data.preparedBy }}</td>
-            <td class="py-2 px-4">{{ payment.data.amountPaid }}</td>
-            <td class="py-2 px-4">{{ payment.data.notes }}</td>
-          </tr>
-          <tr v-if="filteredPayments.length === 0">
-            <td colspan="9" class="text-center py-4 text-gray-500">No data found</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+  </NuxtLayout>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import { useRouter } from 'vue-router';
-import { toast } from 'vue3-toastify';
-import { apiService } from '~/routes/api/API';
+    import { ref, computed } from 'vue';
+    import { useRouter } from 'vue-router';
+    import { toast } from 'vue3-toastify';
+    import { apiService } from '~/routes/api/API';
+    import { paymentServices } from '~/models/Payments'
 
 // Router instance
 const router = useRouter();
-
 // Payments data would typically be fetched from an API or passed as a prop
 const payments = ref([]); // Assume this will be populated from an API or prop
-
 // Reactive state for search and selected payment
 const searchQuery = ref('');
 const selectedPayment = ref<number | null>(null);
@@ -80,49 +86,97 @@ const filteredPayments = computed(() => {
   );
 });
 
-// Button functionalities
-const createPayment = () => {
-  router.push('/Payment_Table/CreatePayment');
-};
 
-// Redirect to the create payment page for updating payment
-const updatePayment = () => {
-  if (selectedPayment.value) {
-    router.push('/Payment_Table/UpdatePayment');
-  } else {
-    alert('Please select a payment to update.');
-  }
-};
 
-// Delete payment
-const deletePayment = () => {
-  if (selectedPayment.value) {
-    const index = payments.value.findIndex(payment => payment.id === selectedPayment.value);
-    if (index !== -1) {
-      payments.value.splice(index, 1);
-      selectedPayment.value = null;
-      alert('Payment deleted successfully.');
+const state = reactive({
+        columnHeaders: [
+            { name: 'Select' },
+            { name: 'Customer ID' },
+            { name: 'Prepared at' },
+            { name: 'Document Status Code' },
+            { name: 'Prepared By' },
+            { name: 'Amount Paid' },
+            { name: 'Notes' },
+        ],
+        error: null,
+        isTableLoading: false,
+        sortData: {
+            sortField: 'id',
+            sortOrder: 'descend',
+        },
+        payment: [],
+        searchQuery: '',
+    })
+
+    let selectedPaymentID = ref(null); // Track selected library
+
+    async function fetchPayment() {
+        state.isTableLoading = true
+        state.error = null
+        try {
+            const params = {}
+            const response = await apiService.getPayment(params)
+            state.payment = response
+            console.log(state.payment);
+        } catch (error: any) {
+            toast.error(error.message, {
+                autoClose: 5000,
+            })
+        }
+        state.isTableLoading = false
     }
-  } else {
-    alert('Please select a payment to delete.');
-  }
-};
+    onMounted(() => {
+      fetchPayment()
+    })
 
-const fetchLoanSchedules = async () => {
-  try {
-    const response = await apiService.getPaymentScheduleNoAuth({});
-    payments.value = response.data;
-  } catch (error) {
-    toast.error(`${error}`, {
+    async function updatePayment(){
+        try {
+            const response = await apiService.authPaymentUpdate({})
+            if (selectedPaymentID.value) {
+
+        let prepared_at = null;
+        let document_status_code = null;
+        let prepared_by_id = null;
+        let amount_paid = null;
+        let notes = null;
+
+        // Iterate through the data using a for loop
+        for (let i = 0; i < state.payment?.data.length; i++) {
+            const payments = state.payment.data[i];
+
+            // Check if the current library's id matches the selectedLibraryId
+            if (payments.id == parseInt(selectedPaymentID.value)?.toString()) {
+
+              prepared_at = payments.prepared_at
+              document_status_code = payments.document_status_code
+              prepared_by_id = payments.prepared_by_id
+              amount_paid = payments.amount_paid
+              notes  = payments.notes 
+            break; // Exit the loop once we find the selected library
+            }
+        }
+
+        paymentServices.id = selectedPaymentID.value;
+        paymentServices.prepared_at = prepared_at;
+        paymentServices.document_status_code = document_status_code;
+        paymentServices.prepared_by_id = prepared_by_id;
+        paymentServices.amount_paid = amount_paid;
+        paymentServices.notes = notes;
+        
+        console.log(paymentServices.id);
+        console.log(paymentServices.prepared_at);
+        console.log(paymentServices.document_status_code);
+        console.log(paymentServices.prepared_by_id);
+        console.log(paymentServices.amount_paid);
+        console.log(paymentServices.notes);
+        navigateTo('payments/update');
+        }
+        } catch (error) {
+            toast.error(error.message, {
         autoClose: 5000,
-      });
-  }
-}
-
-onMounted(() => {
-  fetchLoanSchedules();
-})
-
+    })
+        }
+    }
 </script>
 
 <style scoped>

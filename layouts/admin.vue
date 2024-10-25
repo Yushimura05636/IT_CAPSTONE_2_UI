@@ -268,7 +268,6 @@
         { name: "Loan", icon: ShareIcon, current: false,
             children: [
                 { name: "Loan Application", href: "/loan_applications", icon: CurrencyDollarIcon, current: false },
-                { name: "Loan Release", href: "", icon:  CreditCardIcon, current: false },
                 { name: "Payment Schedule", href: "/payment_schedules", icon: CreditCardIcon, current: false },
             ],
         },
@@ -277,17 +276,19 @@
 
         { name: "Release Schedules", icon: KeyIcon, current: false,
             children: [
-                { name: "Loan Application", href: "", icon: CurrencyDollarIcon, current: false },
+                { name: "Loan Release", href: "/loan_release", icon:  CreditCardIcon, current: false },
+
             ],
         },
 
         { name: "Payment", icon: FlagIcon, current: false,
             children: [
-            { name: "Payments", href: "/payments/", icon: CurrencyDollarIcon, current: false },
-            { name: "Payment Line", href: "/payment_lines/", icon: CurrencyDollarIcon, current: false },
+            { name: "Payments", href: "/payments", icon: CurrencyDollarIcon, current: false },
+            { name: "Payment Line", href: "/payment_lines", icon: CurrencyDollarIcon, current: false },
             { name: "Payment Schedule", href: "/payment_schedules", icon: CreditCardIcon, current: false },
             ],
         },
+        
         { name: "Report", icon: FireIcon, current: false,
             children: [
                 { name: "Loan Application", href: "", icon: CurrencyDollarIcon, current: false },
