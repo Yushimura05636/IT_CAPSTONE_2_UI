@@ -95,6 +95,9 @@ async function fetchUsers() {
     console.log(state.users);
   } catch (error: any) {
     state.error = error;
+    toast.error(`${error}`, {
+        autoClose: 3000,
+    })
   }
   state.isTableLoading = false;
 }
@@ -133,6 +136,9 @@ async function managePermissions(userId: number) {
     navigateTo('/permission/manage');
   } catch (error: any) {
     state.error = error;
+    toast.error(`${error}`, {
+        autoClose: 3000,
+    })
   }
 }
 
