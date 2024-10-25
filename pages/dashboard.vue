@@ -637,15 +637,16 @@ async function authorizedCheck() {
             autoClose: 3000,
         })
 
+        toast.info(`Your account has been re-direct to landing page`, {
+            autoClose: 3000,
+        })
+
         //set timeout
         setTimeout(() => {
-            toast.info(`Your account has been re-direct to landing page`, {
-                autoClose: 3000,
-            })
+        }, 5000)
 
-            //go to landing page
-            navigateTo(`/`);
-        }, 3000)
+        //go to landing page
+        navigateTo(`/`);
     }
     finally {
         response = null;
