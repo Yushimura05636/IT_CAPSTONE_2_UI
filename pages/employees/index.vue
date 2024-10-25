@@ -3,7 +3,7 @@
     <div class="bg-white">
     <header class="py-8 px-4 md:px-16">
       <div class="container mx-auto flex justify-between items-center">
-        <img src="../../img/LendCash_Logo-removebg-preview.png" class="w-20" alt="logo" />
+        <img src="@/assets/img/LendCash_Logo-removebg-preview.png" class="w-20" alt="logo" />
       </div>
     </header>
   </div>
@@ -132,7 +132,7 @@ import { Employee } from '../../models/Employee';
 
 const searchQuery = ref<string>('')
 
-const tableItems = ref<TableItem[]>([]); // Initialize 
+const tableItems = ref<TableItem[]>([]); // Initialize
 const selectedEmployeeId = ref<string | null>(null); // Track selected employee ID
 
 
@@ -216,7 +216,7 @@ async function fetchEmployees() {
      // Your query params for the API
     const response = await apiService.getEmployees({}); // Fetch customer data from API
     state.datas = response;
-    
+
     // Call the function to map the API data to tableItems
     storeResponseInTableItems();
 
@@ -260,9 +260,9 @@ function storeResponseInTableItems() {
       province: mapProvince(personality.province_id),
       dateCreated: new Date().toISOString().split('T')[0], // Set current date as dateCreated
       dateLastModified: new Date().toISOString().split('T')[0], // Set current date as dateLastModified
-      
+
       //Employee Section
-      employeeId: employees.id.toString(), 
+      employeeId: employees.id.toString(),
       sssno: employees.sss_no,
       phicno: employees.phic_no,
       tinno: employees.tin_no,
