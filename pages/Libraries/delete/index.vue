@@ -91,7 +91,9 @@ async function create()
               alert("delete successfully!");
           }
       } catch (error: any) {
-          alert("error: " + error);
+          toast.error(`${error}`, {
+            autoClose: 3000,
+          })
       }
 }
 

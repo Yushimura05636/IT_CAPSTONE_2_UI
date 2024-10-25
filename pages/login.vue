@@ -167,7 +167,7 @@ async function login() {
             toast.error("Something is wrong! please contact your adminstrator!", {
                     autoClose: 3000,
                 });
-            toast.error("error: " + state.error, {
+            toast.error(`${error}`, {
                 autoClose: 4000,
             });
             setTimeout(() => {

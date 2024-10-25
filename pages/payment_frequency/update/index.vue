@@ -5,33 +5,33 @@
                 <div class="border-b border-gray-900/10 pb-12">
                     <h1 class="text-xl font-bold leading-7 text-gray-900">Payment Frequency</h1>
                     <div class="mt-10 grid grid-rows-1 gap-x-6 gap-y-8 sm:grid-rows-3">
-                        
+
                         <div class="sm:col-span-2">
                             <label for="description" class="block text-sm font-bold leading-6 text-gray-900">Description <span class="text-red-600">*</span></label>
                             <div class="mt-2">
                             <input
-                            v-model="form.description"     
+                            v-model="form.description"
                             type="text"  id="description"  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-xl sm:leading-6" />
                             </div>
                         </div>
                         <div class="sm:col-span-2">
                             <label for="valueP" class="block text-sm font-bold leading-6 text-gray-900">Days Interval<span class="text-red-600">*</span></label>
-                            <input  
-                            v-model="form.daysInterval"  
+                            <input
+                            v-model="form.daysInterval"
                             type="number"  id="valueP "  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-xl sm:leading-6" />
                         </div>
                         <div class="sm:col-span-2">
                             <label for="notes" class="block text-sm font-bold leading-6 text-gray-900">Notes <span class="text-red-600">*</span></label>
                             <div class="mt-2">
-                            <input   
-                            v-model="form.notes"  
+                            <input
+                            v-model="form.notes"
                             type="text"  id="notes"  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-insetfocus:ring-indigo-600 sm:text-xl sm:leading-6" />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-    
+
             <div class="mt-6 flex items-center justify-end gap-x-6">
             <button type="button" class="text-sm font-bold leading-6 text-gray-900"
             @click="cancel">
@@ -51,8 +51,8 @@ import 'vue3-toastify/dist/index.css';
     import { apiService } from '~/routes/api/API'
     import { paymentFrequencyService } from '~/models/PaymentFrequency'
     import { PermissionService } from '~/models/Permission';
-    
-    
+
+
 
 
     const form = ref({
@@ -96,12 +96,14 @@ import 'vue3-toastify/dist/index.css';
                 });
                 // Introduce a delay before navigating
                 setTimeout(() => {
-                    navigateTo('/payment_frequency');  
+                    navigateTo('/payment_frequency');
                 }, 2000);
                 // Redirect to the customer list page
         }
     } catch (error: any) {
-        toast.error("Error: " + error);
+        toast.error(`${error}`, {
+            autoClose: 3000,
+        });
     }
     }
 
