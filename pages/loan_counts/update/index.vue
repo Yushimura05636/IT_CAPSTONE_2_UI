@@ -9,38 +9,38 @@
           <!-- Loan Count Field (Integer) -->
           <div>
             <label for="loanCount" class="block text-gray-700 font-medium">Loan Count</label>
-            <input 
-              v-model="loanCount" 
-              type="number" 
-              id="loanCount" 
+            <input
+              v-model="loanCount"
+              type="number"
+              id="loanCount"
               placeholder="Enter loan count"
-              class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500" 
+              class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
               required />
           </div>
 
           <!-- Min Amount Field (Decimal/Money) -->
           <div>
             <label for="minAmount" class="block text-gray-700 font-medium">Min Amount</label>
-            <input 
-              v-model="minAmount" 
-              type="number" 
-              step="0.01" 
-              id="minAmount" 
+            <input
+              v-model="minAmount"
+              type="number"
+              step="0.01"
+              id="minAmount"
               placeholder="Enter minimum amount"
-              class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500" 
+              class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
               required />
           </div>
 
           <!-- Max Amount Field (Decimal/Money) -->
           <div>
             <label for="maxAmount" class="block text-gray-700 font-medium">Max Amount</label>
-            <input 
-              v-model="maxAmount" 
-              type="number" 
-              step="0.01" 
-              id="maxAmount" 
+            <input
+              v-model="maxAmount"
+              type="number"
+              step="0.01"
+              id="maxAmount"
               placeholder="Enter maximum amount"
-              class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500" 
+              class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-blue-500"
               required />
           </div>
 
@@ -108,7 +108,7 @@ const submitForm = async () => {
                 });
                 // Introduce a delay before navigating
                 setTimeout(() => {
-                    navigateTo('/loancount');  
+                    navigateTo('/loan_counts');
                 }, 2000);
       console.log({
           loanCount: loanCount.value,
