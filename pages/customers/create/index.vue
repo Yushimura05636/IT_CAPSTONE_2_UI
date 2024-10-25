@@ -261,7 +261,7 @@
           </table>
         </div>
 
-        <div class="mt-4">
+        <div class="mt-4 flex justify-center">
           <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500">
             Create Customer
           </button>

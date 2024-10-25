@@ -5,7 +5,7 @@
           <div class="font-bold">Factor Rate</div>
 
           <!-- Action Buttons -->
-          <div class="flex justify-between items-center mb-8 mt-8">
+          <div class="flex flex-col md:flex-row justify-between items-center mb-8 mt-8">
             <!-- Left: Action Buttons -->
             <div class="flex space-x-4">
               <button
@@ -43,7 +43,7 @@
               </button>
             </div>
           </div>
-
+        <div class="overflow-x-auto">
           <Table class="w-full"
             :columnHeaders="state.columnHeaders"
             :data="state.factorRate"
@@ -81,6 +81,7 @@
               </tr>
             </template>
           </Table>
+        </div>
         </div>
       </div>
     </NuxtLayout>

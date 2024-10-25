@@ -13,12 +13,12 @@
       <a href="contact" class="text-gray-600 hover:text-green-600 font-bold">Contact</a>
     </nav>
     <div class="flex flex-col md:flex-row items-center gap-4 pop-in">
-      <a href="login" class="w-full md:w-auto text-black px-4 py-2 rounded-md hover:bg-green-600 font-bold flex justify-center items-center">Log in</a>
-      <a href="register_step1" 
+      <a href="login" class="w-full md:w-auto bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-opacity-50 animate__animated animate__pulse animate__infinite flex justify-center items-center whitespace-nowrap">Log in</a>
+      <!-- <a href="register_step1" 
         class="w-full md:w-auto bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-opacity-50 animate__animated animate__pulse animate__infinite flex justify-center items-center whitespace-nowrap"
         aria-label="Sign Up">
           Sign Up
-      </a>
+      </a> -->
     </div>
 
   </div>
@@ -30,7 +30,7 @@
         <h2 class="text-5xl font-bold text-green-500 mb-4">LendCash Microfinance System for ERD Financial Solution</h2>
         <p class="text-lg text-gray-600 mb-8">An Online Microfinance Lending System designed to empower individuals and small businesses by providing quick and easy access to financial services.</p>
         <div class="flex gap-4">
-          <a href="register-form" class="bg-green-600 text-white px-6 py-3 rounded-md hover:bg-green-900 animate__animated animate__pulse animate__infinite">Apply Now!</a>
+          <a href="register_step1" class="bg-green-600 text-white px-6 py-3 rounded-md hover:bg-green-900 animate__animated animate__pulse animate__infinite">Apply Now!</a>
         </div>
       </div>
       <div class="md:w-1/2 flex justify-center items-center animate__animated animate__zoomIn">
