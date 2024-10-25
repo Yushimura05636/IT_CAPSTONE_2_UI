@@ -77,7 +77,7 @@ import 'vue3-toastify/dist/index.css';
   async function createloancount(){
     try {
         const response = await apiService.authLoanCountsCreate({});
-        navigateTo('/create');
+        navigateTo('/loan_counts/create');
     } catch (error) {
         toast.error(error.message, {
       autoClose: 5000,
@@ -90,7 +90,7 @@ import 'vue3-toastify/dist/index.css';
     try {
         const response = await apiService.authLoanCountsUpdate({});
         UserService.usbl_id = selectedLoanId.value;
-        navigateTo('/update');
+        navigateTo('/loan_counts/update');
     } catch (error) {
         toast.error(error.message, {
       autoClose: 5000,
