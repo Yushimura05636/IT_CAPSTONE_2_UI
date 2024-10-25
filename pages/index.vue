@@ -347,16 +347,14 @@ async function removeToken() {
 
             // Remove the token from local storage
             localStorage.removeItem('_token'); // Adjust the key based on your implementation
+
+            //go back to the landing page
+            navigateTo(`/`);
         }
     } catch (error) {
         toast.error(`${error}`, {
             autoClose: 3000,
         })
-    }
-    finally{
-        setTimeout(() => {
-            navigateTo('/')
-        }, 3000)
     }
 }
 

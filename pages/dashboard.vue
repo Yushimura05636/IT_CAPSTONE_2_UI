@@ -630,7 +630,6 @@ closePeopleDropdown();
 async function authorizedCheck() {
     try {
         const response = await apiService.checkUserAuthentication({});
-        debugger;
     } catch (error) {
 
         //error
@@ -640,7 +639,7 @@ async function authorizedCheck() {
 
         //set timeout
         setTimeout(() => {
-            toast.error(`Re-directing to landing page`, {
+            toast.info(`Your account has been re-direct to landing page`, {
                 autoClose: 3000,
             })
 
