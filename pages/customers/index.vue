@@ -3,7 +3,7 @@
   <div class="bg-white">
     <header class="py-8 px-4 md:px-16">
       <div class="container mx-auto flex justify-between items-center">
-        <img src="../../img/LendCash_Logo-removebg-preview.png" class="w-20" alt="logo" />
+        <img src="/img/LendCash_Logo-removebg-preview.png" class="w-20" alt="logo" />
       </div>
     </header>
   </div>
@@ -15,7 +15,7 @@
       </div>
     </div>
     </div>
-  
+
 
   <div class="max-w-screen-xl mx-auto px-4 md:px-8">
     <!-- Action Buttons -->
@@ -32,14 +32,14 @@
           Delete
         </button>
         <button  @click="approveORreject"
-          :disabled="!selectedEmployeeId" 
+          :disabled="!selectedEmployeeId"
           class="px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-red-600 disabled:opacity-50"
-          @mouseenter="isHovered = true" 
+          @mouseenter="isHovered = true"
           @mouseleave="isHovered = false">
           {{ isHovered ? 'Reject' : 'Approved' }}
         </button>
 
-        
+
       </div>
 
       <!-- Right: Search Bar -->
@@ -237,7 +237,7 @@ async function fetchCustomers() {
 
     storeResponseInTableItems();
 
-    
+
 
   } catch (error) {
     toast.error(error.message, {
@@ -282,13 +282,13 @@ function storeResponseInTableItems() {
       mortuaryCoverageStart: customer.mortuary_coverage_start,
       mortuaryCoverageEnd: customer.mortuary_coverage_end,
     });
-    
+
     console.log(customer);
   }
 
   // // Loop through each customer and personality data (assuming they have matching indices)
   // state.datas?.data.forEach((customer, index) => {
-    
+
   // });
 }
 
