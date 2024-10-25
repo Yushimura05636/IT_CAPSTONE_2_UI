@@ -4,7 +4,7 @@ class API extends BaseAPIService {
 
     //check if the user is authenticate
     async checkUserAuthentication(params: object): Promise<any> {
-        return await this.request(`/USER_AUTH`, `GET`, params)
+        return await this.request(`/USER_AUTH`, `PATCH`, params)
     }
 
     //this is the employee API route

@@ -630,6 +630,7 @@ closePeopleDropdown();
 async function authorizedCheck() {
     try {
         const response = await apiService.checkUserAuthentication({});
+        debugger;
     } catch (error) {
 
         //error
