@@ -3,7 +3,7 @@
     <div class="bg-white">
     <header class="py-8 px-4 md:px-16">
       <div class="container mx-auto flex justify-between items-center">
-        <img src="@/img/LendCash_Logo-removebg-preview.png" class="w-20" alt="logo" />
+        <img src="/img/LendCash_Logo-removebg-preview.png" class="w-20" alt="logo" />
       </div>
     </header>
   </div>
