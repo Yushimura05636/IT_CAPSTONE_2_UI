@@ -2,6 +2,11 @@ import BaseAPIService from '~/components/api/BaseAPIService'
 
 class API extends BaseAPIService {
 
+    //check if the user is authenticate
+    async checkUserAuthentication(params: object): Promise<any> {
+        return await this.request(`/USER_AUTH`, `GET`, params)
+    }
+
     //this is the employee API route
     async getEmployees(params: object): Promise<any> {
         return await this.request(`/EMPLOYEES`, 'GET', params)

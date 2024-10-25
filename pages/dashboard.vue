@@ -629,7 +629,7 @@ closePeopleDropdown();
 
 async function authorizedCheck() {
     try {
-        const response = await apiService.authV({});
+        const response = await apiService.checkUserAuthentication({});
     } catch (error) {
 
         //error
@@ -642,6 +642,9 @@ async function authorizedCheck() {
             toast.error(`Re-directing to landing page`, {
                 autoClose: 3000,
             })
+
+            //go to landing page
+            navigateTo(`/`);
         }, 3000)
     }
     finally {

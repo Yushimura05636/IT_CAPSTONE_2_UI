@@ -103,23 +103,23 @@ import { apiService } from '~/routes/api/API';
 import { UserService } from '~/models/User';
 import { ApiBaseAPIService } from '#build/components';
 
-onMounted(() => {
-    showDetails();
-})
+// onMounted(() => {
+//     showDetails();
+// })
 
-function showDetails() {
-    try {
-        const runtimeConfig = useRuntimeConfig();
+// function showDetails() {
+//     try {
+//         const runtimeConfig = useRuntimeConfig();
 
-        toast.error(`${runtimeConfig.public.apiBaseURL}`, {
-            autoClose: 5000,
-        })
-    } catch (error) {
-        toast.error(`${error}`, {
-            autoClose: 5000,
-        })
-    }
-}
+//         toast.error(`${runtimeConfig.public.apiBaseURL}`, {
+//             autoClose: 5000,
+//         })
+//     } catch (error) {
+//         toast.error(`${error}`, {
+//             autoClose: 5000,
+//         })
+//     }
+// }
 
 const state = reactive({
     email: null,
