@@ -3,7 +3,7 @@
       <div class="p-4">
         <div class="max-w-screen-xl mx-auto px-4 md:px-8">
           <div class="font-bold text-lg">Payment Duration</div>
-  
+
           <!-- Action Buttons and Search Bar -->
           <div class="flex flex-col md:flex-row md:justify-between items-center mb-8 mt-8 space-y-4 md:space-y-0">
             <!-- Left: Action Buttons -->
@@ -28,7 +28,7 @@
                 Delete
               </button>
             </div>
-  
+
             <!-- Right: Search Bar -->
             <div class="flex w-full md:w-auto items-center space-x-2">
               <input
@@ -42,7 +42,7 @@
               </button>
             </div>
           </div>
-  
+
           <!-- Table Container -->
           <div class="overflow-x-auto">
             <Table
@@ -76,7 +76,7 @@
                     <span>{{ duration.notes }}</span>
                   </td>
                 </tr>
-                <tr v-if="state.duration.data.length === 0">
+                <tr v-if="state.duration.length === 0">
                   <td colspan="4" class="text-center py-6 text-gray-500">No durations found</td>
                 </tr>
               </template>
@@ -86,15 +86,15 @@
       </div>
     </NuxtLayout>
   </template>
-  
+
   <script setup lang="ts">
   import { toast } from 'vue3-toastify';
   import 'vue3-toastify/dist/index.css';
-  
+
   import { ref, reactive, onMounted } from 'vue';
   import { apiService } from '~/routes/api/API';
   import { paymentDurationService } from '~/models/PaymentDuration';
-  
+
   const state = reactive({
     columnHeaders: [
       { name: 'Select' },
@@ -111,9 +111,9 @@
     duration: [],
     searchQuery: '',
   });
-  
+
   const selectedDurationID = ref(null);
-  
+
   async function fetchFreqandDuration() {
     state.isTableLoading = true;
     state.error = null;
@@ -125,11 +125,11 @@
     }
     state.isTableLoading = false;
   }
-  
+
   onMounted(() => {
     fetchFreqandDuration();
   });
-  
+
   async function updateDuration() {
     try {
       const response = await apiService.authPaymentDurationsUpdate({});
@@ -137,7 +137,7 @@
         let numOfPayments = null;
         let description = null;
         let notes = null;
-  
+
         for (let i = 0; i < state.duration?.data.length; i++) {
           const duration = state.duration.data[i];
           if (duration.id == parseInt(selectedDurationID.value)?.toString()) {
@@ -147,7 +147,7 @@
             break;
           }
         }
-  
+
         paymentDurationService.id = selectedDurationID.value;
         paymentDurationService.description = description;
         paymentDurationService.number_of_payments = numOfPayments;
@@ -158,7 +158,7 @@
       toast.error(`${error}`, { autoClose: 5000 });
     }
   }
-  
+
   async function createPaymentFrequency() {
     try {
       await apiService.authPaymentFrequenciesCreate({});
@@ -168,29 +168,28 @@
     }
   }
   </script>
-  
+
   <style scoped>
   /* Adjusts top margin for larger screens */
   .mt-16 {
     margin-top: 4rem;
   }
-  
+
   /* Ensures table borders and layout */
   table {
     border-collapse: separate;
     border-spacing: 0;
   }
-  
+
   th, td {
     border-bottom: 1px solid #e2e8f0;
   }
-  
+
   button {
     transition: background-color 0.2s ease, box-shadow 0.2s ease;
   }
-  
+
   button:hover {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   }
   </style>
-  
