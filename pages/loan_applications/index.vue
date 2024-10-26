@@ -147,14 +147,14 @@ function filteredLoanApps() {
 
 // Navigate to create loan application page
 function createLoanApplication() {
-  navigateTo('/loan_counts/create');
+  navigateTo('/loan_applications/create');
 }
 
 // Navigate to view loan application page
 function viewLoanApplication() {
   if (selectedLoanAppID.value) {
       loanApplicationService.id = selectedLoanAppID.value;
-    navigateTo(`/loan_counts/view`);
+    navigateTo(`/loan_applications/view`);
   }
 }
 
