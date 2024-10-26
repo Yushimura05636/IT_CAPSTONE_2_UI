@@ -81,6 +81,8 @@
 </template>
 
 <script setup lang="ts">
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 import { authService } from '@/components/api/AuthService'
 import { useVuelidate } from "@vuelidate/core"
 import { required, helpers } from '@vuelidate/validators'

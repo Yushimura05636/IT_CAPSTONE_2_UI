@@ -14,7 +14,7 @@
     </nav>
     <div class="flex flex-col md:flex-row items-center gap-4 pop-in">
       <a href="login" class="w-full md:w-auto bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-opacity-50 animate__animated animate__pulse animate__infinite flex justify-center items-center whitespace-nowrap">Log in</a>
-      <!-- <a href="register_step1" 
+      <!-- <a href="register_step1"
         class="w-full md:w-auto bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-opacity-50 animate__animated animate__pulse animate__infinite flex justify-center items-center whitespace-nowrap"
         aria-label="Sign Up">
           Sign Up
@@ -42,10 +42,10 @@
   <div class="container mx-auto mt-20 scroll-pop text-center">
     <h3 class="text-6xl font-bold text-green-500 mb-4">LendCash Offers</h3>
     <p class="text-lg text-gray-600 mb-8">Creating Opportunities, One Microloan at a Time!</p>
-    
+
     <div class="flex justify-center pop-in"> <!-- Flexbox added to center the grid -->
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 mt-8">
-        
+
         <div class="bg-white rounded-md p-6 shadow-lg pop-in flex flex-col items-center">
           <img src="../img/grouping.png" alt="Group Lending" class="w-16 h-16 mb-4">
           <h4 class="text-xl font-bold text-gray-800 mb-2 text-center">Group Lending</h4>
@@ -89,7 +89,7 @@
 
 
 
-    
+
     <!-- Additional Content: How It Works Section -->
     <section class="py-16 pop-in">
       <div class="container mx-auto text-center">
@@ -114,8 +114,8 @@
         </div>
       </div>
     </section>
-    
-    
+
+
     <!-- Additional Content: Frequently Asked Questions Section -->
     <section class="py-16 pop-in">
       <div class="container mx-auto text-center">
@@ -269,8 +269,66 @@
   </div>
 </template>
 
-<script>
-export default {};
+<script setup lang="ts">
+  import { toast } from 'vue3-toastify';
+  import 'vue3-toastify/dist/index.css';
+import { ref } from 'vue';
+import { authService } from '~/components/api/AuthService';
+
+interface Testimonial {
+  avatar: string;
+  name: string;
+  title: string;
+  quote: string;
+}
+
+const testimonials = ref<Testimonial[]>([
+  {
+    avatar: "https://mydramalist.com/people/17605-daniel-padilla",
+    name: "Heinz Kyle Hora",
+    title: "Founder of MGG",
+    quote: "LendCash has been an amazing support for our group. The process is so simple and transparent!"
+  },
+  {
+    avatar: "https://scontent.fcgy1-1.fna.fbcdn.net/v/t39.30808-6/448656158_1629887417845685_6398441375725225275_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeGeOFE4asStHUlOZco6oK80qfpuDRI2IeOp-m4NEjYh40Yfk9OO0p0f7HpySF7PqhcbrJBkcX2sr3R9Pn5858cV&_nc_ohc=Kc-Vzrd_MaMQ7kNvgHPtz4b&_nc_ht=scontent.fcgy1-1.fna&oh=00_AYB2rdBHgfFwsYFCQsUO500kJHlACjQT79cJNjy48G8RSg&oe=66DD354A",
+    name: "Stephen Duray",
+    title: "Founder of MGG",
+    quote: "The no-collateral feature made all the difference for us. LendCash truly empowers the community."
+  },
+  {
+    avatar: "https://scontent.fcgy1-1.fna.fbcdn.net/v/t1.15752-9/457869417_880139523982024_8057426980193137924_n.png?_nc_cat=104&ccb=1-7&_nc_sid=9f807c&_nc_eui2=AeHLQdw0XWAnaNothpVh5ogysuphZSIDa5my6mFlIgNrmSjUcm8ZpKHlFiLj_4_bzV7MJ7G-xEP9lN4RnQwoh_Ip&_nc_ohc=TTESbs8EOu0Q7kNvgHy49e8&_nc_ht=scontent.fcgy1-1.fna&oh=03_Q7cD1QEhuLSmpNsAiFORrI0fSu6jnTsBxH83driAhl4viXPJZg&oe=66FEF935",
+    name: "Venn Lopez",
+    title: "Founder of MGG",
+    quote: "Fast disbursement and hassle-free requirements! It couldn't be better."
+  }
+]);
+
+async function removeToken() {
+    try {
+        const token = localStorage.getItem('_token');
+
+        debugger;
+        if(token){
+
+            //remove laravel authentication toke
+            const response = await authService.logout();
+
+            // Remove the token from local storage
+            localStorage.removeItem('_token'); // Adjust the key based on your implementation
+
+            //go back to the landing page
+            navigateTo(`/`);
+        }
+    } catch (error) {
+        toast.error(`${error}`, {
+            autoClose: 3000,
+        })
+    }
+}
+
+onMounted(() => {
+    removeToken();
+})
 </script>
 
 <style scoped>
