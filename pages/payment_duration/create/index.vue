@@ -1,5 +1,6 @@
 <template>
-    <div class="bg-gray-100 h-screen flex items-center justify-center p-6">
+    <NuxtLayout admin="admin">
+        <div class="bg-gray-100 h-screen flex items-center justify-center p-6">
         <form @submit.prevent="createPaymentDuration"class="w-full max-w-lg bg-white p-8 rounded-md shadow-md">
             <div class="container mx-auto p-4">
                 <div class="border-b border-gray-900/10 pb-12">
@@ -37,6 +38,7 @@
             </div>
         </form>
     </div>
+    </NuxtLayout>
 </template>
 
 <script setup lang="ts">
