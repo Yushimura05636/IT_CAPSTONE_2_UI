@@ -9,7 +9,7 @@
         <!-- Buttons and Search Field Section -->
         <div class="flex justify-between items-center mb-4">
           <div class="flex space-x-2">
-            <button @click="createItem" class="bg-green-500 text-white px-4 py-2 rounded">Create</button>
+            <button @click="createPayment" class="bg-green-500 text-white px-4 py-2 rounded">Create</button>
             <button @click="viewItem" class="bg-blue-500 text-white px-4 py-2 rounded">View</button>
             <button @click="updatePayment" class="bg-yellow-500 text-white px-4 py-2 rounded">Update</button>
           </div>
@@ -179,7 +179,14 @@ const state = reactive({
         autoClose: 5000,
     })
         }
+}
+function createPayment(){
+    try {
+        navigateTo(`/payments/create/`);
+    } catch (error) {
+        toast.error(`${error}`);
     }
+}
 </script>
 
 <style scoped>
