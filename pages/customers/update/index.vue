@@ -299,7 +299,7 @@ const state = ref({
 const fetchBarangays = async () => {
   // Replace with your actual API call
   try {
-    const response = await apiService.get({}, "barangay");
+    const response = await apiService.getNoAuth({}, "barangay");
 
     state.value.barangays = response.data;
   } catch (error) {
@@ -312,7 +312,7 @@ const fetchBarangays = async () => {
 const fetchCities = async () => {
   // Replace with your actual API call
   try {
-    const response = await apiService.get({}, "city");
+    const response = await apiService.getNoAuth({}, "city");
 
     state.value.cities = response.data;
 
@@ -325,7 +325,7 @@ const fetchCities = async () => {
 
 const fetchCountries = async () => {
   try {
-    const response = await apiService.get({}, "country");
+    const response = await apiService.getNoAuth({}, "country");
 
     state.value.countries = response.data;
   } catch (error) {
@@ -338,7 +338,7 @@ const fetchCountries = async () => {
 const fetchProvinces = async () => {
   // Replace with your actual API call
   try {
-    const response = await apiService.get({}, "province");
+    const response = await apiService.getNoAuth({}, "province");
 
     state.value.provinces = response.data;
   } catch (error) {
@@ -351,7 +351,7 @@ const fetchProvinces = async () => {
 const fetchCreditStatuses = async () => {
   // Replace with your actual API call
   try {
-    const response = await apiService.get({}, "credit_status");
+    const response = await apiService.getNoAuth({}, "credit_status");
 
     state.value.creditStatuses = response.data;
   } catch (error) {
@@ -364,7 +364,7 @@ const fetchCreditStatuses = async () => {
 const fetchGroups = async () => {
   // Replace with your actual API call
   try {
-    const response = await apiService.get({}, "customer_group");
+    const response = await apiService.getNoAuth({}, "customer_group");
 
     state.value.groups = response.data;
   } catch (error) {
@@ -377,7 +377,7 @@ const fetchGroups = async () => {
 const fetchPersonalityStatusCode = async () => {
   // Replace with your actual API call
   try {
-    const response = await apiService.get({}, "personality_status_map");
+    const response = await apiService.getNoAuth({}, "personality_status_map");
 
     state.value.personality_status_code = response.data;
   } catch (error) {
@@ -390,7 +390,7 @@ const fetchPersonalityStatusCode = async () => {
 const fetchLoanCount = async () => {
   // Replace with your actual API call
   try {
-    const response = await apiService.getLoanCount({});
+    const response = await apiService.getLoanCountNoAuth({});
 
     state.value.loan_count = response.data;
 
@@ -429,7 +429,7 @@ const fetchCustomer = async () => {
     navigateTo('/customers'); // Redirect to the customer list page or show an error
     return;
   } // Assuming you pass the ID in the route
-  const response = await apiService.getCustomerById({},customerId);
+  const response = await apiService.getCustomerByIdNoAuth({},customerId);
   ; // Fetch customer data
   Object.assign(customer.value, response.customer);
   Object.assign(personality.value, response.personality) // Merge response data into customer
