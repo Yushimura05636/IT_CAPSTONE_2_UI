@@ -718,7 +718,7 @@ async authRequirementsUpdate(params: object): Promise<any> {
     // }
 
     async getCustomerByGroupId(params: object, id: number): Promise<any> {
-    return await this.request(`/test/${id}`, 'GET', params)
+        return await this.request(`/CUSTOMERS/NoAUTH/GroupAPPROVE/${id}`, 'GET', params)
     }
 
 
