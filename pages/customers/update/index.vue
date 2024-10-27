@@ -238,11 +238,8 @@
 <script setup lang="ts">
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
-
 import { ref, onMounted } from 'vue';
-
 import { CustomersService } from '~/models/Customer';
-import { PermissionService } from '~/models/Permission';
 import { apiService } from '~/routes/api/API';
 
 const requirements = ref({});
@@ -413,7 +410,6 @@ onMounted(async () => {
     fetchLoanCount(),
     fetchCustomer(),
     fetchActiveRequirements(),
-    fetchCustomerRequirement(),
   ]);
 });
 
@@ -504,6 +500,11 @@ async function fetchActiveRequirements() {
     } catch (error) {
     console.error('Error fetching requirements:', error);
     }
+    finally{
+        setTimeout(() => {
+            fetchCustomerRequirement()
+        }, 1000);
+    }
 }
 
 const getSelectedRequirements = () => {
@@ -522,8 +523,7 @@ const getSelectedRequirements = () => {
         }
     }
 
-    setTimeout(() => {
-    }, 2000);
+
 
     // // Assuming selectedDataRequirements is an array
     // state.value.requirements = []; // Reset the array first
@@ -561,13 +561,12 @@ const fetchCustomerRequirement = async () => {
       }
     }
 
-    setTimeout(() => {
-    }, 2000);
+    // state.value.requirements = [];
+    //   for (let i = 0; i < requirements.value.length; i++) {
+    //     state.value.requirements.push(requirements.value[i]);
+    // }
 
-    state.value.requirements = [];
-      for (let i = 0; i < requirements.value.length; i++) {
-        state.value.requirements.push(requirements.value[i]);
-    }
+
 
   } catch (error) {
     console.error('Error fetching customer requirements:', error);

@@ -97,8 +97,8 @@ import 'vue3-toastify/dist/index.css';
     //factorRate.value.payment_duration_id
     // factorRate.value.payment_frequency_id
     try {
-      const frequency = await apiService.getPaymentFrequency({});
-      const duration = await apiService.getPaymentduration({});
+      const frequency = await apiService.getPaymentFrequencyNoAuth({});
+      const duration = await apiService.getPaymentdurationNoAuth({});
 
       if (frequency && frequency.data && duration && duration.data) {
         state.frequency = frequency.data;

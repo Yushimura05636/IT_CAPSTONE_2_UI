@@ -81,8 +81,8 @@ import 'vue3-toastify/dist/index.css';
     async function fetchFreqAndDura() {
         try {
             const params = {};
-            const frequency = await apiService.getPaymentFrequency({})
-            const duration = await apiService.getPaymentduration({})
+            const frequency = await apiService.getPaymentFrequencyNoAuth({})
+            const duration = await apiService.getPaymentdurationNoAuth({})
 
             console.log('payment freq' + frequency);
             console.log('payment duration' + duration);

@@ -24,7 +24,7 @@
               Delete
             </button>
           </div>
-  
+
           <!-- Search Bar -->
           <div class="relative flex-grow w-full md:w-auto max-w-xs">
             <input
@@ -36,7 +36,7 @@
             <button class="absolute right-4 top-2 text-blue-500 hover:text-blue-700">Search</button>
           </div>
         </div>
-  
+
         <!-- Fees Table -->
         <div class="overflow-x-auto">
           <Table
@@ -73,15 +73,15 @@
       </div>
     </NuxtLayout>
   </template>
-  
+
   <script setup lang="ts">
   import { toast } from 'vue3-toastify';
   import 'vue3-toastify/dist/index.css';
-  
+
   import { ref, reactive, onMounted } from 'vue';
   import { apiService } from '~/routes/api/API';
   import { feeService } from '~/models/Fee';
-  
+
   const state = reactive({
     columnHeaders: [
       { name: 'Select' },
@@ -99,25 +99,25 @@
     fee: [],
     searchQuery: '',
   });
-  
+
   let selectedFeeID = ref(null);
-  
+
   async function fetchFee() {
     state.isTableLoading = true;
     state.error = null;
     try {
-      const response = await apiService.getFee({});
+      const response = await apiService.getFeeNoAuth({});
       state.fee = response;
     } catch (error: any) {
       toast.error(`${error}`, { autoClose: 5000 });
     }
     state.isTableLoading = false;
   }
-  
+
   onMounted(() => {
     fetchFee();
   });
-  
+
   async function updateFee() {
     try {
       if (selectedFeeID.value) {
@@ -127,7 +127,7 @@
         feeService.description = fee.description;
         feeService.isActive = fee.isactive;
         feeService.notes = fee.notes;
-  
+
         navigateTo('Fees/update');
       } else {
         alert("Please select a fee to modify.");
@@ -136,7 +136,7 @@
       toast.error(`${error}`, { autoClose: 5000 });
     }
   }
-  
+
   async function createFee() {
     try {
       await apiService.authFeesCreate({});
@@ -146,4 +146,3 @@
     }
   }
   </script>
-  
