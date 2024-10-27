@@ -630,10 +630,19 @@ async function fetchNotExpiredCustomerRequirementsNoAUTH() {
 };
 
 
-// Format the date when component is mounted
-const formatDate = (dateString: any) => {
-  const date = new Date(dateString);
-  return date.toISOString().split('T')[0]; // Format to YYYY-MM-DD
+const formatDate = (dateString) => {
+  console.log("Input Date String:", dateString); // Add this line for debugging
+  const parts = dateString.split('-');
+  debugger;
+  if (parts.length === 3) {
+    const month = parts[1].padStart(2, '0');
+    const day = parts[2].padStart(2, '0');
+    const year = parts[0];
+    return `${year}-${month}-${day}`;
+  } else {
+    console.error("Invalid date format. Expected MM/DD/YYYY.");
+    return null;
+  }
 };
 
 </script>

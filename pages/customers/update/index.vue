@@ -483,7 +483,7 @@ const updateCustomer = async () => {
           // Introduce a delay before navigating
           setTimeout(() => {
             navigateTo('/customers'); // Redirect to the customer list page
-          }, 2000);
+          }, 5000);
   } catch (error) {
     toast.error('Error updating customer: ' + error);
     toast.error(`${error}`, {
@@ -525,13 +525,13 @@ const getSelectedRequirements = () => {
 
 
 
-    // // Assuming selectedDataRequirements is an array
-    // state.value.requirements = []; // Reset the array first
+    // Assuming selectedDataRequirements is an array
+    state.value.requirements = []; // Reset the array first
 
-    // // Loop through selectedDetails to store values in selectedDataRequirements
-    // for (let i = 0; i < selectedDetails.length; i++) {
-    //     state.value.requirements.push(selectedDetails[i]);
-    // }
+    // Loop through selectedDetails to store values in selectedDataRequirements
+    for (let i = 0; i < selectedDetails.length; i++) {
+        state.value.requirements.push(selectedDetails[i]);
+    }
 
     //console.log(selectedDetails); // Output selected details to console
 };
@@ -555,7 +555,7 @@ const fetchCustomerRequirement = async () => {
         const custReq = customerRequirements[j];
         if (req.id === custReq.id) {
           selectedRequirements.value.push(req.id);
-          req.expiry_date = formatDate(custReq.expiry_date.split(" ")[0]); // Format date
+          req.expiry_date = custReq.expiry_date.split(" ")[0]; // Format date
           break;
         }
       }
@@ -581,10 +581,19 @@ function cancelForm() {
     }
 }
 
-// Format the date when component is mounted
-const formatDate = (dateString: any) => {
-  const date = new Date(dateString);
-  return date.toISOString().split('T')[0]; // Format to YYYY-MM-DD
+const formatDate = (dateString) => {
+  console.log("Input Date String:", dateString); // Add this line for debugging
+  const parts = dateString.split('-');
+  debugger;
+  if (parts.length === 3) {
+    const month = parts[1].padStart(2, '0');
+    const day = parts[2].padStart(2, '0');
+    const year = parts[0];
+    return `${year}-${month}-${day}`;
+  } else {
+    console.error("Invalid date format. Expected MM/DD/YYYY.");
+    return null;
+  }
 };
 </script>
 
