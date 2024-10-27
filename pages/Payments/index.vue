@@ -1,65 +1,68 @@
 <template>
-  <NuxtLayout name="admin">
-    <div class="p-8">
-      <div class="flex justify-between items-center mb-4">
-        <h1 class="text-2xl font-bold">Payments</h1>
-        <div class="flex space-x-2">
-          <button @click="updatePayment" class="bg-yellow-500 text-white px-4 py-2 rounded">Update</button>
-          <button @click="" class="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
+    <NuxtLayout name="admin">
+      <div class="p-8">
+        <!-- Title Section -->
+        <div class="mb-4">
+          <h1 class="text-2xl font-bold mb-2">Payments</h1>
+        </div>
+
+        <!-- Buttons and Search Field Section -->
+        <div class="flex justify-between items-center mb-4">
+          <div class="flex space-x-2">
+            <button @click="createItem" class="bg-green-500 text-white px-4 py-2 rounded">Create</button>
+            <button @click="viewItem" class="bg-blue-500 text-white px-4 py-2 rounded">View</button>
+            <button @click="updatePayment" class="bg-yellow-500 text-white px-4 py-2 rounded">Update</button>
+          </div>
+          <input
+            v-model="searchQuery"
+            type="text"
+            placeholder="Search payments"
+            class="border rounded px-4 py-2 w-1/2"
+          />
+        </div>
+
+        <!-- Table Section -->
+        <div class="overflow-x-auto">
+          <Table
+            class="w-full table-auto border-collapse"
+            :columnHeaders="state.columnHeaders"
+            :data="state.payment"
+            :isLoading="state.isTableLoading"
+            :sortData="state.sortData"
+          >
+            <tr v-for="(payments, index) in state.payment?.data" :key="index" class="px-4 py-2">
+              <td class="py-2 border-b border-gray-300">
+                <input
+                  type="radio"
+                  :value="payments.id"
+                  v-model="selectedPaymentID"
+                  class="cursor-pointer"
+                />
+              </td>
+              <td class="px-4 py-2 border-b border-gray-300">
+                <span>{{ payments.customer_id }}</span>
+              </td>
+              <td class="px-4 py-2 border-b border-gray-300">
+                <span>{{ payments.prepared_at }}</span>
+              </td>
+              <td class="px-4 py-2 border-b border-gray-300">
+                <span>{{ payments.document_status_code }}</span>
+              </td>
+              <td class="px-4 py-2 border-b border-gray-300">
+                <span>{{ payments.prepared_by_id }}</span>
+              </td>
+              <td class="px-4 py-2 border-b border-gray-300">
+                <span>{{ payments.amount_paid }}</span>
+              </td>
+              <td class="px-4 py-2 border-b border-gray-300">
+                <span>{{ payments.notes }}</span>
+              </td>
+            </tr>
+          </Table>
         </div>
       </div>
-      <div class="flex justify-center mb-4">
-        <input
-          v-model="searchQuery"
-          type="text"
-          placeholder="Search payments"
-          class="border rounded px-4 py-2 w-1/2"
-        />
-      </div>
-      <div class="overflow-x-auto">
-        <Table class="w-full table-auto border-collapse " 
-          :columnHeaders="state.columnHeaders" 
-          :data="state.payment" 
-          :isLoading="state.isTableLoading"
-          :sortData="state.sortData" 
-          >
-          <template #body
-              v-if="!(state.isTableLoading || (state.payment?.data === 0))">
-              <tr v-for="(payments, index) in state.payment?.data" :key="index" class=" px-4  py-2">
-                  
-                  <td class="py-2 border-b border-gray-300 ">
-                      <input
-                      type="radio"
-                      :value="payments.id"
-                      v-model="selectedPaymentID"
-                      class="cursor-pointer"
-                      />
-                  </td>
-                  <td class="px-4  py-2 border-b border-gray-300  ">
-                      <span>{{ payments.customer_id}} </span>
-                  </td>
-                  <td class="px-4  py-2 border-b border-gray-300 ">
-                      <span>{{payments.prepared_at }}</span>
-                  </td>
-                  <td class="px-4  py-2 border-b border-gray-300 ">
-                      <span>{{ payments.document_status_code}}</span>
-                  </td>
-                  <td class="px-4  py-2 border-b border-gray-300 ">
-                      <span>{{payments.prepared_by_id }}</span>
-                  </td>
-                  <td class="px-4  py-2 border-b border-gray-300 ">
-                      <span>{{ payments.amount_paid}}</span>
-                  </td>
-                  <td class="px-4  py-2 border-b border-gray-300 ">
-                      <span>{{ payments.notes}}</span>
-                  </td>
-              </tr>
-          </template>
-        </Table>
-      </div>
-    </div>
-  </NuxtLayout>
-</template>
+    </NuxtLayout>
+  </template>
 
 <script setup lang="ts">
     import { ref, computed } from 'vue';
@@ -151,7 +154,7 @@ const state = reactive({
               document_status_code = payments.document_status_code
               prepared_by_id = payments.prepared_by_id
               amount_paid = payments.amount_paid
-              notes  = payments.notes 
+              notes  = payments.notes
             break; // Exit the loop once we find the selected library
             }
         }
@@ -162,7 +165,7 @@ const state = reactive({
         paymentServices.prepared_by_id = prepared_by_id;
         paymentServices.amount_paid = amount_paid;
         paymentServices.notes = notes;
-        
+
         console.log(paymentServices.id);
         console.log(paymentServices.prepared_at);
         console.log(paymentServices.document_status_code);
