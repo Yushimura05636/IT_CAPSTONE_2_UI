@@ -211,6 +211,7 @@
         ArrowLongLeftIcon,
         FlagIcon,
 
+
     } from "@heroicons/vue/24/outline";
     import { ChevronRightIcon, ShareIcon } from "@heroicons/vue/20/solid";
     import {
@@ -239,16 +240,6 @@
                 { name: "Permission", href: "/Permission", icon: UserIcon, current: false },
             ],
         },
-        { name: "Variables", icon: UsersIcon, current: false,
-            children: [
-                { name: "Loan Count", href: "/loan_counts", icon: CurrencyDollarIcon, current: false },
-                { name: "Payment Duration", href: "/payment_duration", icon: CurrencyDollarIcon, current: false },
-                { name: "Payment Frequency", href: "/payment_frequency", icon: CurrencyDollarIcon, current: false },
-                { name: "Factor Rate", href: "/factor_rate", icon: CurrencyDollarIcon, current: false },
-                { name: "Fees", href: "/Fees", icon: CurrencyDollarIcon, current: false },
-            ],
-        },
-
 
 
         { name: "Customers", icon: UsersIcon, current: false,
@@ -281,14 +272,19 @@
             ],
         },
 
-        { name: "Payment", icon: FlagIcon, current: false,
+        { name: "Transactions", icon: FlagIcon, current: false,
             children: [
-            { name: "Payments", href: "/payments", icon: CurrencyDollarIcon, current: false },
+            { name: "Payment", href: "/payments", icon: CurrencyDollarIcon, current: false },
+            { name: "Fees", href: "/Fees", icon: CurrencyDollarIcon, current: false },
             { name: "Payment Line", href: "/payment_lines", icon: CurrencyDollarIcon, current: false },
             { name: "Payment Schedule", href: "/payment_schedules", icon: CreditCardIcon, current: false },
+            { name: "Loan Count", href: "/loan_counts", icon: CurrencyDollarIcon, current: false },
+            { name: "Payment Duration", href: "/payment_duration", icon: CurrencyDollarIcon, current: false },
+            { name: "Payment Frequency", href: "/payment_frequency", icon: CurrencyDollarIcon, current: false },
+            { name: "Factor Rate", href: "/factor_rate", icon: CurrencyDollarIcon, current: false },
             ],
         },
-        
+
         { name: "Report", icon: FireIcon, current: false,
             children: [
                 { name: "Loan Application", href: "", icon: CurrencyDollarIcon, current: false },
