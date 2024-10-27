@@ -295,6 +295,7 @@ const state = ref({
   isTableLoading: false,
 });
 
+
 const fetchBarangays = async () => {
   // Replace with your actual API call
   try {
@@ -521,17 +522,18 @@ const getSelectedRequirements = () => {
         }
     }
 
-    debugger;
+    setTimeout(() => {
+    }, 2000);
 
-    // Assuming selectedDataRequirements is an array
-    state.value.requirements = []; // Reset the array first
+    // // Assuming selectedDataRequirements is an array
+    // state.value.requirements = []; // Reset the array first
 
-    // Loop through selectedDetails to store values in selectedDataRequirements
-    for (let i = 0; i < selectedDetails.length; i++) {
-        state.value.requirements.push(selectedDetails[i]);
-    }
+    // // Loop through selectedDetails to store values in selectedDataRequirements
+    // for (let i = 0; i < selectedDetails.length; i++) {
+    //     state.value.requirements.push(selectedDetails[i]);
+    // }
 
-    console.log(selectedDetails); // Output selected details to console
+    //console.log(selectedDetails); // Output selected details to console
 };
 
 
@@ -559,34 +561,16 @@ const fetchCustomerRequirement = async () => {
       }
     }
 
+    setTimeout(() => {
+    }, 2000);
+
     state.value.requirements = [];
       for (let i = 0; i < requirements.value.length; i++) {
         state.value.requirements.push(requirements.value[i]);
     }
 
-    updateSelectedDetails();
-
   } catch (error) {
     console.error('Error fetching customer requirements:', error);
-  }
-};
-
-// Function to update selected details based on current selections
-const updateSelectedDetails = () => {
-  selectedDetails.value = []; // Clear the selected details before updating
-
-  // Loop through the requirements to check against selectedRequirements
-  for (let i = 0; i < requirements.value.length; i++) {
-    const req = requirements.value[i];
-
-    // Check if the requirement ID is in selectedRequirements
-    if (selectedRequirements.value.includes(req.id)) {
-      selectedDetails.value.push({
-        id: req.id,
-        description: req.description,
-        expiry_date: req.expiry_date,
-      });
-    }
   }
 };
 
