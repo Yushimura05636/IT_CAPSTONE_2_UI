@@ -51,50 +51,51 @@
       </div>
 
       <!-- Table -->
-      <div class="overflow-x-auto">
-        <table class="min-w-full bg-white border border-gray-200 rounded-lg">
-          <thead class="bg-gray-200 text-gray-600 uppercase text-sm">
-            <tr>
-              <th class="px-4 py-2 border">Select</th>
-              <th class="px-4 py-2 border">Name</th>
-              <th class="px-4 py-2 border">Email</th>
-              <th class="px-4 py-2 border">Phone Number</th>
-              <th class="px-4 py-2 border">Birthday</th>
-              <th class="px-4 py-2 border">Gender</th>
-              <th class="px-4 py-2 border">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Loading State -->
-            <tr v-if="isLoading">
-              <td colspan="6" class="text-center py-4 text-gray-500">Loading...</td>
-            </tr>
+<div class="overflow-x-auto bg-gray-100 p-4 rounded-lg shadow-md max-h-[400px] overflow-y-auto">
+  <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
+    <thead class="bg-gray-300 text-gray-700 uppercase text-sm">
+      <tr>
+        <th class="px-6 py-4 border-b text-left">Select</th>
+        <th class="px-6 py-4 border-b text-left">Name</th>
+        <th class="px-6 py-4 border-b text-left">Email</th>
+        <th class="px-6 py-4 border-b text-left">Phone Number</th>
+        <th class="px-6 py-4 border-b text-left">Birthday</th>
+        <th class="px-6 py-4 border-b text-left">Gender</th>
+        <th class="px-6 py-4 border-b text-left">Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Loading State -->
+      <tr v-if="isLoading">
+        <td colspan="7" class="text-center py-4 text-gray-500">Loading...</td>
+      </tr>
 
-            <!-- No Data State -->
-            <tr v-else-if="filteredTableItems.length === 0">
-              <td colspan="6" class="text-center py-4 text-gray-500">No data</td>
-            </tr>
+      <!-- No Data State -->
+      <tr v-else-if="filteredTableItems.length === 0">
+        <td colspan="7" class="text-center py-4 text-gray-500">No data</td>
+      </tr>
 
-            <!-- Data Rows -->
-            <tr
-              v-else
-              v-for="item in filteredTableItems"
-              :key="item.customerId"
-              class="hover:bg-gray-50 transition"
-            >
-              <td class="px-4 py-2 border text-center">
-                <input type="radio" :value="item.customerId" v-model="selectedId" />
-              </td>
-              <td class="px-4 py-2 border">{{ item.name }}</td>
-              <td class="px-4 py-2 border">{{ item.email }}</td>
-              <td class="px-4 py-2 border">{{ item.telephoneNumber }}</td>
-              <td class="px-4 py-2 border">{{ item.birthday }}</td>
-              <td class="px-4 py-2 border">{{ item.gender }}</td>
-              <td class="px-4 py-2 border">{{ item.personality_status_description }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <!-- Data Rows -->
+      <tr
+        v-else
+        v-for="item in filteredTableItems"
+        :key="item.customerId"
+        class="hover:bg-gray-50 transition duration-150"
+      >
+        <td class="px-6 py-4 border-b text-center">
+          <input type="radio" :value="item.customerId" v-model="selectedId" class="form-radio h-5 w-5 text-blue-600" />
+        </td>
+        <td class="px-6 py-4 border-b">{{ item.name }}</td>
+        <td class="px-6 py-4 border-b">{{ item.email }}</td>
+        <td class="px-6 py-4 border-b">{{ item.telephoneNumber }}</td>
+        <td class="px-6 py-4 border-b">{{ item.birthday }}</td>
+        <td class="px-6 py-4 border-b">{{ item.gender }}</td>
+        <td class="px-6 py-4 border-b">{{ item.personality_status_description }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
     </div>
   </NuxtLayout>
 </template>
