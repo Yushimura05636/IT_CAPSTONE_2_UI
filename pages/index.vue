@@ -168,7 +168,7 @@
     </div>
 
     <h3 class="text-lg font-semibold text-green-600 mb-4">Visit Us:</h3>
-    <p>Location: Acacia, Davao City, Philippines</p>
+    <p>Location: Acacia-Magsaysay, Davao City, Philippines</p>
 
     <h3 class="text-lg font-semibold text-green-600 mb-4">Follow Us on Social Media:</h3>
     <div class="social-media">

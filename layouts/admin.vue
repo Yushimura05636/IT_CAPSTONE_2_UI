@@ -272,7 +272,7 @@
             ],
         },
 
-        { name: "Transactions", icon: FlagIcon, current: false,
+        { name: "Transaction", icon: FlagIcon, current: false,
             children: [
             { name: "Payment", href: "/payments", icon: CurrencyDollarIcon, current: false },
             { name: "Fees", href: "/Fees", icon: CurrencyDollarIcon, current: false },
