@@ -3,7 +3,7 @@
       <div class="min-h-screen flex items-center justify-center bg-gray-100">
         <div class="w-full max-w-md bg-white rounded-lg shadow-md p-8">
           <h1 class="text-2xl font-semibold mb-6 text-center">Create User</h1>
-  
+
           <form @submit.prevent="submitForm">
             <!-- Employee ID Field as Combobox -->
             <div class="mb-4">
@@ -20,7 +20,7 @@
                 </option>
               </select>
             </div>
-  
+
             <!-- Family Name Field -->
             <div class="mb-4">
               <label for="family_name" class="block text-sm font-medium text-gray-700">Family Name</label>
@@ -34,7 +34,7 @@
                 required
               />
             </div>
-  
+
             <!-- First Name Field -->
             <div class="mb-4">
               <label for="first_name" class="block text-sm font-medium text-gray-700">First Name</label>
@@ -48,7 +48,7 @@
                 required
               />
             </div>
-  
+
             <!-- Middle Name Field -->
             <div class="mb-4">
               <label for="middle_name" class="block text-sm font-medium text-gray-700">Middle Name</label>
@@ -62,7 +62,7 @@
                 required
               />
             </div>
-  
+
             <!-- Email Field -->
             <div class="mb-4">
               <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
@@ -76,7 +76,7 @@
                 required
               />
             </div>
-  
+
             <!-- Password Field -->
             <div class="mb-4">
               <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
@@ -89,7 +89,7 @@
                 required
               />
             </div>
-  
+
             <!-- Status Field -->
             <div class="mb-4">
               <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
@@ -105,7 +105,7 @@
                 </option>
               </select>
             </div>
-  
+
             <!-- Submit and Cancel Buttons -->
             <div class="mt-6 flex justify-between">
               <button
@@ -123,7 +123,7 @@
               </button>
             </div>
           </form>
-  
+
           <!-- Success Message -->
           <div v-if="successMessage" class="mt-4 p-4 text-green-700 bg-green-100 rounded-md">
             {{ successMessage }}
@@ -132,23 +132,23 @@
       </div>
     </NuxtLayout>
   </template>
-  
+
   <script setup lang="ts">
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
   import { ref, onMounted, watch } from 'vue';
-  
-  
+
+
   import { PermissionService } from '~/models/Permission';
   import { apiService } from '~/routes/api/API'; // Assuming you have this service
-  
+
   // Employee list for the dropdown
   const employees = ref<{ id: string; first_name: string; family_name: string; middle_name: string; email: string }[]>([]);
-  
+
   // Status list for the dropdown
   const statuses = ref<{ id: string; name: string }[]>([]);
-  
+
   // Form data state
   const form = ref({
     family_name: '',
@@ -159,16 +159,18 @@ import 'vue3-toastify/dist/index.css';
     password: '', // Added password field to the form state
     status: 0 // Added status field to the form state
   });
-  
+
   // Success message state
   const successMessage = ref<string | null>(null);
-  
+
   // Function to fetch employee IDs (from API or mock data)
   const fetchEmployees = async () => {
     try {
       // Fetch employee data from API
       const response = await apiService.getNoUserEmployeesNoAuth({});
-  
+
+      debugger;
+
       // Directly assign response data to employees state
       employees.value = response.data.map((entry: any) => ({
         id: entry.employee.id,
@@ -181,7 +183,7 @@ import 'vue3-toastify/dist/index.css';
       console.error('Error fetching employees:', error);
     }
   };
-  
+
   // Function to fetch user statuses from API
   const fetchStatuses = async () => {
     try {
@@ -195,12 +197,12 @@ import 'vue3-toastify/dist/index.css';
       console.error('Error fetching statuses:', error);
     }
   };
-  
+
   onMounted(() => {
     fetchEmployees();
     fetchStatuses(); // Fetch statuses on mount
   });
-  
+
   // Watch for changes in selected employee_id and populate other fields
   watch(
     () => form.value.employee_id,
@@ -216,7 +218,7 @@ import 'vue3-toastify/dist/index.css';
       }
     }
   );
-  
+
   // Function to handle form submission
   const submitForm = async () => {
     if (form.value.family_name && form.value.first_name && form.value.email && form.value.employee_id && form.value.password && form.value.status) {
@@ -231,7 +233,7 @@ import 'vue3-toastify/dist/index.css';
           password: form.value.password, // Include password in the API request
           status_id: form.value.status, // Include status in the API request
         });
-  
+
         // Handle successful response
         if (response.data) {
           toast.success("User created!", {
@@ -239,7 +241,7 @@ import 'vue3-toastify/dist/index.css';
           });
           // Introduce a delay before navigating
           setTimeout(() => {
-            navigateTo('/users');  
+            navigateTo('/users');
           }, 2000);
           // successMessage.value = 'User created successfully!';
           // Clear the form
@@ -254,7 +256,7 @@ import 'vue3-toastify/dist/index.css';
       successMessage.value = 'Please fill in all fields.';
     }
   };
-  
+
   // Function to handle cancel action
   const cancel = () => {
     // Clear form
@@ -269,4 +271,3 @@ import 'vue3-toastify/dist/index.css';
     navigateTo('/users');
   };
   </script>
-  
