@@ -611,7 +611,7 @@ async function fetchNotExpiredCustomerRequirementsNoAUTH() {
             selectedDetails.push({
                 id: req.id,
                 description: req.description,
-                expiry_date: req.expiry_date,
+                expiry_date: formatDate(req.expiry_date),
             });
         }
     }
@@ -627,6 +627,13 @@ async function fetchNotExpiredCustomerRequirementsNoAUTH() {
     }
 
     console.log(selectedDetails); // Output selected details to console
+};
+
+
+// Format the date when component is mounted
+const formatDate = (dateString: any) => {
+  const date = new Date(dateString);
+  return date.toISOString().split('T')[0]; // Format to YYYY-MM-DD
 };
 
 </script>

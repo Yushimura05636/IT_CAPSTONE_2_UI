@@ -503,7 +503,7 @@ async function fetchActiveRequirements() {
     finally{
         setTimeout(() => {
             fetchCustomerRequirement()
-        }, 1000);
+        }, 3000);
     }
 }
 
@@ -518,7 +518,7 @@ const getSelectedRequirements = () => {
             selectedDetails.push({
                 id: req.id,
                 description: req.description,
-                expiry_date: req.expiry_date,
+                expiry_date: formatDate(req.expiry_date),
             });
         }
     }
@@ -555,7 +555,7 @@ const fetchCustomerRequirement = async () => {
         const custReq = customerRequirements[j];
         if (req.id === custReq.id) {
           selectedRequirements.value.push(req.id);
-          req.expiry_date = custReq.expiry_date.split(" ")[0]; // Format date
+          req.expiry_date = formatDate(custReq.expiry_date.split(" ")[0]); // Format date
           break;
         }
       }
@@ -580,6 +580,12 @@ function cancelForm() {
         toast.error(`${error}`);
     }
 }
+
+// Format the date when component is mounted
+const formatDate = (dateString: any) => {
+  const date = new Date(dateString);
+  return date.toISOString().split('T')[0]; // Format to YYYY-MM-DD
+};
 </script>
 
 <style scoped>
