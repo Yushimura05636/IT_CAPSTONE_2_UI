@@ -61,6 +61,7 @@
               <th class="px-4 py-2 border">Phone Number</th>
               <th class="px-4 py-2 border">Birthday</th>
               <th class="px-4 py-2 border">Gender</th>
+              <th class="px-4 py-2 border">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -89,6 +90,7 @@
               <td class="px-4 py-2 border">{{ item.telephoneNumber }}</td>
               <td class="px-4 py-2 border">{{ item.birthday }}</td>
               <td class="px-4 py-2 border">{{ item.gender }}</td>
+              <td class="px-4 py-2 border">{{ item.personality_status_description }}</td>
             </tr>
           </tbody>
         </table>
@@ -116,6 +118,7 @@ interface TableItem {
   telephoneNumber: string;
   birthday: string;
   gender: string;
+  personality_status_description: string;
 }
 
 const filteredTableItems = computed(() => {
@@ -151,6 +154,7 @@ function storeResponseInTableItems(data: any[]) {
     telephoneNumber: customer.personality.telephone_no,
     birthday: customer.personality.birthday,
     gender: parseInt(customer.personality.gender_code) === 1 ? 'Male' : 'Female',
+    personality_status_description: customer.personality.personality_status_description,
   }));
 }
 
