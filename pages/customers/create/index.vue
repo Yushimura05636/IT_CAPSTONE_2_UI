@@ -73,7 +73,7 @@
             <span v-if="validationErrors.house_street" class="text-red-500 text-sm">{{ validationErrors.house_street }}</span>
 
           </div>
-          
+
           <div>
             <label for="Cellphone No" class="block text-gray-700">Cellphone No</label>
             <input v-model="personality.cellphone_no" type="text" id="cellphoneNo" class="w-full border rounded-lg px-4 py-2" />
@@ -165,7 +165,7 @@
             <label for="groupId" class="block text-gray-700">Group Name</label>
             <select v-model="customer.group_id" id="groupId" class="w-full border rounded-lg px-4 py-2" v-if="!state.isTableLoading">
               <option v-for="groups in state.groups" :key="groups.id" :value="groups.id">
-                {{ groups.description }} 
+                {{ groups.description }}
               </option>
             </select>
             <span v-if="validationErrorsForCustomer.group_id" class="text-red-500 text-sm">{{ validationErrorsForCustomer.group_id }}</span>
@@ -183,7 +183,7 @@
             <label for="groupId" class="block text-gray-700">Loan Count</label>
             <select v-model="customer.loan_count_id" id="groupId" class="w-full border rounded-lg px-4 py-2" v-if="!state.isTableLoading">
               <option v-for="groups in state.loan_count" :key="groups.id" :value="groups.id">
-                {{ groups.loan_count }} 
+                {{ groups.loan_count }}
               </option>
             </select>
             <span v-if="validationErrorsForCustomer.loan_count_id" class="text-red-500 text-sm">{{ validationErrorsForCustomer.loan_count_id }}</span>
@@ -217,49 +217,47 @@
             <input v-model="customer.mortuary_coverage_end" type="date" id="mortuaryCoverageEnd" class="w-full border rounded-lg px-4 py-2" />
           </div>
         </div>
+
         <div class="mt-4">
-          <table class="min-w-full table-auto">
-                <thead>
-                    <tr>
-                        <th class="px-4 py-2">Select Document</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="px-4 py-2">
-                            <label class="flex items-center">
-                                <input type="checkbox" v-model="barangayCertificate" class="form-checkbox h-5 w-5 text-green-600" />
-                                <span class="ml-2 text-gray-700">Barangay Certificate</span>
-                            </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="px-4 py-2">
-                            <label class="flex items-center">
-                                <input type="checkbox" v-model="birthCertificate" class="form-checkbox h-5 w-5 text-green-600" />
-                                <span class="ml-2 text-gray-700">Birth Certificate</span>
-                            </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="px-4 py-2">
-                            <label class="flex items-center">
-                                <input type="checkbox" v-model="validID" class="form-checkbox h-5 w-5 text-green-600" />
-                                <span class="ml-2 text-gray-700">Valid ID</span>
-                            </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="px-4 py-2">
-                            <label class="flex items-center">
-                                <input type="checkbox" v-model="proofOfAddress" class="form-checkbox h-5 w-5 text-green-600" />
-                                <span class="ml-2 text-gray-700">Proof of Address</span>
-                            </label>
-                        </td>
-                    </tr>
-                </tbody>
-          </table>
-        </div>
+        <table class="min-w-full table-auto">
+            <thead>
+                <tr>
+                    <th class="px-4 py-2">Select</th>
+                    <th class="px-4 py-2">Description</th>
+                    <th class="px-4 py-2">Expiry Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="requirement in requirements" :key="requirement.id">
+                    <td class="px-4 py-2">
+                        <label class="flex items-center">
+                            <input
+                                type="checkbox"
+                                :value="requirement.id"
+                                v-model="selectedRequirements"
+                                @change="getSelectedRequirements"
+                                class="form-checkbox h-5 w-5 text-green-600"
+                            />
+                        </label>
+                    </td>
+                    <td class="px-4 py-2">
+                        <span class="text-gray-700">{{ requirement.description }}</span>
+                    </td>
+                    <td class="px-4 py-2">
+                        <input
+                            type="date"
+                            v-model="requirement.expiry_date"
+                            @change="getSelectedRequirements"
+                            class="border border-gray-300 rounded-md p-1"
+                        />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
 
         <div class="mt-4 flex justify-center">
           <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500">
@@ -272,6 +270,7 @@
 </template>
 
 <script setup lang="ts">
+import { watch } from 'vue';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
@@ -280,11 +279,15 @@ import { ref, onMounted } from 'vue';
 import { PermissionService } from '~/models/Permission';
 import { apiService } from '~/routes/api/API';
 
-const barangayCertificate = ref(false);
-const birthCertificate = ref(false);
-const validID = ref(false);
-const proofOfAddress = ref(false);
+const requirements = ref({});
+const selectedRequirements = ref([]);
 
+// Define the structure for a requirement
+interface Requirement {
+    id: number;
+    description: string;
+    expiry_date?: string; // Optional expiry date
+}
 
 const personality = ref({
   first_name: '',
@@ -328,6 +331,7 @@ const state = ref({
   groups: [],
   personality_status_code: [],
   loan_count: [],
+  requirements: [],
   isTableLoading: false,
 });
 
@@ -426,7 +430,6 @@ const fetchLoanCount = async () => {
 
     state.value.loan_count = response.data;
 
-    debugger;
   } catch (error) {
     toast.error(error.message, {
       autoClose: 5000,
@@ -444,6 +447,7 @@ onMounted(async () => {
     fetchGroups(),
     // fetchPersonalityStatusCode(),
     fetchLoanCount(),
+    fetchNotExpiredCustomerRequirementsNoAUTH(),
   ]);
 });
 
@@ -473,7 +477,7 @@ const validationErrors = ref({
       enable_mortuary: '',
     });
 
-    
+
 const validationErrorsForCustomer = ref({
       group_id: '',
       passbook_no: '',
@@ -507,10 +511,10 @@ const createCustomer = async () => {
     }
 
         // // First Name validation
-        if (!personality.value.first_name   || 
-        !personality.value.family_name  || 
-        !personality.value.middle_name  || 
-        !personality.value.email_address|| 
+        if (!personality.value.first_name   ||
+        !personality.value.family_name  ||
+        !personality.value.middle_name  ||
+        !personality.value.email_address||
         !personality.value.birthday     ||
         !personality.value.gender_code  ||
         !personality.value.civil_status ||
@@ -528,28 +532,14 @@ const createCustomer = async () => {
         !customer.value.enable_mortuary  ||
         // !customer.value.mortuary_coverage_start  ||
         // !customer.value.mortuary_coverage_end  ||
-        !personality.value.datetime_registered  
+        !personality.value.datetime_registered
       )
       {
         toast.error("Please fill all the required fields.", { autoClose: 3000 });
         return;
       }
 
-     // Check if all required documents (checkboxes) are checked
-    if (barangayCertificate.value && birthCertificate.value && validID.value && proofOfAddress.value) {
-      // If all checkboxes are checked, set personality_status_code to 2 (verified)
-      personality.value.personality_status_code = 2;
-    } else if(barangayCertificate.value || birthCertificate.value || validID.value || proofOfAddress.value) {
-      // If any checkbox is unchecked, set personality_status_code to 1 (pending)
-      personality.value.personality_status_code = 1;
-    // Exit the function early if not all checkboxes are checked
-    }else{
-      toast.error("Please check all required documents before proceeding", {
-        autoClose: 2000,
-      });
-      return; 
-    }
-    const jsonObject = { 
+    const jsonObject = {
       customer: {
             group_id: customer.value.group_id,
             passbook_no: customer.value.passbook_no,
@@ -579,7 +569,8 @@ const createCustomer = async () => {
             province_id: personality.value.province_id, // Get from personality ref
             credit_status_id: personality.value.credit_status_id, // Get from personality ref
             notes: personality.value.notes, // Get from personality ref, optional
-        }
+        },
+        requirements: state.value.requirements,
     };
 
     debugger;
@@ -589,7 +580,7 @@ const createCustomer = async () => {
           });
           // Introduce a delay before navigating
           setTimeout(() => {
-            navigateTo('/customers');  
+            navigateTo('/customers');
           }, 2000); // Redirect to the customer list page
   } catch (error) {
     toast.error('Error creating customer');
@@ -598,7 +589,53 @@ const createCustomer = async () => {
       });
   }
 };
+
+async function fetchNotExpiredCustomerRequirementsNoAUTH() {
+      try {
+        // Fetch data from your API endpoint
+        const response = await apiService.getActiveRequirementsNoAUTH({});
+        requirements.value = response.data; // Assumes the API returns an array of requirements
+      } catch (error) {
+        console.error('Error fetching requirements:', error);
+      }
+    }
+
+    const getSelectedRequirements = () => {
+    const selectedDetails = [];
+
+    for (let i = 0; i < requirements.value.length; i++) {
+        const req = requirements.value[i];
+
+        // Check if the requirement ID is in selectedRequirements
+        if (selectedRequirements.value.includes(req.id)) {
+            selectedDetails.push({
+                id: req.id,
+                description: req.description,
+                expiry_date: req.expiry_date,
+            });
+        }
+    }
+
+    debugger;
+
+    // Assuming selectedDataRequirements is an array
+    state.value.requirements = []; // Reset the array first
+
+    // Loop through selectedDetails to store values in selectedDataRequirements
+    for (let i = 0; i < selectedDetails.length; i++) {
+        state.value.requirements.push(selectedDetails[i]);
+    }
+
+    console.log(selectedDetails); // Output selected details to console
+};
+
+
+    watch(selectedRequirements, (newValue) => {
+    console.log('Selected Requirements:', newValue);
+});
+
 </script>
+
 
 <style scoped>
 /* Add your styles here if needed */

@@ -7,6 +7,63 @@ class API extends BaseAPIService {
         return await this.request(`/USER_AUTH`, `PATCH`, params)
     }
 
+    //requirement api route
+    async getRequirements(params: object): Promise<any> {
+        return await this.request(`/REQUIREMENTS`, 'GET', params)
+    }
+
+    async getRequirementsNoAUTH(params: object): Promise<any> {
+        return await this.request(`/REQUIREMENTS/NoAUTH`, 'GET', params)
+    }
+
+    async getActiveRequirements(params: object): Promise<any> {
+        return await this.request(`/REQUIREMENTS/Active`, 'GET', params)
+    }
+
+    async getActiveRequirementsNoAUTH(params: object): Promise<any> {
+        return await this.request(`/REQUIREMENTS/NoAUTH/Active`, 'GET', params)
+    }
+
+    //post
+
+    async createRequirements(params: object): Promise<any> {
+        return await this.request(`/REQUIREMENTS`, 'POST', params)
+    }
+
+    //put
+
+    async updateRequirements(params: object, id: number): Promise<any> {
+        return await this.request(`/REQUIREMENTS/${id}`, 'GET', params)
+    }
+
+    //customer_requirement route
+    async getCustomerRequirements(params: object): Promise<any> {
+        return await this.request(`/CUSTOMER_REQUIREMENTS`, 'GET', params);
+    }
+
+    async getCustomerRequirementsNoAUTH(params: object): Promise<any> {
+        return await this.request(`/CUSTOMER_REQUIREMENTS/NoAUTH`, 'GET', params);
+    }
+
+    async getNotExpiredCustomerRequirements(params: object): Promise<any> {
+        return await this.request(`/CUSTOMER_REQUIREMENTS/NotEXPIRED`, 'GET', params);
+    }
+
+    async getNotExpiredCustomerRequirementsNoAUTH(params: object): Promise<any> {
+        return await this.request(`/CUSTOMER_REQUIREMENTS/NoAUTH/NotEXPIRED`, 'GET', params);
+    }
+
+    //post
+    async createCustomerRequirements(params: object): Promise<any> {
+        return await this.request(`/CUSTOMER_REQUIREMENTS`, 'POST', params);
+    }
+
+    //put
+    async updateCustomerRequirements(params: object, id: number): Promise<any> {
+        return await this.request(`/CUSTOMER_REQUIREMENTS/${id}`, 'PUT', params);
+    }
+
+
     //this is the employee API route
     async getEmployees(params: object): Promise<any> {
         return await this.request(`/EMPLOYEES`, 'GET', params)
@@ -603,13 +660,23 @@ async authLoanApplicationsApprove(params: object, id: number): Promise<any> {
     return await this.request(`/LOAN_APPLICATIONS/approve/${id}`, 'PATCH', params);
 }
 
-    async authLoanReleaseUpdate(params: object): Promise<any> {
-        return await this.request(`/LOAN_RELEASES/update`, 'PATCH', params);
-    }
-    // Payment 
-    async authPaymentUpdate(params: object): Promise<any> {
-        return await this.request(`/PAYMENTS/update`, 'PATCH', params);
-    }
+async authLoanReleaseUpdate(params: object): Promise<any> {
+    return await this.request(`/LOAN_RELEASES/update`, 'PATCH', params);
+}
+// Payment
+async authPaymentUpdate(params: object): Promise<any> {
+    return await this.request(`/PAYMENTS/update`, 'PATCH', params);
+}
+
+// Requirement
+async authRequirementsCreate(params: object): Promise<any> {
+    return await this.request(`/REQUIREMENTS/create`, 'PATCH', params);
+}
+
+async authRequirementsUpdate(params: object): Promise<any> {
+    return await this.request(`/REQUIREMENTS/update`, 'PATCH', params);
+}
+
 
 
     //loan release
