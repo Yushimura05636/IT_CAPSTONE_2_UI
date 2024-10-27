@@ -503,7 +503,7 @@ async function fetchActiveRequirements() {
     finally{
         setTimeout(() => {
             fetchCustomerRequirement()
-        }, 3000);
+        }, 1000);
     }
 }
 
