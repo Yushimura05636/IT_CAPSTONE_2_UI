@@ -53,6 +53,14 @@ class API extends BaseAPIService {
         return await this.request(`/CUSTOMER_REQUIREMENTS/NoAUTH/NotEXPIRED`, 'GET', params);
     }
 
+    async getNotExpiredCustomerRequirementById(params: object, id: number): Promise<any> {
+        return await this.request(`/CUSTOMER_REQUIREMENTS/NotEXPIRED/${id}`, 'GET', params);
+    }
+
+    async getNotExpiredCustomerRequirementByIdNoAUTH(params: object, id: number): Promise<any> {
+        return await this.request(`/CUSTOMER_REQUIREMENTS/NoAUTH/NotEXPIRED/${id}`, 'GET', params);
+    }
+
     //post
     async createCustomerRequirements(params: object): Promise<any> {
         return await this.request(`/CUSTOMER_REQUIREMENTS`, 'POST', params);

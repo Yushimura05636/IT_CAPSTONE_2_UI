@@ -167,17 +167,22 @@ async function viewSelected() {
   if (selectedId.value) {
     try {
       CustomersService.id = parseInt(selectedId.value);
-      await apiService.authCustomersUpdate({});
-      navigateTo(`customers/update`);
+      const response = await apiService.authCustomersUpdate({});
+      navigateTo(`/customers/view`);
     } catch (error) {
       toast.error(`${error}`, { autoClose: 5000 });
     }
   }
 }
 
-function updateSelected() {
-  if (selectedId.value) {
-    toast.success(`Update button clicked for Customer ID: ${selectedId.value}`);
+async function updateSelected() {
+  try {
+    CustomersService.id = parseInt(selectedId.value);
+    const response = await apiService.authCustomersUpdate({});
+    navigateTo(`/customers/update`);
+    // toast.success(`Update button clicked for Customer ID: ${selectedId.value}`);
+  } catch (error) {
+    toast.error(`${error}`);
   }
 }
 </script>

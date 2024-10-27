@@ -180,11 +180,56 @@
           </div>
         </div>
 
-        <div class="mt-4">
-          <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500">
-            Update Customer
-          </button>
-        </div>
+        <!-- Select Requirements Table -->
+        <!-- Select Requirements Table -->
+      <div class="mt-4">
+        <h3 class="text-gray-800 text-lg font-bold mb-2">Select Requirements</h3>
+        <table class="min-w-full table-auto">
+          <thead>
+            <tr>
+              <th class="px-4 py-2">Select</th>
+              <th class="px-4 py-2">Description</th>
+              <th class="px-4 py-2">Expiry Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="requirement in requirements" :key="requirement.id">
+              <td class="px-4 py-2">
+                <label class="flex items-center">
+                  <input
+                    type="checkbox"
+                    :value="requirement.id"
+                    v-model="selectedRequirements"
+                    @change="getSelectedRequirements"
+                    class="form-checkbox h-5 w-5 text-green-600"
+                  />
+                </label>
+              </td>
+              <td class="px-4 py-2">
+                <span class="text-gray-700">{{ requirement.description }}</span>
+              </td>
+              <td class="px-4 py-2">
+                <input
+                  type="date"
+                  v-model="requirement.expiry_date"
+                  @change="getSelectedRequirements"
+                  class="border border-gray-300 rounded-md p-1"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mt-4">
+  <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500">
+    Update Customer
+  </button>
+  <button type="button" @click="cancelForm" class="ml-4 px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-200">
+    Cancel
+  </button>
+</div>
+
       </form>
     </div>
   </NuxtLayout>
@@ -200,7 +245,8 @@ import { CustomersService } from '~/models/Customer';
 import { PermissionService } from '~/models/Permission';
 import { apiService } from '~/routes/api/API';
 
-
+const requirements = ref({});
+const selectedRequirements = ref([]);
 
 const personality = ref({
   first_name: '',
@@ -245,6 +291,7 @@ const state = ref({
   groups: [],
   personality_status_code: [],
   loan_count: [],
+  requirements: [],
   isTableLoading: false,
 });
 
@@ -364,6 +411,8 @@ onMounted(async () => {
     fetchPersonalityStatusCode(),
     fetchLoanCount(),
     fetchCustomer(),
+    fetchActiveRequirements(),
+    fetchCustomerRequirement(),
   ]);
 });
 
@@ -424,8 +473,11 @@ const updateCustomer = async () => {
             province_id: personality.value.province_id, // Get from personality ref
             credit_status_id: personality.value.credit_status_id, // Get from personality ref
             notes: personality.value.notes, // Get from personality ref, optional
-        }
+        },
+        requirements: state.value.requirements,
     };
+
+    debugger;
 
     await apiService.updateCustomer(jsonObject, customerId);
     toast.success("Customer updated successfully!", {
@@ -442,6 +494,107 @@ const updateCustomer = async () => {
       });
   }
 };
+
+async function fetchActiveRequirements() {
+    try {
+    // Fetch data from your API endpoint
+    const response = await apiService.getActiveRequirementsNoAUTH({});
+    requirements.value = response.data; // Assumes the API returns an array of requirements
+    } catch (error) {
+    console.error('Error fetching requirements:', error);
+    }
+}
+
+const getSelectedRequirements = () => {
+    const selectedDetails = [];
+
+    for (let i = 0; i < requirements.value.length; i++) {
+        const req = requirements.value[i];
+
+        // Check if the requirement ID is in selectedRequirements
+        if (selectedRequirements.value.includes(req.id)) {
+            selectedDetails.push({
+                id: req.id,
+                description: req.description,
+                expiry_date: req.expiry_date,
+            });
+        }
+    }
+
+    debugger;
+
+    // Assuming selectedDataRequirements is an array
+    state.value.requirements = []; // Reset the array first
+
+    // Loop through selectedDetails to store values in selectedDataRequirements
+    for (let i = 0; i < selectedDetails.length; i++) {
+        state.value.requirements.push(selectedDetails[i]);
+    }
+
+    console.log(selectedDetails); // Output selected details to console
+};
+
+
+    watch(selectedRequirements, (newValue) => {
+    console.log('Selected Requirements:', newValue);
+});
+
+// Fetch customer requirements and update expiry dates in requirements
+const fetchCustomerRequirement = async () => {
+  try {
+    const response = await apiService.getNotExpiredCustomerRequirementByIdNoAUTH({}, CustomersService.id); // Replace with your endpoint
+    const customerRequirements = response.data;
+
+    debugger;
+
+    for (let i = 0; i < requirements.value.length; i++) {
+      const req = requirements.value[i];
+      for (let j = 0; j < customerRequirements.length; j++) {
+        const custReq = customerRequirements[j];
+        if (req.id === custReq.id) {
+          selectedRequirements.value.push(req.id);
+          req.expiry_date = custReq.expiry_date.split(" ")[0]; // Format date
+          break;
+        }
+      }
+    }
+
+    state.value.requirements = [];
+      for (let i = 0; i < requirements.value.length; i++) {
+        state.value.requirements.push(requirements.value[i]);
+    }
+
+  } catch (error) {
+    console.error('Error fetching customer requirements:', error);
+  }
+};
+
+// Function to update selected details based on current selections
+const updateSelectedDetails = () => {
+  selectedDetails.value = []; // Clear the selected details before updating
+
+  // Loop through the requirements to check against selectedRequirements
+  for (let i = 0; i < requirements.value.length; i++) {
+    const req = requirements.value[i];
+
+    // Check if the requirement ID is in selectedRequirements
+    if (selectedRequirements.value.includes(req.id)) {
+      selectedDetails.value.push({
+        id: req.id,
+        description: req.description,
+        expiry_date: req.expiry_date,
+      });
+    }
+  }
+};
+
+function cancelForm() {
+    try {
+        navigateTo('/customers/');
+    } catch (error) {
+        toast.error(`${error}`);
+    }
+}
 </script>
 
 <style scoped>

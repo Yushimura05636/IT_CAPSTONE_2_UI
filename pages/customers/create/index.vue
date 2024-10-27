@@ -629,11 +629,6 @@ async function fetchNotExpiredCustomerRequirementsNoAUTH() {
     console.log(selectedDetails); // Output selected details to console
 };
 
-
-    watch(selectedRequirements, (newValue) => {
-    console.log('Selected Requirements:', newValue);
-});
-
 </script>
 
 
