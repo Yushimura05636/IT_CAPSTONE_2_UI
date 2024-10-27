@@ -48,7 +48,6 @@
           <div>
             <label for="civilStatus" class="block text-gray-700">Civil Status</label>
             <select v-model="personality.civil_status" id="civilStatus" class="w-full border rounded-lg px-4 py-2">
-              <option value="0">Select</option>
               <option value="1">Single</option>
               <option value="2">Married</option>
               <option value="3">Divorced</option>
@@ -114,10 +113,10 @@
           </div>
 
           <div>
-            <label for="creditStatusId" class="block text-gray-700">Credit Status</label>
-            <select v-model="personality.credit_status_id" id="creditStatusId" class="w-full border rounded-lg px-4 py-2">
-              <option v-for="creditStatus in state.creditStatuses" :key="creditStatus.id" :value="creditStatus.id">
-                {{ creditStatus.description }}
+            <label for="personality_status" class="block text-gray-700">Credit Status</label>
+            <select v-model="personality.credit_status_id" id="personality_status" class="w-full border rounded-lg px-4 py-2">
+              <option v-for="personalityStatus in state.creditStatuses" :key="personalityStatus.id" :value="personalityStatus.id">
+                {{ personalityStatus.description }}
               </option>
             </select>
           </div>
@@ -477,13 +476,19 @@ const updateCustomer = async () => {
     debugger;
 
     await apiService.updateCustomer(jsonObject, customerId);
+    // await apiService.updateRequirements(jsonObject, customerId);
+
+    
+    console.log("JSON Object:", JSON.stringify(jsonObject, null, 2));
+    console.log("Requirement Data: ",JSON.stringify(state.value.requirements, null, 2));
+
     toast.success("Customer updated successfully!", {
           autoClose: 2000,
           });
           // Introduce a delay before navigating
           setTimeout(() => {
             navigateTo('/customers'); // Redirect to the customer list page
-          }, 5000);
+          }, 2000);
   } catch (error) {
     toast.error('Error updating customer: ' + error);
     toast.error(`${error}`, {
