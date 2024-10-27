@@ -564,6 +564,8 @@ const fetchCustomerRequirement = async () => {
         state.value.requirements.push(requirements.value[i]);
     }
 
+    updateSelectedDetails();
+
   } catch (error) {
     console.error('Error fetching customer requirements:', error);
   }
