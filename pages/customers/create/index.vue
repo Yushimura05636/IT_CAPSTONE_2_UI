@@ -151,15 +151,6 @@
 
           </div>
 
-          <!-- <div>
-            <label for="creditStatusId" class="block text-gray-700">Personality Status</label>
-            <select v-model="personality.personality_status_code" id="creditStatusId" class="w-full border rounded-lg px-4 py-2">
-              <option v-for="creditStatus in state.personality_status_code" :key="creditStatus.id" :value="creditStatus.id">
-                {{ creditStatus.description }}
-              </option>
-            </select>
-          </div> -->
-
           <!-- Customer Fields -->
           <div>
             <label for="groupId" class="block text-gray-700">Group Name</label>
@@ -253,6 +244,9 @@
                     </td>
                 </tr>
             </tbody>
+            <!-- <span v-if="requirementsPrompt" class="text-red-500 mt-2 block">
+                  {{ requirementsPrompt }}
+              </span> -->
         </table>
     </div>
 
@@ -482,7 +476,7 @@ const validationErrorsForCustomer = ref({
       enable_mortuary: '',
     });
 
-
+    const requirementsPrompt = ref('');
 
 const createCustomer = async () => {
   try {
@@ -533,8 +527,30 @@ const createCustomer = async () => {
       )
       {
         toast.error("Please fill all the required fields.", { autoClose: 3000 });
+        console.log(selectedRequirements.value)
         return;
       }
+
+    
+      // if (selectedRequirements.value.length === 0) {
+      // toast.error("Please select at least one document requirement.");
+      // requirementsPrompt.value = `Select atleast one requirement before proceeding.`;
+      // return;
+      // } 
+
+
+    // i cant check the date sas if naa ba or wala 
+    
+    // Check for expiry dates
+    // const hasExpiryDate = state.value.requirements.some(requirement =>
+    //   selectedRequirements.value.includes(requirement.id) && !requirement.expiry_date  
+    // );
+
+    // if (hasExpiryDate) {
+    //   toast.error("Please select expiry date for the requirement.");
+    //   requirementsPrompt.value = `Input expiry date for requirement before proceeding.`;
+    //   return; // Prevent further execution if there's an expiry date issue
+    // }
 
     const jsonObject = {
       customer: {

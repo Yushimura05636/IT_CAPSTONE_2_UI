@@ -10,7 +10,7 @@
         <div class="flex justify-between items-center mb-4">
           <div class="flex space-x-2">
             <button @click="createPayment" class="bg-green-500 text-white px-4 py-2 rounded">Create</button>
-            <button @click="viewItem" class="bg-blue-500 text-white px-4 py-2 rounded">View</button>
+            <button @click="showPayment" class="bg-blue-500 text-white px-4 py-2 rounded">View</button>
             <button @click="updatePayment" class="bg-yellow-500 text-white px-4 py-2 rounded">Update</button>
           </div>
           <input
@@ -22,47 +22,50 @@
         </div>
 
         <!-- Table Section -->
-        <div class="overflow-x-auto">
-          <Table
-            class="w-full table-auto border-collapse"
-            :columnHeaders="state.columnHeaders"
-            :data="state.payment"
-            :isLoading="state.isTableLoading"
-            :sortData="state.sortData"
-          >
-            <tr v-for="(payments, index) in state.payment?.data" :key="index" class="px-4 py-2">
-              <td class="py-2 border-b border-gray-300">
-                <input
-                  type="radio"
-                  :value="payments.id"
-                  v-model="selectedPaymentID"
-                  class="cursor-pointer"
-                />
-              </td>
-              <td class="px-4 py-2 border-b border-gray-300">
-                <span>{{ payments.customer_id }}</span>
-              </td>
-              <td class="px-4 py-2 border-b border-gray-300">
-                <span>{{ payments.prepared_at }}</span>
-              </td>
-              <td class="px-4 py-2 border-b border-gray-300">
-                <span>{{ payments.document_status_code }}</span>
-              </td>
-              <td class="px-4 py-2 border-b border-gray-300">
-                <span>{{ payments.prepared_by_id }}</span>
-              </td>
-              <td class="px-4 py-2 border-b border-gray-300">
-                <span>{{ payments.amount_paid }}</span>
-              </td>
-              <td class="px-4 py-2 border-b border-gray-300">
-                <span>{{ payments.notes }}</span>
-              </td>
-            </tr>
-          </Table>
+<div v-if="state.payment && state.payment.length > 0" class="overflow-x-auto overflow-y-auto max-h-[300px]">
+  <table class="w-full table-auto border-collapse">
+    <thead>
+      <tr>
+        <th class="px-4 py-2 border-b border-gray-300">Select</th>
+        <th class="px-4 py-2 border-b border-gray-300">Customer ID</th>
+        <th class="px-4 py-2 border-b border-gray-300">Prepared At</th>
+        <th class="px-4 py-2 border-b border-gray-300">Document Status Code</th>
+        <th class="px-4 py-2 border-b border-gray-300">Prepared By</th>
+        <th class="px-4 py-2 border-b border-gray-300">Amount Paid</th>
+        <th class="px-4 py-2 border-b border-gray-300">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="(payment, index) in state.payment" :key="index" class="px-4 py-2">
+        <td class="py-2 border-b border-gray-300">
+          <input
+            type="radio"
+            :value="payment.id"
+            v-model="selectedPaymentID"
+            class="cursor-pointer"
+          />
+        </td>
+        <td class="px-4 py-2 border-b border-gray-300">{{ payment.customer_id }}</td>
+        <td class="px-4 py-2 border-b border-gray-300">{{ payment.prepared_at }}</td>
+        <td class="px-4 py-2 border-b border-gray-300">{{ payment.document_status_code }}</td>
+        <td class="px-4 py-2 border-b border-gray-300">{{ payment.prepared_by_id }}</td>
+        <td class="px-4 py-2 border-b border-gray-300">{{ payment.amount_paid }}</td>
+        <td class="px-4 py-2 border-b border-gray-300">{{ payment.notes }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+        <!-- No Data Message -->
+        <div v-else class="text-center p-4 text-gray-500">
+          No payments found
         </div>
       </div>
     </NuxtLayout>
   </template>
+
+
 
 <script setup lang="ts">
     import { ref, computed } from 'vue';
@@ -119,7 +122,8 @@ const state = reactive({
         try {
             const params = {}
             const response = await apiService.getPayment(params)
-            state.payment = response
+            state.payment = response.data;
+            debugger;
             console.log(state.payment);
         } catch (error: any) {
             toast.error(error.message, {
@@ -131,6 +135,21 @@ const state = reactive({
     onMounted(() => {
       fetchPayment()
     })
+
+    async function showPayment()
+    {
+        try {
+            const response = await apiService.authPaymentUpdate({})
+            if (selectedPaymentID.value) {
+            paymentServices.id = selectedPaymentID.value;
+            navigateTo('/payments/show');
+            }
+        } catch (error) {
+            toast.error(`${error}`, {
+                autoClose: 3000,
+            })
+        }
+    }
 
     async function updatePayment(){
         try {
@@ -192,5 +211,17 @@ function createPayment(){
 <style scoped>
 body {
   font-family: 'Roboto', sans-serif;
+}
+
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
+}
+
+.max-h-[300px] {
+  max-height: 300px; /* Adjust the height as needed */
 }
 </style>

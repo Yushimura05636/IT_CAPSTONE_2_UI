@@ -126,6 +126,10 @@ class API extends BaseAPIService {
         return await this.request(`/CUSTOMERS/NoAUTH`, 'GET', params)
     }
 
+    async getApproveCustomersNoAuth(params: object): Promise<any> {
+        return await this.request(`/CUSTOMERS/NoAUTH/CustomerAPPROVE`, 'GET', params)
+    }
+
     async getCustomerById(params: object, id: number): Promise<any> {
         return await this.request(`/CUSTOMERS/${id}`, 'GET', params)
     }
@@ -275,7 +279,7 @@ class API extends BaseAPIService {
 
     //payment_frequency
     async getPayment(params: object): Promise<any> {
-        return await this.request(`/PAYMENTS`, 'GET', params)
+        return await this.request(`/PAYMENTS/NoAUTH`, 'GET', params)
     }
 
     async getPaymentNoAuth(params: object): Promise<any> {
@@ -290,12 +294,20 @@ class API extends BaseAPIService {
         return await this.request(`/PAYMENTS/NoAUTH/${id}`, 'GET', params)
     }
 
+    async getPaymentByLoanNONoAuth(params: object, id: string): Promise<any> {
+        return await this.request(`/PAYMENTS/NoAUTH/PaymentInLoanNO/${id}`, 'GET', params)
+    }
+
     async createPayment(params: object): Promise<any> {
         return await this.request(`/PAYMENTS`, 'POST', params)
     }
 
     async updatePayment(params: object, id: number): Promise<any> {
         return await this.request(`/PAYMENTS/${id}`, 'PUT', params)
+    }
+
+    async approvePayment(params: object, id: number): Promise<any> {
+        return await this.request(`/PAYMENTS/PaymentAPPROVE/${id}`, 'PUT', params)
     }
 
     async deletePayment(params: object, id: number): Promise<any> {
