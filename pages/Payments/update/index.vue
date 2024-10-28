@@ -31,7 +31,7 @@
     </div>
   </NuxtLayout>
 </template>
-  
+
 <script setup lang="ts">
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
@@ -39,8 +39,8 @@ import 'vue3-toastify/dist/index.css';
     import { ref } from 'vue';
     import { apiService } from '~/routes/api/API'
     import { paymentServices } from '~/models/Payments'
-    
-    
+
+
 
 
     const form = ref({
@@ -78,7 +78,7 @@ import 'vue3-toastify/dist/index.css';
         amount_paid: form.value.amount_paid,
         notes: form.value.notes,
         };
-        
+
         const response = await apiService.updatePayment(params, parseInt(form.value.id));
         if (response.data) {
             toast.success("Payment Updated successfully!", {
@@ -86,7 +86,7 @@ import 'vue3-toastify/dist/index.css';
                 });
                 // Introduce a delay before navigating
                 setTimeout(() => {
-                    navigateTo('/Payments');  
+                    navigateTo('/Payments');
                 }, 2000);
                 // Redirect to the customer list page
         }
@@ -101,10 +101,9 @@ import 'vue3-toastify/dist/index.css';
     navigateTo("/Payments");
     };
 </script>
-  
+
   <style scoped>
   body {
     font-family: 'Roboto', sans-serif;
   }
   </style>
-  

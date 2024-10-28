@@ -147,8 +147,10 @@ class="mb-4 flex items-center text-gray-700 hover:text-blue-500 transition-color
   </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
 import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
+import { ref, onMounted } from 'vue';
 import { loanApplicationService } from '~/models/LoanApplication';
 import { paymentServices } from '~/models/Payments';
 import { apiService } from '~/routes/api/API';

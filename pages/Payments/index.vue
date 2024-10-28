@@ -68,9 +68,11 @@
 
 
 <script setup lang="ts">
-    import { ref, computed } from 'vue';
-    import { useRouter } from 'vue-router';
     import { toast } from 'vue3-toastify';
+    import 'vue3-toastify/dist/index.css';
+
+    import { useRouter } from 'vue-router';
+    import { ref, computed } from 'vue';
     import { apiService } from '~/routes/api/API';
     import { paymentServices } from '~/models/Payments'
 

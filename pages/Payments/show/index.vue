@@ -79,9 +79,11 @@
   </template>
 
   <script setup lang="ts">
-  import { ref, onMounted } from 'vue';
-  import { useRoute, useRouter } from 'vue-router';
   import { toast } from 'vue3-toastify';
+  import 'vue3-toastify/dist/index.css';
+
+  import { useRoute, useRouter } from 'vue-router';
+  import { ref, onMounted } from 'vue';
   import { paymentServices } from '~/models/Payments';
   import { apiService } from '~/routes/api/API';
 
