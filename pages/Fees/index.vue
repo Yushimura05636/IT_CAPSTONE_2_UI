@@ -64,7 +64,7 @@
                   <span>{{ fee.notes }}</span>
                 </td>
               </tr>
-              <tr v-if="state.fee.data.length === 0">
+              <tr v-if="state.fee.length === 0">
                 <td colspan="5" class="text-center py-6 text-gray-500">No fees found</td>
               </tr>
             </template>

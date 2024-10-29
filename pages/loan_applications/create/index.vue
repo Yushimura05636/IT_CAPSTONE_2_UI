@@ -69,10 +69,28 @@
                         </div>
 
                         <div class="mb-4">
+                        <label class="block text-gray-700 mb-1">Loan Count</label>
+                        <select v-model="selectedLoanCountId" class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring focus:border-blue-300">
+                            <option v-for="loan in state.loan_counts" :key="loan.id" :value="loan.id">
+                            {{ "Loan Count: " + loan.loan_count }}
+                            </option>
+                        </select>
+                        </div>
+
+                        <div class="mb-4">
+                        <label class="block text-gray-700 mb-1">Min Amount</label>
+                        <input type="text" :value="minAmountForSelected" readonly class="w-full border rounded-lg px-4 py-2 bg-gray-100 focus:outline-none" />
+
+                        <label class="block text-gray-700 mb-1 mt-2">Max Amount</label>
+                        <input type="text" :value="maxAmountForSelected" readonly class="w-full border rounded-lg px-4 py-2 bg-gray-100 focus:outline-none" />
+                        </div>
+
+                        <div class="mb-4">
                             <label class="block text-gray-700 mb-1">Loan Amount</label>
                             <input
                                 v-model="customerData[selectedCheckCustomerId].loanAmount"
                                 type="number"
+                                :placeholder="maxAmountForSelected ? `Amount : ${minAmountForSelected}-${maxAmountForSelected}` : 'Enter Loan Amount'"
                                 class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring focus:border-blue-300"
                                 @input="updateLoanAmount(selectedCheckCustomerId)"
                             />
@@ -216,7 +234,10 @@ const state = ref({
     paymentFrequencies: [],
     durations: [],
     fees: [],
+    loan_counts: []
+
 });
+
 
 const totalFees = ref(0);
 
@@ -233,7 +254,33 @@ onMounted(() => {
     fetchPaymentFrequencies();
     fetchDurations();
     fetchFees();
+    fetchLoanCount();
 });
+
+
+const selectedLoanCountId = ref(null);
+
+const maxAmountForSelected = computed(() => {
+    const selectedLoan = state.value.loan_counts.find(loan => loan.id === selectedLoanCountId.value);
+    return selectedLoan ? selectedLoan.max_amount: null;
+});
+
+const minAmountForSelected = computed(() => {
+    const selectedLoan = state.value.loan_counts.find(loan => loan.id === selectedLoanCountId.value);
+    return selectedLoan ? selectedLoan.min_amount: null;
+});
+
+
+// Fetch LOAN COUNT values from the server
+const fetchLoanCount = async () => {
+    try {
+        const response = await apiService.getLoanCount({});
+        state.value.loan_counts = response.data;
+        console.log("Raw Data: ", JSON.parse(JSON.stringify(response.data)));
+    } catch (error) {
+        toast.error(`${error}`, { autoClose: 5000 });
+    }
+};
 
 const fetchFees = async () => {
     try {
