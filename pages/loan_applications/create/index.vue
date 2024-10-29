@@ -46,7 +46,7 @@
                     </div>
 
                     <!-- Form Fields for the Selected Customer -->
-                    <div v-if="selectedCheckCustomerId !== null" class="overflow-auto max-h-96">
+                    <div v-if="selectedCheckCustomerId !== null">
                         <div class="mb-4">
                             <label class="block text-gray-700 mb-1">Loan Application No</label>
                             <input
@@ -333,12 +333,6 @@ const fetchFeeLibrary = async () => {
 const loadCustomerData = (customerId) => {
 
     selectedCheckCustomerId.value = customerId;
-
-    if(!selectedCheckCustomerId.value)
-    {
-        toast.info(`Please select customer first before fill up the form!`);
-    }
-
     try {
         if (!customerData[customerId]) {
         customerData[customerId] = {
@@ -363,7 +357,7 @@ const loadCustomerData = (customerId) => {
         }
     }
     } catch (error) {
-        toast.toast(`Please select first the customer!`, { autoClose: 5000 });
+        toast.error(`Please select first the customer!`, { autoClose: 5000 });
     }
 };
 
