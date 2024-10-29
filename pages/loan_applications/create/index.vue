@@ -520,7 +520,7 @@ const submitForm = async () => {
                 navigateTo('/loan_applications');
             }
         } catch (error) {
-            toast.error(`Submission failed: ${`${error}`}`, { autoClose: 5000 });
+            toast.error(`${error}`, { autoClose: 5000 });
         }
     } else {
         toast.error('No customer data to submit.', { autoClose: 5000 });
