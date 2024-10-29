@@ -46,7 +46,7 @@
                     </div>
 
                     <!-- Form Fields for the Selected Customer -->
-                    <div v-if="selectedCheckCustomerId !== null">
+                    <div v-if="selectedCheckCustomerId !== null" class="overflow-auto max-h-96">
                         <div class="mb-4">
                             <label class="block text-gray-700 mb-1">Loan Application No</label>
                             <input
@@ -612,4 +612,14 @@ textarea:focus {
         max-width: 100%;
     }
 }
+
+.overflow-auto {
+    overflow-x: auto; /* Enables horizontal scrolling */
+    overflow-y: auto; /* Enables vertical scrolling */
+}
+
+.max-h-96 {
+    max-height: 24rem; /* Adjust based on your design needs */
+}
+
 </style>
