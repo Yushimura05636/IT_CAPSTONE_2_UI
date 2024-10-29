@@ -36,39 +36,39 @@ class="mb-4 flex items-center text-gray-700 hover:text-blue-500 transition-color
 </select>
 </div>
 
+
 <!-- Payments Table -->
-<div v-if="payments.length > 0 && !loading" class="overflow-x-auto">
-<div class="max-h-60 overflow-x-auto overflow-y-auto">
-<table class="min-w-full bg-white border border-gray-300 mb-4">
-<thead>
-<tr>
-  <th class="px-4 py-2 border text-left">Select</th>
-  <th class="px-4 py-2 border text-left">Payment ID</th>
-  <th class="px-4 py-2 border text-left">Payment Amount Due</th>
-  <th class="px-4 py-2 border text-left">Payment Amount Interest</th>
-  <th class="px-4 py-2 border text-left">Payment Amount Paid</th>
-  <th class="px-4 py-2 border text-left">Payment Amount Balance</th>
-  <th class="px-4 py-2 border text-left">Payment Status</th>
-</tr>
-</thead>
-<tbody>
-<tr v-for="payment in payments" :key="payment.id" @click="selectPayment(payment)">
-  <td class="px-4 py-2 border text-left">
-    <input
-      type="checkbox"
-      v-model="payment.isSelected"
-    />
-  </td>
-  <td class="px-4 py-2 border">{{ payment.id }}</td>
-  <td class="px-4 py-2 border">{{ payment.amount_due }}</td>
-  <td class="px-4 py-2 border">{{ payment.amount_interest }}</td>
-  <td class="px-4 py-2 border">{{ payment.amount_paid }}</td>
-  <td class="px-4 py-2 border">{{ payment.balance }}</td>
-  <td class="px-4 py-2 border">{{ payment.payment_status_code }}</td>
-</tr>
-</tbody>
-</table>
-</div>
+<div v-if="!loading">
+  <div v-if="payments.length > 0" class="overflow-x-auto">
+    <div class="max-h-60 overflow-x-auto overflow-y-auto">
+      <table class="min-w-full bg-white border border-gray-300 mb-4">
+        <thead>
+          <tr>
+            <th class="px-4 py-2 border text-left">Select</th>
+            <th class="px-4 py-2 border text-left">Payment ID</th>
+            <th class="px-4 py-2 border text-left">Payment Amount Due</th>
+            <th class="px-4 py-2 border text-left">Payment Amount Interest</th>
+            <th class="px-4 py-2 border text-left">Payment Amount Paid</th>
+            <th class="px-4 py-2 border text-left">Payment Amount Balance</th>
+            <th class="px-4 py-2 border text-left">Payment Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="payment in payments" :key="payment.id" @click="selectPayment(payment)">
+            <td class="px-4 py-2 border text-left">
+              <input type="checkbox" v-model="payment.isSelected" />
+            </td>
+            <td class="px-4 py-2 border">{{ payment.id }}</td>
+            <td class="px-4 py-2 border">{{ payment.amount_due }}</td>
+            <td class="px-4 py-2 border">{{ payment.amount_interest }}</td>
+            <td class="px-4 py-2 border">{{ payment.amount_paid }}</td>
+            <td class="px-4 py-2 border">{{ payment.balance }}</td>
+            <td class="px-4 py-2 border">{{ payment.payment_status_code }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
 
@@ -182,13 +182,13 @@ async function fetchCustomers() {
 }
 
 async function fetchLoanApplications() {
-    debugger;
+
   loading.value = true;
   try {
     if (selectedCustomer.value) {
       const response = await apiService.getLoanApplicationByCustomerId({}, selectedCustomer.value);
       loanApplications.value = response.data;
-      debugger;
+
     }
   } catch (error) {
     toast.error(`${error}`, { autoClose: 3000 });
@@ -203,8 +203,12 @@ async function fetchPayments() {
     if(selectedLoan.value)
     {
         const response = await apiService.getPaymentByLoanNONoAuth({}, selectedLoan.value);
+        if(!response.data && response.data == null)
+        {
+            throw new Error(`Payment Schedule does not exists`);
+        }
+
         payments.value = response.data;
-        debugger;
     }
   } catch (error) {
     toast.error(`${error}`, {autoClose: 3000});
@@ -241,7 +245,7 @@ async function submitForm() {
   //save the value to api service
   loanApplicationService.loan_application_no = selectedLoan.value;
 
-  debugger;
+
 
   if (payment.length === 0) {
     toast.error('No payments selected or modified to submit!', { autoClose: 3000 });

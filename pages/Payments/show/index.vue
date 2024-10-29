@@ -123,7 +123,7 @@
   // Accept payment function
   async function acceptPayment() {
     try {
-        debugger;
+
       await apiService.approvePayment({state}, paymentServices.id);
       toast.success('Payment accepted successfully!', { autoClose: 3000 });
       router.push('/payments');

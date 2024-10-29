@@ -323,6 +323,10 @@ class API extends BaseAPIService {
         return await this.request(`/PAYMENT_SCHEDULES/NoAUTH`, 'GET', params)
     }
 
+    async getPaymentScheduleAll(params: object): Promise<any> {
+        return await this.request(`/PAYMENT_SCHEDULES/all`, 'GET', params);
+    }
+
     async getPaymentScheduleById(params: object, id: number): Promise<any> {
         return await this.request(`/PAYMENT_SCHEDULES/${id}`, 'GET', params)
     }

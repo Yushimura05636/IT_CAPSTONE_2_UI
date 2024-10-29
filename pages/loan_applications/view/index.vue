@@ -193,7 +193,7 @@ onMounted(() => {
 const fetchLoanApplication = async () => {
     try {
         const response = await apiService.getLoanApplicationById({}, loanApplicationService.id);
-        debugger;
+
         const comakerData = await apiService.getLoanApplicationCoMakerByIdNoAUTH({}, response.data.loan_applications.id);
         if(comakerData.data.length > 0)
         {
@@ -387,7 +387,7 @@ const updateSelectedFees = (feeId: number, isChecked: boolean) => {
             feeForm.value.feeForm.splice(index, 1)
         }
     }
-    debugger;
+
     calculateTotalFees();
 };
 

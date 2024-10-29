@@ -458,7 +458,7 @@ function generateLoanApplicationNo(length = 8) {
 
 // Handle form submission, including selected fees
 const submitForm = async () => {
-    debugger;
+
     const allCustomerData = []; // Initialize an empty array to hold customer data
 
     // Convert customerData object into an array
@@ -505,7 +505,7 @@ const submitForm = async () => {
     // Check if there is any customer data to submit
     if (allCustomerData.length > 0) {
         try {
-            debugger;
+
             // Send the data to the Laravel API
             const response = await apiService.createLoanApplication({
                 allCustomerData, // Use allCustomerData here
