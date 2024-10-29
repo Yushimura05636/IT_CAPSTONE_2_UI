@@ -338,7 +338,14 @@ const fetchFeeLibrary = async () => {
 const loadCustomerData = (customerId) => {
 
     selectedCheckCustomerId.value = customerId;
+
+    if(customerId == null || selectedCheckCustomerId.value == null)
+    {
+        //
+    }
+
     try {
+
         if (!customerData[customerId]) {
         customerData[customerId] = {
             loanApplicationNo: generateLoanApplicationNo(),
@@ -596,3 +603,13 @@ function cancelForm() {
     navigateTo('/loan_applications/');
 }
 </script>
+<style>
+.overflow-auto {
+    overflow-x: auto; /* Enables horizontal scrolling */
+    overflow-y: auto; /* Enables vertical scrolling */
+}
+
+.max-h-96 {
+    max-height: 24rem; /* Adjust based on your design needs */
+}
+</style>
