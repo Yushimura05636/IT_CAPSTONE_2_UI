@@ -70,9 +70,9 @@
 
                         <div class="mb-4">
                         <label class="block text-gray-700 mb-1">Loan Count</label>
-                        <select v-model="selectedLoanCountId" class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring focus:border-blue-300">
+                        <select v-model="selectedLoanCountId" readonly class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring focus:border-blue-300">
                             <option v-for="loan in state.loan_counts" :key="loan.id" :value="loan.id">
-                            {{ "Loan Count: " + loan.loan_count }}
+                            {{ loan.loan_count }}
                             </option>
                         </select>
                         </div>
