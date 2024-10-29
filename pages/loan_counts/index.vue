@@ -1,6 +1,7 @@
 <template>
   <NuxtLayout name="admin">
-    <div><h1>Loan Counts</h1></div>
+    <h1 class="text-2xl font-bold">Loan Counts</h1>
+
     <div class="p-8 max-w-6xl mx-auto bg-white shadow-lg rounded-lg mt-16">
       <!-- Top Action Bar -->
       <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 space-y-4 sm:space-y-0 sm:space-x-4">
@@ -52,8 +53,8 @@
                 <input type="radio" v-model="selectedLoanId" :value="loan.id" class="cursor-pointer" />
               </td>
               <td class="py-4 px-6">{{ loan.loan_count }}</td>
-              <td class="py-4 px-6">{{ formatCurrency(loan.min_amount) }}</td>
-              <td class="py-4 px-6">{{ formatCurrency(loan.max_amount) }}</td>
+              <td class="py-4 px-6">{{ (loan.min_amount) }}</td>
+              <td class="py-4 px-6">{{ (loan.max_amount) }}</td>
             </tr>
             <tr v-if="filteredLoans.length === 0">
               <td colspan="4" class="text-center py-6 text-gray-500">No loans found</td>

@@ -54,7 +54,7 @@
                   <span>{{ paymentLine.remarks }}</span>
                 </td>
               </tr>
-              <tr v-if="state.paymentLine.data.length === 0">
+              <tr v-if="state.paymentLine.length === 0">
                 <td colspan="6" class="text-center py-6 text-gray-500">No payment lines found</td>
               </tr>
             </template>
