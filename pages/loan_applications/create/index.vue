@@ -265,23 +265,26 @@ const fetchCustomers = async () => {
     if (selectedGroupId.value && state.value.customers) {
         toast.info(selectedGroupId.value);
         try {
-            // Optionally, you can also initialize customerData for new customers
-            state.value.customers.forEach(customer => {
-                customerData[customer.id] = {
-                    loanApplicationNo: generateLoanApplicationNo(),
-                    customerId: selectedCustomerId.value,
-                    loanAmount: '',
-                    isSelected: false,
-                    factorRate: '',
-                    interestAmount: '',
-                    amountPaid: '',
-                    releaseSchedule: '',
-                    paymentFrequency: '',
-                    duration: '',
-                    comment: '',
-                    selectedFees: [],
-                };
-            });
+            if (Array.isArray(state.value.customers)) {
+                state.value.customers.forEach(customer => {
+                    customerData[customer.id] = {
+                        loanApplicationNo: generateLoanApplicationNo(),
+                        customerId: selectedCustomerId.value,
+                        loanAmount: '',
+                        isSelected: false,
+                        factorRate: '',
+                        interestAmount: '',
+                        amountPaid: '',
+                        releaseSchedule: '',
+                        paymentFrequency: '',
+                        duration: '',
+                        comment: '',
+                        selectedFees: [],
+                    };
+                });
+            } else {
+                console.error('Expected customers to be an array, but got:', state.value.customers);
+            }
             const response = await apiService.getCustomerByGroupId({}, selectedGroupId.value);
             state.value.customers = response.data;
 
