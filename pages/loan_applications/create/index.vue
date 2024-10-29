@@ -468,9 +468,6 @@ const submitForm = async () => {
     // Convert customerData object into an array
     const customerDataArray = Object.values(customerData);
 
-    const isTrue = Array.isArray(customerDataArray);
-    toast.info(`${isTrue}`);
-
     // Loop through the customer data array using a simple for loop
     for (let i = 0; i < customerDataArray.length; i++) {
         const customer = customerDataArray[i];
