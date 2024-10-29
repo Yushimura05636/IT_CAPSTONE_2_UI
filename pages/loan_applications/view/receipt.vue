@@ -28,23 +28,23 @@
 
                 <div class="text-right">
                   <h2 class="text-lg font-bold text-gray-700">Loan Details</h2>
-                  <p class="text-gray-600"><strong>Amount Due:</strong> {{ formatCurrency(addAmountDue(loan.loan_applications.amount_loan , loan.loan_applications.amount_interest))}}</p>
+                  <p class="text-gray-600"><strong>Amount Due:</strong> {{ formatCurrency(addAmountDue(loan.loan_applications.amount_loan , loan.loan_applications.amount_interest)) }}</p>
                   <p class="text-gray-600"><strong>Interest:</strong> {{ formatCurrency(loan.loan_applications.factor_rate) }}</p>
 
                   <!-- Fees (dynamically rendered) -->
-                    <div v-if="loan.fees && loan.fees.length">
-                        <h3 class="text-md font-bold text-gray-600 mb-2">Fees:</h3>
-                        <ul>
-                        <li v-for="(fee, index) in loan.fees" :key="index" class="text-gray-600">
-                            <span><strong>Fee {{ index + 1 }}:</strong> {{ formatCurrency(fee.amount) }} </span>
-                        </li>
-                        </ul>
-                    </div>
+                  <div v-if="loan.fees && loan.fees.length">
+                    <h3 class="text-md font-bold text-gray-600 mb-2">Fees:</h3>
+                    <ul class="list-disc list-inside">
+                      <li v-for="(fee, index) in loan.fees" :key="index" class="text-gray-600">
+                        <span><strong>Fee {{ index + 1 }}:</strong> {{ formatCurrency(fee.amount) }} </span>
+                      </li>
+                    </ul>
+                  </div>
 
-                    <!-- If there are no fees, show this message -->
-                    <div v-else>
-                        <p class="text-gray-500">No fees available.</p>
-                    </div>
+                  <!-- If there are no fees, show this message -->
+                  <div v-else>
+                    <p class="text-gray-500">No fees available.</p>
+                  </div>
                   <hr class="my-2 border-gray-300" />
                   <p class="text-lg font-bold text-gray-900"><strong>Total Amount:</strong>
                     {{ formatCurrency(calculateTotalAmount(loan.loan_applications.amount_loan, loan.loan_applications.amount_interest, loan.fees)) }}
@@ -58,42 +58,38 @@
           </div>
 
           <!-- Footer -->
-            <div class="flex justify-between items-center mt-8">
+          <div class="flex justify-between items-center mt-8">
             <p class="text-gray-500 text-sm">Thank you for your business.</p>
             <div class="flex space-x-4"> <!-- Added space between buttons -->
-                <button
+              <button
                 class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold py-2 px-6 rounded-lg hover:shadow-md transition-all"
                 @click="printReceipt"
-                >
+              >
                 Print Receipt
-                </button>
-                <button
+              </button>
+              <button
                 class="bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-lg hover:shadow-md transition-all"
                 @click="handleOk"
-                >
+              >
                 OK
-                </button>
+              </button>
             </div>
-            </div>
-
+          </div>
         </div>
       </div>
     </NuxtLayout>
   </template>
 
-
   <script setup lang="ts">
   import { toast } from 'vue3-toastify';
   import 'vue3-toastify/dist/index.css';
-  import { ref } from 'vue';
-import { loanApplicationService } from '~/models/LoanApplication';
-import { apiService } from '~/routes/api/API';
+  import { ref, onMounted } from 'vue';
+  import { loanApplicationService } from '~/models/LoanApplication';
+  import { apiService } from '~/routes/api/API';
 
   const loan = ref({});
-  const customer = ref({})
-
+  const customer = ref({});
   const isLoading = ref(true);
-
   const formattedDate = new Date().toLocaleDateString();
 
   const formatCurrency = (amount: number) => {
@@ -101,26 +97,20 @@ import { apiService } from '~/routes/api/API';
   };
 
   const calculateTotalAmount = (amountLoan, amountInterest, fees) => {
+    // Calculate Amount Due
+    const amountDue = addAmountDue(amountLoan, amountInterest);
+    // Calculate Total Fees
+    const totalFees = fees.reduce((sum, fee) => sum + parseFloat(fee.amount), 0);
+    // Return Total Amount
+    return amountDue + totalFees;
+  };
 
-  // Calculate Amount Due
-  const amountDue = addAmountDue(amountLoan, amountInterest);
-
-  // Calculate Total Fees
-  const totalFees = fees.reduce((sum, fee) => sum + parseFloat(fee.amount), 0);
-
-  debugger;
-
-  // Return Total Amount
-  return amountDue + totalFees;
-};
-
-const addAmountDue = (amountLoan: any, amountInterest: any) => {
-    //convert it to float
-  amountLoan = parseFloat(amountLoan);
-  amountInterest = parseFloat(amountInterest);
-  return amountLoan + amountInterest; // Adjust as necessary based on your logic
-};
-
+  const addAmountDue = (amountLoan: any, amountInterest: any) => {
+    // Convert to float
+    amountLoan = parseFloat(amountLoan);
+    amountInterest = parseFloat(amountInterest);
+    return amountLoan + amountInterest; // Adjust as necessary based on your logic
+  };
 
   const printReceipt = () => {
     const receipt = document.getElementById('receipt');
@@ -149,14 +139,13 @@ const addAmountDue = (amountLoan: any, amountInterest: any) => {
       margin-bottom: 20px;
     }
 
+    h2, h3 {
+      margin-bottom: 10px;
+    }
+
     p {
       font-size: 14px;
       margin-bottom: 5px;
-    }
-
-    h2 {
-      font-size: 18px;
-      margin-bottom: 10px;
     }
 
     /* Layout for sections */
@@ -192,33 +181,29 @@ const addAmountDue = (amountLoan: any, amountInterest: any) => {
 
   async function fetchLoanDetails() {
     try {
-        //search for loan
-        const loanData = await apiService.getLoanApplicationByLoanNoNoAUTH({}, loanApplicationService.loan_application_no);
-        //search for customer
-        const customerData = await apiService.getCustomerByIdNoAuth({}, loanData.data.loan_applications.customer_id);
-        loan.value = loanData.data;
-        customer.value = customerData;
-
-        debugger;
+      // Search for loan
+      const loanData = await apiService.getLoanApplicationByLoanNoNoAUTH({}, loanApplicationService.loan_application_no);
+      // Search for customer
+      const customerData = await apiService.getCustomerByIdNoAuth({}, loanData.data.loan_applications.customer_id);
+      loan.value = loanData.data;
+      customer.value = customerData;
     } catch (error) {
-        toast.error(`Error Message: ${error}`, {
-            autoClose: 5000
-        })
-    }
-    finally {
-        isLoading.value = false;
+      toast.error(`Error Message: ${error}`, {
+        autoClose: 5000
+      });
+    } finally {
+      isLoading.value = false;
     }
   }
 
   function handleOk() {
-    navigateTo('/loan_applications/')
+    navigateTo('/loan_applications/');
   }
 
-  //fetch all function
+  // Fetch all function
   onMounted(() => {
     fetchLoanDetails();
-  })
-
+  });
   </script>
 
   <style scoped>
