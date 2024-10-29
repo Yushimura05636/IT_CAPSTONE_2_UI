@@ -1,21 +1,22 @@
 <template>
-    <div id="print-section" class="max-w-lg mx-auto bg-gray-100 shadow-lg rounded-lg p-8 border border-gray-200">
+    <NuxtLayout name="admin">
+        <div v-if="state.payment && state.customer" id="print-section" class="max-w-lg mx-auto bg-gray-100 shadow-lg rounded-lg p-8 border border-gray-200">
       <div class="flex justify-between items-center mb-4 border-b pb-2 border-gray-300">
         <h1 class="text-2xl font-bold text-gray-800">Receipt</h1>
-        <span class="text-gray-500 text-sm">#{{ payment.id }}</span>
+        <span class="text-gray-500 text-sm">Reference No #{{ state.payment.data.id }}</span>
       </div>
       <div class="bg-white p-6 rounded-lg shadow-md space-y-4">
         <div class="text-gray-800 font-medium text-lg">Customer Information</div>
         <div class="border-l-4 border-blue-500 pl-4">
-          <p class="text-gray-700"><span class="font-semibold">Customer ID:</span> {{ payment.customer_id }}</p>
-          <p class="text-gray-700"><span class="font-semibold">Prepared By:</span> {{ payment.prepared_by_id }}</p>
+          <p class="text-gray-700"><span class="font-semibold">Customer Name:</span> {{ state.customer.personality.last_name }} {{ state.customer.personality.first_name }} {{ state.customer.personality.middle_name }}</p>
+          <p class="text-gray-700"><span class="font-semibold">Prepared By:</span> {{ state.payment.user.last_name }} {{ state.payment.user.first_name }} {{ state.payment.user.middle_name }}</p>
         </div>
 
         <div class="text-gray-800 font-medium text-lg mt-4">Payment Details</div>
         <div class="border-l-4 border-blue-500 pl-4">
-          <p class="text-gray-700"><span class="font-semibold">Amount Paid:</span> ${{ payment.amount_paid }}</p>
-          <p class="text-gray-700"><span class="font-semibold">Status:</span> {{ payment.document_status_code }}</p>
-          <p class="text-gray-700"><span class="font-semibold">Date:</span> {{ formatDate(payment.prepared_at) }}</p>
+          <p class="text-gray-700"><span class="font-semibold">Amount Paid:</span> ₱{{ state.payment.data.amount_paid }}</p>
+          <p class="text-gray-700"><span class="font-semibold">Status:</span> {{ state.payment.data.document_status_code }}</p>
+          <p class="text-gray-700"><span class="font-semibold">Date:</span> {{ formatDate(state.payment.data.prepared_at) }}</p>
         </div>
       </div>
       <div class="flex justify-center gap-4 mt-6">
@@ -27,25 +28,40 @@
         </button>
       </div>
     </div>
+
+    <div v-else class="text-center mt-8">
+      <p class="text-gray-500">Loading payment information...</p>
+    </div>
+    </NuxtLayout>
   </template>
 
   <script setup lang="ts">
-  // Sample payment data
-  const payment = {
-    id: 101,
-    customer_id: 23,
-    amount_paid: "250.00",
-    prepared_by_id: 3,
-    document_status_code: "APPROVED",
-    prepared_at: "2024-10-29T14:30:00Z"
-  };
+  import { ref, onMounted } from 'vue';
+  import { apiService } from '~/routes/api/API';
+  import { loanApplicationService } from '~/models/LoanApplication';
+  import { paymentServices } from '~/models/Payments';
 
-  // Format date function
+  const state = ref({
+    payment: null,
+    customer: null,
+  });
+
+  async function fetchPaymentData(paymentId: number) {
+    try {
+      const response = await apiService.getPaymentByIdNoAuth({}, paymentServices.id);
+      const customerData = await apiService.getCustomerByIdNoAuth({}, response.data.customer_id);
+      debugger;
+      state.value.payment = response;
+      state.value.customer = customerData;
+    } catch (error) {
+      console.error("Error fetching payment data:", error);
+    }
+  }
+
   function formatDate(date: string): string {
     return new Date(date).toLocaleDateString();
   }
 
-  // Print receipt function
   function printReceipt() {
     const printContents = document.getElementById('print-section')?.innerHTML;
     if (printContents) {
@@ -68,12 +84,13 @@
     }
   }
 
-  // Okay button action
   function okayAction() {
     alert('Okay button clicked');
   }
-  </script>
 
-  <style scoped>
-  /* Optional custom styling for finer adjustments */
-  </style>
+  // Fetch data when component mounts
+  onMounted(() => {
+    const paymentId = 101; // Replace with dynamic ID if needed
+    fetchPaymentData(paymentId);
+  });
+  </script>

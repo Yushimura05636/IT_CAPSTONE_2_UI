@@ -75,6 +75,7 @@
     import { ref, computed } from 'vue';
     import { apiService } from '~/routes/api/API';
     import { paymentServices } from '~/models/Payments'
+import { CustomersService } from '~/models/Customer';
 
 // Router instance
 const router = useRouter();

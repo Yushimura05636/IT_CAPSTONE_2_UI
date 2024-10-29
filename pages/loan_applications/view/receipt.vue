@@ -29,14 +29,14 @@
                 <div class="text-right">
                   <h2 class="text-lg font-bold text-gray-700">Loan Details</h2>
                   <p class="text-gray-600"><strong>Amount Due:</strong> {{ formatCurrency(addAmountDue(loan.loan_applications.amount_loan , loan.loan_applications.amount_interest)) }}</p>
-                  <p class="text-gray-600"><strong>Interest:</strong> {{ formatCurrency(loan.loan_applications.factor_rate) }}</p>
+                  <p class="text-gray-600"><strong>Interest:</strong> {{ formatCurrency(loan.loan_applications.factor_rate_value) }}</p>
 
                   <!-- Fees (dynamically rendered) -->
                   <div v-if="loan.fees && loan.fees.length">
                     <h3 class="text-md font-bold text-gray-600 mb-2">Fees:</h3>
                     <ul class="list-disc list-inside">
                       <li v-for="(fee, index) in loan.fees" :key="index" class="text-gray-600">
-                        <span><strong>Fee {{ index + 1 }}:</strong> {{ formatCurrency(fee.amount) }} </span>
+                        <span><strong>{{ fee.description }}:</strong> {{ formatCurrency(fee.amount) }} </span>
                       </li>
                     </ul>
                   </div>
@@ -93,7 +93,7 @@
   const formattedDate = new Date().toLocaleDateString();
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
+    return new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(amount);
   };
 
   const calculateTotalAmount = (amountLoan, amountInterest, fees) => {
@@ -183,10 +183,13 @@
     try {
       // Search for loan
       const loanData = await apiService.getLoanApplicationByLoanNoNoAUTH({}, loanApplicationService.loan_application_no);
+      //const loanData = await apiService.getLoanApplicationByLoanNoNoAUTH({}, 'LN-USMNKWOQ9662');
       // Search for customer
       const customerData = await apiService.getCustomerByIdNoAuth({}, loanData.data.loan_applications.customer_id);
+      //const customerData = await apiService.getCustomerByIdNoAuth({}, 4);
       loan.value = loanData.data;
       customer.value = customerData;
+      debugger;
     } catch (error) {
       toast.error(`Error Message: ${error}`, {
         autoClose: 5000
