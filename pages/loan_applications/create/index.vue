@@ -333,6 +333,12 @@ const fetchFeeLibrary = async () => {
 const loadCustomerData = (customerId) => {
 
     selectedCheckCustomerId.value = customerId;
+
+    if(!selectedCheckCustomerId.value)
+    {
+        toast.info(`Please select customer first before fill up the form!`);
+    }
+
     try {
         if (!customerData[customerId]) {
         customerData[customerId] = {
@@ -357,7 +363,7 @@ const loadCustomerData = (customerId) => {
         }
     }
     } catch (error) {
-        toast.error(`Please select first the customer!`, { autoClose: 5000 });
+        toast.toast(`Please select first the customer!`, { autoClose: 5000 });
     }
 };
 
