@@ -284,6 +284,7 @@ const fetchCustomers = async () => {
                 });
             } else {
                 console.error('Expected customers to be an array, but got:', state.value.customers);
+                console.error('Expected customers to be an array, but got:', state.value.customers.length);
             }
             const response = await apiService.getCustomerByGroupId({}, selectedGroupId.value);
             state.value.customers = response.data;
