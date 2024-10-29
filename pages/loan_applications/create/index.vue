@@ -1,14 +1,17 @@
 <template>
     <NuxtLayout name="admin">
         <main>
-            <div class="flex justify-center items-center bg-gray-100">
-                <div class="bg-white border border-gray-300 rounded-lg p-6 shadow-md w-full">
+            <div class="flex justify-center items-center bg-gray-100 min-h-screen">
+                <div class="bg-white border border-gray-300 rounded-lg p-6 shadow-md w-full max-w-lg">
                     <div class="text-center font-bold text-xl mb-4">Transaction Form</div>
 
                     <!-- Group Name Combobox -->
                     <div class="mb-4">
-                        <label class="block text-gray-700">Group Name</label>
-                        <select v-model="selectedGroupId" @change="fetchCustomers" class="w-full border rounded-lg px-4 py-2">
+                        <label class="block text-gray-700 mb-1">Group Name</label>
+                        <select
+                            v-model="selectedGroupId"
+                            @change="fetchCustomers"
+                            class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring focus:border-blue-300">
                             <option v-for="group in state.groups" :key="group.id" :value="group.id">
                                 {{ group.description }}
                             </option>
@@ -16,52 +19,49 @@
                     </div>
 
                     <!-- Table for Customer Names -->
-<div v-if="state.customers.length > 0" class="overflow-x-auto">
-    <div class="max-h-60 overflow-y-auto">
-        <table class="min-w-full bg-white border border-gray-300 mb-4">
-            <thead>
-                <tr>
-                    <th class="px-4 py-2 border text-left">Select</th>
-                    <th class="px-4 py-2 border text-left">Customer Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="customer in state.customers" :key="customer.id" :value="customer.id">
-                    <td class="px-4 py-2 border text-left">
-                        <input
-                            type="checkbox"
-                            v-model="customer.isSelected"
-                            :value="customer.id"
-                            @change="onCheckboxChange(customer.id, $event.target.checked)"
-                        />
-                    </td>
-                    <td class="px-4 py-2 border cursor-pointer" @click="loadCustomerData(customer.id)">
-                        {{ customer.personality.first_name }} {{ customer.personality.middle_name }} {{ customer.personality.family_name }}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-
+                    <div v-if="state.customers.length > 0" class="overflow-x-auto mb-4">
+                        <table class="min-w-full bg-white border border-gray-300">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-2 border text-left">Select</th>
+                                    <th class="px-4 py-2 border text-left">Customer Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="customer in state.customers" :key="customer.id">
+                                    <td class="px-4 py-2 border text-left">
+                                        <input
+                                            type="checkbox"
+                                            v-model="customer.isSelected"
+                                            :value="customer.id"
+                                            @change="onCheckboxChange(customer.id, $event.target.checked)"
+                                            class="cursor-pointer"/>
+                                    </td>
+                                    <td class="px-4 py-2 border cursor-pointer hover:bg-gray-200" @click="loadCustomerData(customer.id)">
+                                        {{ customer.personality.first_name }} {{ customer.personality.middle_name }} {{ customer.personality.family_name }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
                     <!-- Form Fields for the Selected Customer -->
-                    <div v-if="selectedCheckCustomerId !== null">
+                    <div v-if="selectedCheckCustomerId !== null" class="overflow-auto max-h-96">
                         <div class="mb-4">
-                            <label class="block text-gray-700">Loan Application No</label>
+                            <label class="block text-gray-700 mb-1">Loan Application No</label>
                             <input
                                 v-model="customerData[selectedCheckCustomerId].loanApplicationNo"
                                 type="text"
-                                class="w-full border border-gray-300 rounded p-2"
+                                class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring focus:border-blue-300"
                                 readonly
                             />
                         </div>
 
                         <div class="mb-4">
-                            <label class="block text-gray-700">Co-Maker</label>
+                            <label class="block text-gray-700 mb-1">Co-Maker</label>
                             <select
                                 v-model="customerData[selectedCheckCustomerId].coMaker"
-                                class="w-full border rounded-lg px-4 py-2">
+                                class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring focus:border-blue-300">
                                 <option v-for="customer in availableCoMakers" :key="customer.id" :value="customer.id">
                                     {{ customer.personality.first_name }} {{ customer.personality.middle_name }} {{ customer.personality.family_name }}
                                 </option>
@@ -69,22 +69,21 @@
                         </div>
 
                         <div class="mb-4">
-                            <label class="block text-gray-700">Loan Amount</label>
+                            <label class="block text-gray-700 mb-1">Loan Amount</label>
                             <input
                                 v-model="customerData[selectedCheckCustomerId].loanAmount"
                                 type="number"
-                                class="w-full border border-gray-300 rounded p-2"
+                                class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring focus:border-blue-300"
                                 @input="updateLoanAmount(selectedCheckCustomerId)"
                             />
                         </div>
 
                         <div class="mb-4">
-                            <label class="block text-gray-700">Factor Rate</label>
+                            <label class="block text-gray-700 mb-1">Factor Rate</label>
                             <select
                                 v-model="customerData[selectedCheckCustomerId].factorRate"
                                 @change="onFactorRateChange(customerData[selectedCheckCustomerId].factorRate)"
-                                class="w-full border rounded-lg px-4 py-2"
-                            >
+                                class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring focus:border-blue-300">
                                 <option v-for="factorRate in state.factorRates" :key="factorRate.id" :value="factorRate.id">
                                     {{ factorRate.value }}
                                 </option>
@@ -92,40 +91,39 @@
                         </div>
 
                         <div class="mb-4">
-                            <label class="block text-gray-700">Interest Amount</label>
+                            <label class="block text-gray-700 mb-1">Interest Amount</label>
                             <input
                                 v-model="customerData[selectedCheckCustomerId].interestAmount"
                                 type="number"
                                 step="0.01"
-                                class="w-full border border-gray-300 rounded p-2"
+                                class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring focus:border-blue-300"
                             />
                         </div>
 
                         <!-- Add Amount Paid Field -->
                         <div class="mb-4">
-                            <label class="block text-gray-700">Amount Paid</label>
+                            <label class="block text-gray-700 mb-1">Amount Paid</label>
                             <input
                                 v-model="customerData[selectedCheckCustomerId].amountPaid"
                                 type="number"
-                                class="w-full border border-gray-300 rounded p-2"
+                                class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring focus:border-blue-300"
                                 readonly
                             />
                         </div>
 
-
                         <div class="mb-4">
-                            <label class="block text-gray-700">Release Schedule</label>
+                            <label class="block text-gray-700 mb-1">Release Schedule</label>
                             <input
                                 v-model="customerData[selectedCheckCustomerId].releaseSchedule"
                                 type="date"
-                                class="w-full border border-gray-300 rounded p-2"
+                                class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring focus:border-blue-300"
                             />
                         </div>
 
                         <!-- Automatically Updated Fields -->
                         <div class="mb-4">
-                            <label class="block text-gray-700">Payment Frequency</label>
-                            <select v-model="customerData[selectedCheckCustomerId].paymentFrequency" class="w-full border rounded-lg px-4 py-2">
+                            <label class="block text-gray-700 mb-1">Payment Frequency</label>
+                            <select v-model="customerData[selectedCheckCustomerId].paymentFrequency" class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring focus:border-blue-300">
                                 <option v-for="frequency in state.paymentFrequencies" :key="frequency.id" :value="frequency.id">
                                     {{ frequency.description }}
                                 </option>
@@ -133,8 +131,8 @@
                         </div>
 
                         <div class="mb-4">
-                            <label class="block text-gray-700">Duration</label>
-                            <select v-model="customerData[selectedCheckCustomerId].duration" class="w-full border rounded-lg px-4 py-2">
+                            <label class="block text-gray-700 mb-1">Duration</label>
+                            <select v-model="customerData[selectedCheckCustomerId].duration" class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring focus:border-blue-300">
                                 <option v-for="duration in state.durations" :key="duration.id" :value="duration.id">
                                     {{ duration.description }}
                                 </option>
@@ -142,16 +140,16 @@
                         </div>
 
                         <div class="mb-4">
-                            <label class="block text-gray-700">Comment</label>
+                            <label class="block text-gray-700 mb-1">Comment</label>
                             <textarea
                                 v-model="customerData[selectedCheckCustomerId].comment"
-                                class="w-full border border-gray-300 rounded p-2"
+                                class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring focus:border-blue-300"
                             ></textarea>
                         </div>
 
-                        <div v-if="state.fees.length > 0" class="overflow-x-auto">
+                        <div v-if="state.fees.length > 0" class="overflow-x-auto mb-4">
                             <div class="max-h-60 overflow-y-auto">
-                                <table class="min-w-full bg-white border border-gray-300 mb-4">
+                                <table class="min-w-full bg-white border border-gray-300">
                                     <thead>
                                         <tr>
                                             <th class="px-4 py-2 border text-left">Select</th>
@@ -163,10 +161,11 @@
                                         <tr v-for="fee in state.fees" :key="fee.id">
                                             <td class="px-4 py-2 border text-left">
                                                 <input
-                                    type="checkbox"
-                                    :value="fee.id"
-                                    :checked="customerData[selectedCheckCustomerId].selectedFees.includes(fee.id)"
-                                    @change="updateSelectedFees(fee.id, $event.target.checked)"/>
+                                                    type="checkbox"
+                                                    :value="fee.id"
+                                                    :checked="customerData[selectedCheckCustomerId].selectedFees.includes(fee.id)"
+                                                    @change="updateSelectedFees(fee.id, $event.target.checked)"
+                                                    class="cursor-pointer"/>
                                             </td>
                                             <td class="px-4 py-2 border">{{ fee.description }}</td>
                                             <td class="px-4 py-2 border">{{ fee.amount }}</td>
@@ -177,37 +176,32 @@
                         </div>
 
                         <div class="mb-4">
-                            <label class="block text-gray-700">Total Fees</label>
+                            <label class="block text-gray-700 mb-1">Total Fees</label>
                             <input
                                 v-model="customerData[selectedCheckCustomerId].totalFees"
                                 step="0.01"
                                 type="number"
-                                class="w-full border border-gray-300 rounded p-2"/>
+                                class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring focus:border-blue-300"/>
                         </div>
 
                         <div class="flex justify-end mt-4 space-x-2">
-                        <button
-                            @click.prevent="submitForm"
-                            class="bg-blue-500 text-white px-4 py-2 rounded"
-                        >
-                            Submit
-                        </button>
-                        <button
-                            @click.prevent="cancelForm"
-                            class="bg-gray-500 text-white px-4 py-2 rounded"
-                        >
-                            Cancel
-                        </button>
+                            <button
+                                @click.prevent="submitForm"
+                                class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition duration-200">
+                                Submit
+                            </button>
+                            <button
+                                @click.prevent="cancelForm"
+                                class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded transition duration-200">
+                                Cancel
+                            </button>
+                        </div>
                     </div>
-
-                    </div>
-
                 </div>
             </div>
         </main>
     </NuxtLayout>
 </template>
-
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue';
 import { toast } from 'vue3-toastify';
@@ -338,14 +332,7 @@ const fetchFeeLibrary = async () => {
 const loadCustomerData = (customerId) => {
 
     selectedCheckCustomerId.value = customerId;
-
-    if(customerId == null || selectedCheckCustomerId.value == null)
-    {
-        //
-    }
-
     try {
-
         if (!customerData[customerId]) {
         customerData[customerId] = {
             loanApplicationNo: generateLoanApplicationNo(),
@@ -603,7 +590,28 @@ function cancelForm() {
     navigateTo('/loan_applications/');
 }
 </script>
-<style>
+<style scoped>
+/* Custom styles to enhance the UI further */
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #63b3ed; /* Tailwind blue-300 */
+    box-shadow: 0 0 0 1px rgba(99, 184, 237, 0.5);
+}
+
+@media (max-width: 640px) {
+    .max-w-lg {
+        max-width: 100%;
+    }
+}
+
 .overflow-auto {
     overflow-x: auto; /* Enables horizontal scrolling */
     overflow-y: auto; /* Enables vertical scrolling */
