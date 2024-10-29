@@ -263,9 +263,6 @@ const fetchCustomers = async () => {
     selectedCustomerId.value = null;
     customerData.value = {}; // Clear previous customer data
     if (selectedGroupId.value && state.value.customers) {
-        toast.info(selectedGroupId.value);
-        const isTrue = Array.isArray(state.value.customers);
-        toast.info(`${isTrue}`);
         try {
             if (Array.isArray(state.value.customers)) {
                 state.value.customers.forEach(customer => {
