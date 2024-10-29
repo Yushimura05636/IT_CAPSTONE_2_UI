@@ -85,7 +85,7 @@
   }
 
   function okayAction() {
-    alert('Okay button clicked');
+    navigateTo('/payments/')
   }
 
   // Fetch data when component mounts
