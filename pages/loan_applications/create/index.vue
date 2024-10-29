@@ -262,7 +262,8 @@ const fetchGroups = async () => {
 const fetchCustomers = async () => {
     selectedCustomerId.value = null;
     customerData.value = {}; // Clear previous customer data
-    if (selectedGroupId.value) {
+    if (selectedGroupId.value && state.value.customers) {
+        toast.info(selectedGroupId.value);
         try {
             // Optionally, you can also initialize customerData for new customers
             state.value.customers.forEach(customer => {
