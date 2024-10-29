@@ -250,11 +250,16 @@
         </table>
     </div>
 
-        <div class="mt-4 flex justify-center">
-          <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500">
-            Create Customer
-          </button>
-        </div>
+    <div class="mt-4 flex justify-end space-x-4">
+  <button type="button" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-200" @click="handleCancel">
+    Cancel
+  </button>
+  <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500">
+    Create Customer
+  </button>
+</div>
+
+
       </form>
     </div>
   </NuxtLayout>
@@ -531,19 +536,19 @@ const createCustomer = async () => {
         return;
       }
 
-    
+
       // if (selectedRequirements.value.length === 0) {
       // toast.error("Please select at least one document requirement.");
       // requirementsPrompt.value = `Select atleast one requirement before proceeding.`;
       // return;
-      // } 
+      // }
 
 
-    // i cant check the date sas if naa ba or wala 
-    
+    // i cant check the date sas if naa ba or wala
+
     // Check for expiry dates
     // const hasExpiryDate = state.value.requirements.some(requirement =>
-    //   selectedRequirements.value.includes(requirement.id) && !requirement.expiry_date  
+    //   selectedRequirements.value.includes(requirement.id) && !requirement.expiry_date
     // );
 
     // if (hasExpiryDate) {
@@ -657,6 +662,12 @@ const formatDate = (dateString) => {
     return null;
   }
 };
+
+const handleCancel = () => {
+  // Logic to navigate away or reset the form
+  navigateTo('/customers/'); // Example navigation
+};
+
 
 </script>
 
