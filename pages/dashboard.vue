@@ -11,11 +11,11 @@
   <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full border border-gray-200">
     <div class="flex items-center justify-between mb-4">
       <h1 class="text-4xl font-semibold text-gray-800">1</h1>
-      <span class="material-icons text-gray-700 text-2xl">dns</span>
+      <span class="material-icons text-gray-700 text-2xl">Borrower</span>
     </div>
     <div class="flex items-center justify-between">
-      <p class="text-lg font-semibold text-gray-700">Total Servers</p>
-      <a href="#" class="text-blue-500 font-semibold">View all Servers &gt;</a>
+      <p class="text-lg font-semibold text-gray-700">Total Borrowers</p>
+      <a href="#" class="text-blue-500 font-semibold">View all Customers &gt;</a>
     </div>
   </div>
 
@@ -23,11 +23,11 @@
   <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full border border-gray-200">
     <div class="flex items-center justify-between mb-4">
       <h1 class="text-4xl font-semibold text-gray-800">1</h1>
-      <span class="material-icons text-gray-700 text-2xl">apps</span>
+      <span class="material-icons text-gray-700 text-2xl">Group</span>
     </div>
     <div class="flex items-center justify-between">
-      <p class="text-lg font-semibold text-gray-700">Flexible Apps</p>
-      <a href="#" class="text-blue-500 font-semibold">View all Applications &gt;</a>
+      <p class="text-lg font-semibold text-gray-700">Total Groups</p>
+      <a href="#" class="text-blue-500 font-semibold">View all Groups &gt;</a>
     </div>
   </div>
 </div>
