@@ -129,7 +129,7 @@ import { CustomersService } from '~/models/Customer';
         loanApplicationService.loan_application_no = state.payment.loan_application_no;
         CustomersService.id = state.payment.customer_id;
 
-      //await apiService.approvePayment({state}, paymentServices.id);
+      await apiService.approvePayment({state}, paymentServices.id);
       toast.success('Payment accepted successfully!', { autoClose: 3000 });
       navigateTo('/payments/show/receipt');
     } catch (error) {
