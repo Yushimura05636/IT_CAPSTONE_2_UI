@@ -6,6 +6,32 @@
         </div>
         <main>
             <div class="px-4">
+                <div class="grid grid-cols-2 gap-4 p-6">
+  <!-- Card 1: Total Servers -->
+  <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full border border-gray-200">
+    <div class="flex items-center justify-between mb-4">
+      <h1 class="text-4xl font-semibold text-gray-800">1</h1>
+      <span class="material-icons text-gray-700 text-2xl">Borrower</span>
+    </div>
+    <div class="flex items-center justify-between">
+      <p class="text-lg font-semibold text-gray-700">Total Borrowers</p>
+      <a href="#" class="text-blue-500 font-semibold">View all Customers &gt;</a>
+    </div>
+  </div>
+
+  <!-- Card 2: Flexible Apps -->
+  <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full border border-gray-200">
+    <div class="flex items-center justify-between mb-4">
+      <h1 class="text-4xl font-semibold text-gray-800">1</h1>
+      <span class="material-icons text-gray-700 text-2xl">Group</span>
+    </div>
+    <div class="flex items-center justify-between">
+      <p class="text-lg font-semibold text-gray-700">Total Groups</p>
+      <a href="#" class="text-blue-500 font-semibold">View all Groups &gt;</a>
+    </div>
+  </div>
+</div>
+
                 <!-- Information Card Container -->
                 <div class="flex flex-wrap -mx-2 mt-10">
                     <!-- Card 1 -->

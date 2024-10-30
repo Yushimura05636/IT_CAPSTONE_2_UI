@@ -1,5 +1,6 @@
 <template>
-    <div class="bg-gray-100 h-screen flex items-center justify-center p-6">
+    <NuxtLayout name="admin">
+        <div class="bg-gray-100 h-screen flex items-center justify-center p-6">
         <form @submit.prevent="createFactorRate" class="w-full max-w-lg bg-white p-8 rounded-md shadow-md">
             <div class="container mx-auto p-4">
                 <div class="border-b border-gray-900/10 pb-12">
@@ -30,13 +31,13 @@
                             <input v-model="factorRate.description"  type="text"  id="description"  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-xl sm:leading-6" />
                             </div>
                         </div>
-                        
-    
+
+
                         <div class="sm:col-span-2">
                             <label for="valueP" class="block text-sm font-bold leading-6 text-gray-900">Value<span class="text-red-600">*</span></label>
                             <input v-model="factorRate.valueP"   step="0.01"  type="number"  id="valueP "  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-xl sm:leading-6" />
                         </div>
-    
+
                         <div class="sm:col-span-2">
                             <label for="notes" class="block text-sm font-bold leading-6 text-gray-900">Notes <span class="text-red-600">*</span></label>
                             <div class="mt-2">
@@ -46,7 +47,7 @@
                     </div>
                 </div>
             </div>
-    
+
             <div class="mt-6 flex items-center justify-end gap-x-6">
             <button type="button" class="text-sm font-bold leading-6 text-gray-900"
                 @click="back">
@@ -56,16 +57,17 @@
             </div>
         </form>
     </div>
+    </NuxtLayout>
 </template>
-    
-    
+
+
 <script setup lang="ts">
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
     import { ref } from 'vue';
-    
-    
+
+
     import { PermissionService } from '~/models/Permission';
     import { apiService } from '~/routes/api/API';
 
@@ -79,8 +81,8 @@ import 'vue3-toastify/dist/index.css';
     async function fetchFreqAndDura() {
         try {
             const params = {};
-            const frequency = await apiService.getPaymentFrequency({})
-            const duration = await apiService.getPaymentduration({})
+            const frequency = await apiService.getPaymentFrequencyNoAuth({})
+            const duration = await apiService.getPaymentdurationNoAuth({})
 
             console.log('payment freq' + frequency);
             console.log('payment duration' + duration);
@@ -124,7 +126,7 @@ const factorRate = ref({
         };
 
         const response =  await apiService.createFactorRate(jsonObject);
-        
+
         if(response)
         {
             toast.success("Factor rate created successfully!", {
@@ -132,13 +134,13 @@ const factorRate = ref({
             });
             // Introduce a delay before navigating
             setTimeout(() => {
-                navigateTo('/factor_rate');  
+                navigateTo('/factor_rate');
             }, 2000);
         }
 
         } catch (error) {
             toast.error('Error creating Factor: ' + error);
-            toast.error(error.message, {
+            toast.error(`${error}`, {
         autoClose: 5000,
         });
         }

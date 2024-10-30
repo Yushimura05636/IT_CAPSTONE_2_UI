@@ -1,9 +1,12 @@
 <template>
-    <NuxtLayout name="admin">
-        <div class="p-8 max-w-6xl mx-auto bg-white shadow-lg rounded-lg mt-16">
+  <NuxtLayout name="admin">
+    <h1 class="text-2xl font-bold">Loan Counts</h1>
+
+    <div class="p-8 max-w-6xl mx-auto bg-white shadow-lg rounded-lg mt-16">
       <!-- Top Action Bar -->
-      <div class="flex justify-between items-center mb-6 space-x-4">
-        <div class="flex space-x-4">
+      <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 space-y-4 sm:space-y-0 sm:space-x-4">
+        <!-- Action Buttons -->
+        <div class="flex space-x-4 justify-center sm:justify-start">
           <button @click="createloancount" class="px-5 py-2 bg-green-600 text-white font-medium rounded-full shadow hover:bg-green-500 transition duration-200">
             Create
           </button>
@@ -14,7 +17,9 @@
             Delete
           </button>
         </div>
-        <div class="relative flex-grow max-w-xs">
+
+        <!-- Search Input -->
+        <div class="relative flex-grow max-w-xs w-full sm:w-auto">
           <input
             v-model="searchQuery"
             type="text"
@@ -45,11 +50,11 @@
               class="border-b last:border-0 hover:bg-gray-50 transition duration-150"
             >
               <td class="py-4 px-6">
-                <input type="radio" v-model="selectedLoanId" :value="loan.id" />
+                <input type="radio" v-model="selectedLoanId" :value="loan.id" class="cursor-pointer" />
               </td>
               <td class="py-4 px-6">{{ loan.loan_count }}</td>
-              <td class="py-4 px-6">{{ formatCurrency(loan.min_amount) }}</td>
-              <td class="py-4 px-6">{{ formatCurrency(loan.max_amount) }}</td>
+              <td class="py-4 px-6">{{ (loan.min_amount) }}</td>
+              <td class="py-4 px-6">{{ (loan.max_amount) }}</td>
             </tr>
             <tr v-if="filteredLoans.length === 0">
               <td colspan="4" class="text-center py-6 text-gray-500">No loans found</td>
@@ -58,104 +63,97 @@
         </table>
       </div>
     </div>
-    </NuxtLayout>
-  </template>
+  </NuxtLayout>
+</template>
 
-  <script setup lang="ts">
+<script setup lang="ts">
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
-  import { ref, computed, onMounted } from 'vue';
-  import { PermissionService } from '~/models/Permission';
-  import { UserService } from '~/models/User';
-  import { apiService } from '~/routes/api/API';
+import { ref, computed, onMounted } from 'vue';
+import { UserService } from '~/models/User';
+import { apiService } from '~/routes/api/API';
 
-  const state = {
-      loancount: ref([]), // Make it a ref to keep it reactive
+const state = {
+    loancount: ref([]),
+};
+
+async function createloancount(){
+  try {
+      const response = await apiService.authLoanCountsCreate({});
+      navigateTo('/loan_counts/create');
+  } catch (error) {
+      toast.error(`${error}`, {
+    autoClose: 5000,
+  })
   }
+}
 
-  async function createloancount(){
+async function updateloancount()
+{
+  try {
+      const response = await apiService.authLoanCountsUpdate({});
+      UserService.usbl_id = selectedLoanId.value;
+      navigateTo('/loan_counts/update');
+  } catch (error) {
+      toast.error(`${error}`, {
+    autoClose: 5000,
+  })
+  }
+}
+
+async function fetchloancount() {
     try {
-        const response = await apiService.authLoanCountsCreate({});
-        navigateTo('/loan_counts/create');
+        const response = await apiService.getLoanCount({});
+        state.loancount.value = response.data;
     } catch (error) {
-        toast.error(error.message, {
+        toast.error(`${error}`, {
       autoClose: 5000,
-    })
+    });
     }
-  }
+}
 
-  async function updateloancount()
-  {
-    try {
-        const response = await apiService.authLoanCountsUpdate({});
-        UserService.usbl_id = selectedLoanId.value;
-        navigateTo('/loan_counts/update');
-    } catch (error) {
-        toast.error(error.message, {
-      autoClose: 5000,
-    })
-    }
-  }
+const searchQuery = ref('');
+const selectedLoanId = ref<number | null>(null);
 
-  async function fetchloancount() {
-      try {
-          const response = await apiService.getLoanCount({});
-          state.loancount.value = response.data; // Update the reactive ref
-      } catch (error) {
-          toast.error(error.message, {
-        autoClose: 5000,
-      });
-      }
-  }
+const filteredLoans = computed(() => {
+    if (!searchQuery.value) return state.loancount.value;
+    return state.loancount.value.filter((loan) =>
+        loan.loan_count.toString().includes(searchQuery.value)
+    );
+});
 
-  const searchQuery = ref('');
-  const selectedLoanId = ref<number | null>(null);
+const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    }).format(amount);
+};
 
-  // Computed property to filter loans based on search query
-  const filteredLoans = computed(() => {
-      if (!searchQuery.value) return state.loancount.value; // Reference the reactive state
-      return state.loancount.value.filter((loan) =>
-          loan.loan_count.toString().includes(searchQuery.value)
-      );
-  });
+onMounted(() => {
+    fetchloancount();
+});
+</script>
 
-  // Format currency
-  const formatCurrency = (amount: number) => {
-      return new Intl.NumberFormat('en-US', {
-          style: 'currency',
-          currency: 'USD',
-      }).format(amount);
-  };
+<style scoped>
+.mt-16 {
+    margin-top: 4rem;
+}
 
-  onMounted(() => {
-      fetchloancount();
-  });
-  </script>
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
 
-  <style scoped>
-  .mt-16 {
-      margin-top: 4rem; /* Adjusted margin for better spacing */
-  }
+th, td {
+    border-bottom: 1px solid #e2e8f0;
+}
 
-  table {
-      border-collapse: separate;
-      border-spacing: 0;
-  }
+button {
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
 
-  th {
-      border-bottom: 2px solid #e2e8f0;
-  }
-
-  td {
-      border-bottom: 1px solid #e2e8f0;
-  }
-
-  button {
-      transition: background-color 0.2s ease, box-shadow 0.2s ease;
-  }
-
-  button:hover {
-      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  </style>
+button:hover {
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+</style>

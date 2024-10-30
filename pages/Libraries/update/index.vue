@@ -126,7 +126,9 @@ async function update() { // Renamed from create to update
       }, 2000);
     }
   } catch (error: any) {
-    toast.error("Error: " + error);
+    toast.error(`${error}`, {
+        autoClose: 3000,
+    });
   }
 }
 

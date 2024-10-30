@@ -1,144 +1,298 @@
 <template>
-    <div class="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">
-      <h2 class="text-2xl font-bold mb-4">Payment Form</h2>
-      <form @submit.prevent="submitPayment">
-        <div class="mb-4">
-          <label for="customer_id" class="block text-sm font-medium text-gray-700">Customer</label>
-          <select
-            v-model="payment.customer_id"
-            id="customer_id"
-            required
-            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-          >
-            <option value="">Select a customer</option>
-            <option v-for="customer in customers" :key="customer.id" :value="customer.id">
-              {{ customer.name }}
-            </option>
-          </select>
-        </div>
-  
-        <div class="mb-4">
-          <label for="loan_application_id" class="block text-sm font-medium text-gray-700">Loan Application</label>
-          <select
-            v-model="payment.loan_application_id"
-            id="loan_application_id"
-            required
-            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-          >
-            <option value="">Select a loan application</option>
-            <option v-for="loan in loans" :key="loan.id" :value="loan.id">
-              {{ loan.description }} <!-- Change according to your loan structure -->
-            </option>
-          </select>
-        </div>
-  
-        <div class="mb-4">
-          <label for="amount_paid" class="block text-sm font-medium text-gray-700">Amount Paid</label>
-          <input
-            v-model="payment.amount_paid"
-            type="number"
-            id="amount_paid"
-            required
-            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-          />
-        </div>
-  
-        <div class="mb-4">
-          <label for="notes" class="block text-sm font-medium text-gray-700">Notes</label>
-          <textarea
-            v-model="payment.notes"
-            id="notes"
-            rows="3"
-            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-          ></textarea>
-        </div>
-  
-        <div class="mb-4">
-          <label for="payment_schedule_id" class="block text-sm font-medium text-gray-700">Payment Schedule ID</label>
-          <input
-            v-model="payment.payment_schedule_id"
-            type="number"
-            id="payment_schedule_id"
-            required
-            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-          />
-        </div>
-  
-        <button type="submit" class="w-full bg-blue-500 text-white font-semibold py-2 rounded-lg hover:bg-blue-600">
-          Submit Payment
-        </button>
-      </form>
+    <NuxtLayout name="admin">
+        <div class="p-8 relative">
+
+<button
+@click="cancelForm()"
+class="mb-4 flex items-center text-gray-700 hover:text-blue-500 transition-colors"
+>
+<span class="text-xl mr-2">&lt;</span>
+<span class="text-lg font-semibold">Back</span>
+</button>
+<!-- Loading Spinner -->
+<div v-if="loading" class="absolute inset-0 flex items-center justify-center bg-gray-50 bg-opacity-75 z-10">
+<div class="loader"></div>
+</div>
+
+<!-- Customer Name Combobox -->
+<div v-if="!loading" class="mb-4">
+<label class="block text-gray-700">Customer Name</label>
+<select v-model="selectedCustomer" @change="fetchLoanApplications" class="w-full border rounded-lg px-4 py-2">
+<option disabled value="">Select Customer</option>
+<option v-for="customer in customers" :key="customer.customer.id" :value="customer.customer.id">
+  {{ customer.personality.family_name }}
+</option>
+</select>
+</div>
+
+<!-- Loan Application Combobox -->
+<div v-if="loanApplications.length > 0 && !loading" class="mb-4">
+<label class="block text-gray-700">Loan Application</label>
+<select v-model="selectedLoan" @change="fetchPayments" class="w-full border rounded-lg px-4 py-2">
+<option disabled value="">Select Loan Application</option>
+<option v-for="loan in loanApplications" :key="loan.id" :value="loan.loan_application_no">
+  {{ loan.loan_application_no }}
+</option>
+</select>
+</div>
+
+
+<!-- Payments Table -->
+<div v-if="!loading">
+  <div v-if="payments.length > 0" class="overflow-x-auto">
+    <div class="max-h-60 overflow-x-auto overflow-y-auto">
+      <table class="min-w-full bg-white border border-gray-300 mb-4">
+        <thead>
+          <tr>
+            <th class="px-4 py-2 border text-left">Select</th>
+            <th class="px-4 py-2 border text-left">Payment ID</th>
+            <th class="px-4 py-2 border text-left">Payment Amount Due</th>
+            <th class="px-4 py-2 border text-left">Payment Amount Interest</th>
+            <th class="px-4 py-2 border text-left">Payment Amount Paid</th>
+            <th class="px-4 py-2 border text-left">Payment Amount Balance</th>
+            <th class="px-4 py-2 border text-left">Payment Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="payment in payments" :key="payment.id" @click="selectPayment(payment)">
+            <td class="px-4 py-2 border text-left">
+              <input type="checkbox" v-model="payment.isSelected" />
+            </td>
+            <td class="px-4 py-2 border">{{ payment.id }}</td>
+            <td class="px-4 py-2 border">{{ payment.amount_due }}</td>
+            <td class="px-4 py-2 border">{{ payment.amount_interest }}</td>
+            <td class="px-4 py-2 border">{{ payment.amount_paid }}</td>
+            <td class="px-4 py-2 border">{{ payment.balance }}</td>
+            <td class="px-4 py-2 border">{{ payment.payment_status_code }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
+</div>
+
+
+<!-- Payment Details Form -->
+<div v-if="selectedPayment && !loading" class="mt-6">
+<div v-if="selectedPayment" class="mt-6">
+<h2 class="text-xl font-bold mb-4">Payment Details</h2>
+<div class="grid grid-cols-2 gap-4">
+  <!-- Display Balance, Amount Due, Interest, Amount Paid -->
+  <div>
+    <label class="block text-gray-700">Balance</label>
+    <input
+      type="number"
+      v-model="selectedPayment.balance"
+      readonly
+      class="w-full border rounded-lg px-4 py-2 bg-gray-100"
+    />
+  </div>
+  <div>
+    <label class="block text-gray-700">Amount Due</label>
+    <input
+      type="number"
+      v-model="selectedPayment.amount_due"
+      readonly
+      class="w-full border rounded-lg px-4 py-2 bg-gray-100"
+    />
+  </div>
+  <div>
+    <label class="block text-gray-700">Amount Interest</label>
+    <input
+      type="number"
+      v-model="selectedPayment.amount_interest"
+      readonly
+      class="w-full border rounded-lg px-4 py-2 bg-gray-100"
+    />
+  </div>
+  <div>
+    <label class="block text-gray-700">Amount Paid</label>
+    <input
+      type="number"
+      v-model="selectedPayment.amount_paid"
+      class="w-full border rounded-lg px-4 py-2"
+    />
+  </div>
+
+  <!-- Fields for Status and Notes outside the table -->
+  <div>
+    <label class="block text-gray-700">Status</label>
+    <input
+      type="text"
+      v-model="selectedPayment.payment_status_code"
+      readonly
+      class="w-full border rounded-lg px-4 py-2 bg-gray-100"
+    />
+  </div>
+  <div>
+    <label class="block text-gray-700">Notes</label>
+    <textarea
+      v-model="selectedPayment.notes"
+      class="w-full border rounded-lg px-4 py-2"
+      rows="3"
+      placeholder="Enter notes here"
+    ></textarea>
+  </div>
+</div>
+
+<!-- Submit and Cancel Buttons -->
+<div class="mt-4 flex gap-4">
+  <button @click="submitForm" class="px-4 py-2 bg-blue-500 text-white rounded-lg">Submit</button>
+  <button @click="cancelForm" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg">Cancel</button>
+</div>
+</div>
+</div>
+</div>
+    </NuxtLayout>
   </template>
-  
-  <script setup lang="ts">
+
+<script setup lang="ts">
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
 import { ref, onMounted } from 'vue';
+import { loanApplicationService } from '~/models/LoanApplication';
+import { paymentServices } from '~/models/Payments';
+import { apiService } from '~/routes/api/API';
 
-const payment = ref({
-  customer_id: null,
-  loan_application_id: null, // Updated to include loan application ID
-  amount_paid: null,
-  notes: '',
-  payment_schedule_id: null,
-});
+interface Customer {}
 
-const customers = ref([]);
-const loans = ref([]); // Store loan applications
+interface LoanApplication {}
 
-// Fetch customers from the API
-const fetchCustomers = async () => {
+interface Payment {}
+
+const loading = ref(true);
+const selectedCustomer = ref<string | null>(null);
+const selectedLoan = ref<string | null>(null);
+const selectedPayment = ref<Payment | null>(null);
+
+const customers = ref<Customer[]>([]);
+const loanApplications = ref<LoanApplication[]>([]);
+const payments = ref<Payment[]>([]);
+
+async function fetchCustomers() {
   try {
-    const response = await fetch('/api/customers'); // Replace with your actual API endpoint
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    const data = await response.json();
-    customers.value = data; // Assuming data is an array of customers
+    const response = await apiService.getApproveCustomersNoAuth({});
+    customers.value = response.data;
   } catch (error) {
-    console.error('Error fetching customers:', error);
-    // Handle error (e.g., show an error message)
+    toast.error(`${error}`, { autoClose: 3000 });
+  } finally {
+    loading.value = false;
   }
-};
+}
 
-// Fetch loan applications from the API
-const fetchLoans = async () => {
+async function fetchLoanApplications() {
+
+  loading.value = true;
   try {
-    const response = await fetch('/api/loans'); // Replace with your actual API endpoint
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    const data = await response.json();
-    loans.value = data; // Assuming data is an array of loans
-  } catch (error) {
-    console.error('Error fetching loans:', error);
-    // Handle error (e.g., show an error message)
-  }
-};
+    if (selectedCustomer.value) {
+      const response = await apiService.getLoanApplicationByCustomerId({}, selectedCustomer.value);
+      loanApplications.value = response.data;
 
-const submitPayment = async () => {
+    }
+  } catch (error) {
+    toast.error(`${error}`, { autoClose: 3000 });
+  } finally {
+    loading.value = false;
+  }
+}
+
+async function fetchPayments() {
   try {
-    const response = await apiService.createPayment({});
+    loading.value = true;
+    if(selectedLoan.value)
+    {
+        const response = await apiService.getPaymentByLoanNONoAuth({}, selectedLoan.value);
+        if(!response.data && response.data == null)
+        {
+            throw new Error(`Payment Schedule does not exists`);
+        }
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
+        payments.value = response.data;
     }
-
-    const data = await response.json();
-    console.log('Payment submitted successfully:', data);
-    // Handle success (e.g., show a success message, reset form, etc.)
   } catch (error) {
-    console.error('Error submitting payment:', error);
-    // Handle error (e.g., show an error message)
+    toast.error(`${error}`, {autoClose: 3000});
   }
-};
+  finally{
+    loading.value = false;
+  }
+}
 
-// Fetch customers when the component is mounted
+function selectPayment(payment: Payment) {
+  selectedPayment.value = payment;
+}
+
+async function submitForm() {
+  // Collect data for all selected or modified payments
+  const payment = payments.value
+    .filter(payment => payment.isSelected || payment.isModified) // Assume you mark modified payments
+    .map(payment => ({
+      id: payment.id, // Include ID to identify payment on the backend
+      balance: payment.balance,
+      amount_due: payment.amount_due,
+      amount_interest: payment.amount_interest,
+      amount_paid: payment.amount_paid,
+      payment_status_code: payment.payment_status_code,
+      notes: payment.notes,
+    }));
+
+  const payload = {
+    payment,
+    customer_id: selectedCustomer.value,
+    loan_application_no: selectedLoan.value,
+  }
+
+  //save the value to api service
+  loanApplicationService.loan_application_no = selectedLoan.value;
+
+
+
+  if (payment.length === 0) {
+    toast.error('No payments selected or modified to submit!', { autoClose: 3000 });
+    return;
+  }
+
+  try {
+    // Send batch data to the backend
+    const response = await apiService.createPayment(payload); // Ensure this endpoint handles batch updates
+
+    toast.success('Payment data submitted successfully!', { autoClose: 3000 });
+
+    // Optionally, refresh payments list or clear selections
+    payments.value.forEach(payment => (payment.isSelected = false));
+    await fetchPayments();
+  } catch (error) {
+    toast.error(`Failed to submit payment data: ${error}`, { autoClose: 3000 });
+  }
+}
+
+
+function cancelForm() {
+    navigateTo('/payments/');
+}
+
+
 onMounted(() => {
   fetchCustomers();
 });
 </script>
 
-<style scoped>
-/* Add any additional styling if needed */
+<style>
+.loader {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #3498db;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 </style>

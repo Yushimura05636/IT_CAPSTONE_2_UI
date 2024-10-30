@@ -107,7 +107,7 @@ const submitForm = () => {
       form.value.modeltype = '';
       form.value.description = '';
     } catch (error: any) {
-      toast.error(error.message, {
+      toast.error(`${error}`, {
       autoClose: 5000,
     })
     }
@@ -135,7 +135,9 @@ async function create() {
       }, 2000);
     }
   } catch (error: any) {
-    toast.error("Error: " + error);
+    toast.error(`${error}`, {
+        autoClose: 3000,
+    });
   }
 }
 

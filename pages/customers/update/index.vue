@@ -48,7 +48,6 @@
           <div>
             <label for="civilStatus" class="block text-gray-700">Civil Status</label>
             <select v-model="personality.civil_status" id="civilStatus" class="w-full border rounded-lg px-4 py-2">
-              <option value="0">Select</option>
               <option value="1">Single</option>
               <option value="2">Married</option>
               <option value="3">Divorced</option>
@@ -60,7 +59,7 @@
             <label for="houseStreet" class="block text-gray-700">House Street</label>
             <input v-model="personality.house_street" type="text" id="houseStreet" class="w-full border rounded-lg px-4 py-2" />
           </div>
-          
+
           <div>
             <label for="Cellphone No" class="block text-gray-700">Cellphone No</label>
             <input v-model="personality.cellphone_no" type="text" id="cellphoneNo" class="w-full border rounded-lg px-4 py-2" />
@@ -114,10 +113,10 @@
           </div>
 
           <div>
-            <label for="creditStatusId" class="block text-gray-700">Credit Status</label>
-            <select v-model="personality.credit_status_id" id="creditStatusId" class="w-full border rounded-lg px-4 py-2">
-              <option v-for="creditStatus in state.creditStatuses" :key="creditStatus.id" :value="creditStatus.id">
-                {{ creditStatus.description }}
+            <label for="personality_status" class="block text-gray-700">Credit Status</label>
+            <select v-model="personality.credit_status_id" id="personality_status" class="w-full border rounded-lg px-4 py-2">
+              <option v-for="personalityStatus in state.creditStatuses" :key="personalityStatus.id" :value="personalityStatus.id">
+                {{ personalityStatus.description }}
               </option>
             </select>
           </div>
@@ -136,7 +135,7 @@
             <label for="groupId" class="block text-gray-700">Group Name</label>
             <select v-model="customer.group_id" id="groupId" class="w-full border rounded-lg px-4 py-2" v-if="!state.isTableLoading">
               <option v-for="groups in state.groups" :key="groups.id" :value="groups.id">
-                {{ groups.description }} 
+                {{ groups.description }}
               </option>
             </select>
           </div>
@@ -150,7 +149,7 @@
             <label for="groupId" class="block text-gray-700">Loan Count</label>
             <select v-model="customer.loan_count" id="groupId" class="w-full border rounded-lg px-4 py-2" v-if="!state.isTableLoading">
               <option v-for="groups in state.loan_count" :key="groups.id" :value="groups.id">
-                {{ groups.loan_count }} 
+                {{ groups.loan_count }}
               </option>
             </select>
           </div>
@@ -180,11 +179,56 @@
           </div>
         </div>
 
-        <div class="mt-4">
-          <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500">
-            Update Customer
-          </button>
-        </div>
+        <!-- Select Requirements Table -->
+        <!-- Select Requirements Table -->
+      <div class="mt-4">
+        <h3 class="text-gray-800 text-lg font-bold mb-2">Select Requirements</h3>
+        <table class="min-w-full table-auto">
+          <thead>
+            <tr>
+              <th class="px-4 py-2">Select</th>
+              <th class="px-4 py-2">Description</th>
+              <th class="px-4 py-2">Expiry Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="requirement in requirements" :key="requirement.id">
+              <td class="px-4 py-2">
+                <label class="flex items-center">
+                  <input
+                    type="checkbox"
+                    :value="requirement.id"
+                    v-model="selectedRequirements"
+                    @change="getSelectedRequirements"
+                    class="form-checkbox h-5 w-5 text-green-600"
+                  />
+                </label>
+              </td>
+              <td class="px-4 py-2">
+                <span class="text-gray-700">{{ requirement.description }}</span>
+              </td>
+              <td class="px-4 py-2">
+                <input
+                  type="date"
+                  v-model="requirement.expiry_date"
+                  @change="getSelectedRequirements"
+                  class="border border-gray-300 rounded-md p-1"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mt-4">
+  <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500">
+    Update Customer
+  </button>
+  <button type="button" @click="cancelForm" class="ml-4 px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-200">
+    Cancel
+  </button>
+</div>
+
       </form>
     </div>
   </NuxtLayout>
@@ -193,14 +237,12 @@
 <script setup lang="ts">
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
-
 import { ref, onMounted } from 'vue';
-
 import { CustomersService } from '~/models/Customer';
-import { PermissionService } from '~/models/Permission';
 import { apiService } from '~/routes/api/API';
 
-
+const requirements = ref({});
+const selectedRequirements = ref([]);
 
 const personality = ref({
   first_name: '',
@@ -245,17 +287,19 @@ const state = ref({
   groups: [],
   personality_status_code: [],
   loan_count: [],
+  requirements: [],
   isTableLoading: false,
 });
+
 
 const fetchBarangays = async () => {
   // Replace with your actual API call
   try {
-    const response = await apiService.get({}, "barangay");
+    const response = await apiService.getNoAuth({}, "barangay");
 
     state.value.barangays = response.data;
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -264,12 +308,12 @@ const fetchBarangays = async () => {
 const fetchCities = async () => {
   // Replace with your actual API call
   try {
-    const response = await apiService.get({}, "city");
+    const response = await apiService.getNoAuth({}, "city");
 
     state.value.cities = response.data;
 
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -277,11 +321,11 @@ const fetchCities = async () => {
 
 const fetchCountries = async () => {
   try {
-    const response = await apiService.get({}, "country");
+    const response = await apiService.getNoAuth({}, "country");
 
     state.value.countries = response.data;
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -290,11 +334,11 @@ const fetchCountries = async () => {
 const fetchProvinces = async () => {
   // Replace with your actual API call
   try {
-    const response = await apiService.get({}, "province");
+    const response = await apiService.getNoAuth({}, "province");
 
     state.value.provinces = response.data;
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -303,11 +347,11 @@ const fetchProvinces = async () => {
 const fetchCreditStatuses = async () => {
   // Replace with your actual API call
   try {
-    const response = await apiService.get({}, "credit_status");
+    const response = await apiService.getNoAuth({}, "credit_status");
 
     state.value.creditStatuses = response.data;
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -316,11 +360,11 @@ const fetchCreditStatuses = async () => {
 const fetchGroups = async () => {
   // Replace with your actual API call
   try {
-    const response = await apiService.get({}, "customer_group");
+    const response = await apiService.getNoAuth({}, "customer_group");
 
     state.value.groups = response.data;
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -329,11 +373,11 @@ const fetchGroups = async () => {
 const fetchPersonalityStatusCode = async () => {
   // Replace with your actual API call
   try {
-    const response = await apiService.get({}, "personality_status_map");
+    const response = await apiService.getNoAuth({}, "personality_status_map");
 
     state.value.personality_status_code = response.data;
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -342,12 +386,12 @@ const fetchPersonalityStatusCode = async () => {
 const fetchLoanCount = async () => {
   // Replace with your actual API call
   try {
-    const response = await apiService.getLoanCount({});
+    const response = await apiService.getLoanCountNoAuth({});
 
     state.value.loan_count = response.data;
 
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -364,6 +408,7 @@ onMounted(async () => {
     fetchPersonalityStatusCode(),
     fetchLoanCount(),
     fetchCustomer(),
+    fetchActiveRequirements(),
   ]);
 });
 
@@ -379,12 +424,12 @@ const fetchCustomer = async () => {
     navigateTo('/customers'); // Redirect to the customer list page or show an error
     return;
   } // Assuming you pass the ID in the route
-  const response = await apiService.getCustomerById({},customerId);
+  const response = await apiService.getCustomerByIdNoAuth({},customerId);
   ; // Fetch customer data
   Object.assign(customer.value, response.customer);
   Object.assign(personality.value, response.personality) // Merge response data into customer
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -424,10 +469,19 @@ const updateCustomer = async () => {
             province_id: personality.value.province_id, // Get from personality ref
             credit_status_id: personality.value.credit_status_id, // Get from personality ref
             notes: personality.value.notes, // Get from personality ref, optional
-        }
+        },
+        requirements: state.value.requirements,
     };
 
+    debugger;
+
     await apiService.updateCustomer(jsonObject, customerId);
+    // await apiService.updateRequirements(jsonObject, customerId);
+
+    
+    console.log("JSON Object:", JSON.stringify(jsonObject, null, 2));
+    console.log("Requirement Data: ",JSON.stringify(state.value.requirements, null, 2));
+
     toast.success("Customer updated successfully!", {
           autoClose: 2000,
           });
@@ -437,9 +491,113 @@ const updateCustomer = async () => {
           }, 2000);
   } catch (error) {
     toast.error('Error updating customer: ' + error);
-    toast.error(error.message, {
+    toast.error(`${error}`, {
         autoClose: 5000,
       });
+  }
+};
+
+async function fetchActiveRequirements() {
+    try {
+    // Fetch data from your API endpoint
+    const response = await apiService.getActiveRequirementsNoAUTH({});
+    requirements.value = response.data; // Assumes the API returns an array of requirements
+    } catch (error) {
+    console.error('Error fetching requirements:', error);
+    }
+    finally{
+        setTimeout(() => {
+            fetchCustomerRequirement()
+        }, 1000);
+    }
+}
+
+const getSelectedRequirements = () => {
+    const selectedDetails = [];
+
+    for (let i = 0; i < requirements.value.length; i++) {
+        const req = requirements.value[i];
+
+        // Check if the requirement ID is in selectedRequirements
+        if (selectedRequirements.value.includes(req.id)) {
+            selectedDetails.push({
+                id: req.id,
+                description: req.description,
+                expiry_date: formatDate(req.expiry_date),
+            });
+        }
+    }
+
+
+
+    // Assuming selectedDataRequirements is an array
+    state.value.requirements = []; // Reset the array first
+
+    // Loop through selectedDetails to store values in selectedDataRequirements
+    for (let i = 0; i < selectedDetails.length; i++) {
+        state.value.requirements.push(selectedDetails[i]);
+    }
+
+    //console.log(selectedDetails); // Output selected details to console
+};
+
+
+    watch(selectedRequirements, (newValue) => {
+    console.log('Selected Requirements:', newValue);
+});
+
+// Fetch customer requirements and update expiry dates in requirements
+const fetchCustomerRequirement = async () => {
+  try {
+    const response = await apiService.getNotExpiredCustomerRequirementByIdNoAUTH({}, CustomersService.id); // Replace with your endpoint
+    const customerRequirements = response.data;
+
+    debugger;
+
+    for (let i = 0; i < requirements.value.length; i++) {
+      const req = requirements.value[i];
+      for (let j = 0; j < customerRequirements.length; j++) {
+        const custReq = customerRequirements[j];
+        if (req.id === custReq.id) {
+          selectedRequirements.value.push(req.id);
+          req.expiry_date = custReq.expiry_date.split(" ")[0]; // Format date
+          break;
+        }
+      }
+    }
+
+    // state.value.requirements = [];
+    //   for (let i = 0; i < requirements.value.length; i++) {
+    //     state.value.requirements.push(requirements.value[i]);
+    // }
+
+
+
+  } catch (error) {
+    console.error('Error fetching customer requirements:', error);
+  }
+};
+
+function cancelForm() {
+    try {
+        navigateTo('/customers/');
+    } catch (error) {
+        toast.error(`${error}`);
+    }
+}
+
+const formatDate = (dateString) => {
+  console.log("Input Date String:", dateString); // Add this line for debugging
+  const parts = dateString.split('-');
+  debugger;
+  if (parts.length === 3) {
+    const month = parts[1].padStart(2, '0');
+    const day = parts[2].padStart(2, '0');
+    const year = parts[0];
+    return `${year}-${month}-${day}`;
+  } else {
+    console.error("Invalid date format. Expected MM/DD/YYYY.");
+    return null;
   }
 };
 </script>

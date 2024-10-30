@@ -120,7 +120,7 @@ const personality = ref({
   middle_name: '',
   email_address: '',
   telephone_no: '',
-  birthday: new Date().toISOString().split('T')[0], 
+  birthday: new Date().toISOString().split('T')[0],
   gender_code: 0,
   civil_status: 0,
   house_street: '',
@@ -166,7 +166,7 @@ async function fetchEmployeeData() {
     Object.assign(employee.value, response.employee);
     Object.assign(personality.value, response.personality);
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }
@@ -223,13 +223,13 @@ const updateEmployee = async () => {
           });
           // Introduce a delay before navigating
           setTimeout(() => {
-            navigateTo('/employees');  
+            navigateTo('/employees');
           }, 2000);
     // alert('Employee updated successfully!');
     // router.push('/employees'); // Redirect after successful update
   } catch (error) {
     toast.error('Error updating employee: ' + error);
-    toast.error(error.message, {
+    toast.error(`${error}`, {
         autoClose: 5000,
       });
   }
@@ -241,7 +241,7 @@ async function fetchCivilStatus()
     const response = await apiService.getNoAuth({}, 'civil_status');
     Object.assign(civilStatuses.value, response.data);
   } catch (error) {
-    toast.error(error.message, {
+    toast.error(`${error}`, {
       autoClose: 5000,
     })
   }

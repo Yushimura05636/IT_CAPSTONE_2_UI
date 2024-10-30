@@ -1,14 +1,17 @@
 <template>
     <NuxtLayout name="admin">
         <main>
-            <div class="flex justify-center items-center bg-gray-100">
-                <div class="bg-white border border-gray-300 rounded-lg p-6 shadow-md w-full">
+            <div class="flex justify-center items-center bg-gray-100 min-h-screen">
+                <div class="bg-white border border-gray-300 rounded-lg p-6 shadow-md w-full max-w-lg">
                     <div class="text-center font-bold text-xl mb-4">Transaction Form</div>
 
                     <!-- Group Name Combobox -->
                     <div class="mb-4">
-                        <label class="block text-gray-700">Group Name</label>
-                        <select v-model="selectedGroupId" @change="fetchCustomers" class="w-full border rounded-lg px-4 py-2">
+                        <label class="block text-gray-700 mb-1">Group Name</label>
+                        <select
+                            v-model="selectedGroupId"
+                            @change="fetchCustomers"
+                            class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring focus:border-blue-300">
                             <option v-for="group in state.groups" :key="group.id" :value="group.id">
                                 {{ group.description }}
                             </option>
@@ -16,52 +19,49 @@
                     </div>
 
                     <!-- Table for Customer Names -->
-<div v-if="state.customers.length > 0" class="overflow-x-auto">
-    <div class="max-h-60 overflow-y-auto">
-        <table class="min-w-full bg-white border border-gray-300 mb-4">
-            <thead>
-                <tr>
-                    <th class="px-4 py-2 border text-left">Select</th>
-                    <th class="px-4 py-2 border text-left">Customer Name</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="customer in state.customers" :key="customer.id" :value="customer.id">
-                    <td class="px-4 py-2 border text-left">
-                        <input
-                            type="checkbox"
-                            v-model="customer.isSelected"
-                            :value="customer.id"
-                            @change="onCheckboxChange(customer.id, $event.target.checked)"
-                        />
-                    </td>
-                    <td class="px-4 py-2 border cursor-pointer" @click="loadCustomerData(customer.id)">
-                        {{ customer.personality.first_name }} {{ customer.personality.middle_name }} {{ customer.personality.family_name }}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-
+                    <div v-if="state.customers.length > 0" class="overflow-x-auto mb-4">
+                        <table class="min-w-full bg-white border border-gray-300">
+                            <thead>
+                                <tr>
+                                    <th class="px-4 py-2 border text-left">Select</th>
+                                    <th class="px-4 py-2 border text-left">Customer Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="customer in state.customers" :key="customer.id">
+                                    <td class="px-4 py-2 border text-left">
+                                        <input
+                                            type="checkbox"
+                                            v-model="customer.isSelected"
+                                            :value="customer.id"
+                                            @change="onCheckboxChange(customer.id, $event.target.checked)"
+                                            class="cursor-pointer"/>
+                                    </td>
+                                    <td class="px-4 py-2 border cursor-pointer hover:bg-gray-200" @click="loadCustomerData(customer.id)">
+                                        {{ customer.personality.first_name }} {{ customer.personality.middle_name }} {{ customer.personality.family_name }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
                     <!-- Form Fields for the Selected Customer -->
-                    <div v-if="selectedCheckCustomerId !== null">
+                    <div v-if="selectedCheckCustomerId !== null" class="overflow-auto max-h-96">
                         <div class="mb-4">
-                            <label class="block text-gray-700">Loan Application No</label>
+                            <label class="block text-gray-700 mb-1">Loan Application No</label>
                             <input
                                 v-model="customerData[selectedCheckCustomerId].loanApplicationNo"
                                 type="text"
-                                class="w-full border border-gray-300 rounded p-2"
+                                class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring focus:border-blue-300"
                                 readonly
                             />
                         </div>
 
                         <div class="mb-4">
-                            <label class="block text-gray-700">Co-Maker</label>
+                            <label class="block text-gray-700 mb-1">Co-Maker</label>
                             <select
                                 v-model="customerData[selectedCheckCustomerId].coMaker"
-                                class="w-full border rounded-lg px-4 py-2">
+                                class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring focus:border-blue-300">
                                 <option v-for="customer in availableCoMakers" :key="customer.id" :value="customer.id">
                                     {{ customer.personality.first_name }} {{ customer.personality.middle_name }} {{ customer.personality.family_name }}
                                 </option>
@@ -69,22 +69,39 @@
                         </div>
 
                         <div class="mb-4">
-                            <label class="block text-gray-700">Loan Amount</label>
+                        <label class="block text-gray-700 mb-1">Loan Count</label>
+                        <select v-model="selectedLoanCountId" readonly class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring focus:border-blue-300">
+                            <option v-for="loan in state.loan_counts" :key="loan.id" :value="loan.id">
+                            {{ loan.loan_count }}
+                            </option>
+                        </select>
+                        </div>
+
+                        <div class="mb-4">
+                        <label class="block text-gray-700 mb-1">Min Amount</label>
+                        <input type="text" :value="minAmountForSelected" readonly class="w-full border rounded-lg px-4 py-2 bg-gray-100 focus:outline-none" />
+
+                        <label class="block text-gray-700 mb-1 mt-2">Max Amount</label>
+                        <input type="text" :value="maxAmountForSelected" readonly class="w-full border rounded-lg px-4 py-2 bg-gray-100 focus:outline-none" />
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-gray-700 mb-1">Loan Amount</label>
                             <input
                                 v-model="customerData[selectedCheckCustomerId].loanAmount"
                                 type="number"
-                                class="w-full border border-gray-300 rounded p-2"
+                                :placeholder="maxAmountForSelected ? `Amount : ${minAmountForSelected}-${maxAmountForSelected}` : 'Enter Loan Amount'"
+                                class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring focus:border-blue-300"
                                 @input="updateLoanAmount(selectedCheckCustomerId)"
                             />
                         </div>
 
                         <div class="mb-4">
-                            <label class="block text-gray-700">Factor Rate</label>
+                            <label class="block text-gray-700 mb-1">Factor Rate</label>
                             <select
                                 v-model="customerData[selectedCheckCustomerId].factorRate"
                                 @change="onFactorRateChange(customerData[selectedCheckCustomerId].factorRate)"
-                                class="w-full border rounded-lg px-4 py-2"
-                            >
+                                class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring focus:border-blue-300">
                                 <option v-for="factorRate in state.factorRates" :key="factorRate.id" :value="factorRate.id">
                                     {{ factorRate.value }}
                                 </option>
@@ -92,40 +109,39 @@
                         </div>
 
                         <div class="mb-4">
-                            <label class="block text-gray-700">Interest Amount</label>
+                            <label class="block text-gray-700 mb-1">Interest Amount</label>
                             <input
                                 v-model="customerData[selectedCheckCustomerId].interestAmount"
                                 type="number"
                                 step="0.01"
-                                class="w-full border border-gray-300 rounded p-2"
+                                class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring focus:border-blue-300"
                             />
                         </div>
 
                         <!-- Add Amount Paid Field -->
                         <div class="mb-4">
-                            <label class="block text-gray-700">Amount Paid</label>
+                            <label class="block text-gray-700 mb-1">Amount Paid</label>
                             <input
                                 v-model="customerData[selectedCheckCustomerId].amountPaid"
                                 type="number"
-                                class="w-full border border-gray-300 rounded p-2"
+                                class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring focus:border-blue-300"
                                 readonly
                             />
                         </div>
 
-
                         <div class="mb-4">
-                            <label class="block text-gray-700">Release Schedule</label>
+                            <label class="block text-gray-700 mb-1">Release Schedule</label>
                             <input
                                 v-model="customerData[selectedCheckCustomerId].releaseSchedule"
                                 type="date"
-                                class="w-full border border-gray-300 rounded p-2"
+                                class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring focus:border-blue-300"
                             />
                         </div>
 
                         <!-- Automatically Updated Fields -->
                         <div class="mb-4">
-                            <label class="block text-gray-700">Payment Frequency</label>
-                            <select v-model="customerData[selectedCheckCustomerId].paymentFrequency" class="w-full border rounded-lg px-4 py-2">
+                            <label class="block text-gray-700 mb-1">Payment Frequency</label>
+                            <select v-model="customerData[selectedCheckCustomerId].paymentFrequency" class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring focus:border-blue-300">
                                 <option v-for="frequency in state.paymentFrequencies" :key="frequency.id" :value="frequency.id">
                                     {{ frequency.description }}
                                 </option>
@@ -133,8 +149,8 @@
                         </div>
 
                         <div class="mb-4">
-                            <label class="block text-gray-700">Duration</label>
-                            <select v-model="customerData[selectedCheckCustomerId].duration" class="w-full border rounded-lg px-4 py-2">
+                            <label class="block text-gray-700 mb-1">Duration</label>
+                            <select v-model="customerData[selectedCheckCustomerId].duration" class="w-full border rounded-lg px-4 py-2 focus:outline-none focus:ring focus:border-blue-300">
                                 <option v-for="duration in state.durations" :key="duration.id" :value="duration.id">
                                     {{ duration.description }}
                                 </option>
@@ -142,16 +158,16 @@
                         </div>
 
                         <div class="mb-4">
-                            <label class="block text-gray-700">Comment</label>
+                            <label class="block text-gray-700 mb-1">Comment</label>
                             <textarea
                                 v-model="customerData[selectedCheckCustomerId].comment"
-                                class="w-full border border-gray-300 rounded p-2"
+                                class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring focus:border-blue-300"
                             ></textarea>
                         </div>
 
-                        <div v-if="state.fees.length > 0" class="overflow-x-auto">
+                        <div v-if="state.fees.length > 0" class="overflow-x-auto mb-4">
                             <div class="max-h-60 overflow-y-auto">
-                                <table class="min-w-full bg-white border border-gray-300 mb-4">
+                                <table class="min-w-full bg-white border border-gray-300">
                                     <thead>
                                         <tr>
                                             <th class="px-4 py-2 border text-left">Select</th>
@@ -163,10 +179,11 @@
                                         <tr v-for="fee in state.fees" :key="fee.id">
                                             <td class="px-4 py-2 border text-left">
                                                 <input
-                                    type="checkbox"
-                                    :value="fee.id"
-                                    :checked="customerData[selectedCheckCustomerId].selectedFees.includes(fee.id)"
-                                    @change="updateSelectedFees(fee.id, $event.target.checked)"/>
+                                                    type="checkbox"
+                                                    :value="fee.id"
+                                                    :checked="customerData[selectedCheckCustomerId].selectedFees.includes(fee.id)"
+                                                    @change="updateSelectedFees(fee.id, $event.target.checked)"
+                                                    class="cursor-pointer"/>
                                             </td>
                                             <td class="px-4 py-2 border">{{ fee.description }}</td>
                                             <td class="px-4 py-2 border">{{ fee.amount }}</td>
@@ -177,42 +194,36 @@
                         </div>
 
                         <div class="mb-4">
-                            <label class="block text-gray-700">Total Fees</label>
+                            <label class="block text-gray-700 mb-1">Total Fees</label>
                             <input
                                 v-model="customerData[selectedCheckCustomerId].totalFees"
                                 step="0.01"
                                 type="number"
-                                class="w-full border border-gray-300 rounded p-2"/>
+                                class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring focus:border-blue-300"/>
                         </div>
 
                         <div class="flex justify-end mt-4 space-x-2">
-                        <button
-                            @click.prevent="submitForm"
-                            class="bg-blue-500 text-white px-4 py-2 rounded"
-                        >
-                            Submit
-                        </button>
-                        <button
-                            @click.prevent="cancelForm"
-                            class="bg-gray-500 text-white px-4 py-2 rounded"
-                        >
-                            Cancel
-                        </button>
+                            <button
+                                @click.prevent="submitForm"
+                                class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition duration-200">
+                                Submit
+                            </button>
+                            <button
+                                @click.prevent="cancelForm"
+                                class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded transition duration-200">
+                                Cancel
+                            </button>
+                        </div>
                     </div>
-
-                    </div>
-
                 </div>
             </div>
         </main>
     </NuxtLayout>
 </template>
-
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted, watch } from 'vue';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
-import { UserService } from '~/models/User';
 import { apiService } from '~/routes/api/API';
 
 const state = ref({
@@ -222,71 +233,66 @@ const state = ref({
     paymentFrequencies: [],
     durations: [],
     fees: [],
+    loan_counts: []
 });
 
 const totalFees = ref(0);
-
-
 const selectedGroupId = ref(null);
-const selectedCustomerId = ref(null); // Currently selected customer
+const selectedCustomerId = ref(null);
 const selectedCheckCustomerId = ref(null);
-// This will hold form data for each customer by their ID
+const selectedLoanCountId = ref(null);
 const customerData = reactive({});
 
+// Computed properties for min and max amounts based on selected loan count
+const maxAmountForSelected = computed(() => {
+    const selectedLoan = state.value.loan_counts.find(loan => loan.id === selectedLoanCountId.value);
+    return selectedLoan ? selectedLoan.max_amount : null;
+    debugger;
+});
+
+const minAmountForSelected = computed(() => {
+    const selectedLoan = state.value.loan_counts.find(loan => loan.id === selectedLoanCountId.value);
+    return selectedLoan ? selectedLoan.min_amount : null;
+});
+
+// Fetch data on mount
 onMounted(() => {
     fetchGroups();
     fetchFactorRate();
     fetchPaymentFrequencies();
     fetchDurations();
     fetchFees();
+    fetchLoanCount();
 });
-
-const fetchFees = async () => {
-    try {
-        const response = await apiService.getFeeNoAuth({});
-        state.value.fees = response.data;
-    } catch (error) {
-        toast.error(error.message, { autoClose: 5000 });
-    }
-}
 
 const fetchGroups = async () => {
     try {
         const response = await apiService.getNoAuth({}, "customer_group");
         state.value.groups = response.data;
     } catch (error) {
-        toast.error(error.message, { autoClose: 5000 });
+        toast.error(`${error}`, { autoClose: 5000 });
+    }
+};
+
+const fetchLoanCount = async () => {
+    try {
+        const response = await apiService.getLoanCount({});
+        state.value.loan_counts = response.data;
+    } catch (error) {
+        toast.error(`${error}`, { autoClose: 5000 });
     }
 };
 
 const fetchCustomers = async () => {
     selectedCustomerId.value = null;
     customerData.value = {}; // Clear previous customer data
-    if (selectedGroupId.value) {
+    if (selectedGroupId.value && state.value.customers) {
         try {
-            // Optionally, you can also initialize customerData for new customers
-            state.value.customers.forEach(customer => {
-                customerData[customer.id] = {
-                    loanApplicationNo: generateLoanApplicationNo(),
-                    customerId: selectedCustomerId.value,
-                    loanAmount: '',
-                    isSelected: false,
-                    factorRate: '',
-                    interestAmount: '',
-                    amountPaid: '',
-                    releaseSchedule: '',
-                    paymentFrequency: '',
-                    duration: '',
-                    comment: '',
-                    selectedFees: [],
-                };
-            });
             const response = await apiService.getCustomerByGroupId({}, selectedGroupId.value);
             state.value.customers = response.data;
-
-
+            initializeCustomerData();
         } catch (error) {
-            toast.error(error.message, { autoClose: 5000 });
+            toast.error(`${error}`, { autoClose: 5000 });
         }
     } else {
         toast.error('Please select a group.', { autoClose: 5000 });
@@ -298,7 +304,7 @@ const fetchFactorRate = async () => {
         const response = await apiService.getFactorRateNoAuth({});
         state.value.factorRates = response.data;
     } catch (error) {
-        toast.error(error.message, { autoClose: 5000 });
+        toast.error(`${error}`, { autoClose: 5000 });
     }
 };
 
@@ -307,69 +313,35 @@ const fetchPaymentFrequencies = async () => {
         const response = await apiService.getPaymentFrequencyNoAuth({});
         state.value.paymentFrequencies = response.data;
     } catch (error) {
-        toast.error(error.message, { autoClose: 5000 });
+        toast.error(`${error}`, { autoClose: 5000 });
     }
 };
 
-// Fetch duration values from the server
 const fetchDurations = async () => {
     try {
         const response = await apiService.getPaymentdurationNoAuth({});
         state.value.durations = response.data;
     } catch (error) {
-        toast.error(error.message, { autoClose: 5000 });
+        toast.error(`${error}`, { autoClose: 5000 });
     }
 };
 
-// Fetch the fee library and filter only active fees
-const fetchFeeLibrary = async () => {
-  try {
-    const response = await apiService.getFeeNoAuth({});
-    state.value.fees = response.data; // Show only active fees
-  } catch (error) {
-    toast.error(error.message, { autoClose: 5000 });
-  }
-};
-
-const loadCustomerData = (customerId) => {
-
-    selectedCheckCustomerId.value = customerId;
+const fetchFees = async () => {
     try {
-        if (!customerData[customerId]) {
-        customerData[customerId] = {
-            loanApplicationNo: generateLoanApplicationNo(),
-            customerId: customerId,
-            isSelected: customerData[customerId].isSelected,
-            loanAmount: '',
-            factorRate: '',
-            interestAmount: '',
-            amountPaid: '',
-            releaseSchedule: '',
-            paymentFrequency: '',
-            duration: '',
-            comment: '',
-            selectedFees: [],  // Initialize selectedFees
-        };
-        console.log(customerData);
-    } else {
-        // Ensure selectedFees is initialized
-        if (!customerData[customerId].selectedFees) {
-            customerData[customerId].selectedFees = [];
-        }
-    }
+        const response = await apiService.getFeeNoAuth({});
+        state.value.fees = response.data;
     } catch (error) {
-        toast.error(`Please select first the customer!`, { autoClose: 5000 });
+        toast.error(`${error}`, { autoClose: 5000 });
     }
 };
 
-const loadCustomerDatas = (customerId, isChecked) => {
-
-    selectedCheckCustomerId.value = customerId;
-    if (!customerData[customerId]) {
-        customerData[customerId] = {
+// Initialize data structure for each customer
+function initializeCustomerData() {
+    state.value.customers.forEach((customer) => {
+        customerData[customer.id] = {
             loanApplicationNo: generateLoanApplicationNo(),
-            customerId: customerId,
-            isSelected: isChecked,
+            customerId: customer.id,
+            isSelected: false,
             loanAmount: '',
             factorRate: '',
             interestAmount: '',
@@ -378,84 +350,94 @@ const loadCustomerDatas = (customerId, isChecked) => {
             paymentFrequency: '',
             duration: '',
             comment: '',
-            selectedFees: [],  // Initialize selectedFees
+            loan_count: null,
+            minAmount: null,
+            maxAmount: null,
+            selectedFees: [],
         };
-        console.log(customerData);
-    } else {
-        // Ensure selectedFees is initialized
-        customerData[customerId].isSelected = isChecked;
-        if (!customerData[customerId].selectedFees) {
-            customerData[customerId].selectedFees = [];
-        }
-    }
-};
+    });
+}
 
-// Watch loanAmount and factorRate to recalculate interest and amount paid
+// Load specific data for a customer when a row is clicked
+async function loadCustomerData(customerId) {
+    selectedCheckCustomerId.value = customerId;
+    selectedCustomerId.value = customerId;
+
+    try {
+        const customer = await apiService.getCustomerByIdNoAuth({}, customerId);
+        debugger;
+        const customerLoanCount = await fetchCustomerLoanCount(customer.customer.loan_count);
+        selectedLoanCountId.value = customerLoanCount?.id;
+
+        customerData[customerId].loan_count = customerLoanCount.loan_count;
+        customerData[customerId].minAmount = customerLoanCount.min_amount;
+        customerData[customerId].maxAmount = customerLoanCount.max_amount;
+    } catch (error) {
+        toast.error(`Error loading customer data: ${error}`, { autoClose: 5000 });
+    }
+}
+
+// Fetch customer-specific loan count data
+async function fetchCustomerLoanCount(customerId) {
+    try {
+        const response = await apiService.getLoanCountById({}, parseInt(customerId));
+        return response.data;
+        debugger;
+    } catch (error) {
+        toast.error(`Error fetching loan count for customer ${customerId}: ${error}`);
+    }
+}
+
+// Loan amount and interest calculations
 const calculateInterestAndAmountPaid = (loanAmount, factorRate) => {
+    debugger;
     if (loanAmount && factorRate) {
-        const interestAmount = loanAmount * (factorRate / 100); // Simple interest calculation
+        const interestAmount = loanAmount * (factorRate / 100);
         const amountPaid = loanAmount + interestAmount;
         return { interestAmount, amountPaid };
     }
     return { interestAmount: 0, amountPaid: 0 };
 };
 
-// Watch the loanAmount field to update interestAmount and amountPaid
 const updateLoanAmount = (customerId) => {
+    debugger;
     const customer = customerData[customerId];
     if (customer.loanAmount && customer.factorRateValue) {
-        const { interestAmount, amountPaid } = calculateInterestAndAmountPaid(
-            customer.loanAmount,
-            customer.factorRateValue // Use factorRateValue for calculation
-        );
+        const { interestAmount, amountPaid } = calculateInterestAndAmountPaid(customer.loanAmount, customer.factorRateValue);
         customer.interestAmount = interestAmount;
         customer.amountPaid = amountPaid;
     }
 };
 
-
-// Watch the factor rate change to trigger recalculation
-const onFactorRateChange = async (selectedFactorRateId) => {
-    const factorRate = state.value.factorRates.find(rate => rate.id === selectedFactorRateId);
-    if (factorRate && selectedCheckCustomerId.value) {
-        const customer = customerData[selectedCheckCustomerId.value];
-
-        // Store the selected factorRate ID
-        customer.factorRate = factorRate.id; // This is the change
-        customer.factorRateValue = factorRate.value; // This is for calculation purposes only
-
-        // Auto-populate payment frequency and duration
-        customer.paymentFrequency = factorRate.payment_frequency_id || '';
-        customer.duration = factorRate.payment_duration_id || '';
-
-        // Recalculate interest and amount paid
-        updateLoanAmount(selectedCheckCustomerId.value);
-    }
-};
-
-
-// Watch for loanAmount input changes
+// Watch for loan amount input changes
 watch(() => customerData[selectedCustomerId.value]?.factorRate, (newFactorRate) => {
     onFactorRateChange(newFactorRate);
 });
 
-function generateLoanApplicationNo(length = 8) {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let randomString = '';
+const onFactorRateChange = async (selectedFactorRateId) => {
+    const factorRate = state.value.factorRates.find(rate => rate.id === selectedFactorRateId);
+    if (factorRate && selectedCheckCustomerId.value) {
+        const customer = customerData[selectedCheckCustomerId.value];
+        customer.factorRate = factorRate.id;
+        customer.factorRateValue = factorRate.value;
+        customer.paymentFrequency = factorRate.payment_frequency_id || '';
+        customer.duration = factorRate.payment_duration_id || '';
+        debugger;
+        updateLoanAmount(selectedCheckCustomerId.value);
+    }
+};
 
-  // Create a random string
-  for (let i = 0; i < length; i++) {
-    randomString += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
+const generateLoanApplicationNo = (length = 8) => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let randomString = '';
+    for (let i = 0; i < length; i++) {
+        randomString += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    const randomNumber = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+    return `LN-${randomString}${randomNumber}`;
+};
 
-  // Generate a random number (e.g., between 1000 and 9999)
-  const randomNumber = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
-
-  // Combine random string and number
-  return `LN-${randomString}${randomNumber}`;
-}
-
-
+// Submit form data
 // Handle form submission, including selected fees
 const submitForm = async () => {
     debugger;
@@ -516,79 +498,86 @@ const submitForm = async () => {
                 navigateTo('/loan_applications');
             }
         } catch (error) {
-            toast.error(`Submission failed: ${error.message}`, { autoClose: 5000 });
+            toast.error(`Submission failed: ${`${error}`}`, { autoClose: 5000 });
         }
     } else {
         toast.error('No customer data to submit.', { autoClose: 5000 });
     }
 };
 
-
-async function updateSelectedFees(feeId, isSelected) {
-    // Ensure selectedFees is initialized for the current customer
-    if (!customerData[selectedCheckCustomerId.value]) {
-        return;
-    }
-
+// Update selected fees
+const updateSelectedFees = async (feeId, isSelected) => {
+    if (!customerData[selectedCheckCustomerId.value]) return;
     const selectedFees = customerData[selectedCheckCustomerId.value].selectedFees;
-
     if (isSelected) {
-        // Add fee ID to selectedFees array
-        if (!selectedFees.includes(feeId)) {
-            selectedFees.push(feeId);
-        }
+        if (!selectedFees.includes(feeId)) selectedFees.push(feeId);
     } else {
-        // Remove fee ID from selectedFees array
         const index = selectedFees.indexOf(feeId);
-        if (index > -1) {
-            selectedFees.splice(index, 1);
-        }
+        if (index > -1) selectedFees.splice(index, 1);
     }
-
-    // Optionally, you can calculate the total amount here if needed
     calculateTotalFees();
-}
+};
 
-// Calculate total fees for the selected customer
-function calculateTotalFees() {
+// Calculate total fees
+const calculateTotalFees = () => {
     const customer = customerData[selectedCheckCustomerId.value];
     if (customer && customer.selectedFees.length > 0) {
         let total = 0;
-
         for (let i = 0; i < customer.selectedFees.length; i++) {
-            const feeId = customer.selectedFees[i];
-            const fee = state.value.fees.find(f => f.id === feeId);
-            if (fee) {
-                total += parseFloat(fee.amount); // Ensure we are adding numbers, not concatenating strings
-            }
+            const fee = state.value.fees.find(f => f.id === customer.selectedFees[i]);
+            if (fee) total += parseFloat(fee.amount);
         }
-
-        customer.totalFees = parseFloat(total).toFixed(8); // Assign the total fees to the customer object
-
+        customer.totalFees = parseFloat(total).toFixed(8);
     } else {
-        customer.totalFees = 0; // Reset total if no fees are selected
+        customer.totalFees = 0;
     }
-}
+};
 
-function onCheckboxChange(customerId, isChecked): any {
-        if (isChecked) {
-            console.log('Checkbox checked for customer ID:', customerId);
-            loadCustomerDatas(customerId, isChecked);
-            console.log(customerData);
-            // You can also handle any additional logic for when the checkbox is checked
-        } else {
-            console.log('Checkbox unchecked for customer ID:', customerId);
-            loadCustomerDatas(customerId, isChecked);
-            // Handle logic for when the checkbox is unchecked
-        }
-    }
-
-    // Computed property to filter out the current customer from the co-makers list
-    const availableCoMakers = computed(() =>
-    state.value.customers.filter((customer) => customer.id !== selectedCheckCustomerId.value)
-);
-
-function cancelForm() {
+const cancelForm = () => {
     navigateTo('/loan_applications/');
-}
+};
+
+const onCheckboxChange = (customerId, isChecked) => {
+  if (isChecked) {
+    customerData[customerId].isSelected = true;
+  } else {
+    customerData[customerId].isSelected = false;
+  }
+};
+
+const availableCoMakers = computed(() =>
+    state.value.customers.filter((customer) => customer.id !== selectedCheckCustomerId.value)
+    );
 </script>
+
+<style scoped>
+/* Custom styles to enhance the UI further */
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #63b3ed; /* Tailwind blue-300 */
+    box-shadow: 0 0 0 1px rgba(99, 184, 237, 0.5);
+}
+
+@media (max-width: 640px) {
+    .max-w-lg {
+        max-width: 100%;
+    }
+}
+
+.overflow-auto {
+    overflow-x: auto; /* Enables horizontal scrolling */
+    overflow-y: auto; /* Enables vertical scrolling */
+}
+
+.max-h-96 {
+    max-height: 24rem; /* Adjust based on your design needs */
+}
+</style>

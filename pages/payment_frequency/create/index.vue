@@ -10,7 +10,7 @@
                             <label for="valueP" class="block text-sm font-bold leading-6 text-gray-900">Description<span class="text-red-600">*</span></label>
                             <input v-model="paymentFrequency.description"  type="text"  id="valueP "  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-xl sm:leading-6" />
                         </div>
-    
+
                         <div class="sm:col-span-2">
                             <label for="notes" class="block text-sm font-bold leading-6 text-gray-900">Days Interval <span class="text-red-600">*</span></label>
                             <div class="mt-2">
@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </div>
-    
+
             <div class="mt-6 flex items-center justify-end gap-x-6">
             <button type="button" class="text-sm font-bold leading-6 text-gray-900"
                 @click="back()">
@@ -38,8 +38,8 @@
         </form>
     </div>
 </template>
-    
-    
+
+
 <script setup lang="ts">
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
@@ -54,7 +54,7 @@ import { apiService } from '~/routes/api/API';
     function back() {
         navigateTo('/payment_frequency');
         }
-        
+
     const paymentFrequency = ref({
         description: '',
         days_interval: 0,
@@ -71,7 +71,7 @@ import { apiService } from '~/routes/api/API';
                 notes: paymentFrequency.value.notes,
             };
                 const response =  await apiService.createPaymentFrequency(jsonObject);
-            
+
             if(response)
             {
                 toast.success("Payment Frequency created successfully!", {
@@ -79,16 +79,16 @@ import { apiService } from '~/routes/api/API';
                 });
                 // Introduce a delay before navigating
                 setTimeout(() => {
-                    navigateTo('/payment_frequency');  
+                    navigateTo('/payment_frequency');
                 }, 2000);
                 // Redirect to the customer list page
             }
 
             } catch (error) {
                 toast.error('Error creating Payment Frequency: ' + error);
-                toast.error(error.message, {
+                toast.error(`${error}`, {
         autoClose: 5000,
       });
             }
-        };   
+        };
 </script>

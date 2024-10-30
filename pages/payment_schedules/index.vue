@@ -179,7 +179,7 @@ const createPayment = () => {
 
 // Redirect to the create payment page for updating payment
 const updatePayment = () => {
-    debugger;
+
   if (selectedPayment.value) {
     paymentScheduleService._id = selectedPayment.value;
 
@@ -190,7 +190,7 @@ const updatePayment = () => {
 };
 
 const getSelectedValue = (payment: any) => {
-    debugger;
+
   paymentScheduleService._id = payment.id
   paymentScheduleService.customer_id = payment.customer_id
   paymentScheduleService.balance = payment.balance;
@@ -215,7 +215,7 @@ const deletePayment = () => {
 
 const fetchLoanSchedules = async () => {
   try {
-    const response = await apiService.getPaymentSchedule({});
+    const response = await apiService.getPaymentScheduleAll({});
     payments.value = response.data;
 
   } catch (error) {

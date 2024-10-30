@@ -18,7 +18,7 @@ function formatDateTimeToMySQL(date: any) {
   const hours = pad(date.getHours());
   const minutes = pad(date.getMinutes());
   const seconds = pad(date.getSeconds());
-  
+
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`; // Return as Y-m-d H:i:s
 }
 
@@ -30,7 +30,7 @@ function formatDateToMySQL(date: any) {
   const hours = pad(date.getHours());
   const minutes = pad(date.getMinutes());
   const seconds = pad(date.getSeconds());
-  
+
   return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
@@ -41,7 +41,7 @@ async function setCustomerData()
     CustomersService.passbook_no = 123456; // Set passbook_no
     CustomersService.loan_count = 2; // Set loan_count
     CustomersService.enable_mortuary = 1; // Set enable_mortuary
-    
+
     // Set optional fields if needed
     CustomersService.mortuary_coverage_start = undefined; // Set optional date
     CustomersService.mortuary_coverage_end = undefined;
@@ -117,9 +117,9 @@ async function sendCustomerData()
     alert('Data sent successfully:' + response);
   } catch (error) {
     alert('Error sending data to Laravel API:' + error);
-    toast.error(error.message, {
+    toast.error(`${error}`, {
         autoClose: 5000,
       });
   }
-} 
+}
 </script>
