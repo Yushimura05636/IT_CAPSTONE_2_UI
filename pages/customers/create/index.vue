@@ -483,6 +483,22 @@ const validationErrorsForCustomer = ref({
 
     const requirementsPrompt = ref('');
 
+    // Watching selectedRequirements for changes
+watch(selectedRequirements, (newSelected) => {
+    // Check for expiry dates in selected requirements
+    const hasMissingExpiryDate = newSelected.some(requirementId => {
+        const requirement = requirements.value.find(req => req.id === requirementId);
+        return requirement && !requirement.expiry_date;
+    });
+
+    if (hasMissingExpiryDate) {
+        toast.info("Please select an expiry date for each selected requirement.");
+        requirementsPrompt.value = "Input expiry date for all selected requirements before proceeding.";
+    } else {
+        requirementsPrompt.value = ""; // Clear prompt if all dates are filled
+    }
+});
+
 const createCustomer = async () => {
   try {
 
@@ -507,7 +523,7 @@ const createCustomer = async () => {
     }
 
         // // First Name validation
-        if (!personality.value.first_name   ||
+        if (!personality.value.first_name  ||
         !personality.value.family_name  ||
         !personality.value.middle_name  ||
         !personality.value.email_address||
@@ -536,26 +552,17 @@ const createCustomer = async () => {
         return;
       }
 
-
-      // if (selectedRequirements.value.length === 0) {
-      // toast.error("Please select at least one document requirement.");
-      // requirementsPrompt.value = `Select atleast one requirement before proceeding.`;
-      // return;
-      // }
+      if (requirementsPrompt.value) {
+        toast.info(requirementsPrompt.value);
+        return;
+      }
 
 
-    // i cant check the date sas if naa ba or wala
-
-    // Check for expiry dates
-    // const hasExpiryDate = state.value.requirements.some(requirement =>
-    //   selectedRequirements.value.includes(requirement.id) && !requirement.expiry_date
-    // );
-
-    // if (hasExpiryDate) {
-    //   toast.error("Please select expiry date for the requirement.");
-    //   requirementsPrompt.value = `Input expiry date for requirement before proceeding.`;
-    //   return; // Prevent further execution if there's an expiry date issue
-    // }
+      if (selectedRequirements.value.length < 2) {
+      toast.error("Please select at least two document requirement.");
+      requirementsPrompt.value = `Select atleast one requirement before proceeding.`;
+      return;
+      }
 
     const jsonObject = {
       customer: {

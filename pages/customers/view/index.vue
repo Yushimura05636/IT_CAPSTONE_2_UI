@@ -452,11 +452,40 @@ Object.assign(personality.value, response.personality) // Merge response data in
 }
 }
 
+   // Watching selectedRequirements for changes
+watch(selectedRequirements, (newSelected) => {
+    // Check for expiry dates in selected requirements
+    const hasMissingExpiryDate = newSelected.some(requirementId => {
+        const requirement = requirements.value.find(req => req.id === requirementId);
+        return requirement && !requirement.expiry_date;
+    });
+
+    if (hasMissingExpiryDate) {
+        toast.info("Please select an expiry date for each selected requirement.");
+        requirementsPrompt.value = "Input expiry date for all selected requirements before proceeding.";
+    } else {
+        requirementsPrompt.value = ""; // Clear prompt if all dates are filled
+    }
+});
+
+const requirementsPrompt = ref('');
 
 const updateCustomer = async (action: 'Approved' | 'Reject') => {
 try {
-    personality.value.personality_status_code = action === 'Approved' ? '2' : '3';
 
+    if (requirementsPrompt.value) {
+        toast.info(requirementsPrompt.value);
+        return;
+        }
+        
+    if (selectedRequirements.value.length < 2) {
+        toast.error("Please select at least two document requirement.");
+        requirementsPrompt.value = `Select atleast one requirement before proceeding.`;
+        return;
+    }
+
+
+    personality.value.personality_status_code = action === 'Approved' ? '2' : '3';
     const customerId = CustomersService.id;
     const jsonObject = {
     customer: {

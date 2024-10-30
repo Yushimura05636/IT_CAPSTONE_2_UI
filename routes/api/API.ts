@@ -742,6 +742,10 @@ async authRequirementsUpdate(params: object): Promise<any> {
     return await this.request(`/loan-test/${id}`, 'GET', params)
     }
 
+    async getUserLogged(params: object): Promise<any> {
+        return await this.request(`/USER_LOGGED`, 'GET', params)
+    }
+    
 
 }
 
