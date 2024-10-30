@@ -221,10 +221,9 @@
     </NuxtLayout>
 </template>
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted, watch } from 'vue';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
-import { UserService } from '~/models/User';
 import { apiService } from '~/routes/api/API';
 
 const state = ref({
@@ -235,19 +234,28 @@ const state = ref({
     durations: [],
     fees: [],
     loan_counts: []
-
 });
 
-
 const totalFees = ref(0);
-
-
 const selectedGroupId = ref(null);
-const selectedCustomerId = ref(null); // Currently selected customer
+const selectedCustomerId = ref(null);
 const selectedCheckCustomerId = ref(null);
-// This will hold form data for each customer by their ID
+const selectedLoanCountId = ref(null);
 const customerData = reactive({});
 
+// Computed properties for min and max amounts based on selected loan count
+const maxAmountForSelected = computed(() => {
+    const selectedLoan = state.value.loan_counts.find(loan => loan.id === selectedLoanCountId.value);
+    return selectedLoan ? selectedLoan.max_amount : null;
+    debugger;
+});
+
+const minAmountForSelected = computed(() => {
+    const selectedLoan = state.value.loan_counts.find(loan => loan.id === selectedLoanCountId.value);
+    return selectedLoan ? selectedLoan.min_amount : null;
+});
+
+// Fetch data on mount
 onMounted(() => {
     fetchGroups();
     fetchFactorRate();
@@ -256,40 +264,6 @@ onMounted(() => {
     fetchFees();
     fetchLoanCount();
 });
-
-
-const selectedLoanCountId = ref(null);
-
-const maxAmountForSelected = computed(() => {
-    const selectedLoan = state.value.loan_counts.find(loan => loan.id === selectedLoanCountId.value);
-    return selectedLoan ? selectedLoan.max_amount: null;
-});
-
-const minAmountForSelected = computed(() => {
-    const selectedLoan = state.value.loan_counts.find(loan => loan.id === selectedLoanCountId.value);
-    return selectedLoan ? selectedLoan.min_amount: null;
-});
-
-
-// Fetch LOAN COUNT values from the server
-const fetchLoanCount = async () => {
-    try {
-        const response = await apiService.getLoanCount({});
-        state.value.loan_counts = response.data;
-        console.log("Raw Data: ", JSON.parse(JSON.stringify(response.data)));
-    } catch (error) {
-        toast.error(`${error}`, { autoClose: 5000 });
-    }
-};
-
-const fetchFees = async () => {
-    try {
-        const response = await apiService.getFeeNoAuth({});
-        state.value.fees = response.data;
-    } catch (error) {
-        toast.error(`${error}`, { autoClose: 5000 });
-    }
-}
 
 const fetchGroups = async () => {
     try {
@@ -300,36 +274,23 @@ const fetchGroups = async () => {
     }
 };
 
+const fetchLoanCount = async () => {
+    try {
+        const response = await apiService.getLoanCount({});
+        state.value.loan_counts = response.data;
+    } catch (error) {
+        toast.error(`${error}`, { autoClose: 5000 });
+    }
+};
+
 const fetchCustomers = async () => {
     selectedCustomerId.value = null;
     customerData.value = {}; // Clear previous customer data
     if (selectedGroupId.value && state.value.customers) {
         try {
-            if (Array.isArray(state.value.customers)) {
-                state.value.customers.forEach(customer => {
-                    customerData[customer.id] = {
-                        loanApplicationNo: generateLoanApplicationNo(),
-                        customerId: selectedCustomerId.value,
-                        loanAmount: '',
-                        isSelected: false,
-                        factorRate: '',
-                        interestAmount: '',
-                        amountPaid: '',
-                        releaseSchedule: '',
-                        paymentFrequency: '',
-                        duration: '',
-                        comment: '',
-                        selectedFees: [],
-                    };
-                });
-            } else {
-                console.error('Expected customers to be an array, but got:', state.value.customers);
-                console.error('Expected customers to be an array, but got:', state.value.customers.length);
-            }
             const response = await apiService.getCustomerByGroupId({}, selectedGroupId.value);
             state.value.customers = response.data;
-
-
+            initializeCustomerData();
         } catch (error) {
             toast.error(`${error}`, { autoClose: 5000 });
         }
@@ -356,7 +317,6 @@ const fetchPaymentFrequencies = async () => {
     }
 };
 
-// Fetch duration values from the server
 const fetchDurations = async () => {
     try {
         const response = await apiService.getPaymentdurationNoAuth({});
@@ -366,55 +326,22 @@ const fetchDurations = async () => {
     }
 };
 
-// Fetch the fee library and filter only active fees
-const fetchFeeLibrary = async () => {
-  try {
-    const response = await apiService.getFeeNoAuth({});
-    state.value.fees = response.data; // Show only active fees
-  } catch (error) {
-    toast.error(`${error}`, { autoClose: 5000 });
-  }
-};
-
-const loadCustomerData = (customerId) => {
-
-    selectedCheckCustomerId.value = customerId;
+const fetchFees = async () => {
     try {
-        if (!customerData[customerId]) {
-        customerData[customerId] = {
-            loanApplicationNo: generateLoanApplicationNo(),
-            customerId: customerId,
-            isSelected: customerData[customerId].isSelected,
-            loanAmount: '',
-            factorRate: '',
-            interestAmount: '',
-            amountPaid: '',
-            releaseSchedule: '',
-            paymentFrequency: '',
-            duration: '',
-            comment: '',
-            selectedFees: [],  // Initialize selectedFees
-        };
-        console.log(customerData);
-    } else {
-        // Ensure selectedFees is initialized
-        if (!customerData[customerId].selectedFees) {
-            customerData[customerId].selectedFees = [];
-        }
-    }
+        const response = await apiService.getFeeNoAuth({});
+        state.value.fees = response.data;
     } catch (error) {
-        toast.error(`Please select first the customer!`, { autoClose: 5000 });
+        toast.error(`${error}`, { autoClose: 5000 });
     }
 };
 
-const loadCustomerDatas = (customerId, isChecked) => {
-
-    selectedCheckCustomerId.value = customerId;
-    if (!customerData[customerId]) {
-        customerData[customerId] = {
+// Initialize data structure for each customer
+function initializeCustomerData() {
+    state.value.customers.forEach((customer) => {
+        customerData[customer.id] = {
             loanApplicationNo: generateLoanApplicationNo(),
-            customerId: customerId,
-            isSelected: isChecked,
+            customerId: customer.id,
+            isSelected: false,
             loanAmount: '',
             factorRate: '',
             interestAmount: '',
@@ -423,87 +350,97 @@ const loadCustomerDatas = (customerId, isChecked) => {
             paymentFrequency: '',
             duration: '',
             comment: '',
-            selectedFees: [],  // Initialize selectedFees
+            loan_count: null,
+            minAmount: null,
+            maxAmount: null,
+            selectedFees: [],
         };
-        console.log(customerData);
-    } else {
-        // Ensure selectedFees is initialized
-        customerData[customerId].isSelected = isChecked;
-        if (!customerData[customerId].selectedFees) {
-            customerData[customerId].selectedFees = [];
-        }
-    }
-};
+    });
+}
 
-// Watch loanAmount and factorRate to recalculate interest and amount paid
+// Load specific data for a customer when a row is clicked
+async function loadCustomerData(customerId) {
+    selectedCheckCustomerId.value = customerId;
+    selectedCustomerId.value = customerId;
+
+    try {
+        const customer = await apiService.getCustomerByIdNoAuth({}, customerId);
+        debugger;
+        const customerLoanCount = await fetchCustomerLoanCount(customer.customer.loan_count);
+        selectedLoanCountId.value = customerLoanCount?.id;
+
+        customerData[customerId].loan_count = customerLoanCount.loan_count;
+        customerData[customerId].minAmount = customerLoanCount.min_amount;
+        customerData[customerId].maxAmount = customerLoanCount.max_amount;
+    } catch (error) {
+        toast.error(`Error loading customer data: ${error}`, { autoClose: 5000 });
+    }
+}
+
+// Fetch customer-specific loan count data
+async function fetchCustomerLoanCount(customerId) {
+    try {
+        const response = await apiService.getLoanCountById({}, parseInt(customerId));
+        return response.data;
+        debugger;
+    } catch (error) {
+        toast.error(`Error fetching loan count for customer ${customerId}: ${error}`);
+    }
+}
+
+// Loan amount and interest calculations
 const calculateInterestAndAmountPaid = (loanAmount, factorRate) => {
+    debugger;
     if (loanAmount && factorRate) {
-        const interestAmount = loanAmount * (factorRate / 100); // Simple interest calculation
+        const interestAmount = loanAmount * (factorRate / 100);
         const amountPaid = loanAmount + interestAmount;
         return { interestAmount, amountPaid };
     }
     return { interestAmount: 0, amountPaid: 0 };
 };
 
-// Watch the loanAmount field to update interestAmount and amountPaid
 const updateLoanAmount = (customerId) => {
+    debugger;
     const customer = customerData[customerId];
     if (customer.loanAmount && customer.factorRateValue) {
-        const { interestAmount, amountPaid } = calculateInterestAndAmountPaid(
-            customer.loanAmount,
-            customer.factorRateValue // Use factorRateValue for calculation
-        );
+        const { interestAmount, amountPaid } = calculateInterestAndAmountPaid(customer.loanAmount, customer.factorRateValue);
         customer.interestAmount = interestAmount;
         customer.amountPaid = amountPaid;
     }
 };
 
-
-// Watch the factor rate change to trigger recalculation
-const onFactorRateChange = async (selectedFactorRateId) => {
-    const factorRate = state.value.factorRates.find(rate => rate.id === selectedFactorRateId);
-    if (factorRate && selectedCheckCustomerId.value) {
-        const customer = customerData[selectedCheckCustomerId.value];
-
-        // Store the selected factorRate ID
-        customer.factorRate = factorRate.id; // This is the change
-        customer.factorRateValue = factorRate.value; // This is for calculation purposes only
-
-        // Auto-populate payment frequency and duration
-        customer.paymentFrequency = factorRate.payment_frequency_id || '';
-        customer.duration = factorRate.payment_duration_id || '';
-
-        // Recalculate interest and amount paid
-        updateLoanAmount(selectedCheckCustomerId.value);
-    }
-};
-
-
-// Watch for loanAmount input changes
+// Watch for loan amount input changes
 watch(() => customerData[selectedCustomerId.value]?.factorRate, (newFactorRate) => {
     onFactorRateChange(newFactorRate);
 });
 
-function generateLoanApplicationNo(length = 8) {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let randomString = '';
+const onFactorRateChange = async (selectedFactorRateId) => {
+    const factorRate = state.value.factorRates.find(rate => rate.id === selectedFactorRateId);
+    if (factorRate && selectedCheckCustomerId.value) {
+        const customer = customerData[selectedCheckCustomerId.value];
+        customer.factorRate = factorRate.id;
+        customer.factorRateValue = factorRate.value;
+        customer.paymentFrequency = factorRate.payment_frequency_id || '';
+        customer.duration = factorRate.payment_duration_id || '';
+        debugger;
+        updateLoanAmount(selectedCheckCustomerId.value);
+    }
+};
 
-  // Create a random string
-  for (let i = 0; i < length; i++) {
-    randomString += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
+const generateLoanApplicationNo = (length = 8) => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let randomString = '';
+    for (let i = 0; i < length; i++) {
+        randomString += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    const randomNumber = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
+    return `LN-${randomString}${randomNumber}`;
+};
 
-  // Generate a random number (e.g., between 1000 and 9999)
-  const randomNumber = Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
-
-  // Combine random string and number
-  return `LN-${randomString}${randomNumber}`;
-}
-
-
+// Submit form data
 // Handle form submission, including selected fees
 const submitForm = async () => {
-
+    debugger;
     const allCustomerData = []; // Initialize an empty array to hold customer data
 
     // Convert customerData object into an array
@@ -550,7 +487,7 @@ const submitForm = async () => {
     // Check if there is any customer data to submit
     if (allCustomerData.length > 0) {
         try {
-
+            debugger;
             // Send the data to the Laravel API
             const response = await apiService.createLoanApplication({
                 allCustomerData, // Use allCustomerData here
@@ -561,82 +498,58 @@ const submitForm = async () => {
                 navigateTo('/loan_applications');
             }
         } catch (error) {
-            toast.error(`${error}`, { autoClose: 5000 });
+            toast.error(`Submission failed: ${`${error}`}`, { autoClose: 5000 });
         }
     } else {
         toast.error('No customer data to submit.', { autoClose: 5000 });
     }
 };
 
-
-async function updateSelectedFees(feeId, isSelected) {
-    // Ensure selectedFees is initialized for the current customer
-    if (!customerData[selectedCheckCustomerId.value]) {
-        return;
-    }
-
+// Update selected fees
+const updateSelectedFees = async (feeId, isSelected) => {
+    if (!customerData[selectedCheckCustomerId.value]) return;
     const selectedFees = customerData[selectedCheckCustomerId.value].selectedFees;
-
     if (isSelected) {
-        // Add fee ID to selectedFees array
-        if (!selectedFees.includes(feeId)) {
-            selectedFees.push(feeId);
-        }
+        if (!selectedFees.includes(feeId)) selectedFees.push(feeId);
     } else {
-        // Remove fee ID from selectedFees array
         const index = selectedFees.indexOf(feeId);
-        if (index > -1) {
-            selectedFees.splice(index, 1);
-        }
+        if (index > -1) selectedFees.splice(index, 1);
     }
-
-    // Optionally, you can calculate the total amount here if needed
     calculateTotalFees();
-}
+};
 
-// Calculate total fees for the selected customer
-function calculateTotalFees() {
+// Calculate total fees
+const calculateTotalFees = () => {
     const customer = customerData[selectedCheckCustomerId.value];
     if (customer && customer.selectedFees.length > 0) {
         let total = 0;
-
         for (let i = 0; i < customer.selectedFees.length; i++) {
-            const feeId = customer.selectedFees[i];
-            const fee = state.value.fees.find(f => f.id === feeId);
-            if (fee) {
-                total += parseFloat(fee.amount); // Ensure we are adding numbers, not concatenating strings
-            }
+            const fee = state.value.fees.find(f => f.id === customer.selectedFees[i]);
+            if (fee) total += parseFloat(fee.amount);
         }
-
-        customer.totalFees = parseFloat(total).toFixed(8); // Assign the total fees to the customer object
-
+        customer.totalFees = parseFloat(total).toFixed(8);
     } else {
-        customer.totalFees = 0; // Reset total if no fees are selected
+        customer.totalFees = 0;
     }
-}
+};
 
-function onCheckboxChange(customerId, isChecked): any {
-        if (isChecked) {
-            console.log('Checkbox checked for customer ID:', customerId);
-            loadCustomerDatas(customerId, isChecked);
-            console.log(customerData);
-            // You can also handle any additional logic for when the checkbox is checked
-        } else {
-            console.log('Checkbox unchecked for customer ID:', customerId);
-            loadCustomerDatas(customerId, isChecked);
-            // Handle logic for when the checkbox is unchecked
-        }
-    }
-
-    // Computed property to filter out the current customer from the co-makers list
-    const availableCoMakers = computed(() =>
-    state.value.customers.filter((customer) => customer.id !== selectedCheckCustomerId.value)
-);
-
-function cancelForm() {
+const cancelForm = () => {
     navigateTo('/loan_applications/');
-}
+};
+
+const onCheckboxChange = (customerId, isChecked) => {
+  if (isChecked) {
+    customerData[customerId].isSelected = true;
+  } else {
+    customerData[customerId].isSelected = false;
+  }
+};
+
+const availableCoMakers = computed(() =>
+    state.value.customers.filter((customer) => customer.id !== selectedCheckCustomerId.value)
+    );
 </script>
+
 <style scoped>
 /* Custom styles to enhance the UI further */
 input[type="text"],
