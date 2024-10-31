@@ -574,7 +574,6 @@ const filteredGroup = computed(() => {
     try {
         const uniqueGroupIds = new Set(state.value.customers_temp.map(customer => customer.customer.group_id));
         state.value.groups = state.value.groups.filter(group => uniqueGroupIds.has(group.id));
-        state.value.customers_temp = [];
         return state.value.groups;
     } catch (error) {
         toast.error(`${error}`)
