@@ -170,6 +170,7 @@ const state = ref({
     paymentFrequencies: [],
     durations: [],
     fees: [],
+    userLogged: [],
     coMakers: {},
 });
 
@@ -188,6 +189,7 @@ onMounted(() => {
     fetchCoMakers();
     fetchFees();
     fetchLoanApplication();
+    fetchUserLogged();
 });
 
 const fetchLoanApplication = async () => {
@@ -286,6 +288,7 @@ const fetchDurations = async () => {
     }
 };
 
+
 // Calculate total fees for the selected customer
 function calculateTotalFees() {
     console.log();
@@ -325,6 +328,18 @@ for (let i = 0; i < state.value.fees.length; i++) {
 const cancelForm = () => {
     navigateTo('/loan_applications/');
 }
+
+
+const fetchUserLogged = async () => {
+    try {
+        const response = await apiService.getUserLogged({});
+        state.value.userLogged = response.data;
+        console.log("Data: ",state.value.userLogged.id);
+    } catch (error) {
+        toast.error(`${error}`, { autoClose: 5000 });
+    }
+};
+
 
 const submitForm = async () => {
     if (form.value.Loan_Application.amount_loan && form.value.Loan_Application.factor_rate && form.value.Loan_Application.amount_interest && form.value.Loan_Application.amount_paid) {

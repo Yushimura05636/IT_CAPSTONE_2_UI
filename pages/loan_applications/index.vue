@@ -61,7 +61,6 @@
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.factor_rate }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.amount_interest }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.amount_paid }}</td>
-              <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.datetime_target_release }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.datetime_fully_paid }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.datetime_approved }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.approved_by_id }}</td>
@@ -99,7 +98,6 @@ const state = reactive({
     { name: 'Factor Rate' },
     { name: 'Amount Interest' },
     { name: 'Amount Paid' },
-    { name: 'Date Time Target Release' },
     { name: 'Date Time Fully Paid' },
     { name: 'Date Time Approved' },
     { name: 'Approved by' },
@@ -121,9 +119,10 @@ const searchQuery = ref(''); // Search query state
 async function fetchLoanApplication() {
   state.isTableLoading = true
   state.error = null
-  try {
+try {
     const response = await apiService.getLoanApplication({})
     state.loanApp = response.data
+    console.log( 'Hello: ',state.loanApp);
   } catch (error: any) {
     toast.error(`${error}`, {
       autoClose: 5000,
