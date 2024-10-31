@@ -11,7 +11,7 @@
                         <div class="mb-4" v-if="state.isLoading == false">
                             <label class="block text-gray-700">Group Name</label>
                             <select v-model="selectedGroupId" @change="fetchCustomers" class="w-full border rounded-lg px-4 py-2">
-                                <option v-for="group in filteredGroup" :key="group.id" :value="group.id">
+                                <option v-for="group in state.groups" :key="group.id" :value="group.id">
                                     {{ group.description }}
                                 </option>
                             </select>
@@ -568,18 +568,6 @@ const groupsWithCustomers = computed(() => {
         // Check if there are customers in the selected group
         //return state.value.customers.some(customer => customer.group_id === group.id);
     });
-});
-
-const filteredGroup = computed(() => {
-    try {
-        state.value.customers_temp.forEach(customer => state.value.groups = state.value.groups.filter(group => group.id == customer.customer.group_id))
-        //state.value.groups.filter(group => group.id == 1)
-        return state.value.groups;
-    } catch (error) {
-        toast.error(`${error}`)
-    } finally {
-        state.value.customers_temp = [];
-    }
 });
 </script>
 
