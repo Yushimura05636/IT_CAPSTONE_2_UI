@@ -94,6 +94,7 @@
                                 class="w-full border border-gray-300 rounded p-2 focus:outline-none focus:ring focus:border-blue-300"
                                 @input="updateLoanAmount(selectedCheckCustomerId)"
                             />
+                            <p v-if="exceedsMaxAmount" class="text-red-500 mt-1">The loan amount exceeds the maximum limit of {{ maxAmountForSelected }}.</p>
                         </div>
 
                         <div class="mb-4">
@@ -399,13 +400,24 @@ const calculateInterestAndAmountPaid = (loanAmount, factorRate) => {
     return { interestAmount: 0, amountPaid: 0 };
 };
 
+const exceedsMaxAmount = ref('');
+
 const updateLoanAmount = (customerId) => {
-    debugger;
+    // debugger;
     const customer = customerData[customerId];
     if (customer.loanAmount && customer.factorRateValue) {
         const { interestAmount, amountPaid } = calculateInterestAndAmountPaid(customer.loanAmount, customer.factorRateValue);
         customer.interestAmount = interestAmount;
         customer.amountPaid = amountPaid;
+        // console.log("Loan Amount:", customer.loanAmount);
+        // console.log("Max Amount:", maxAmountForSelected);
+    }
+
+    const maxAmount = maxAmountForSelected.value;
+    if (parseFloat(customer.loanAmount) > parseFloat(maxAmount)) {
+        exceedsMaxAmount.value = 'Exceed'
+    } else {
+    exceedsMaxAmount.value = ''; // Reset if within limit
     }
 };
 

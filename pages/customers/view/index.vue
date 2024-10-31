@@ -161,18 +161,17 @@
         <div>
             <label for="enableMortuary" class="block text-gray-700">Enable Mortuary</label>
             <select v-model="customer.enable_mortuary" id="enable_mortuary" class="w-full border rounded-lg px-4 py-2">
-            <option value="0">Select</option>
             <option value="1">Yes</option>
             <option value="2">No</option>
             </select>
         </div>
 
-        <div>
+        <div v-if="customer.enable_mortuary == '1'" >
             <label for="mortuaryCoverageStart" class="block text-gray-700">Mortuary Coverage Start</label>
             <input v-model="customer.mortuary_coverage_start" type="date" id="mortuaryCoverageStart" class="w-full border rounded-lg px-4 py-2" />
         </div>
 
-        <div>
+        <div v-if="customer.enable_mortuary == '1'" >
             <label for="mortuaryCoverageEnd" class="block text-gray-700">Mortuary Coverage End</label>
             <input v-model="customer.mortuary_coverage_end" type="date" id="mortuaryCoverageEnd" class="w-full border rounded-lg px-4 py-2" />
         </div>
@@ -199,6 +198,7 @@
                     :value="requirement.id"
                     v-model="selectedRequirements"
                     @change="getSelectedRequirements"
+                    :disabled="!requirement.expiry_date"
                     class="form-checkbox h-5 w-5 text-green-600"
                 />
                 </label>
@@ -470,14 +470,10 @@ watch(selectedRequirements, (newSelected) => {
 
 const requirementsPrompt = ref('');
 
+
 const updateCustomer = async (action: 'Approved' | 'Reject') => {
 try {
-
-    if (requirementsPrompt.value) {
-        toast.info(requirementsPrompt.value);
-        return;
-        }
-        
+    
     if (selectedRequirements.value.length < 2) {
         toast.error("Please select at least two document requirement.");
         requirementsPrompt.value = `Select atleast one requirement before proceeding.`;
@@ -523,13 +519,13 @@ try {
 
     // debugger;
 
+    console.log("JSON Object:", JSON.stringify(jsonObject, null, 2));
     //await apiService.updateCustomer(jsonObject, customerId);
     const response = await apiService.updateCustomer(jsonObject, customerId);
     console.log("Response from API:", response);
     toast.success("Customer updated successfully!", {
         autoClose: 2000,
         });
-        console.log("JSON Object:", JSON.stringify(jsonObject, null, 2));
         // Introduce a delay before navigating
         setTimeout(() => {
             navigateTo('/customers'); // Redirect to the customer list page

@@ -192,11 +192,11 @@
   </nav>
     <div class="flex flex-col md:flex-row items-center gap-4 pop-in">
       <a href="login" class="w-full md:w-auto bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-opacity-50 animate__animated animate__pulse animate__infinite flex justify-center items-center whitespace-nowrap">Log in</a>
-      <!-- <a href="register_step1"
+      <a href="customer_register"
         class="w-full md:w-auto bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-opacity-50 animate__animated animate__pulse animate__infinite flex justify-center items-center whitespace-nowrap"
         aria-label="Sign Up">
-          Sign Up
-      </a> -->
+          Register
+      </a>
     </div>
 
   </div>
