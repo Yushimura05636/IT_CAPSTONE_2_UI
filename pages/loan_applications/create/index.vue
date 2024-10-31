@@ -17,8 +17,6 @@
                             </select>
                         </div>
 
-
-
                         <!-- Table for Customer Names -->
                         <div v-if="state.customers.length > 0" class="overflow-auto max-h-[250px]"> <!-- Limit height for 10 rows -->
                             <table class="min-w-full bg-white border border-gray-300 mb-4">
@@ -299,7 +297,7 @@ const fetchCustomers = async () => {
     selectedCustomerId.value = null;
     customerData.value = {}; // Clear previous customer data
     state.value.isLoading = true;
-    if (selectedGroupId.value && state.value.customers) {
+    if (selectedGroupId.value) {
         try {
             const response = await apiService.getCustomerByGroupId({}, selectedGroupId.value);
             state.value.customers = response.data;
