@@ -546,6 +546,7 @@ async function userDetails(){
             response.value = response.data;
             state.user = response.value;
             name.value = response.data.first_name ?? 'No User';
+            alert(name.value)
         }
     } catch (error) {
         console.log(`Error Message: ${error}`);
