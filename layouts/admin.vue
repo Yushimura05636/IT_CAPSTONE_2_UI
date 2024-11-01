@@ -558,7 +558,7 @@ onMounted(() => {
     const interval = setInterval(userDetails, 2000);
     setTimeout(() => {
         clearInterval(interval);
-    }, 4500)
+    }, 2500)
 })
 
 </script>
