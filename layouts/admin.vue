@@ -548,17 +548,17 @@ async function userDetails(){
             name.value = response.data.first_name ?? 'No User';
         }
     } catch (error) {
-        toast.error(`${error}`, {autoClose: 3000})
+        //toast.error(`${error}`, {autoClose: 3000})
     }
 }
 
 onMounted(() => {
     AUTH_USER();
     userDetails();
-    const interval = setInterval(userDetails, 2000);
+    const interval = setInterval(userDetails, 500);
     setTimeout(() => {
         clearInterval(interval);
-    }, 5000)
+    }, 1000)
 })
 
 </script>
