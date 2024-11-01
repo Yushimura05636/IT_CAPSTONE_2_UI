@@ -194,7 +194,7 @@
 >
   <div
     v-if="sidebarExpanded"
-    class="fixed inset-0 lg:w-64 lg:bg-gray-900 lg:border lg:border-gray-700 z-50 shadow-lg rounded-lg"
+    class="fixed inset-0 lg:w-64 lg:bg-gray-900 lg:border lg:border-gray-700 z-50 shadow-lg rounded-lg overflow-x-auto overflow-y-auto"
   >
     <!-- Sidebar Header -->
     <div class="flex h-16 items-center justify-between bg-gray-800 shadow-md px-4 rounded-t-lg">
@@ -214,7 +214,7 @@
     </div>
 
     <!-- Navigation Items -->
-    <nav class="flex flex-1 flex-col mt-2 scrollable"> <!-- Add scrollable class -->
+    <nav class="flex flex-1 flex-col mt-2 scrollable">
       <ul role="list" class="flex flex-1 flex-col gap-y-2 px-4">
         <li v-for="item in menuItems" :key="item.name">
           <!-- Menu Item -->
@@ -278,8 +278,6 @@
     </nav>
   </div>
 </Transition>
-
-
 
 
 <!-- Header -->
@@ -538,9 +536,13 @@ async function AUTH_USER(){
 
 async function userDetails(){
     try {
-        const response = await apiService.getOwnUserDetailsdNoAUTH({});
-        state.user = response.data
-        name.value = response.data.first_name;
+        if(!state.user.length && !name.value)
+        {
+            const response = await apiService.getOwnUserDetailsdNoAUTH({});
+            response.value = response.data;
+            state.user = response.value;
+            name.value = response.data.first_name ?? 'No User';
+        }
     } catch (error) {
         toast.error(`${error}`, {autoClose: 3000})
     }
@@ -549,8 +551,9 @@ async function userDetails(){
 onMounted(() => {
     AUTH_USER();
     userDetails();
-    const interval = setInterval(userDetails, 5000);
-    return ()=> clearInterval(interval);
+    setTimeout(() => {
+        const interval = setInterval(userDetails, 2000);
+    }, 5000)
 })
 
 </script>
