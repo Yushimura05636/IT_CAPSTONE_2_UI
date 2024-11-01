@@ -299,7 +299,7 @@
     @click="toggleDropdown"
     class="flex items-center text-gray-700 focus:outline-none"
   >
-    <span v-if="state.user && state.user.id > 0" class="mr-2">{{ state.user.last_name }}</span>
+    <span v-if="state.user && name.value" class="mr-2">{{ name.value }}</span>
     <span v-else class="mr-2">User</span>
     <img
       class="h-8 w-8 rounded-full"
@@ -325,7 +325,7 @@
           src="https://www.shutterstock.com/image-vector/cute-cat-pixel-style-260nw-2138544923.jpg"
           alt="User Avatar"
         />
-        <span class="font-semibold text-gray-800 text-center mb-2">{{ state.user.first_name }}</span>
+        <span class="font-semibold text-gray-800 text-center mb-2">{{ state.user.last_name }}</span>
 
         <a
           href="#profile"
@@ -489,6 +489,10 @@ const state = {
     user: [],
 }
 
+const name = reactive({
+    value: '',
+})
+
 
 const toggleChild = (child) => {
   // Toggle the child visibility
@@ -536,6 +540,7 @@ async function userDetails(){
     try {
         const response = await apiService.getOwnUserDetailsdNoAUTH({});
         state.user = response.data
+        name.value = response.data.first_name;
     } catch (error) {
         toast.error(`${error}`, {autoClose: 3000})
     }
@@ -544,6 +549,8 @@ async function userDetails(){
 onMounted(() => {
     AUTH_USER();
     userDetails();
+    const interval = setInterval(userDetails, 5000);
+    return ()=> clearInterval(interval);
 })
 
 </script>
