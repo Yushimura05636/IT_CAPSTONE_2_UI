@@ -746,6 +746,18 @@ async authRequirementsUpdate(params: object): Promise<any> {
         return await this.request(`/USER_LOGGED`, 'GET', params)
     }
     
+    //for registration
+    async getRegisterLibraries(params: object, modeltype: string): Promise<any>{
+        return await this.request(`/REGISTER_LIBRARIES/NoAUTH/${modeltype}`, 'GET', params);
+    }
+
+    async getRegisterLoanCount(params: object): Promise<any> {
+        return await this.request(`/REGISTER_LIBRARIES/NoAUTH`, 'GET', params);
+    }
+    async createRegisterCustomer(params: object): Promise<any> {
+        return await this.request(`/REGISTER_LIBRARIES`, 'POST', params)
+    }
+    
 
 }
 

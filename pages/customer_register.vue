@@ -112,7 +112,6 @@
                 </option>
                 </select>
                 <span v-if="validationErrors.city_id" class="text-red-500 text-sm">{{ validationErrors.city_id }}</span>
-
             </div>
 
             <div>
@@ -134,76 +133,13 @@
                 </option>
                 </select>
                 <span v-if="validationErrors.province_id" class="text-red-500 text-sm">{{ validationErrors.province_id }}</span>
-
             </div>
 
             <div>
-                <label for="creditStatusId" class="block text-gray-700">Credit Status</label>
-                <select v-model="personality.credit_status_id" id="creditStatusId" class="w-full border rounded-lg px-4 py-2">
-                <option v-for="creditStatus in state.creditStatuses" :key="creditStatus.id" :value="creditStatus.id">
-                    {{ creditStatus.description }}
-                </option>
-                </select>
-                <span v-if="validationErrors.credit_status_id" class="text-red-500 text-sm">{{ validationErrors.credit_status_id }}</span>
-
-            </div>
-
-            <!-- Customer Fields -->
-            <!-- <div>
-                <label for="groupId" class="block text-gray-700">Group Name</label>
-                <select v-model="customer.group_id" id="groupId" class="w-full border rounded-lg px-4 py-2" v-if="!state.isTableLoading">
-                <option v-for="groups in state.groups" :key="groups.id" :value="groups.id">
-                    {{ groups.description }}
-                </option>
-                </select>
-                <span v-if="validationErrorsForCustomer.group_id" class="text-red-500 text-sm">{{ validationErrorsForCustomer.group_id }}</span>
-
-            </div> -->
-
-            <!-- <div>
-                <label for="passbookNo" class="block text-gray-700">Passbook No</label>
-                <input v-model="customer.passbook_no" type="number" id="passbookNo" class="w-full border rounded-lg px-4 py-2" />
+                <label for="passbookNo" class="block text-gray-700">Passbook No.</label>
+                <input v-model="customer.passbook_no" type="number" id="passbookNo"  class="w-full border rounded-lg px-4 py-2"  disabled  />
                 <span v-if="validationErrorsForCustomer.passbook_no" class="text-red-500 text-sm">{{ validationErrorsForCustomer.passbook_no }}</span>
-
-            </div>
-
-            <div>
-                <label for="groupId" class="block text-gray-700">Loan Count</label>
-                <select v-model="customer.loan_count_id" id="groupId" class="w-full border rounded-lg px-4 py-2" v-if="!state.isTableLoading">
-                <option v-for="groups in state.loan_count" :key="groups.id" :value="groups.id">
-                    {{ groups.loan_count }}
-                </option>
-                </select>
-                <span v-if="validationErrorsForCustomer.loan_count_id" class="text-red-500 text-sm">{{ validationErrorsForCustomer.loan_count_id }}</span>
-
-            </div> -->
-
-            <div>
-                <label for="dateTimeRegistered" class="block text-gray-700">Date Time Registered</label>
-                <input v-model="personality.datetime_registered" type="date" id="dateTimeRegistered" class="w-full border rounded-lg px-4 py-2" />
-                <span v-if="validationErrors.datetime_registered" class="text-red-500 text-sm">{{ validationErrors.datetime_registered }}</span>
-
-            </div>
-
-            <!-- <div>
-                <label for="enableMortuary" class="block text-gray-700">Enable Mortuary</label>
-                <select v-model="customer.enable_mortuary" id="enable_mortuary" class="w-full border rounded-lg px-4 py-2">
-                <option value="1">Yes</option>
-                <option value="2">No</option>
-                </select>
-                <span v-if="validationErrorsForCustomer.enable_mortuary" class="text-red-500 text-sm">{{ validationErrorsForCustomer.enable_mortuary }}</span>
-
-            </div>
-            
-            <div v-if="customer.enable_mortuary == '1'">
-                <label for="mortuaryCoverageStart" class="block text-gray-700">Mortuary Coverage Start</label>
-                <input v-model="customer.mortuary_coverage_start" type="date" id="mortuaryCoverageStart" class="w-full border rounded-lg px-4 py-2" />
-            </div>
-
-            <div v-if="customer.enable_mortuary == '1'">
-                <label for="mortuaryCoverageEnd" class="block text-gray-700">Mortuary Coverage End</label>
-                <input v-model="customer.mortuary_coverage_end" type="date" id="mortuaryCoverageEnd" class="w-full border rounded-lg px-4 py-2" />
-            </div> -->
+            </div> 
             
             </div>
 
@@ -240,36 +176,49 @@ interface Requirement {
 }
 
 const personality = ref({
-first_name: '',
-family_name: '',
-middle_name: '',
-email_address: '',
-telephone_no: '',
-birthday: '',
-gender_code: '',
-civil_status: '',
-house_street: '',
-cellphone_no: '',
-purok_zone: '',
-postal_code: '',
-barangay_id: '',
-city_id: '',
-country_id: '',
-province_id: '',
-credit_status_id: '',
-datetime_registered: '',
-name_type: 2, //for customer
-personality_status_code: '', // pending
-notes: '',
+    first_name: '',
+    family_name: '',
+    middle_name: '',
+    email_address: '',
+    telephone_no: '',
+    birthday: '',
+    gender_code: '',
+    civil_status: '',
+    house_street: '',
+    cellphone_no: '',
+    purok_zone: '',
+    postal_code: '',
+    barangay_id: '',
+    city_id: '',
+    country_id: '',
+    province_id: '',
+    credit_status_id: 2,
+    datetime_registered: new Date().toISOString().slice(0, 19).replace('T', ' '),
+    name_type: 2, //for customer
+    personality_status_code: '', // pending
+    notes: 'For Approval',
 });
 
+
+const generatePassbookNo = (length = 6) => {
+    const numbers = '0123456789';
+    let randomString = '';
+
+    // Generate a random string of numeric characters only
+    for (let i = 0; i < length; i++) {
+        randomString += numbers.charAt(Math.floor(Math.random() * numbers.length));
+    }
+
+    // Ensure the return value is an integer by removing any prefix
+    return parseInt(randomString, 10);
+};
+
+
 const customer = ref({
-// group_id: '',
-// passbook_no: '',
-// loan_count_id: 0,
-// enable_mortuary: '',
-// mortuary_coverage_start: '',
-// mortuary_coverage_end: '',
+    group_id: null,
+    passbook_no: generatePassbookNo(),
+    loan_count_id: 1,
+    enable_mortuary: '',
 });
 
 const state = ref({
@@ -284,10 +233,11 @@ loan_count: [],
 isTableLoading: false,
 });
 
+
 const fetchBarangays = async () => {
 // Replace with your actual API call
 try {
-    const response = await apiService.getNoAuth({}, "barangay");
+    const response = await apiService.getRegisterLibraries({}, "barangay");
 
     state.value.barangays = response.data;
 } catch (error) {
@@ -296,11 +246,10 @@ try {
     })
 }
 };
-
 const fetchCities = async () => {
 // Replace with your actual API call
 try {
-    const response = await apiService.getNoAuth({}, "city");
+    const response = await apiService.getRegisterLibraries({}, "city");
 
     state.value.cities = response.data;
 
@@ -310,10 +259,9 @@ try {
     })
 }
 };
-
 const fetchCountries = async () => {
 try {
-    const response = await apiService.getNoAuth({}, "country");
+    const response = await apiService.getRegisterLibraries({}, "country");
 
     state.value.countries = response.data;
 } catch (error) {
@@ -322,11 +270,10 @@ try {
     })
 }
 };
-
 const fetchProvinces = async () => {
 // Replace with your actual API call
 try {
-    const response = await apiService.getNoAuth({}, "province");
+    const response = await apiService.getRegisterLibraries({}, "province");
     state.value.provinces = response.data;
 } catch (error) {
     toast.error(error.message, {
@@ -334,11 +281,10 @@ try {
     })
 }
 };
-
 const fetchCreditStatuses = async () => {
 // Replace with your actual API call
 try {
-    const response = await apiService.getNoAuth({}, "credit_status");
+    const response = await apiService.getRegisterLibraries({}, "credit_status");
     state.value.creditStatuses = response.data;
 } catch (error) {
     toast.error(error.message, {
@@ -346,11 +292,10 @@ try {
     })
 }
 };
-
 const fetchGroups = async () => {
 // Replace with your actual API call
 try {
-    const response = await apiService.getNoAuth({}, "customer_group");
+    const response = await apiService.getRegisterLibraries({}, "customer_group");
 
     state.value.groups = response.data;
 } catch (error) {
@@ -359,23 +304,10 @@ try {
     })
 }
 };
-
-const fetchPersonalityStatusCode = async () => {
-// Replace with your actual API call
-try {
-    const response = await apiService.getNoAuth({}, "personality_status_map");
-    state.value.personality_status_code = response.data;
-} catch (error) {
-    toast.error(error.message, {
-    autoClose: 5000,
-    })
-}
-};
-
 const fetchLoanCount = async () => {
 // Replace with your actual API call
 try {
-    const response = await apiService.getLoanCountNoAuth({});
+    const response = await apiService.getRegisterLoanCount({});
 
     state.value.loan_count = response.data;
 
@@ -394,12 +326,10 @@ await Promise.all([
     fetchProvinces(),
     fetchCreditStatuses(),
     fetchGroups(),
-    // fetchPersonalityStatusCode(),
     fetchLoanCount(),
-    fetchNotExpiredCustomerRequirementsNoAUTH(),
+    customer.value.passbook_no = generatePassbookNo(),
 ]);
 });
-
 
 const validationErrors = ref({
     first_name: '',
@@ -425,8 +355,6 @@ const validationErrors = ref({
     loan_count_id: '',
     enable_mortuary: '',
     });
-
-
 const validationErrorsForCustomer = ref({
     group_id: '',
     passbook_no: '',
@@ -434,23 +362,6 @@ const validationErrorsForCustomer = ref({
     enable_mortuary: '',
     });
 
-    const requirementsPrompt = ref('');
-
-    // Watching selectedRequirements for changes
-watch(selectedRequirements, (newSelected) => {
-    // Check for expiry dates in selected requirements
-    const hasMissingExpiryDate = newSelected.some(requirementId => {
-        const requirement = requirements.value.find(req => req.id === requirementId);
-        return requirement && !requirement.expiry_date;
-    });
-
-    if (hasMissingExpiryDate) {
-        toast.info("Please select an expiry date for each selected requirement.");
-        requirementsPrompt.value = "Input expiry date for all selected requirements before proceeding.";
-    } else {
-        requirementsPrompt.value = ""; // Clear prompt if all dates are filled
-    }
-});
 
 const createCustomer = async () => {
 try {
@@ -476,7 +387,8 @@ try {
     }
 
         // // First Name validation
-        if (!personality.value.first_name  ||
+        if (
+        !personality.value.first_name   ||
         !personality.value.family_name  ||
         !personality.value.middle_name  ||
         !personality.value.email_address||
@@ -489,15 +401,7 @@ try {
         !personality.value.postal_code  ||
         !personality.value.barangay_id  ||
         !personality.value.city_id      ||
-        !personality.value.province_id  ||
-        !personality.value.credit_status_id  ||
-        // !customer.value.group_id  ||
-        // !customer.value.passbook_no  ||
-        // !customer.value.loan_count_id  ||
-        // !customer.value.enable_mortuary  ||
-        // !customer.value.mortuary_coverage_start  ||
-        // !customer.value.mortuary_coverage_end  ||
-        !personality.value.datetime_registered
+        !personality.value.province_id  
     )
     {
         toast.error("Please fill all the required fields.", { autoClose: 3000 });
@@ -505,24 +409,12 @@ try {
         return;
     }
 
-    // if (requirementsPrompt.value) {
-    //     toast.info(requirementsPrompt.value);
-    //     return;
-    // }
-
-
-    // if (selectedRequirements.value.length < 2) {
-    // toast.error("Please select at least two document requirement.");
-    // requirementsPrompt.value = `Select atleast one requirement before proceeding.`;
-    // return;
-    // }
-
     const jsonObject = {
     customer: {
-            // group_id: customer.value.group_id,
-            // passbook_no: customer.value.passbook_no,
-            // loan_count: customer.value.loan_count_id,
-            // enable_mortuary: customer.value.enable_mortuary,
+            group_id: customer.value.group_id,
+            passbook_no: customer.value.passbook_no,
+            loan_count: customer.value.loan_count_id,
+            enable_mortuary: customer.value.enable_mortuary,
             personality_id: 0,
         },
         personality: {
@@ -551,13 +443,13 @@ try {
     };
 
     debugger;
-    await apiService.createCustomer(jsonObject);
+    await apiService.createRegisterCustomer(jsonObject);
     toast.success("Customer create successfully!", {
         autoClose: 2000,
         });
         // Introduce a delay before navigating
         setTimeout(() => {
-            navigateTo('/customers');
+            navigateTo('/');
         }, 2000); // Redirect to the customer list page
 } catch (error) {
     toast.error('Error creating customer');
@@ -567,64 +459,10 @@ try {
 }
 };
 
-async function fetchNotExpiredCustomerRequirementsNoAUTH() {
-    try {
-        // Fetch data from your API endpoint
-        const response = await apiService.getActiveRequirementsNoAUTH({});
-        requirements.value = response.data; // Assumes the API returns an array of requirements
-    } catch (error) {
-        console.error('Error fetching requirements:', error);
-    }
-    }
-
-    const getSelectedRequirements = () => {
-    const selectedDetails = [];
-
-    for (let i = 0; i < requirements.value.length; i++) {
-        const req = requirements.value[i];
-
-        // Check if the requirement ID is in selectedRequirements
-        if (selectedRequirements.value.includes(req.id)) {
-            selectedDetails.push({
-                id: req.id,
-                description: req.description,
-                expiry_date: formatDate(req.expiry_date),
-            });
-        }
-    }
-
-    debugger;
-
-    // Assuming selectedDataRequirements is an array
-    state.value.requirements = []; // Reset the array first
-
-    // Loop through selectedDetails to store values in selectedDataRequirements
-    for (let i = 0; i < selectedDetails.length; i++) {
-        state.value.requirements.push(selectedDetails[i]);
-    }
-
-    console.log(selectedDetails); // Output selected details to console
-};
-
-
-const formatDate = (dateString) => {
-console.log("Input Date String:", dateString); // Add this line for debugging
-const parts = dateString.split('-');
-debugger;
-if (parts.length === 3) {
-    const month = parts[1].padStart(2, '0');
-    const day = parts[2].padStart(2, '0');
-    const year = parts[0];
-    return `${year}-${month}-${day}`;
-} else {
-    console.error("Invalid date format. Expected MM/DD/YYYY.");
-    return null;
-}
-};
 
 const handleCancel = () => {
 // Logic to navigate away or reset the form
-navigateTo('/customers/'); // Example navigation
+navigateTo('/'); // Example navigation
 };
 
 
