@@ -92,6 +92,7 @@ import 'vue3-toastify/dist/index.css';
     import { apiService } from '~/routes/api/API'
     import { paymentFrequencyService } from '~/models/PaymentFrequency'
 import { PermissionService } from '~/models/Permission';
+import { PageNameService } from '~/models/PageName';
 
 
 
@@ -131,6 +132,7 @@ import { PermissionService } from '~/models/Permission';
         state.isTableLoading = false
     }
     onMounted(() => {
+        PageNameService.pageName = 'Payment Frequencies';
         fetchFreqandDuration()
     })
 

@@ -473,41 +473,67 @@
   </div>
 </template>
 
-<script>
-import { ref } from "vue";
+<script setup lang="ts">
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 
-export default {
-  name: "FeaturesSection", // Your existing component name
-  data() {
-    return {
-      features: [
-        {
-          title: "Loan Management",
-          description: "Efficiently manage loan applications, approvals, and disbursements."
-        },
-        {
-          title: "Customer Details",
-          description: "Maintain detailed customer information, track financial histories, and view eligibility."
-        },
-        {
-          title: "Transaction History",
-          description: "View and record all transactions in a comprehensive ledger format."
-        },
-        {
-          title: "Financial Reporting",
-          description: "Generate financial statements and track organizational performance with ease."
-        }
-      ],
-      showRequirements: false, // Controls the visibility of the requirements
-    };
+import { ref } from "vue";
+import { authService } from "~/components/api/AuthService";
+
+// Define the features using a ref for reactivity
+const features = ref([
+  {
+    title: "Loan Management",
+    description: "Efficiently manage loan applications, approvals, and disbursements.",
   },
-  methods: {
-    toggleRequirements() {
-      this.showRequirements = !this.showRequirements; // Toggle the visibility
-    },
+  {
+    title: "Customer Details",
+    description: "Maintain detailed customer information, track financial histories, and view eligibility.",
   },
+  {
+    title: "Transaction History",
+    description: "View and record all transactions in a comprehensive ledger format.",
+  },
+  {
+    title: "Financial Reporting",
+    description: "Generate financial statements and track organizational performance with ease.",
+  },
+]);
+
+// Define the reactive variable for requirements visibility
+const showRequirements = ref(false);
+
+// Define the toggle function
+const toggleRequirements = () => {
+  showRequirements.value = !showRequirements.value; // Toggle the visibility
 };
 
+async function removeToken() {
+    try {
+        const token = localStorage.getItem('_token');
+
+        debugger;
+        if(token){
+
+            //remove laravel authentication toke
+            const response = await authService.logout();
+
+            // Remove the token from local storage
+            localStorage.removeItem('_token'); // Adjust the key based on your implementation
+
+            //go back to the landing page
+            navigateTo(`/`);
+        }
+    } catch (error) {
+        toast.error(`${error}`, {
+            autoClose: 3000,
+        })
+    }
+}
+
+onMounted(() => {
+    removeToken();
+})
 </script>
 
 <style scoped>

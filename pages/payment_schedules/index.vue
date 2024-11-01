@@ -143,6 +143,7 @@
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { loanApplicationService } from '~/models/LoanApplication';
+import { PageNameService } from '~/models/PageName';
 import { paymentScheduleService } from '~/models/PaymentSchedules';
 import { apiService } from '~/routes/api/API';
 
@@ -241,6 +242,7 @@ const fetchPaymentLine = async () => {
 }
 
 onMounted(() => {
+    PageNameService.pageName = 'Payment Schedules'
   fetchLoanSchedules();
   fetchPayment();
   fetchPaymentLine();

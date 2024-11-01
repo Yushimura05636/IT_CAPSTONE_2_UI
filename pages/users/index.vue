@@ -77,6 +77,7 @@
   import { apiService } from '~/routes/api/API';
   import { UserService } from '~/models/User';
   import { navigateTo } from 'nuxt/app';
+import { PageNameService } from '~/models/PageName';
 
   const state = reactive({
     columnHeaders: [
@@ -160,6 +161,7 @@
   }
 
   onMounted(() => {
+    PageNameService.pageName = 'Users';
     fetchUsers();
   });
   </script>

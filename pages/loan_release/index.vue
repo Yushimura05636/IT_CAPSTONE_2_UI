@@ -14,16 +14,16 @@
                             Create
                             </button> -->
 
-                            <button 
-                            type="button" 
+                            <button
+                            type="button"
                             class="px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600"
                             v-if="selectedLoanReleaseID"
                             @click="updateLoanRelease"
                             >
                             Modify
                             </button>
-                            
-                            <button type="button" 
+
+                            <button type="button"
                             class="px-4 py-2 text-white bg-red-500 rounded-lg hover:bg-red-600 "
                             v-if="selectedLoanReleaseID"
                             >
@@ -44,16 +44,16 @@
                         </div>
                     </div>
                     <div class="overflow-x-auto">
-                        <Table class="w-full table-auto border-collapse " 
-                            :columnHeaders="state.columnHeaders" 
-                            :data="state.loanRelease" 
+                        <Table class="w-full table-auto border-collapse "
+                            :columnHeaders="state.columnHeaders"
+                            :data="state.loanRelease"
                             :isLoading="state.isTableLoading"
-                            :sortData="state.sortData" 
+                            :sortData="state.sortData"
                             >
                             <template #body
                                 v-if="!(state.isTableLoading || (state.loanRelease?.data === 0))">
                                 <tr v-for="(release, index) in state.loanRelease?.data" :key="index" class=" px-4  py-2">
-                                    
+
                                     <td class="py-2 border-b border-gray-300 ">
                                         <input
                                         type="radio"
@@ -101,7 +101,8 @@ import 'vue3-toastify/dist/index.css';
     import { apiService } from '~/routes/api/API'
     import { loanReleaseService } from '~/models/LoanRelease'
 import { PermissionService } from '~/models/Permission';
-    
+import { PageNameService } from '~/models/PageName';
+
 
 
     const state = reactive({
@@ -144,6 +145,7 @@ import { PermissionService } from '~/models/Permission';
         state.isTableLoading = false
     }
     onMounted(() => {
+        PageNameService.pageName = 'Loan Releases'
         fetchLoanRelease()
     })
 
@@ -178,7 +180,7 @@ import { PermissionService } from '~/models/Permission';
         loanReleaseService.prepared_by = prepared_by;
         loanReleaseService.datetime_firstdue = datetime_first_due;
         loanReleaseService.notes = notes;
-        
+
         // console.log(loanReleaseService.notes);
         navigateTo('loan_release/update');
         }

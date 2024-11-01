@@ -265,6 +265,10 @@ class API extends BaseAPIService {
         return await this.request(`/USERS/${id}`, 'GET', params)
     }
 
+    async getOwnUserDetailsdNoAUTH(params: object): Promise<any> {
+        return await this.request(`/USERS/NoAUTH`, 'GET', params)
+    }
+
         async createUser(params: object): Promise<any> {
             return await this.request(`/USERS`, 'POST', params)
         }
@@ -746,17 +750,17 @@ async authRequirementsUpdate(params: object): Promise<any> {
         return await this.request(`/USER_LOGGED`, 'GET', params)
     }
     
-    //for registration
-    async getRegisterLibraries(params: object, modeltype: string): Promise<any>{
-        return await this.request(`/REGISTER_LIBRARIES/NoAUTH/${modeltype}`, 'GET', params);
-    }
+        //for registration
+        async getRegisterLibraries(params: object, modeltype: string): Promise<any>{
+            return await this.request(`/REGISTER_LIBRARIES/NoAUTH/${modeltype}`, 'GET', params);
+        }
 
-    async getRegisterLoanCount(params: object): Promise<any> {
-        return await this.request(`/REGISTER_LIBRARIES/NoAUTH`, 'GET', params);
-    }
-    async createRegisterCustomer(params: object): Promise<any> {
-        return await this.request(`/REGISTER_LIBRARIES`, 'POST', params)
-    }
+        async getRegisterLoanCount(params: object): Promise<any> {
+            return await this.request(`/REGISTER_LIBRARIES/NoAUTH`, 'GET', params);
+        }
+        async createRegisterCustomer(params: object): Promise<any> {
+            return await this.request(`/REGISTER_LIBRARIES`, 'POST', params)
+        }
     
 
 }

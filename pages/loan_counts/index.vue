@@ -73,6 +73,7 @@ import 'vue3-toastify/dist/index.css';
 import { ref, computed, onMounted } from 'vue';
 import { UserService } from '~/models/User';
 import { apiService } from '~/routes/api/API';
+import { PageNameService } from '~/models/PageName';
 
 const state = {
     loancount: ref([]),
@@ -131,6 +132,7 @@ const formatCurrency = (amount: number) => {
 };
 
 onMounted(() => {
+    PageNameService.pageName = 'Loan Counts';
     fetchloancount();
 });
 </script>

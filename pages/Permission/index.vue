@@ -4,27 +4,27 @@
             <Head>
                 <Title>Users</Title>
             </Head>
-            
+
             <div class="sm:flex sm:items-center">
                 <div class="sm:flex-auto">
                     <h1 class="m-6 text-base font-bold leading-6 text-gray-900">Users</h1>
                 </div>
             </div>
-            
+
             <div class="mt-5">
                 <Alert type="danger" :text="state.error?.message" v-if="state.error" />
                     <div class="overflow-x-auto  ">
-                            <Table class="w-full " 
-                            :columnHeaders="state.columnHeaders" 
-                            :data="state.users" 
+                            <Table class="w-full "
+                            :columnHeaders="state.columnHeaders"
+                            :data="state.users"
                             :isLoading="state.isTableLoading"
-                            :sortData="state.sortData" 
+                            :sortData="state.sortData"
                             >
                                 <template #body
                                     v-if="!(state.isTableLoading || (state.users?.data === 0))">
-                                    
+
                                     <tr v-for="(user, index) in state.users?.data" :key="index" class="">
-                                        
+
                                         <td class="py-2 border-b border-gray-300 ">
                                             <span>{{ user.id }}</span>
                                         </td>
@@ -59,6 +59,7 @@ import 'vue3-toastify/dist/index.css';
     import { UserService } from '~/models/User';
 import { navigateTo } from 'nuxt/app';
 import { PermissionService } from '~/models/Permission';
+import { PageNameService } from '~/models/PageName';
 
 
     const state = reactive({
@@ -112,6 +113,7 @@ import { PermissionService } from '~/models/Permission';
     // }
 
     onMounted(() => {
+        PageNameService.pageName = 'Permissions';
         fetchUsers()
     })
     </script>

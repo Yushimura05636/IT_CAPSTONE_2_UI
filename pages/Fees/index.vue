@@ -81,6 +81,7 @@
   import { ref, reactive, onMounted } from 'vue';
   import { apiService } from '~/routes/api/API';
   import { feeService } from '~/models/Fee';
+import { PageNameService } from '~/models/PageName';
 
   const state = reactive({
     columnHeaders: [
@@ -115,6 +116,7 @@
   }
 
   onMounted(() => {
+    PageNameService.pageName = 'Fees';
     fetchFee();
   });
 

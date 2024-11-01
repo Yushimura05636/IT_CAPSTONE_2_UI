@@ -97,6 +97,7 @@ import 'vue3-toastify/dist/index.css';
   import { navigateTo } from 'nuxt/app';
 import { UserService } from '~/models/User';
 import Permission from '../non_used_components/Permission.vue';
+import { PageNameService } from '~/models/PageName';
 
   const state = reactive({
     columnHeaders: [
@@ -138,6 +139,7 @@ import Permission from '../non_used_components/Permission.vue';
   }
 
   onMounted(() => {
+    PageNameService.pageName = 'Factor Rate';
     fetchFactorRate();
   });
 

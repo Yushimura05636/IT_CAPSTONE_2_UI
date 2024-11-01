@@ -105,6 +105,7 @@ import { ref, computed, onMounted } from 'vue';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 import { CustomersService } from '~/models/Customer';
+import { PageNameService } from '~/models/PageName';
 import { apiService } from '~/routes/api/API';
 
 const searchQuery = ref<string>('');
@@ -131,6 +132,7 @@ const filteredTableItems = computed(() => {
 });
 
 onMounted(async () => {
+    PageNameService.pageName = 'Users';
   await fetchCustomers();
   isLoading.value = false;
 });
