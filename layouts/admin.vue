@@ -199,6 +199,7 @@
   >
     <!-- Sidebar Header -->
     <div class="flex h-16 items-center justify-between bg-gray-800 shadow-md px-4 rounded-t-lg">
+    <img class="h-12 w-auto" src="../img/LendCash_Logo-removebg-preview.png" :alt="name.company" />
       <h1 class="text-lg font-bold text-indigo-400">{{ name.company }}</h1>
       <button @click="toggleSidebar" class="text-gray-400 hover:text-white focus:outline-none">
         <XMarkIcon class="h-6 w-6" aria-hidden="true" />
