@@ -76,6 +76,7 @@
     import { apiService } from '~/routes/api/API';
     import { paymentServices } from '~/models/Payments'
 import { CustomersService } from '~/models/Customer';
+import { PageNameService } from '~/models/PageName';
 
 // Router instance
 const router = useRouter();
@@ -136,6 +137,7 @@ const state = reactive({
         state.isTableLoading = false
     }
     onMounted(() => {
+        PageNameService.pageName = 'Payments';
       fetchPayment()
     })
 

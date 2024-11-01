@@ -87,6 +87,7 @@ import 'vue3-toastify/dist/index.css';
 import { ref, reactive, onMounted } from 'vue'
 import { apiService } from '~/routes/api/API'
 import { loanApplicationService } from '~/models/LoanApplication'
+import { PageNameService } from '~/models/PageName';
 
 const state = reactive({
   columnHeaders: [
@@ -159,6 +160,7 @@ function viewLoanApplication() {
 
 // Fetch loan applications when component mounts
 onMounted(() => {
+    PageNameService.pageName = 'Loan Applications'
   fetchLoanApplication();
 });
 </script>

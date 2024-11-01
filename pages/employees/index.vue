@@ -73,6 +73,7 @@ import { ref, computed, onMounted } from 'vue';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 import { EmployeesService } from '~/models/Employee';
+import { PageNameService } from '~/models/PageName';
 import { apiService } from '~/routes/api/API';
 
 const searchQuery = ref<string>('');
@@ -103,6 +104,7 @@ const filteredTableItems = computed(() => {
 
 // Fetch data when the component is mounted
 onMounted(async () => {
+    PageNameService.pageName = 'Employees'
   await fetchEmployees();
   isLoading.value = false;
 });

@@ -573,6 +573,7 @@ import { ScaleIcon } from "@heroicons/vue/24/solid";
 import { KeyIcon } from "@heroicons/vue/20/solid";
 import { FireIcon } from "@heroicons/vue/24/solid";
 import { BellAlertIcon } from "@heroicons/vue/20/solid";
+import { PageNameService } from '~/models/PageName';
 
 const sidebarOpen = ref(false);
 const openPeopleDropdown = ref(false);
@@ -652,28 +653,4 @@ function navigateTo(href) {
 window.location.href = href;
 closePeopleDropdown();
 }
-
-async function authorizedCheck() {
-    try {
-        const response = await apiService.checkUserAuthentication({});
-    } catch (error) {
-
-        //error
-        toast.error(`${error}`, {
-            autoClose: 3000,
-        })
-
-        toast.info(`Your account has been re-direct to landing page`, {
-            autoClose: 3000,
-        })
-
-    }
-    finally {
-        response = null;
-    }
-}
-
-onMounted (() => {
-    authorizedCheck();
-})
 </script>

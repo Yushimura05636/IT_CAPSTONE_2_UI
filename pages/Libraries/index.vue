@@ -4,14 +4,14 @@
         <Head>
           <Title>Libraries</Title>
         </Head>
-  
+
         <!-- Header Section -->
         <div class="sm:flex sm:items-center">
           <div class="sm:flex-auto">
             <h1 class="m-6 text-lg font-bold leading-6 text-gray-900 text-center sm:text-left">Libraries</h1>
           </div>
         </div>
-  
+
         <!-- Action Buttons and Combobox -->
         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4">
           <!-- Buttons Container -->
@@ -40,7 +40,7 @@
               Delete
             </button>
           </div>
-  
+
           <!-- Combobox Container -->
           <div class="w-full sm:w-1/3">
             <label for="modelType" class="block text-sm font-medium text-gray-700">Select Model Type:</label>
@@ -54,11 +54,11 @@
             </select>
           </div>
         </div>
-  
+
         <!-- Error Alert -->
         <div class="mt-2">
           <Alert type="danger" :text="state.error?.message" v-if="state.error" />
-  
+
           <!-- Responsive Table -->
           <div class="overflow-x-auto">
             <div class="min-w-full max-h-96 overflow-y-auto"> <!-- Add max-h for vertical scroll if needed -->
@@ -90,23 +90,24 @@
               </Table>
             </div>
           </div>
-  
+
           <!-- Pagination -->
           <Pagination :data="state.datas" @previous="previous" @next="next" />
         </div>
       </div>
     </NuxtLayout>
   </template>
-  
+
   <script setup lang="ts">
   import { toast } from 'vue3-toastify';
   import 'vue3-toastify/dist/index.css';
-  
+
   import { ref, reactive, onMounted } from 'vue';
   import { libraryService } from '~/models/Library';
   import { PermissionService } from '~/models/Permission';
   import { apiService } from '~/routes/api/API';
-  
+import { PageNameService } from '~/models/PageName';
+
   const state = reactive({
     columnHeaders: [
       { name: 'Select' },
@@ -123,7 +124,7 @@
     searchQuery: '',
     modeltype: 'customer_group',
   });
-  
+
   const modelTypes = [
     { value: 'barangay', label: 'Barangay' },
     { value: 'branch', label: 'Branch' },
@@ -141,13 +142,14 @@
     { value: 'customer_group', label: 'Customer Group' },
     { value: 'document_status_code', label: 'Document Status Code' },
   ];
-  
+
   let selectedLibraryId = ref(null); // Track selected library
-  
+
   onMounted(() => {
+    PageNameService.pageName = "Libraries";
     fetchLibraries();
   });
-  
+
   async function createLibrary() {
     try {
       const response = await apiService.authLibrariesCreate({});
@@ -158,7 +160,7 @@
       });
     }
   }
-  
+
   async function updateLibrary() {
     try {
       const response = await apiService.authLibrariesUpdate({});
@@ -182,13 +184,13 @@
       });
     }
   }
-  
+
   function deleteLibrary() {
     if (selectedLibraryId.value) {
       console.log('Delete library with id:', selectedLibraryId.value);
     }
   }
-  
+
   async function fetchLibraries() {
     state.isTableLoading = true;
     state.error = null;
@@ -202,4 +204,3 @@
     state.isTableLoading = false;
   }
   </script>
-  

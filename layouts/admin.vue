@@ -106,18 +106,18 @@
 </TransitionRoot>
 
 
-<!-- Sidebar for Desktop -->
+<!-- Desktop Sidebar -->
 <div
-  :class="{'lg:w-20': isChildVisible.home || isChildVisible.about, 'lg:w-16': !isChildVisible.home && !isChildVisible.about}"
-  class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:flex-col"
+  :class="{'lg:w-100': isChildVisible.home || isChildVisible.about, 'lg:w-50': !isChildVisible.home && !isChildVisible.about}"
+  class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:flex-col overflow-hidden"
 >
-  <div class="flex grow flex-col gap-y-3 overflow-y-auto bg-gray-900 shadow-lg rounded-r-lg text-gray-200 px-2 pb-4">
+  <div class="flex grow flex-col gap-y-3 bg-gray-900 shadow-lg rounded-r-lg text-gray-200 px-2 pb-4 overflow-hidden">
     <div class="flex items-center justify-center h-16">
       <button @click="toggleSidebar" class="text-gray-400 hover:text-white focus:outline-none">
         <Bars3Icon class="h-8 w-10" aria-hidden="true" />
       </button>
     </div>
-    <nav class="flex flex-1 flex-col">
+    <nav class="flex flex-1 flex-col scrollable"> <!-- Add scrollable class -->
       <ul role="list" class="flex flex-1 flex-col gap-y-2">
 
         <!-- Static Header Title -->
@@ -173,7 +173,7 @@
             class="group flex items-center justify-center rounded-lg p-2 text-sm font-semibold leading-5 text-gray-400 hover:bg-gray-800 hover:text-white transition duration-200"
           >
             <Cog6ToothIcon class="h-6 w-6" aria-hidden="true" />
-            <span class="ml-3">Settings</span>
+            <span class="ml-3 sr-only">Settings</span>
           </a>
         </li>
       </ul>
@@ -182,8 +182,7 @@
 </div>
 
 
-
-<!-- Sidebar for Desktop Expanded -->
+<!-- Desktop Sidebar Expanded -->
 <Transition
   name="slide"
   enter-active-class="transition-transform duration-300 ease-in-out"
@@ -215,7 +214,7 @@
     </div>
 
     <!-- Navigation Items -->
-    <nav class="flex flex-1 flex-col mt-2">
+    <nav class="flex flex-1 flex-col mt-2 scrollable"> <!-- Add scrollable class -->
       <ul role="list" class="flex flex-1 flex-col gap-y-2 px-4">
         <li v-for="item in menuItems" :key="item.name">
           <!-- Menu Item -->
@@ -281,6 +280,8 @@
 </Transition>
 
 
+
+
 <!-- Header -->
 <div :class="['flex-1', sidebarExpanded ? 'lg:pl-64' : 'lg:pl-16']">
   <div class="sticky top-0 z-40 flex h-16 items-center justify-between gap-x-4 border-b border-gray-300 bg-white px-4 shadow-sm sm:gap-x-6 lg:px-8 transition-all duration-300">
@@ -288,7 +289,7 @@
       <span class="sr-only">Open sidebar</span>
       <Bars3Icon class="h-6 w-6" aria-hidden="true" />
     </button>
-    <h1 class="text-lg font-semibold">Dashboard</h1>
+    <h1 class="text-lg font-semibold">{{ PageNameService.pageName ?? 'Dashboard' }}</h1>
 
     <!-- User Dropdown -->
     <div class="relative">
@@ -307,7 +308,7 @@
         <div v-if="dropdownOpen" class="absolute right-0 z-50 mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
           <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
             <a href="#profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" @click="closeDropdown">Profile</a>
-            <a href="#logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" @click="closeDropdown">Logout</a>
+            <a href="/" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" @click="closeDropdown">Logout</a>
           </div>
         </div>
       </Transition>
@@ -315,21 +316,33 @@
   </div>
 
         <!-- Main content -->
-<main class="flex-1 overflow-y-auto bg-white border border-gray-300 rounded-lg shadow-lg px-6 py-8 sm:px-8 lg:px-10">
-  <div class="max-w-3xl mx-auto">
-    <h2 class="text-2xl font-bold text-gray-800">Welcome to LendCash!</h2>
-    <p class="mt-2 text-gray-600">Here you can manage your loans, payments, and more.</p>
+        <div>
+    <!-- Other layout components like the sidebar, header, etc. -->
+
+    <main class="flex-1 overflow-y-auto bg-white border border-gray-300 rounded-lg shadow-lg px-6 py-8 sm:px-8 lg:px-10">
+      <div v-if="isPageNameTrue === 'Dashboard'" class="max-w-3xl mx-auto">
+        <h2 class="text-2xl font-bold text-gray-800">Welcome to LendCash!</h2>
+        <p class="mt-2 text-gray-600">Here you can manage your loans, payments, and more.</p>
+      </div>
+      <slot />
+    </main>
   </div>
-  <slot />
-</main>
       </div>
     </div>
   </template>
 
 <script setup lang="ts">
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
 import { ref } from 'vue';
 import { Dialog, TransitionRoot } from '@headlessui/vue';
-import { Bars3Icon, XMarkIcon, HomeIcon, InformationCircleIcon, Cog6ToothIcon } from '@heroicons/vue/24/outline';
+import { Bars3Icon, XMarkIcon, HomeIcon, InformationCircleIcon, Cog6ToothIcon, CreditCardIcon } from '@heroicons/vue/24/outline';
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/vue/24/outline';
+import { ChartPieIcon, UsersIcon, BookOpenIcon, CurrencyDollarIcon, KeyIcon, FlagIcon, FireIcon, BellAlertIcon, ShareIcon } from '@heroicons/vue/24/outline';
+import { PageNameService } from '~/models/PageName';
+import { apiService } from '~/routes/api/API';
+
 
 const sidebarOpen = ref(false);
 const dropdownOpen = ref(false);
@@ -338,7 +351,8 @@ const isChildVisible = ref({ home: false, about: false });
 const selectedMenu = ref<string | null>(null);
 const hoveredItem = ref<string | null>(null);
 const highlightedItem = ref<string | null>(null);
-import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/vue/24/outline';
+
+const route = useRoute();
 
 const toggleDropdown = () => {
   dropdownOpen.value = !dropdownOpen.value;
@@ -356,26 +370,87 @@ const toggleSidebar = () => {
 const menuHeaderTitles = ref([
     {
         headerTitle: 'loans',
-    }
+    },
 ]);
 const menuItems = ref([
   {
-    name: 'home',
-    icon: HomeIcon,
+    name: 'dashboard',
+    icon: ChartPieIcon,
     subLinks: [
-      { name: "Loan Applicaitons", href: '#home-sub1', icon: HomeIcon },
-      { name: "Loan Release", href: '#home-sub2', icon: HomeIcon },
+      { name: "Dashboard", href: "/Dashboard", icon: ChartPieIcon },
     ],
   },
   {
-    name: 'about',
-    icon: InformationCircleIcon,
+    name: 'admin',
+    icon: UsersIcon,
     subLinks: [
-      { name: 'About Sub Link 1', href: '#about-sub1', icon: InformationCircleIcon },
-      { name: 'About Sub Link 2', href: '#about-sub2', icon: InformationCircleIcon },
+      { name: "Libraries", href: "/Libraries", icon: BookOpenIcon },
+      { name: "Users", href: "/Users", icon: UsersIcon },
+      { name: "Permission", href: "/Permission", icon: KeyIcon },
+    ],
+  },
+  {
+    name: 'customers',
+    icon: UsersIcon,
+    subLinks: [
+      { name: "Customers", href: "/customers", icon: UsersIcon },
+      { name: "Groups", href: "/libraries", icon: UsersIcon },
+    ],
+  },
+  {
+    name: 'employees',
+    icon: UsersIcon,
+    subLinks: [
+      { name: "Employees", href: "/employees", icon: UsersIcon },
+    ],
+  },
+  {
+    name: 'loan',
+    icon: ShareIcon,
+    subLinks: [
+      { name: "Loan Application", href: "/loan_applications", icon: CurrencyDollarIcon },
+      { name: "Payment Schedule", href: "/payment_schedules", icon: CreditCardIcon },
+    ],
+  },
+  {
+    name: 'release-schedules',
+    icon: KeyIcon,
+    subLinks: [
+      { name: "Loan Release", href: "/loan_release", icon: CreditCardIcon },
+    ],
+  },
+  {
+    name: 'transactions',
+    icon: FlagIcon,
+    subLinks: [
+      { name: "Payment", href: "/payments", icon: CurrencyDollarIcon },
+      { name: "Fees", href: "/Fees", icon: CurrencyDollarIcon },
+      { name: "Payment Line", href: "/payment_lines", icon: CurrencyDollarIcon },
+      { name: "Payment Schedule", href: "/payment_schedules", icon: CreditCardIcon },
+      { name: "Loan Count", href: "/loan_counts", icon: CurrencyDollarIcon },
+      { name: "Payment Duration", href: "/payment_duration", icon: CurrencyDollarIcon },
+      { name: "Payment Frequency", href: "/payment_frequency", icon: CurrencyDollarIcon },
+      { name: "Factor Rate", href: "/factor_rate", icon: CurrencyDollarIcon },
+    ],
+  },
+  {
+    name: 'report',
+    icon: FireIcon,
+    subLinks: [
+      { name: "Loan Application", href: "", icon: CurrencyDollarIcon },
+      { name: "Loan Release", href: "", icon: CreditCardIcon },
+      { name: "Payment Schedule", href: "", icon: CreditCardIcon },
+    ],
+  },
+  {
+    name: 'help',
+    icon: BellAlertIcon,
+    subLinks: [
+      { name: "Help Center", href: "", icon: BellAlertIcon },
     ],
   },
 ]);
+
 
 const toggleChild = (child) => {
   // Toggle the child visibility
@@ -405,6 +480,23 @@ const toggleHighlight = (itemName: string) => {
     highlightedItem.value = itemName; // Highlight the clicked item
   }
 };
+
+
+function isPageNameTrue(): string {
+    return PageNameService.pageName;
+}
+
+async function AUTH_USER(){
+    try {
+        const response = await apiService.checkUserAuthentication({});
+    } catch (error) {
+        toast.error(`${error}`, {autoClose: 3000})
+    }
+}
+
+onMounted(() => {
+    AUTH_USER();
+})
 
 </script>
 
@@ -522,5 +614,22 @@ body {
 .slide-enter, .slide-leave-to /* .slide-leave-active in <2.1.8 */ {
   transform: translateX(-100%);
 }
+
+/* Hide scrollbar for all elements but keep the scrollable functionality */
+.scrollable {
+  overflow-y: scroll; /* Enable vertical scrolling */
+  overflow-x: hidden; /* Disable horizontal scrolling */
+}
+
+/* Hide scrollbar for Webkit browsers */
+.scrollable::-webkit-scrollbar {
+  display: none; /* Hide scrollbar */
+}
+
+/* For Firefox */
+.scrollable {
+  scrollbar-width: none; /* Hide scrollbar */
+}
+
 
   </style>

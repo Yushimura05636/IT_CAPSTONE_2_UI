@@ -13,7 +13,7 @@
             </button>
           </div>
         </div>
-  
+
         <!-- Search Bar -->
         <div class="flex justify-center mb-4">
           <input
@@ -23,7 +23,7 @@
             class="border rounded px-4 py-2 w-full sm:w-1/2 focus:outline-none focus:border-blue-500 transition"
           />
         </div>
-  
+
         <!-- Table Container -->
         <div class="overflow-x-auto">
           <Table
@@ -63,14 +63,15 @@
       </div>
     </NuxtLayout>
   </template>
-  
+
   <script setup lang="ts">
   import { toast } from 'vue3-toastify';
   import 'vue3-toastify/dist/index.css';
-  
+
   import { ref, reactive, onMounted } from 'vue';
   import { apiService } from '~/routes/api/API';
-  
+import { PageNameService } from '~/models/PageName';
+
   const state = reactive({
     columnHeaders: [
       { name: 'Select' },
@@ -89,9 +90,9 @@
     paymentLine: [],
     searchQuery: '',
   });
-  
+
   let selectedPaymentLine = ref(null);
-  
+
   async function fetchPaymentLine() {
     state.isTableLoading = true;
     state.error = null;
@@ -103,15 +104,15 @@
     }
     state.isTableLoading = false;
   }
-  
+
   onMounted(() => {
+    PageNameService.pageName = 'Payment Lines';
     fetchPaymentLine();
   });
   </script>
-  
+
   <style scoped>
   body {
     font-family: 'Roboto', sans-serif;
   }
   </style>
-  

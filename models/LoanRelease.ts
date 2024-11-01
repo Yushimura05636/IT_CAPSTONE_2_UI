@@ -5,7 +5,7 @@ export class LoanRelease {
     private __prepared_by!: number;
     private __datetime_firstdue!: Date;
     private _notes!: string;
-    
+
 get id(): number {
     return this.__id;
 }
