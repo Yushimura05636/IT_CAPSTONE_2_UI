@@ -27,7 +27,8 @@
         <DialogPanel class="relative mr-16 flex w-full max-w-xs flex-1 bg-gray-800 shadow-lg rounded-r-lg h-screen">
           <div class="flex grow flex-col gap-y-3 overflow-y-auto text-gray-200 px-4 pb-4">
             <div class="flex h-16 shrink-0 items-center justify-between">
-              <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company" />
+              <img class="h-12 w-auto" src="../img/LendCash_Logo-removebg-preview.png" :alt="name.company" />
+              <h1 class="text-lg font-bold text-indigo-400">{{ name.company }}</h1>
               <button @click="sidebarOpen = false" class="text-gray-400 hover:text-white focus:outline-none">
                 <XMarkIcon class="h-6 w-6" aria-hidden="true" />
               </button>
@@ -198,7 +199,7 @@
   >
     <!-- Sidebar Header -->
     <div class="flex h-16 items-center justify-between bg-gray-800 shadow-md px-4 rounded-t-lg">
-      <h1 class="text-lg font-bold text-indigo-400">LendCash</h1>
+      <h1 class="text-lg font-bold text-indigo-400">{{ name.company }}</h1>
       <button @click="toggleSidebar" class="text-gray-400 hover:text-white focus:outline-none">
         <XMarkIcon class="h-6 w-6" aria-hidden="true" />
       </button>
@@ -489,7 +490,9 @@ const state = {
 
 const name = reactive({
     value: '',
+    company: 'LendCash',
 })
+
 
 
 const toggleChild = (child) => {
