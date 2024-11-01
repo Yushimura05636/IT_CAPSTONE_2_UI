@@ -2,207 +2,205 @@
     <NuxtLayout name="admin">
         <main>
             <div class="flex justify-center items-center bg-gray-100">
-                <div class="bg-white border border-gray-300 rounded-lg p-6 shadow-md w-full flex">
-                    <!-- Left Flex Column for Group Name and Customer Names -->
-                    <div class="w-1/2 pr-4">
-                        <div class="text-center font-bold text-xl mb-4">Transaction Form</div>
+                <div class="bg-white border border-gray-300 rounded-lg p-6 shadow-md w-full">
+                    <div class="text-center font-bold text-xl mb-4">Transaction Form</div>
 
-                        <!-- Group Name Combobox -->
+                    <!-- Group Name Combobox -->
+                    <div class="mb-4">
+                        <label class="block text-gray-700">Group Name</label>
+                        <select v-model="selectedGroupId" @change="fetchCustomers" class="w-full border rounded-lg px-4 py-2">
+                            <option v-for="group in state.groups" :key="group.id" :value="group.id">
+                                {{ group.description }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- Table for Customer Names -->
+<div v-if="state.customers.length > 0" class="overflow-x-auto">
+    <div class="max-h-60 overflow-y-auto">
+        <table class="min-w-full bg-white border border-gray-300 mb-4">
+            <thead>
+                <tr>
+                    <th class="px-4 py-2 border text-left">Select</th>
+                    <th class="px-4 py-2 border text-left">Customer Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="customer in state.customers" :key="customer.id" :value="customer.id">
+                    <td class="px-4 py-2 border text-left">
+                        <input
+                            type="checkbox"
+                            v-model="customer.isSelected"
+                            :value="customer.id"
+                            @change="onCheckboxChange(customer.id, $event.target.checked)"
+                        />
+                    </td>
+                    <td class="px-4 py-2 border cursor-pointer" @click="loadCustomerData(customer.id)">
+                        {{ customer.personality.first_name }} {{ customer.personality.middle_name }} {{ customer.personality.family_name }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+                    <!-- Form Fields for the Selected Customer -->
+                    <div v-if="selectedCheckCustomerId !== null">
                         <div class="mb-4">
-                            <label class="block text-gray-700">Group Name</label>
-                            <select v-model="selectedGroupId" @change="fetchCustomers" class="w-full border rounded-lg px-4 py-2">
-                                <option v-for="group in state.groups" :key="group.id" :value="group.id">
-                                    {{ group.description }}
+                            <label class="block text-gray-700">Loan Application No</label>
+                            <input
+                                v-model="customerData[selectedCheckCustomerId].loanApplicationNo"
+                                type="text"
+                                class="w-full border border-gray-300 rounded p-2"
+                                readonly
+                            />
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-gray-700">Co-Maker</label>
+                            <select
+                                v-model="customerData[selectedCheckCustomerId].coMaker"
+                                class="w-full border rounded-lg px-4 py-2">
+                                <option v-for="customer in availableCoMakers" :key="customer.id" :value="customer.id">
+                                    {{ customer.personality.first_name }} {{ customer.personality.middle_name }} {{ customer.personality.family_name }}
                                 </option>
                             </select>
                         </div>
 
-                        <!-- Table for Customer Names -->
-                        <div v-if="state.customers.length > 0" class="overflow-x-auto">
+                        <div class="mb-4">
+                            <label class="block text-gray-700">Loan Amount</label>
+                            <input
+                                v-model="customerData[selectedCheckCustomerId].loanAmount"
+                                type="number"
+                                class="w-full border border-gray-300 rounded p-2"
+                                @input="updateLoanAmount(selectedCheckCustomerId)"
+                            />
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-gray-700">Factor Rate</label>
+                            <select
+                                v-model="customerData[selectedCheckCustomerId].factorRate"
+                                @change="onFactorRateChange(customerData[selectedCheckCustomerId].factorRate)"
+                                class="w-full border rounded-lg px-4 py-2"
+                            >
+                                <option v-for="factorRate in state.factorRates" :key="factorRate.id" :value="factorRate.id">
+                                    {{ factorRate.value }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-gray-700">Interest Amount</label>
+                            <input
+                                v-model="customerData[selectedCheckCustomerId].interestAmount"
+                                type="number"
+                                step="0.01"
+                                class="w-full border border-gray-300 rounded p-2"
+                            />
+                        </div>
+
+                        <!-- Add Amount Paid Field -->
+                        <div class="mb-4">
+                            <label class="block text-gray-700">Amount Paid</label>
+                            <input
+                                v-model="customerData[selectedCheckCustomerId].amountPaid"
+                                type="number"
+                                class="w-full border border-gray-300 rounded p-2"
+                                readonly
+                            />
+                        </div>
+
+
+                        <div class="mb-4">
+                            <label class="block text-gray-700">Release Schedule</label>
+                            <input
+                                v-model="customerData[selectedCheckCustomerId].releaseSchedule"
+                                type="date"
+                                class="w-full border border-gray-300 rounded p-2"
+                            />
+                        </div>
+
+                        <!-- Automatically Updated Fields -->
+                        <div class="mb-4">
+                            <label class="block text-gray-700">Payment Frequency</label>
+                            <select v-model="customerData[selectedCheckCustomerId].paymentFrequency" class="w-full border rounded-lg px-4 py-2">
+                                <option v-for="frequency in state.paymentFrequencies" :key="frequency.id" :value="frequency.id">
+                                    {{ frequency.description }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-gray-700">Duration</label>
+                            <select v-model="customerData[selectedCheckCustomerId].duration" class="w-full border rounded-lg px-4 py-2">
+                                <option v-for="duration in state.durations" :key="duration.id" :value="duration.id">
+                                    {{ duration.description }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-gray-700">Comment</label>
+                            <textarea
+                                v-model="customerData[selectedCheckCustomerId].comment"
+                                class="w-full border border-gray-300 rounded p-2"
+                            ></textarea>
+                        </div>
+
+                        <div v-if="state.fees.length > 0" class="overflow-x-auto">
                             <div class="max-h-60 overflow-y-auto">
                                 <table class="min-w-full bg-white border border-gray-300 mb-4">
                                     <thead>
                                         <tr>
                                             <th class="px-4 py-2 border text-left">Select</th>
-                                            <th class="px-4 py-2 border text-left">Customer Name</th>
+                                            <th class="px-4 py-2 border text-left">Fee Description</th>
+                                            <th class="px-4 py-2 border text-left">Amount</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="customer in state.customers" :key="customer.id">
+                                        <tr v-for="fee in state.fees" :key="fee.id">
                                             <td class="px-4 py-2 border text-left">
                                                 <input
-                                                    type="checkbox"
-                                                    v-model="customer.isSelected"
-                                                    :value="customer.id"
-                                                    @change="onCheckboxChange(customer.id, $event.target.checked)"
-                                                />
+                                    type="checkbox"
+                                    :value="fee.id"
+                                    :checked="customerData[selectedCheckCustomerId].selectedFees.includes(fee.id)"
+                                    @change="updateSelectedFees(fee.id, $event.target.checked)"/>
                                             </td>
-                                            <td class="px-4 py-2 border cursor-pointer" @click="loadCustomerData(customer.id)">
-                                                {{ customer.personality.first_name }} {{ customer.personality.middle_name }} {{ customer.personality.family_name }}
-                                            </td>
+                                            <td class="px-4 py-2 border">{{ fee.description }}</td>
+                                            <td class="px-4 py-2 border">{{ fee.amount }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Right Flex Column for Customer Form Fields -->
-                    <div class="w-1/2 pl-4">
-                        <div v-if="selectedCheckCustomerId !== null">
-                            <div class="mb-4">
-                                <label class="block text-gray-700">Loan Application No</label>
-                                <input
-                                    v-model="customerData[selectedCheckCustomerId].loanApplicationNo"
-                                    type="text"
-                                    class="w-full border border-gray-300 rounded p-2"
-                                    readonly
-                                />
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="block text-gray-700">Co-Maker</label>
-                                <select
-                                    v-model="customerData[selectedCheckCustomerId].coMaker"
-                                    class="w-full border rounded-lg px-4 py-2">
-                                    <option v-for="customer in availableCoMakers" :key="customer.id" :value="customer.id">
-                                        {{ customer.personality.first_name }} {{ customer.personality.middle_name }} {{ customer.personality.family_name }}
-                                    </option>
-                                </select>
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="block text-gray-700">Loan Amount</label>
-                                <input
-                                    v-model="customerData[selectedCheckCustomerId].loanAmount"
-                                    type="number"
-                                    class="w-full border border-gray-300 rounded p-2"
-                                    @input="updateLoanAmount(selectedCheckCustomerId)"
-                                />
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="block text-gray-700">Factor Rate</label>
-                                <select
-                                    v-model="customerData[selectedCheckCustomerId].factorRate"
-                                    @change="onFactorRateChange(customerData[selectedCheckCustomerId].factorRate)"
-                                    class="w-full border rounded-lg px-4 py-2"
-                                >
-                                    <option v-for="factorRate in state.factorRates" :key="factorRate.id" :value="factorRate.id">
-                                        {{ factorRate.value }}
-                                    </option>
-                                </select>
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="block text-gray-700">Interest Amount</label>
-                                <input
-                                    v-model="customerData[selectedCheckCustomerId].interestAmount"
-                                    type="number"
-                                    step="0.01"
-                                    class="w-full border border-gray-300 rounded p-2"
-                                />
-                            </div>
-
-                            <!-- Add Amount Paid Field -->
-                            <div class="mb-4">
-                                <label class="block text-gray-700">Amount Paid</label>
-                                <input
-                                    v-model="customerData[selectedCheckCustomerId].amountPaid"
-                                    type="number"
-                                    class="w-full border border-gray-300 rounded p-2"
-                                    readonly
-                                />
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="block text-gray-700">Release Schedule</label>
-                                <input
-                                    v-model="customerData[selectedCheckCustomerId].releaseSchedule"
-                                    type="date"
-                                    class="w-full border border-gray-300 rounded p-2"
-                                />
-                            </div>
-
-                            <!-- Automatically Updated Fields -->
-                            <div class="mb-4">
-                                <label class="block text-gray-700">Payment Frequency</label>
-                                <select v-model="customerData[selectedCheckCustomerId].paymentFrequency" class="w-full border rounded-lg px-4 py-2">
-                                    <option v-for="frequency in state.paymentFrequencies" :key="frequency.id" :value="frequency.id">
-                                        {{ frequency.description }}
-                                    </option>
-                                </select>
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="block text-gray-700">Duration</label>
-                                <select v-model="customerData[selectedCheckCustomerId].duration" class="w-full border rounded-lg px-4 py-2">
-                                    <option v-for="duration in state.durations" :key="duration.id" :value="duration.id">
-                                        {{ duration.description }}
-                                    </option>
-                                </select>
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="block text-gray-700">Comment</label>
-                                <textarea
-                                    v-model="customerData[selectedCheckCustomerId].comment"
-                                    class="w-full border border-gray-300 rounded p-2"
-                                ></textarea>
-                            </div>
-
-                            <div v-if="state.fees.length > 0" class="overflow-x-auto">
-                                <div class="max-h-60 overflow-y-auto">
-                                    <table class="min-w-full bg-white border border-gray-300 mb-4">
-                                        <thead>
-                                            <tr>
-                                                <th class="px-4 py-2 border text-left">Select</th>
-                                                <th class="px-4 py-2 border text-left">Fee Description</th>
-                                                <th class="px-4 py-2 border text-left">Amount</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="fee in state.fees" :key="fee.id">
-                                                <td class="px-4 py-2 border text-left">
-                                                    <input
-                                                        type="checkbox"
-                                                        :value="fee.id"
-                                                        :checked="customerData[selectedCheckCustomerId].selectedFees.includes(fee.id)"
-                                                        @change="updateSelectedFees(fee.id, $event.target.checked)"/>
-                                                </td>
-                                                <td class="px-4 py-2 border">{{ fee.description }}</td>
-                                                <td class="px-4 py-2 border">{{ fee.amount }}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="block text-gray-700">Total Fees</label>
-                                <input
-                                    v-model="customerData[selectedCheckCustomerId].totalFees"
-                                    step="0.01"
-                                    type="number"
-                                    class="w-full border border-gray-300 rounded p-2"/>
-                            </div>
-
-                            <div class="text-center mt-4">
-                                <button @click.prevent="submitForm" class="bg-blue-500 text-white px-4 py-2 rounded">
-                                    Submit
-                                </button>
-                                <button @click.prevent="cancelForm" class="bg-gray-300 text-gray-800 px-4 py-2 rounded ml-2">
-                                    Cancel
-                                </button>
-                            </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700">Total Fees</label>
+                            <input
+                                v-model="customerData[selectedCheckCustomerId].totalFees"
+                                step="0.01"
+                                type="number"
+                                class="w-full border border-gray-300 rounded p-2"/>
                         </div>
+
+                        <div class="text-center mt-4">
+    <button @click.prevent="submitForm" class="bg-blue-500 text-white px-4 py-2 rounded">
+        Submit
+    </button>
+    <button @click.prevent="cancelForm" class="bg-gray-300 text-gray-800 px-4 py-2 rounded ml-2">
+        Cancel
+    </button>
+</div>
+
                     </div>
+
                 </div>
             </div>
         </main>
     </NuxtLayout>
 </template>
-
 
 <script setup lang="ts">
 import { ref, reactive, onMounted } from 'vue';

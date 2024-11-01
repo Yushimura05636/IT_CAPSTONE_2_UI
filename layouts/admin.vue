@@ -1,317 +1,526 @@
 <template>
-    <div>
-            <TransitionRoot as="template" :show="sidebarOpen">
-                <Dialog as="div" class="relative z-50 lg:hidden" @close="sidebarOpen = false">
-                    <TransitionChild as="template" enter="transition-opacity ease-linear duration-300" enter-from="opacity-0" enter-to="opacity-100" leave="transition-opacity ease-linear duration-300" leave-from="opacity-100" leave-to="opacity-0">
-                        <div class="fixed inset-0 bg-gray-900/80"/>
-                    </TransitionChild>
-                    <div class="fixed inset-0 flex">
-                        <TransitionChild as="template" enter="transition ease-in-out duration-300 transform" enter-from="-translate-x-full" enter-to="translate-x-0" leave="transition ease-in-out duration-300 transform" leave-from="translate-x-0" leave-to="-translate-x-full">
-                            <DialogPanel class="relative mr-16 flex w-full max-w-xs flex-1">
-                                <TransitionChild as="template" enter="ease-in-out duration-300" enter-from="opacity-0" enter-to="opacity-100" leave="ease-in-out duration-300" leave-from="opacity-100" leave-to="opacity-0">
-                                    <div class="absolute left-full top-0 flex w-16 justify-center pt-5">
-                                        <button type="button" class="-m-2.5 p-2.5" @click="sidebarOpen = false">
-                                            <span class="sr-only text-xs">Close sidebar</span>
-                                            <XMarkIcon class="h-5 w-5 text-white" aria-hidden="true"/>
-                                        </button>
-                                    </div>
-                                </TransitionChild>
-                                <!-- Sidebar component -->
-                                <div class="flex grow flex-col gap-y-3 overflow-y-auto bg-gray-500 px-4 pb-4 ring-1 ring-white/10">
-                                    <div class="flex h-16 shrink-0 items-center">
-                                        <img class="h-6 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company"/>
-                                    </div>
-                                    <nav class="flex flex-1 flex-col">
-                                        <ul role="list" class="flex flex-1 flex-col gap-y-4">
-                                            <li>
-                                                <ul role="list" class="-mx-2 space-y-1">
-                                                    <li v-for="item in navigation" :key="item.name">
-                                                        <a v-if="!item.children" :href="item.href" :class="[item.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800', 'group flex gap-x-2 rounded-md p-2 text-xs leading-4 font-semibold']">
-                                                            <component :is="item.icon" class="h-4 w-4 shrink-0 text-gray-400" aria-hidden="true"/>
-                                                            <span class="text-xs">{{ item.name }}</span>
-                                                        </a>
-                                                        <Disclosure as="div" v-else v-slot="{ open }">
-                                                            <DisclosureButton :class="[item.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800', 'group flex items-center w-full text-left rounded-md p-2 gap-x-2 text-xs leading-4 font-semibold']">
-                                                                <component :is="item.icon" class="h-4 w-4 shrink-0 text-gray-400" aria-hidden="true"/>
-                                                                <span class="text-xs">{{ item.name }}</span>
-                                                                <ChevronRightIcon :class="[open ? 'rotate-90 text-white' : 'text-gray-400 hover:text-white', 'ml-auto h-4 w-4 shrink-0']" aria-hidden="true"/>
-                                                            </DisclosureButton>
-                                                            <DisclosurePanel as="ul" class="mt-1 px-1">
-                                                                <div v-for="subItem in item.children" :key="subItem.name">
-                                                                    <DisclosureButton as="a" :href="subItem.href" :class="[subItem.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800', 'py-1 pr-2 pl-6 flex gap-x-2 rounded-md text-xs leading-4 font-semibold']">
-                                                                        <span class="text-xs">{{ subItem.name }}</span>
-                                                                    </DisclosureButton>
-                                                                </div>
-                                                            </DisclosurePanel>
-                                                        </Disclosure>
-                                                    </li>
-                                                </ul>
-                                            </li>
-
-                                            <li class="mt-auto">
-                                                <a href="/settings" class="group -mx-2 flex gap-x-2 rounded-md p-2 text-xs font-semibold leading-4 text-gray-400 hover:bg-gray-800 hover:text-white">
-                                                    <Cog6ToothIcon class="h-5 w-5 shrink-0" aria-hidden="true"/>
-                                                    <span class="text-xs">Settings</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </nav>
-                                </div>
-                            </DialogPanel>
-                        </TransitionChild>
-                    </div>
-                </Dialog>
-            </TransitionRoot>
-
-            <!-- Sidebar for desktop -->
-            <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-48 lg:flex-col">
-                <!-- Sidebar component -->
-                <div class="flex grow flex-col gap-y-3 overflow-y-auto bg-gray-900 px-4 pb-4">
-                    <div class="flex h-16 shrink-0 items-center">
-                        <!-- <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company"/>-->
-                    </div>
-                    <nav class="flex flex-1 flex-col">
-                        <ul role="list" class="flex flex-1 flex-col gap-y-4">
-                            <li>
-                                <ul role="list" class="-mx-2 space-y-1">
-                                    <li v-for="item in navigation" :key="item.name">
-                                        <a v-if="!item.children" @click="navigateTo(item.href)" :class="[item.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800', 'cursor-pointer group flex gap-x-2 rounded-md p-2 text-xs leading-4 font-semibold']">
-                                            <component :is="item.icon" class="h-4 w-4 shrink-0 text-gray-400" aria-hidden="true"/>
-                                            <span class="text-xs">{{ item.name }}</span>
-                                        </a>
-                                        <Disclosure as="div" v-else v-slot="{ open }">
-                                            <DisclosureButton :class="[item.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800', 'group flex items-center w-full text-left rounded-md p-2 gap-x-2 text-xs leading-4 font-semibold']">
-                                                <component :is="item.icon" class="h-4 w-4 shrink-0 text-gray-400" aria-hidden="true"/>
-                                                <span class="text-xs">{{ item.name }}</span>
-                                                <ChevronRightIcon :class="[open ? 'rotate-90 text-white' : 'text-gray-400 hover:text-white', 'ml-auto h-4 w-4 shrink-0']" aria-hidden="true"/>
-                                            </DisclosureButton>
-                                            <DisclosurePanel as="ul" class="mt-1 px-1">
-                                                <div v-for="subItem in item.children" :key="subItem.name">
-                                                    <DisclosureButton as="a" :href="subItem.href"
-                                                    :class="[subItem.current ? 'bg-gray-800 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800', 'py-1 pr-2 pl-6 flex gap-x-2 rounded-md text-xs leading-4 font-semibold']">
-                                                    <component :is="subItem.icon" class="h-4 w-4 shrink-0 text-gray-400" aria-hidden="true"/>
-                                                    <span class="text-xs">{{ subItem.name }}</span>
-                                                </DisclosureButton>
-                                            </div>
-                                        </DisclosurePanel>
-                                    </Disclosure>
-                                    </li>
-                                </ul>
-                            </li>
-
-
-                            <li class="mt-auto">
-                                <a href="/settings" class="group -mx-2 flex gap-x-2 rounded-md p-2 text-xs font-semibold leading-4 text-gray-400 hover:bg-gray-800 hover:text-white">
-                                    <Cog6ToothIcon class="h-5 w-5 shrink-0" aria-hidden="true"/>
-                                    <span class="text-xs">Settings</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+    <div class="flex h-screen bg-gray-200">
+      <!-- Sidebar for mobile -->
+      <TransitionRoot as="template" :show="sidebarOpen">
+  <Dialog as="div" class="relative z-50 lg:hidden" @close="sidebarOpen = false">
+    <TransitionChild
+      as="template"
+      enter="transition-opacity ease-linear duration-300"
+      enter-from="opacity-0"
+      enter-to="opacity-100"
+      leave="transition-opacity ease-linear duration-300"
+      leave-from="opacity-100"
+      leave-to="opacity-0"
+    >
+      <div class="fixed inset-0 bg-gray-900/80" />
+    </TransitionChild>
+    <div class="fixed inset-0 flex">
+      <TransitionChild
+        as="template"
+        enter="transition ease-in-out duration-300 transform"
+        enter-from="-translate-x-full"
+        enter-to="translate-x-0"
+        leave="transition ease-in-out duration-300 transform"
+        leave-from="translate-x-0"
+        leave-to="-translate-x-full"
+      >
+        <DialogPanel class="relative mr-16 flex w-full max-w-xs flex-1 bg-gray-800 shadow-lg rounded-r-lg h-screen">
+          <div class="flex grow flex-col gap-y-3 overflow-y-auto text-gray-200 px-4 pb-4">
+            <div class="flex h-16 shrink-0 items-center justify-between">
+              <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company" />
+              <button @click="sidebarOpen = false" class="text-gray-400 hover:text-white focus:outline-none">
+                <XMarkIcon class="h-6 w-6" aria-hidden="true" />
+              </button>
             </div>
+            <div v-for="item in menuHeaderTitles" :key="item.headerTitle" class="my-4">
+                <template v-if="item.headerTitle">
+                    <div
+                class="text-gray-400 text-xs uppercase tracking-wide font-semibold px-4 pt-2 select-none pointer-events-none"
+                v-text="item.headerTitle"
+                    ></div>
+                </template>
+            </div>
+            <nav class="flex flex-1 flex-col">
+              <ul role="list" class="flex flex-1 flex-col gap-y-4">
+                <li v-for="item in menuItems" :key="item.name" @click="toggleChild(item.name)">
+                  <div>
+                    <a
+                      href="#"
+                      @click.prevent="toggleHighlight(item.name)"
+                      :class="{
+                        'border-l-4 border-indigo-500 bg-gray-700 text-white': highlightedItem === item.name,
+                        'text-gray-400 hover:bg-gray-700 hover:text-white': highlightedItem !== item.name
+                      }"
+                      class="group flex items-center gap-x-2 rounded-lg p-2 text-sm leading-5 font-semibold transition duration-200"
+                    >
+                      <component :is="item.icon" class="h-4 w-4" aria-hidden="true" />
+                      <span>{{ item.name }}</span>
+                      <span class="ml-auto">
+                        <template v-if="isChildVisible[item.name]">
+                          <ChevronUpIcon class="h-4 w-4 text-gray-400" aria-hidden="true" />
+                        </template>
+                        <template v-else>
+                          <ChevronDownIcon class="h-4 w-4 text-gray-400" aria-hidden="true" />
+                        </template>
+                      </span>
+                    </a>
+                    <Transition
+                      name="fade"
+                      enter-active-class="transition-opacity duration-300"
+                      enter-class="opacity-0"
+                      enter-to-class="opacity-100"
+                      leave-active-class="transition-opacity duration-300"
+                      leave-class="opacity-100"
+                      leave-to-class="opacity-0"
+                    >
+                      <ul v-if="isChildVisible[item.name]" class="pl-4">
+                        <li v-for="subLink in item.subLinks" :key="subLink.name">
+                          <a
+                            :href="subLink.href"
+                            class="flex items-center text-gray-300 hover:text-indigo-400 p-2 rounded-md transition duration-200"
+                          >
+                            <component :is="subLink.icon" class="h-4 w-4 ml-1 mr-1" aria-hidden="true" />
+                            <span>{{ subLink.name }}</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </Transition>
+                  </div>
+                </li>
+                <li class="mt-auto">
+                  <a
+                    href="#settings"
+                    class="group flex items-center gap-x-2 rounded-lg p-2 text-sm font-semibold leading-5 text-gray-400 hover:bg-gray-700 hover:text-white transition duration-200"
+                  >
+                    <Cog6ToothIcon class="h-5 w-5" aria-hidden="true" />
+                    <span>Settings</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </DialogPanel>
+      </TransitionChild>
+    </div>
+  </Dialog>
+</TransitionRoot>
+
+
+<!-- Sidebar for Desktop -->
+<div
+  :class="{'lg:w-20': isChildVisible.home || isChildVisible.about, 'lg:w-16': !isChildVisible.home && !isChildVisible.about}"
+  class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:flex-col"
+>
+  <div class="flex grow flex-col gap-y-3 overflow-y-auto bg-gray-900 shadow-lg rounded-r-lg text-gray-200 px-2 pb-4">
+    <div class="flex items-center justify-center h-16">
+      <button @click="toggleSidebar" class="text-gray-400 hover:text-white focus:outline-none">
+        <Bars3Icon class="h-8 w-10" aria-hidden="true" />
+      </button>
+    </div>
+    <nav class="flex flex-1 flex-col">
+      <ul role="list" class="flex flex-1 flex-col gap-y-2">
+
+        <!-- Static Header Title -->
+        <li v-for="item in menuItems" :key="item.name">
+          <template v-if="item.headerTitle">
+            <div class="text-gray-500 font-medium text-xs uppercase tracking-wider px-4 py-2">
+              {{ item.headerTitle }}
+            </div>
+          </template>
+
+          <template v-else>
+            <!-- Menu Item -->
+            <div
+              @click="toggleChild(item.name); toggleHighlight(item.name)"
+              :class="{
+                'border-l-4 border-indigo-500 bg-gray-800 text-white': highlightedItem === item.name,
+                'text-gray-400 hover:bg-gray-700 hover:text-white': highlightedItem !== item.name
+              }"
+              class="cursor-pointer group flex items-center p-2 rounded-lg transition duration-200"
+            >
+              <component :is="item.icon" class="h-8 w-8" aria-hidden="true" />
+              <span class="ml-3 text-sm font-semibold sr-only">{{ item.name }}</span>
             </div>
 
-            <!--Header-->
-            <div class="lg:pl-60">
-                <div class="sticky top-0 z-40 flex h-10 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
-                    <button type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden" @click="sidebarOpen = true">
-                        <span class="sr-only text-xs">Open sidebar</span>
-                        <Bars3Icon class="h-6 w-6" aria-hidden="true"/>
-                    </button>
+            <Transition
+              name="fade"
+              enter-active-class="transition-opacity duration-300"
+              enter-class="opacity-0"
+              enter-to-class="opacity-100"
+              leave-active-class="transition-opacity duration-300"
+              leave-class="opacity-100"
+              leave-to-class="opacity-0"
+            >
+              <ul v-if="isChildVisible[item.name]" class="pl-4">
+                <li v-for="subLink in item.subLinks" :key="subLink.name">
+                  <a
+                    :href="subLink.href"
+                    class="flex items-center text-gray-300 hover:text-indigo-400 p-2 rounded-md transition duration-200"
+                  >
+                    <component :is="subLink.icon" class="h-6 w-6 mr-2" aria-hidden="true" />
+                    <span class="text-sm sr-only">{{ subLink.name }}</span>
+                  </a>
+                </li>
+              </ul>
+            </Transition>
+          </template>
+        </li>
 
-                    <!-- Separator -->
-                    <div class="h-6 w-1 bg-gray-900/10 lg:hidden" aria-hidden="true"></div>
-                    <div class="flex flex-1 justify-end gap-x-2.5 self-stretch xs:gap-x-3">
-                        <div class="flex items-center  xs:gap-x-3">
-                            <button type="button" class="mr-2 p-2 text-gray-400 hover:text-gray-500">
-                                <span class="sr-only text-xs">View notifications</span>
-                                <BellIcon class="h-5 w-5" aria-hidden="true" />
-                            </button>
+        <!-- Settings Link -->
+        <li class="mt-auto">
+          <a
+            href="#settings"
+            class="group flex items-center justify-center rounded-lg p-2 text-sm font-semibold leading-5 text-gray-400 hover:bg-gray-800 hover:text-white transition duration-200"
+          >
+            <Cog6ToothIcon class="h-6 w-6" aria-hidden="true" />
+            <span class="ml-3">Settings</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
 
-                            <!-- Separator -->
-                            <div class="hidden xs:block xs:h-5 xs:w-0.5 xs:bg-gray-900/10" aria-hidden="true"></div>
 
-                            <!-- Profile dropdown -->
-                            <Menu as="div" class="relative">
-                <MenuButton class="flex items-center p-1">
-                    <span class="sr-only text-xs">Open user menu</span>
-                    <img class="h-6 w-6 rounded-full bg-gray-50"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt="" />
-                    <span class="hidden xs:flex xs:items-center">
-                        <span class="ml-2 text-xs font-semibold leading-4 text-gray-900">Admin</span>
-                        <ChevronDownIcon class="ml-1 h-4 w-4 text-gray-400" aria-hidden="true" />
-                    </span>
-                </MenuButton>
-                <transition enter-active-class="transition ease-out duration-100"
-                    enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100"
-                    leave-active-class="transition ease-in duration-75"
-                    leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
-                    <MenuItems
-                        class="absolute right-0 z-10 mt-1.5 w-28 origin-top-right rounded-md bg-white py-1.5 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
-                        <MenuItem v-for="item in userNavigation" :key="item.name" v-slot="{ active }">
-                            <a :href="item.href"
-                                :class="[active ? 'bg-gray-50' : '', 'block px-2 py-1 text-xs leading-4 text-gray-900']">{{ item.name }}</a>
-                        </MenuItem>
-                    </MenuItems>
-                </transition>
-            </Menu>
+
+<!-- Sidebar for Desktop Expanded -->
+<Transition
+  name="slide"
+  enter-active-class="transition-transform duration-300 ease-in-out"
+  enter-class="transform -translate-x-full"
+  enter-to-class="transform translate-x-0"
+  leave-active-class="transition-transform duration-300 ease-in-out"
+  leave-class="transform translate-x-0"
+  leave-to-class="transform -translate-x-full"
+>
+  <div
+    v-if="sidebarExpanded"
+    class="fixed inset-0 lg:w-64 lg:bg-gray-900 lg:border lg:border-gray-700 z-50 shadow-lg rounded-lg"
+  >
+    <!-- Sidebar Header -->
+    <div class="flex h-16 items-center justify-between bg-gray-800 shadow-md px-4 rounded-t-lg">
+      <h1 class="text-lg font-bold text-indigo-400">LendCash</h1>
+      <button @click="toggleSidebar" class="text-gray-400 hover:text-white focus:outline-none">
+        <XMarkIcon class="h-6 w-6" aria-hidden="true" />
+      </button>
+    </div>
+
+    <div v-for="item in menuHeaderTitles" :key="item.headerTitle" class="my-4 mb-2">
+      <template v-if="item.headerTitle && item.headerTitle.trim() !== ''">
+        <div
+          class="text-gray-400 text-md uppercase tracking-wide font-semibold px-4 pt-2 select-none pointer-events-none"
+          v-text="item.headerTitle"
+        ></div>
+      </template>
+    </div>
+
+    <!-- Navigation Items -->
+    <nav class="flex flex-1 flex-col mt-2">
+      <ul role="list" class="flex flex-1 flex-col gap-y-2 px-4">
+        <li v-for="item in menuItems" :key="item.name">
+          <!-- Menu Item -->
+          <div
+            @click="toggleChild(item.name); toggleHighlight(item.name)"
+            :class="{
+              'border-l-4 border-indigo-500 bg-gray-800 text-white': highlightedItem === item.name,
+              'text-gray-400 hover:bg-gray-700 hover:text-white': highlightedItem !== item.name
+            }"
+            class="cursor-pointer flex items-center justify-between p-2 rounded-lg text-md font-semibold transition duration-200"
+          >
+            <div class="flex items-center space-x-2">
+              <component :is="item.icon" class="h-6 w-6" aria-hidden="true" />
+              <span class="font-medium">{{ item.name }}</span>
+            </div>
+            <span class="ml-auto">
+              <template v-if="isChildVisible[item.name]">
+                <ChevronUpIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
+              </template>
+              <template v-else>
+                <ChevronDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
+              </template>
+            </span>
+          </div>
+
+          <!-- Child Links -->
+          <Transition
+            name="fade"
+            enter-active-class="transition-opacity duration-300 ease-in"
+            enter-class="opacity-0"
+            enter-to-class="opacity-100"
+            leave-active-class="transition-opacity duration-300 ease-out"
+            leave-class="opacity-100"
+            leave-to-class="opacity-0"
+          >
+            <ul v-if="isChildVisible[item.name]" class="pl-4 space-y-1">
+              <li v-for="subLink in item.subLinks" :key="subLink.name">
+                <a
+                  :href="subLink.href"
+                  class="flex items-center text-gray-300 hover:text-indigo-400 p-2 rounded-md transition duration-200"
+                >
+                  <component :is="subLink.icon" class="h-6 w-6 mr-2" aria-hidden="true" />
+                  <span>{{ subLink.name }}</span>
+                </a>
+              </li>
+            </ul>
+          </Transition>
+        </li>
+
+        <!-- Settings Link -->
+        <li class="mt-auto">
+          <a
+            href="#settings"
+            class="group flex items-left justify-left rounded-lg p-2 text-md font-semibold leading-5 text-gray-400 hover:bg-gray-700 hover:text-white transition duration-200"
+          >
+            <Cog6ToothIcon class="h-6 w-6" aria-hidden="true" />
+            <span>Settings</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</Transition>
+
+
+<!-- Header -->
+<div :class="['flex-1', sidebarExpanded ? 'lg:pl-64' : 'lg:pl-16']">
+  <div class="sticky top-0 z-40 flex h-16 items-center justify-between gap-x-4 border-b border-gray-300 bg-white px-4 shadow-sm sm:gap-x-6 lg:px-8 transition-all duration-300">
+    <button type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden" @click="sidebarOpen = true">
+      <span class="sr-only">Open sidebar</span>
+      <Bars3Icon class="h-6 w-6" aria-hidden="true" />
+    </button>
+    <h1 class="text-lg font-semibold">Dashboard</h1>
+
+    <!-- User Dropdown -->
+    <div class="relative">
+      <button type="button" @click="toggleDropdown" class="flex items-center text-gray-700 focus:outline-none">
+        <span class="mr-2">Sasas</span>
+        <img class="h-8 w-8 rounded-full" src="https://www.shutterstock.com/image-vector/cute-cat-pixel-style-260nw-2138544923.jpg" alt="User Avatar" />
+      </button>
+      <Transition
+        enter="transition ease-out duration-100"
+        enter-from="transform opacity-0 scale-95"
+        enter-to="transform opacity-100 scale-100"
+        leave="transition ease-in duration-75"
+        leave-from="transform opacity-100 scale-100"
+        leave-to="transform opacity-0 scale-95"
+      >
+        <div v-if="dropdownOpen" class="absolute right-0 z-50 mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
+          <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+            <a href="#profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" @click="closeDropdown">Profile</a>
+            <a href="#logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" @click="closeDropdown">Logout</a>
+          </div>
         </div>
-            </div>
+      </Transition>
+    </div>
+  </div>
 
-                </div>
+        <!-- Main content -->
+<main class="flex-1 overflow-y-auto bg-white border border-gray-300 rounded-lg shadow-lg px-6 py-8 sm:px-8 lg:px-10">
+  <div class="max-w-3xl mx-auto">
+    <h2 class="text-2xl font-bold text-gray-800">Welcome to LendCash!</h2>
+    <p class="mt-2 text-gray-600">Here you can manage your loans, payments, and more.</p>
+  </div>
+  <slot />
+</main>
+      </div>
+    </div>
+  </template>
 
-                <main class="py-5">
-                    <div class="px-4 sm:px-6 ">
-                        <!-- Your content -->
-                        <keep-alive>
-                            <router-view />
-                        </keep-alive>
-                        <slot />
-                    </div>
-                </main>
-            </div>
+<script setup lang="ts">
+import { ref } from 'vue';
+import { Dialog, TransitionRoot } from '@headlessui/vue';
+import { Bars3Icon, XMarkIcon, HomeIcon, InformationCircleIcon, Cog6ToothIcon } from '@heroicons/vue/24/outline';
 
-    </template>
+const sidebarOpen = ref(false);
+const dropdownOpen = ref(false);
+const sidebarExpanded = ref(false);
+const isChildVisible = ref({ home: false, about: false });
+const selectedMenu = ref<string | null>(null);
+const hoveredItem = ref<string | null>(null);
+const highlightedItem = ref<string | null>(null);
+import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/vue/24/outline';
 
-    <script setup>
-    import { ref } from "vue";
-    //   import DashboardCard from './DashboardCard.vue';
-    import {
-        Dialog,
-        DialogPanel,
-        Disclosure,
-        DisclosureButton,
-        DisclosurePanel,
-        Menu,
-        MenuButton,
-        MenuItem,
-        MenuItems,
-        TransitionChild,
-        TransitionRoot,
-    } from "@headlessui/vue";
-    import {
-        Bars3Icon,
-        BellIcon,
-        ChartBarSquareIcon,
-        ChartPieIcon,
-        Cog6ToothIcon,
-        CurrencyDollarIcon,
-        DocumentDuplicateIcon,
-        FolderIcon,
-        HomeModernIcon,
-        TruckIcon,
-        UsersIcon,
-        XMarkIcon,
-        LockClosedIcon,
-        AdjustmentsHorizontalIcon,
-        CreditCardIcon,
-        DocumentTextIcon,
-        ArrowLongLeftIcon,
-        FlagIcon,
+const toggleDropdown = () => {
+  dropdownOpen.value = !dropdownOpen.value;
+};
 
+const closeDropdown = () => {
+  dropdownOpen.value = false;
+};
 
-    } from "@heroicons/vue/24/outline";
-    import { ChevronRightIcon, ShareIcon } from "@heroicons/vue/20/solid";
-    import {
-        ChevronDownIcon,
-        ShoppingBagIcon,
-    } from "@heroicons/vue/24/outline";
-    import { UserIcon, UserCircleIcon } from "@heroicons/vue/24/outline";
-    import { InboxIcon } from "@heroicons/vue/24/outline";
-    import { ScaleIcon } from "@heroicons/vue/24/solid";
-    import { KeyIcon } from "@heroicons/vue/20/solid";
-    import { FireIcon } from "@heroicons/vue/24/solid";
-    import { BellAlertIcon } from "@heroicons/vue/20/solid";
+const toggleSidebar = () => {
+  sidebarExpanded.value = !sidebarExpanded.value;
+};
 
-    const sidebarOpen = ref(false);
-    const openPeopleDropdown = ref(false);
-
-
-    const navigation = [
-        { name: "Dashboard", href: "/dashboard", icon: ChartPieIcon, current: false },
-
-        { name: "Admin Panel", icon: UsersIcon, current: false,
-            children: [
-                // { name: "Staff", href: "/#", icon: UserIcon, current: false },
-                { name: "Libraries", href: "/Libraries", icon: UserIcon, current: false },
-                { name: "Users", href: "/Users", icon: UserIcon, current: false },
-                { name: "Permission", href: "/Permission", icon: UserIcon, current: false },
-            ],
-        },
-
-
-        { name: "Customers", icon: UsersIcon, current: false,
-            children: [
-                { name: "Customers", href: "/customers", icon: UserIcon, current: false },
-                { name: "Groups", href: "/libraries", icon: ScaleIcon, current: false },
-            ],
-        },
-
-        { name: "Employees", icon: UsersIcon, current: false,
-            children: [
-                { name: "Employees", href: "/employees", icon: UserIcon, current: false },
-            ],
-        },
-
-
-        { name: "Loan", icon: ShareIcon, current: false,
-            children: [
-                { name: "Loan Application", href: "/loan_applications", icon: CurrencyDollarIcon, current: false },
-                { name: "Payment Schedule", href: "/payment_schedules", icon: CreditCardIcon, current: false },
-            ],
-        },
-
-
-
-        { name: "Release Schedules", icon: KeyIcon, current: false,
-            children: [
-                { name: "Loan Release", href: "/loan_release", icon:  CreditCardIcon, current: false },
-
-            ],
-        },
-
-        { name: "Transactions", icon: FlagIcon, current: false,
-            children: [
-            { name: "Payment", href: "/payments", icon: CurrencyDollarIcon, current: false },
-            { name: "Fees", href: "/Fees", icon: CurrencyDollarIcon, current: false },
-            { name: "Payment Line", href: "/payment_lines", icon: CurrencyDollarIcon, current: false },
-            { name: "Payment Schedule", href: "/payment_schedules", icon: CreditCardIcon, current: false },
-            { name: "Loan Count", href: "/loan_counts", icon: CurrencyDollarIcon, current: false },
-            { name: "Payment Duration", href: "/payment_duration", icon: CurrencyDollarIcon, current: false },
-            { name: "Payment Frequency", href: "/payment_frequency", icon: CurrencyDollarIcon, current: false },
-            { name: "Factor Rate", href: "/factor_rate", icon: CurrencyDollarIcon, current: false },
-            ],
-        },
-
-        { name: "Report", icon: FireIcon, current: false,
-            children: [
-                { name: "Loan Application", href: "", icon: CurrencyDollarIcon, current: false },
-                { name: "Loan Release", href: "", icon:  CreditCardIcon, current: false },
-                { name: "Payment Schedule", href: "", icon: CreditCardIcon, current: false },
-            ],
-        },
-
-        { name: "Help", href: "", icon: BellAlertIcon , current: false },
-
-    ];
-
-    const userNavigation = [
-        { name: "Your profile", href: "/profile" },
-        { name: "Sign out", href: "/" },
-    ];
-
-    function togglePeopleDropdown() {
-        openPeopleDropdown.value = !openPeopleDropdown.value;
+// Menu items data
+const menuHeaderTitles = ref([
+    {
+        headerTitle: 'loans',
     }
+]);
+const menuItems = ref([
+  {
+    name: 'home',
+    icon: HomeIcon,
+    subLinks: [
+      { name: "Loan Applicaitons", href: '#home-sub1', icon: HomeIcon },
+      { name: "Loan Release", href: '#home-sub2', icon: HomeIcon },
+    ],
+  },
+  {
+    name: 'about',
+    icon: InformationCircleIcon,
+    subLinks: [
+      { name: 'About Sub Link 1', href: '#about-sub1', icon: InformationCircleIcon },
+      { name: 'About Sub Link 2', href: '#about-sub2', icon: InformationCircleIcon },
+    ],
+  },
+]);
 
-    function closePeopleDropdown() {
-        openPeopleDropdown.value = false;
-    }
+const toggleChild = (child) => {
+  // Toggle the child visibility
+  isChildVisible.value[child] = !isChildVisible.value[child];
 
-    function navigateTo(href) {
-        window.location.href = href;
-        closePeopleDropdown();
+  // Adjust the width only if the child is being opened
+  if (isChildVisible.value[child]) {
+    // Check if any child is already visible
+    for (let key in isChildVisible.value) {
+      if (key !== child && isChildVisible.value[key]) {
+        isChildVisible.value[key] = false; // Close other child if needed
+      }
     }
-    </script>
+  }
+
+  if (selectedMenu.value === name) {
+    selectedMenu.value = null;
+  } else {
+    selectedMenu.value = name;
+  }
+};
+
+const toggleHighlight = (itemName: string) => {
+  if (highlightedItem.value === itemName) {
+    highlightedItem.value = null; // Toggle off if already highlighted
+  } else {
+    highlightedItem.value = itemName; // Highlight the clicked item
+  }
+};
+
+</script>
+
+  <style scoped>
+  .logo-container {
+    margin-top: 50%; /* Adjust this value as needed */
+}
+
+body {
+  font-family: 'Arial', sans-serif; /* Use a clean sans-serif font */
+}
+
+.bg-gray-900 {
+  background-color: #2c2f33; /* Darker background for modern feel */
+}
+
+.text-gray-200 {
+  color: #dcdcdc; /* Lighter text for contrast */
+}
+
+.text-gray-400 {
+  color: #b9bbbe; /* Slightly lighter text */
+}
+
+.text-gray-300 {
+  color: #b9bbbe; /* Uniform color for text in expanded sidebar */
+}
+
+.hover\:bg-gray-800:hover {
+  background-color: #23272a; /* Darker hover state */
+}
+
+.bg-gray-900 {
+  background-color: #1e1e2f; /* Darker background for modern feel */
+}
+
+.text-indigo-400 {
+  color: #3f83f8; /* Brand color for the sidebar header */
+}
+
+.text-gray-300 {
+  color: #b9bbbe; /* Text color for links */
+}
+
+.hover\:text-indigo-400:hover {
+  color: #3f83f8; /* Hover color for links */
+}
+
+.transition-transform {
+  transition: transform 0.3s ease; /* Smooth transition for sidebar */
+}
+/* Sidebar Transition */
+.sidebar-enter-active, .sidebar-leave-active {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.sidebar-enter, .sidebar-leave-to /* .sidebar-leave-active in <2.1.8 */ {
+    transform: translateX(-100%);
+    opacity: 0;
+}
+
+/* Dropdown Menu Transition */
+.dropdown-enter-active, .dropdown-leave-active {
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.dropdown-enter, .dropdown-leave-to /* .dropdown-leave-active in <2.1.8 */ {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+/* Button Hover Effects */
+.button-hover:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Darken on hover */
+    transition: background-color 0.3s ease;
+}
+
+/* Sidebar Background */
+.sidebar {
+    background-color: #1f2937; /* Gray 800 */
+}
+
+/* Dropdown Menu Styling */
+.dropdown {
+    background-color: #fff; /* White */
+    border-radius: 0.375rem; /* Rounded */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Header Transition */
+.header-transition {
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Main Content Transition */
+.main-content {
+    transition: padding-left 0.3s ease; /* Smooth transition for content when sidebar opens/closes */
+}
+
+/* Active Link Animation */
+.nav-link-active {
+    color: #4f46e5; /* Indigo */
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0;
+  transform: translate(-100%);
+}
+.slide-enter-active, .slide-leave-active {
+  transition: transform 0.3s ease-in-out;
+}
+.slide-enter, .slide-leave-to /* .slide-leave-active in <2.1.8 */ {
+  transform: translateX(-100%);
+}
+
+  </style>
