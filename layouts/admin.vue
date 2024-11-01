@@ -551,8 +551,9 @@ async function userDetails(){
 onMounted(() => {
     AUTH_USER();
     userDetails();
+    const interval = setInterval(userDetails, 2000);
     setTimeout(() => {
-        const interval = setInterval(userDetails, 2000);
+        clearInterval(interval);
     }, 5000)
 })
 
