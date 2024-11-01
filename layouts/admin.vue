@@ -548,7 +548,7 @@ async function userDetails(){
             name.value = response.data.first_name ?? 'No User';
         }
     } catch (error) {
-        //toast.error(`${error}`, {autoClose: 3000})
+        console.log(`Error Message: ${error}`);
     }
 }
 
