@@ -265,6 +265,10 @@ class API extends BaseAPIService {
         return await this.request(`/USERS/${id}`, 'GET', params)
     }
 
+    async getOwnUserDetailsdNoAUTH(params: object): Promise<any> {
+        return await this.request(`/USERS/NoAUTH`, 'GET', params)
+    }
+
         async createUser(params: object): Promise<any> {
             return await this.request(`/USERS`, 'POST', params)
         }
@@ -745,7 +749,7 @@ async authRequirementsUpdate(params: object): Promise<any> {
     async getUserLogged(params: object): Promise<any> {
         return await this.request(`/USER_LOGGED`, 'GET', params)
     }
-    
+
 
 }
 

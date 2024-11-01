@@ -86,6 +86,8 @@ import 'vue3-toastify/dist/index.css';
 import { authService } from '@/components/api/AuthService'
 import { useVuelidate } from "@vuelidate/core"
 import { required, helpers } from '@vuelidate/validators'
+import { apiService } from '~/routes/api/API';
+import { UserService } from '~/models/User';
 
 const state = reactive({
     email: null,

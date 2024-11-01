@@ -292,27 +292,60 @@
     <h1 class="text-lg font-semibold">{{ PageNameService.pageName ?? 'Dashboard' }}</h1>
 
     <!-- User Dropdown -->
-    <div class="relative">
-      <button type="button" @click="toggleDropdown" class="flex items-center text-gray-700 focus:outline-none">
-        <span class="mr-2">Sasas</span>
-        <img class="h-8 w-8 rounded-full" src="https://www.shutterstock.com/image-vector/cute-cat-pixel-style-260nw-2138544923.jpg" alt="User Avatar" />
-      </button>
-      <Transition
-        enter="transition ease-out duration-100"
-        enter-from="transform opacity-0 scale-95"
-        enter-to="transform opacity-100 scale-100"
-        leave="transition ease-in duration-75"
-        leave-from="transform opacity-100 scale-100"
-        leave-to="transform opacity-0 scale-95"
-      >
-        <div v-if="dropdownOpen" class="absolute right-0 z-50 mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
-          <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-            <a href="#profile" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" @click="closeDropdown">Profile</a>
-            <a href="/" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" @click="closeDropdown">Logout</a>
-          </div>
-        </div>
-      </Transition>
+    <!-- User Dropdown -->
+<div class="relative">
+  <button
+    type="button"
+    @click="toggleDropdown"
+    class="flex items-center text-gray-700 focus:outline-none"
+  >
+    <span v-if="state.user && state.user.id > 0" class="mr-2">{{ state.user.last_name }}</span>
+    <span v-else class="mr-2">User</span>
+    <img
+      class="h-8 w-8 rounded-full"
+      src="https://www.shutterstock.com/image-vector/cute-cat-pixel-style-260nw-2138544923.jpg"
+      alt="User Avatar"
+    />
+  </button>
+  <Transition
+    enter="transition ease-out duration-100"
+    enter-from="transform opacity-0 scale-95"
+    enter-to="transform opacity-100 scale-100"
+    leave="transition ease-in duration-75"
+    leave-from="transform opacity-100 scale-100"
+    leave-to="transform opacity-0 scale-95"
+  >
+    <div
+      v-if="dropdownOpen"
+      class="absolute right-0 z-50 mt-2 w-48 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5"
+    >
+      <div class="py-2 flex flex-col items-center">
+        <img
+          class="h-32 w-32 rounded-full mb-2"
+          src="https://www.shutterstock.com/image-vector/cute-cat-pixel-style-260nw-2138544923.jpg"
+          alt="User Avatar"
+        />
+        <span class="font-semibold text-gray-800 text-center mb-2">{{ state.user.first_name }}</span>
+
+        <a
+          href="#profile"
+          class="flex items-center justify-center border border-blue-500 text-blue-500 font-medium hover:bg-blue-100 rounded-md px-10 py-1 transition duration-200"
+          @click="closeDropdown"
+        >
+          Profile
+        </a>
+        <a
+          href="/"
+          class="flex items-center justify-center border border-red-500 text-red-500 font-medium hover:bg-red-100 rounded-md mt-2 px-10 py-1 transition duration-200"
+          @click="closeDropdown"
+        >
+          Logout
+        </a>
+      </div>
     </div>
+  </Transition>
+</div>
+
   </div>
 
         <!-- Main content -->
@@ -320,7 +353,7 @@
     <!-- Other layout components like the sidebar, header, etc. -->
 
     <main class="flex-1 overflow-y-auto bg-white border border-gray-300 rounded-lg shadow-lg px-6 py-8 sm:px-8 lg:px-10">
-      <div v-if="isPageNameTrue === 'Dashboard'" class="max-w-3xl mx-auto">
+      <div v-if="PageNameService.pageName == 'Dashboard'" class="max-w-3xl mx-auto">
         <h2 class="text-2xl font-bold text-gray-800">Welcome to LendCash!</h2>
         <p class="mt-2 text-gray-600">Here you can manage your loans, payments, and more.</p>
       </div>
@@ -342,6 +375,7 @@ import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/vue/24/outline';
 import { ChartPieIcon, UsersIcon, BookOpenIcon, CurrencyDollarIcon, KeyIcon, FlagIcon, FireIcon, BellAlertIcon, ShareIcon } from '@heroicons/vue/24/outline';
 import { PageNameService } from '~/models/PageName';
 import { apiService } from '~/routes/api/API';
+import { UserService } from '~/models/User';
 
 
 const sidebarOpen = ref(false);
@@ -451,6 +485,10 @@ const menuItems = ref([
   },
 ]);
 
+const state = {
+    user: [],
+}
+
 
 const toggleChild = (child) => {
   // Toggle the child visibility
@@ -494,8 +532,18 @@ async function AUTH_USER(){
     }
 }
 
+async function userDetails(){
+    try {
+        const response = await apiService.getOwnUserDetailsdNoAUTH({});
+        state.user = response.data
+    } catch (error) {
+        toast.error(`${error}`, {autoClose: 3000})
+    }
+}
+
 onMounted(() => {
     AUTH_USER();
+    userDetails();
 })
 
 </script>
