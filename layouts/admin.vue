@@ -534,7 +534,7 @@ async function AUTH_USER(){
     try {
         const response = await apiService.checkUserAuthentication({});
     } catch (error) {
-        toast.error(`${error}`, {autoClose: 3000})
+        toast.error(`${error}`, {autoClose: 5000})
     }
 }
 
@@ -555,10 +555,10 @@ async function userDetails(){
 onMounted(() => {
     AUTH_USER();
     userDetails();
-    const interval = setInterval(userDetails, 500);
+    const interval = setInterval(userDetails, 3000);
     setTimeout(() => {
         clearInterval(interval);
-    }, 1000)
+    }, 3500)
 })
 
 </script>
