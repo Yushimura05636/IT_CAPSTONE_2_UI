@@ -557,18 +557,8 @@ async function AUTH_USER(){
         refresh_token.value = refresh_token.value + 1;
     } catch (error) {
 
-        //show the error
-        toast.error(`${error}`, {autoClose: 5000})
-
-        //logout the user
-        const response = await authService.logout();
-
-        //stop the interval
-
-        clearInterval(user_authentication_interval)
-
-        //send the alert message
-        alert('Your account got logout');
+        //alert the user of the error
+        alertUser(error);
     }
 }
 
@@ -581,6 +571,22 @@ async function userDetails(){
     } catch (error) {
         console.log(`Error Message: ${error}`);
     }
+}
+
+async function alertUser(error)
+{
+    //logout the user
+    const response = await authService.logout();
+
+    //stop the interval
+
+    clearInterval(user_authentication_interval)
+
+    //show the error
+    toast.error(`${error}`, {autoClose: 5000})
+
+    //send the alert message
+    alert('Your account got logout');
 }
 
 onMounted(() => {
