@@ -376,6 +376,7 @@ import { ChartPieIcon, UsersIcon, BookOpenIcon, CurrencyDollarIcon, KeyIcon, Fla
 import { PageNameService } from '~/models/PageName';
 import { apiService } from '~/routes/api/API';
 import { UserService } from '~/models/User';
+import { authService } from '~/components/api/AuthService';
 
 const sidebarOpen = ref(false);
 const dropdownOpen = ref(false);
@@ -531,15 +532,20 @@ function isPageNameTrue(): string {
 
 async function AUTH_USER(){
     try {
-        const response = await apiService.checkUserAuthentication({});
+        if(!state.user && !name.value)
+        {
+            const response = await apiService.checkUserAuthentication({});
+        }
     } catch (error) {
         toast.error(`${error}`, {autoClose: 5000})
+        const response = await authService.logout();
+        alert('logout');
     }
 }
 
 async function userDetails(){
     try {
-        if(!state.user.length && !name.value)
+        if(!state.user && !name.value)
         {
             const response = await apiService.getOwnUserDetailsdNoAUTH({});
             response.value = response.data;
@@ -552,12 +558,21 @@ async function userDetails(){
 }
 
 onMounted(() => {
+
+    //check if user is auth
     AUTH_USER();
+
+    //get the user details
     userDetails();
+
+    //set interval
     const interval = setInterval(userDetails, 2000);
     setTimeout(() => {
         clearInterval(interval);
     }, 2500);
+
+    //await for interval
+    const await_interavl = setInterval(AUTH_USER, 10000);
 })
 </script>
 
