@@ -578,6 +578,7 @@ import { PageNameService } from '~/models/PageName';
 const sidebarOpen = ref(false);
 const openPeopleDropdown = ref(false);
 
+const name = ref('dashboard');
 
 const navigation = [
 { name: "Dashboard", href: "/dashboard", icon: ChartPieIcon, current: false },

@@ -377,7 +377,6 @@ import { PageNameService } from '~/models/PageName';
 import { apiService } from '~/routes/api/API';
 import { UserService } from '~/models/User';
 
-
 const sidebarOpen = ref(false);
 const dropdownOpen = ref(false);
 const sidebarExpanded = ref(false);
@@ -558,9 +557,8 @@ onMounted(() => {
     const interval = setInterval(userDetails, 2000);
     setTimeout(() => {
         clearInterval(interval);
-    }, 2500)
+    }, 2500);
 })
-
 </script>
 
   <style scoped>
