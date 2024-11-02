@@ -545,6 +545,21 @@ async function AUTH_USER(){
         if(refresh_token.value <= 0)
         {
             const response = await apiService.checkUserAuthentication({});
+
+            if(!response)
+            {
+                //logtout user
+
+                const response = await authService.logout();
+
+                //stop the interval
+
+                clearInterval(user_authentication_interval)
+
+                //send the alert message
+
+                alert('Your account got logout');
+            }
         }
 
         // 2 of 10s interval
@@ -556,37 +571,32 @@ async function AUTH_USER(){
         //increase the interval
         refresh_token.value = refresh_token.value + 1;
     } catch (error) {
-
-        //alert the user of the error
-        alertUser(error);
+        toast.error(`${error}`, {autoClose: 5000})
     }
 }
 
 async function userDetails(){
     try {
+
         const response = await apiService.getOwnUserDetailsdNoAUTH({});
-        response.value = response.data;
+
+        //check the data
+        if(!response)
+        {
+
+            //return if there is no data
+            return;
+        }
+
+        //set the value of the user
         state.user = response.value;
+
+        //set the name value
         name.value = response.data.first_name ?? 'No User';
+
     } catch (error) {
-        console.log(`Error Message: ${error}`);
+        toast.error(`${error}`, 3000);
     }
-}
-
-async function alertUser(error)
-{
-    //logout the user
-    const response = await authService.logout();
-
-    //stop the interval
-
-    clearInterval(user_authentication_interval)
-
-    //show the error
-    toast.error(`${error}`, {autoClose: 5000})
-
-    //send the alert message
-    alert('Your account got logout');
 }
 
 onMounted(() => {
