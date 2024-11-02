@@ -416,12 +416,23 @@ const calculateInterestAndAmountPaid = (loanAmount, factorRate) => {
     return { interestAmount: 0, amountPaid: 0 };
 };
 
+const exceedsMaxAmount = ref('');
+
 const updateLoanAmount = (customerId) => {
     const customer = customerData[customerId];
     if (customer.loanAmount && customer.factorRateValue) {
         const { interestAmount, amountPaid } = calculateInterestAndAmountPaid(customer.loanAmount, customer.factorRateValue);
         customer.interestAmount = interestAmount;
         customer.amountPaid = amountPaid;
+        // console.log("Loan Amount:", customer.loanAmount);
+        // console.log("Max Amount:", maxAmountForSelected);
+    }
+
+    const maxAmount = maxAmountForSelected.value;
+    if (parseFloat(customer.loanAmount) > parseFloat(maxAmount)) {
+        exceedsMaxAmount.value = 'Exceed'
+    } else {
+    exceedsMaxAmount.value = ''; // Reset if within limit
     }
 };
 

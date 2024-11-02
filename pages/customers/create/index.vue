@@ -184,7 +184,7 @@
           <div>
             <label for="dateTimeRegistered" class="block text-gray-700">Date Time Registered</label>
             <input v-model="personality.datetime_registered" type="date" id="dateTimeRegistered" class="w-full border rounded-lg px-4 py-2" />
-            <span v-if="validationErrorsForCustomer.datetime_registered" class="text-red-500 text-sm">{{ validationErrorsForCustomer.datetime_registered }}</span>
+            <span v-if="validationErrors.datetime_registered" class="text-red-500 text-sm">{{ validationErrors.datetime_registered }}</span>
 
           </div>
 
@@ -197,16 +197,17 @@
             <span v-if="validationErrorsForCustomer.enable_mortuary" class="text-red-500 text-sm">{{ validationErrorsForCustomer.enable_mortuary }}</span>
 
           </div>
-
-          <div>
+          
+          <div v-if="customer.enable_mortuary == '1'">
             <label for="mortuaryCoverageStart" class="block text-gray-700">Mortuary Coverage Start</label>
             <input v-model="customer.mortuary_coverage_start" type="date" id="mortuaryCoverageStart" class="w-full border rounded-lg px-4 py-2" />
           </div>
 
-          <div>
+          <div v-if="customer.enable_mortuary == '1'">
             <label for="mortuaryCoverageEnd" class="block text-gray-700">Mortuary Coverage End</label>
             <input v-model="customer.mortuary_coverage_end" type="date" id="mortuaryCoverageEnd" class="w-full border rounded-lg px-4 py-2" />
           </div>
+          
         </div>
 
         <div class="mt-4">
@@ -227,6 +228,7 @@
                                 :value="requirement.id"
                                 v-model="selectedRequirements"
                                 @change="getSelectedRequirements"
+                                :disabled="!requirement.expiry_date"
                                 class="form-checkbox h-5 w-5 text-green-600"
                             />
                         </label>
@@ -600,6 +602,7 @@ const createCustomer = async () => {
 
     debugger;
     await apiService.createCustomer(jsonObject);
+    console.log("JSON Object:", JSON.stringify(jsonObject, null, 2));
     toast.success("Customer create successfully!", {
           autoClose: 2000,
           });
@@ -620,6 +623,7 @@ async function fetchNotExpiredCustomerRequirementsNoAUTH() {
         // Fetch data from your API endpoint
         const response = await apiService.getActiveRequirementsNoAUTH({});
         requirements.value = response.data; // Assumes the API returns an array of requirements
+
       } catch (error) {
         console.error('Error fetching requirements:', error);
       }
