@@ -377,7 +377,6 @@ import { PageNameService } from '~/models/PageName';
 import { apiService } from '~/routes/api/API';
 import { UserService } from '~/models/User';
 import { authService } from '~/components/api/AuthService';
-import { NuxtLayout } from '#build/components';
 
 const sidebarOpen = ref(false);
 const dropdownOpen = ref(false);
