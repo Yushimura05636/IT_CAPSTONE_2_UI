@@ -530,28 +530,46 @@ function isPageNameTrue(): string {
     return PageNameService.pageName;
 }
 
+const refresh_token = {
+    value: 0,
+}
+
 async function AUTH_USER(){
     try {
-        if(!state.user && !name.value)
+
+        // only 1 of 2s interval
+        if(refresh_token.value <= 0)
         {
             const response = await apiService.checkUserAuthentication({});
         }
+
+        // 2 of 10s interval
+        if(refresh_token.value >= 2)
+        {
+            refresh_token.value = 0;
+        }
+
+        //increase the interval
+        refresh_token.value = refresh_token.value + 1;
     } catch (error) {
+
+        //show the error
         toast.error(`${error}`, {autoClose: 5000})
+
+        //logout the user
         const response = await authService.logout();
-        alert('logout');
+
+        //send the alert message
+        alert('Your account got logout');
     }
 }
 
 async function userDetails(){
     try {
-        if(!state.user && !name.value)
-        {
-            const response = await apiService.getOwnUserDetailsdNoAUTH({});
-            response.value = response.data;
-            state.user = response.value;
-            name.value = response.data.first_name ?? 'No User';
-        }
+        const response = await apiService.getOwnUserDetailsdNoAUTH({});
+        response.value = response.data;
+        state.user = response.value;
+        name.value = response.data.first_name ?? 'No User';
     } catch (error) {
         console.log(`Error Message: ${error}`);
     }
@@ -572,7 +590,7 @@ onMounted(() => {
     }, 2500);
 
     //await for interval
-    const await_interavl = setInterval(AUTH_USER, 10000);
+    const await_interavl = setInterval(AUTH_USER, 5000);
 })
 </script>
 
