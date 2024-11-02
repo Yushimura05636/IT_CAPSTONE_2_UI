@@ -377,6 +377,7 @@ import { PageNameService } from '~/models/PageName';
 import { apiService } from '~/routes/api/API';
 import { UserService } from '~/models/User';
 import { authService } from '~/components/api/AuthService';
+import { NuxtLayout } from '#build/components';
 
 const sidebarOpen = ref(false);
 const dropdownOpen = ref(false);
@@ -534,6 +535,9 @@ const refresh_token = {
     value: 0,
 }
 
+let user_authentication_interval;
+let user_details_interval;
+
 async function AUTH_USER(){
     try {
 
@@ -558,6 +562,10 @@ async function AUTH_USER(){
 
         //logout the user
         const response = await authService.logout();
+
+        //stop the interval
+
+        clearInterval(user_authentication_interval)
 
         //send the alert message
         alert('Your account got logout');
@@ -584,13 +592,13 @@ onMounted(() => {
     userDetails();
 
     //set interval
-    const interval = setInterval(userDetails, 2000);
+    user_details_interval = setInterval(userDetails, 2000);
     setTimeout(() => {
-        clearInterval(interval);
+        clearInterval(user_details_interval);
     }, 2500);
 
     //await for interval
-    const await_interavl = setInterval(AUTH_USER, 5000);
+    user_authentication_interval = setInterval(AUTH_USER, 5000);
 })
 </script>
 
