@@ -8,6 +8,10 @@ export default defineNuxtConfig({
     '@pinia-plugin-persistedstate/nuxt',
   ],
 
+  plugins : [
+    '~/plugins/ably.js',
+  ],
+
   postcss: {
     plugins: {
       tailwindcss: {},
@@ -19,6 +23,7 @@ export default defineNuxtConfig({
     public: {
       appName: process.env.APP_NAME,
       apiBaseURL: process.env.API_BASE_URL,
+      ablyApiKey: process.env.ABLY_API_KEY,
     },
   },
 

@@ -530,45 +530,11 @@ function isPageNameTrue(): string {
     return PageNameService.pageName;
 }
 
-const refresh_token = {
-    value: 0,
-}
-
-let user_authentication_interval;
-let user_details_interval;
-
 async function AUTH_USER(){
     try {
 
-        // only 1 of 2s interval
-        if(refresh_token.value <= 0)
-        {
-            const response = await apiService.checkUserAuthentication({});
+        const response = await apiService.checkUserAuthentication({});
 
-            if(!response)
-            {
-                //logtout user
-
-                const response = await authService.logout();
-
-                //stop the interval
-
-                clearInterval(user_authentication_interval)
-
-                //send the alert message
-
-                alert('Your account got logout');
-            }
-        }
-
-        // 2 of 10s interval
-        if(refresh_token.value >= 2)
-        {
-            refresh_token.value = 0;
-        }
-
-        //increase the interval
-        refresh_token.value = refresh_token.value + 1;
     } catch (error) {
         toast.error(`${error}`, {autoClose: 5000})
     }
@@ -579,22 +545,20 @@ async function userDetails(){
 
         const response = await apiService.getOwnUserDetailsdNoAUTH({});
 
-        //check the data
-        if(!response)
-        {
-
-            //return if there is no data
-            return;
-        }
-
         //set the value of the user
-        state.user = response.value;
+        state.user = response.data;
 
         //set the name value
         name.value = response.data.first_name ?? 'No User';
 
+        //set globally
+        UserService.first_name = response.data.first_name;
+        UserService.last_name = response.data.last_name;
+        UserService.middle_name = response.data.middle_name;
+        UserService.usr_id = response.data.id;
+
     } catch (error) {
-        toast.error(`${error}`, {autoClose: 3000});
+        console.log(`${error}`)
     }
 }
 
@@ -607,13 +571,10 @@ onMounted(() => {
     userDetails();
 
     //set interval
-    user_details_interval = setInterval(userDetails, 2000);
+    const user_details_interval = setInterval(userDetails, 2000);
     setTimeout(() => {
         clearInterval(user_details_interval);
-    }, 2500);
-
-    //await for interval
-    user_authentication_interval = setInterval(AUTH_USER, 5000);
+    }, 2100);
 })
 </script>
 
