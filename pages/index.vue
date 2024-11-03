@@ -4,7 +4,7 @@
   <div class="container mx-auto flex justify-between items-center scroll-pop">
     <div class="flex items-center gap-2">
       <img src="../img/LendCash_Logo-removebg-preview.png" class="w-20" alt="logo">
-      <p class="text-medium text-green-600">LendCash</p>
+      <p class="text-lg text-green-600">LendCash</p>
     </div>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
@@ -14,10 +14,10 @@
         <a href="features" class="text-gray-600 hover:text-green-600 font-bold">Features</a>
 <div class="info-box">
     <section class="features-section py-12 bg-gray-50">
-        <h2 class="text-2xl font-bold text-center text-gray-700 mb-8">Microfinance Features</h2>
+        <h2 class="text-2xl font-bold text-center text-green-700 mb-8">Microfinance Features</h2>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
     <div v-for="feature in features" :key="feature.title" class="feature-card p-6 text-center bg-white rounded-lg shadow-md">
-      <h3 class="text-lg font-semibold text-gray-800 mb-2">{{ feature.title }}</h3>
+      <h3 class=" text-lg font-semibold text-green-600 mb-2">{{ feature.title }}</h3>
       <p class="text-sm text-gray-600">{{ feature.description }}</p>
     </div>
   </div>
@@ -208,7 +208,7 @@
       <h2 class="text-5xl font-bold text-green-500 mb-4">LendCash Microfinance System for ERD Financial Solution</h2>
       <p class="text-lg text-gray-600 mb-8">An Online Microfinance Lending System designed to empower individuals and small businesses by providing quick and easy access to financial services.</p>
       <div class="flex items-center gap-4">
-        <p class="text-5xl font-bold text-green-500">Apply Na!</p>
+        <p class="text-5xl font-bold text-green-500">Apply Now!</p>
       </div>
     </div>
     <div class="md:w-1/2 flex justify-center items-center animate__animated animate__zoomIn">
@@ -216,7 +216,7 @@
     </div>
 </div>
 
-    <div class="relative bg-cover bg-no-repeat" style="background-image: url('../img/rainingmoney.png');">
+    <div class="relative bg-cover bg-no-repeat">
   <div class="container mx-auto mt-20 scroll-pop text-center">
     <h3 class="text-6xl font-bold text-green-500 mb-4">LendCash Offers</h3>
     <p class="text-lg text-gray-600 mb-8">Creating Opportunities, One Microloan at a Time!</p>
@@ -283,11 +283,11 @@
         See Requirements List
       </button>
 
-      <div v-if="showRequirements" class="mt-4 p-4 border rounded-md shadow-md bg-gray-50 justify-center">
+      <div v-if="showRequirements" class="mt-4 p-4 border rounded-md shadow-md bg-gray-50 text-justify-center">
         <ul class="list-disc list-inside text-gray-700 justify-center">
-          <li>Bring a 2x2 picture ID</li>
-          <p class="text-green-600">Valid IDs: bring any of these
-            <ul class="list-disc list-inside">
+          <p class="text-green-600">REQ NO.1 Bring a 2x2 picture ID</p>
+          <p class="text-green-600">REQ NO.2 Valid IDs: bring any of these
+            <ul class="list-disc list-inside text-justify">
               <li>Passport</li>
               <li>PSA birth certificate</li>
               <li>Driver's license</li>
@@ -300,8 +300,8 @@
               <li>Senior Citizen ID</li>
             </ul>
           </p>
-          <li>Any proof of income</li>
-          <li>Any type of house bills</li>
+          <p class="text-green-600">REQ NO.3 Any proof of income</p>
+          <p class="text-green-600">REQ NO.4 Any type of house bills</p>
         </ul>
       </div>
     </div>
