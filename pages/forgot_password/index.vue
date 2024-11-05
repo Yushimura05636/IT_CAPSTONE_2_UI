@@ -36,6 +36,7 @@ import { apiService } from '~/routes/api/API';
 
     try {
         debugger
+        alert(email.value);
       //check if email is legit
       const response = await apiService.verifyEmailNoAUTH({
         email: email.value,
