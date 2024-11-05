@@ -12,7 +12,7 @@ class API extends BaseAPIService {
     async verifyEmailNoAUTH(params: object, token: any): Promise<any>
     {
         alert(params.email)
-        return await this.request(`/NoAUTH/checkEmail`, 'POST', params)
+        return await this.request(`/NoAUTH/checkEmail`, 'GET', params)
     }
 
     //check if the user is authenticate
