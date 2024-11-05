@@ -2,6 +2,12 @@ import BaseAPIService from '~/components/api/BaseAPIService'
 
 class API extends BaseAPIService {
 
+    //verify email and token
+    async verifyTokenAndEmailNoAUTH(params: object, token: any): Promise<any>
+    {
+        return await this.request(`/NoAUTH/VerifyVerification/${token}`, 'POST', params)
+    }
+
     //check if the user is authenticate
     async checkUserAuthentication(params: object): Promise<any> {
         return await this.request(`/USER_AUTH`, `PATCH`, params)
@@ -275,6 +281,10 @@ class API extends BaseAPIService {
 
     async updateUser(params: object, id: number): Promise<any> {
         return await this.request(`/USERS/${id}`, 'PUT', params)
+    }
+
+    async updateUserPasswordNoAUTH(params: object, id: number): Promise<any> {
+        return await this.request(`/NoAUTH/ChangePassword/${id}`, 'PUT', params)
     }
 
     async deleteUser(params: object, id: number): Promise<any> {
@@ -749,7 +759,7 @@ async authRequirementsUpdate(params: object): Promise<any> {
     async getUserLogged(params: object): Promise<any> {
         return await this.request(`/USER_LOGGED`, 'GET', params)
     }
-    
+
         //for registration
         async getRegisterLibraries(params: object, modeltype: string): Promise<any>{
             return await this.request(`/REGISTER_LIBRARIES/NoAUTH/${modeltype}`, 'GET', params);
@@ -761,7 +771,7 @@ async authRequirementsUpdate(params: object): Promise<any> {
         async createRegisterCustomer(params: object): Promise<any> {
             return await this.request(`/REGISTER_LIBRARIES`, 'POST', params)
         }
-    
+
 
 }
 
