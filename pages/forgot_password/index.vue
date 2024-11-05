@@ -36,6 +36,7 @@ import { apiService } from '~/routes/api/API';
 
     try {
 
+        alert(1)
         debugger
       //check if email is legit
       const params = {
