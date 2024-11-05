@@ -35,26 +35,21 @@ import { apiService } from '~/routes/api/API';
   async function sendResetLink() {
 
     try {
-
-        alert(1)
         debugger
       //check if email is legit
-      const params = {
+      const response = await apiService.verifyEmailNoAUTH({
         email: email.value,
-      }
-      const response = await apiService.verifyEmailNoAUTH(params)
+      })
 
       if(!response)
       {
         errorMessage.value = 'Failed to find email'
       }
 
-      const parameters = {
+      const result = await authService.sendVerification({
         email: email.value,
         method: 'forgot',
-      };
-
-      const result = await authService.sendVerification(parameters);
+      });
 
     if (result) {
         codeSent.value = false;
@@ -79,11 +74,10 @@ import { apiService } from '~/routes/api/API';
 async function resendEmail() {
   try {
     // Call your API to resend the reset link
-    const params = {
-      email: email.value,
-      method: 'forgot',
-    };
-    const response = await authService.sendVerification(params);
+    const response = await authService.sendVerification({
+        email: email.value,
+        method: 'forgot',
+    });
 
     if (response) {
       // Show a success message or flash a notification
