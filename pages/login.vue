@@ -1,160 +1,184 @@
 <template>
-  <main class="w-full h-screen flex">
-    <!-- Left Section with Image -->
-    <div class="w-1/2 hidden lg:flex">
-      <img src="../img/2019-04-14.jpg" alt="Building Image" class="w-full h-full object-cover" />
-    </div>
-
-    <!-- Right Section with Form -->
-    <div class="w-full lg:w-1/2 flex flex-col items-center justify-center px-4">
-      <div class="max-w-sm w-full text-gray-600 space-y-5">
-        <div class="text-center pb-8">
-          <img src="../img/LendCash_Logo-removebg-preview.png" width="150" class="mx-auto" />
-          <div class="mt-5">
-            <h3 class="text-gray-800 text-2xl font-bold sm:text-3xl">
-              Log in to your account
-            </h3>
-          </div>
+    <main class="w-full h-screen flex">
+        <!-- Left Section with Image -->
+        <div class="w-1/2 hidden lg:flex bg-gradient-to-br from-indigo-600 to-purple-600 items-center justify-center">
+            <img src="../img/2019-04-14.jpg" alt="Building Image" class="w-3/4 h-3/4 object-cover rounded-lg shadow-lg opacity-90 transition duration-300 hover:opacity-100 hover:scale-105" />
         </div>
-        <form method="POST" @submit.prevent="login" class="space-y-5">
-          <div>
-            <label class="font-medium"> Email </label>
-            <input
-              id="email"
-              name="email"
-              placeholder="Email"
-              type="email"
-              v-model="state.email"
-              class="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
-            />
-            <FormError :error="v$.email && v$.email.$errors && v$.email.$errors.length > 0 ? v$.email.$errors[0].$message : null" />
-            <FormError :error="state.error && state.error.errors && state.error.errors.email && state.error.errors.email[0]" />
-          </div>
-          <div>
-            <label class="font-medium"> Password </label>
-            <input
-              id="password"
-              name="password"
-              placeholder="Password"
-              type="password"
-              v-model="state.password"
-              class="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-indigo-600 shadow-sm rounded-lg"
-            />
-            <FormError :error="v$.password && v$.password.$errors && v$.password.$errors.length > 0 ? v$.password.$errors[0].$message : null" />
-            <FormError :error="state.error && state.error.errors && state.error.errors.password && state.error.errors.password[0]" />
-          </div>
-          <div class="flex items-center justify-between text-sm">
-            <div class="flex items-center gap-x-3">
-              <input
-                type="checkbox"
-                id="remember-me-checkbox"
-                class="checkbox-item peer hidden"
-              />
-              <label
-                for="remember-me-checkbox"
-                class="relative flex w-5 h-5 bg-white peer-checked:bg-indigo-600 rounded-md border ring-offset-2 ring-indigo-600 duration-150 peer-active:ring cursor-pointer after:absolute after:inset-x-0 after:top-[3px] after:m-auto after:w-1.5 after:h-2.5 after:border-r-2 after:border-b-2 after:border-white after:rotate-45"
-              ></label>
-              <span>Remember me</span>
-            </div>
-            <a href="javascript:void(0)" class="text-center text-indigo-600 hover:text-indigo-500">Forgot password?</a>
-          </div>
 
-          <button class="w-full px-4 py-2 text-white font-medium bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-600 rounded-lg duration-150">
-            Sign in
-          </button>
-        </form>
-        <button class="w-full flex items-center justify-center gap-x-3 py-2.5 border rounded-lg text-sm font-medium hover:bg-gray-50 duration-150 active:bg-gray-100">
-          <img
-            src="https://raw.githubusercontent.com/sidiDev/remote-assets/7cd06bf1d8859c578c2efbfda2c68bd6bedc66d8/google-icon.svg"
-            alt="Google"
-            class="w-5 h-5"
-          />
-          Continue with Google
-        </button>
-        <p class="text-center">
-          Don't have an account?
-          <a href="javascript:void(0)" class="font-medium text-indigo-600 hover:text-indigo-500">Sign up</a>
-        </p>
-      </div>
-    </div>
-  </main>
+        <!-- Right Section with Form -->
+        <div class="w-full lg:w-1/2 flex flex-col items-center justify-center px-8">
+            <div class="max-w-sm w-full text-gray-600 space-y-8 bg-white p-8 rounded-lg shadow-xl">
+                <!-- Welcome and Login Form Section -->
+                <div v-if="!isAuthenticated" class="text-center pb-6">
+                    <img src="../img/LendCash_Logo-removebg-preview.png" width="120" class="mx-auto" />
+                    <div class="mt-4">
+                        <h3 class="text-gray-800 text-2xl font-semibold sm:text-3xl tracking-tight">Welcome Back!</h3>
+                        <p class="text-gray-500">Please log in to your account</p>
+                    </div>
+
+                    <form @submit.prevent="login" class="space-y-6">
+                        <input v-model="state.email" placeholder="Email" type="email" class="input-field" />
+                        <FormError :error="state.error?.email" />
+
+                        <input v-model="state.password" placeholder="Password" type="password" class="input-field" />
+                        <FormError :error="state.error?.password" />
+
+                        <button type="submit" class="submit-button">Sign in</button>
+                    </form>
+                </div>
+
+                <!-- 2FA Method Selection -->
+                <div v-if="isAuthenticated && !isCodeSent" class="text-center space-y-4">
+                    <h3 class="text-xl font-semibold">Select Verification Method</h3>
+                    <div class="flex justify-around">
+                        <div @click="setMethod('email')" :class="selectedMethod === 'email' ? 'selected' : ''" class="method-option">
+                            <img src="https://www.clipartmax.com/png/middle/262-2626325_find-and-follow-us-dark-blue-email-icon.png" alt="Email Icon" class="icon" />
+                            <span>Email</span>
+                        </div>
+                        <div @click="setMethod('phone')" :class="selectedMethod === 'phone' ? 'selected' : ''" class="method-option">
+                            <img src="https://cdn-icons-png.flaticon.com/512/6523/6523368.png" alt="Phone Icon" class="icon" />
+                            <span>Phone</span>
+                        </div>
+                    </div>
+                    <button @click="sendVerificationCode" class="send-code-button" :disabled="!selectedMethod">Send Code</button>
+                </div>
+
+                <!-- 2FA Code Input -->
+                <div v-if="isCodeSent" class="text-center space-y-4">
+                    <h3 class="text-xl font-semibold">Enter Your 2FA Code</h3>
+                    <input v-model="state.code" placeholder="Enter 6-digit code" type="text" class="input-field" />
+                    <button @click="verifyCode" class="submit-button">Verify</button>
+                    <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+                    <p v-if="successMessage" class="success">{{ successMessage }}</p>
+                </div>
+            </div>
+        </div>
+    </main>
 </template>
 
 <script setup lang="ts">
-import { toast } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
-import { authService } from '@/components/api/AuthService'
-import { useVuelidate } from "@vuelidate/core"
-import { required, helpers } from '@vuelidate/validators'
-import { apiService } from '~/routes/api/API';
-import { UserService } from '~/models/User';
+import { ref, reactive } from 'vue';
+import { authService } from '@/components/api/AuthService';
+import { useRouter } from 'vue-router';
 
 const state = reactive({
-    email: null,
+    email: '',
+    phone: '',
+    password: '',
+    code: '',
     error: null,
-    isPageLoading: false,
-    password: null,
-})
+});
 
-const rules = computed(() => {
-    return {
-        email: {
-            required: helpers.withMessage('This field is required.', required),
-        },
-        password: {
-            required: helpers.withMessage('This field is required.', required),
-        },
-    }
-})
-const v$ = useVuelidate(rules, state)
+const isAuthenticated = ref(false);
+const isCodeSent = ref(false);
+const selectedMethod = ref('');
+const errorMessage = ref('');
+const successMessage = ref('');
+const router = useRouter();
 
-async function login() {
-    state.error = null
-    v$.value.$validate()
-    if (!v$.value.$error) {
-        state.isPageLoading = true
-        try {
-            const params = {
-                email: state.email,
-                password: state.password,
-            }
-            const response = await authService.login(params)
-            if (response.data) {
-                localStorage.setItem("_token", response.data?.token)
-                toast.success("Login successfully!", {
-                    autoClose: 1000,
-                });
+const login = async () => {
+    try {
+        const response = await authService.login({ email: state.email, password: state.password });
+        if (response.data) {
+            debugger
+            state.phone = response.data.user.phone_number
+            state.email = response.data.user.email
 
-                // Introduce a delay before navigating
-                setTimeout(() => {
-                    navigateTo('/dashboard');
-                }, 1000);
-            }
-        } catch (error: any) {
-          state.error = error
-            toast.error("Something is wrong! please contact your adminstrator!", {
-                    autoClose: 3000,
-                });
-            toast.error(`${error}`, {
-                autoClose: 4000,
-            });
-            setTimeout(() => {
-                    navigateTo('/login');
-                }, 4000);
+            //set the phone number and
+            isAuthenticated.value = true;
+            state.error = null;
+        } else {
+            state.error = 'Invalid credentials';
         }
-        state.isPageLoading = false
+    } catch (error) {
+        state.error = 'Login failed. Please try again.';
     }
-}
+};
+
+const setMethod = (method: string) => {
+    selectedMethod.value = method;
+};
+
+const sendVerificationCode = async () => {
+    try {
+        debugger
+        const params = {
+            email: state.email,
+            phone_number: state.phone,
+            method: selectedMethod.value,
+        }
+        const response = await authService.sendVerification(params);
+        isCodeSent.value = true;
+        errorMessage.value = '';
+    } catch (error) {
+        errorMessage.value = 'Failed to send verification code.';
+    }
+};
+
+const verifyCode = async () => {
+    try {
+        debugger
+        const params = {
+            code: state.code,
+            email: state.email,
+            phone_number: state.phone,
+            method: selectedMethod.value,
+        }
+        const response = await authService.verifyVerificationCode(params, state.code);
+        if (response.success) {
+            localStorage.setItem("_token", response.data?.token)
+            successMessage.value = 'Code verified!';
+            router.push('/dashboard');
+        } else {
+            errorMessage.value = 'Invalid code.';
+        }
+    } catch (error) {
+        errorMessage.value = 'Verification failed.';
+    }
+};
 </script>
 
 <style scoped>
-/* Flexbox adjustments */
-main {
-  display: flex;
+.input-field {
+    padding: 8px;
+    width: 100%;
+    margin-top: 4px;
 }
 
-/* Adjust image for left column */
-img {
-  object-fit: cover;
+.submit-button, .send-code-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.method-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+.method-option:hover {
+    background-color: #f0f0f0;
+}
+.selected {
+    background-color: #e0e0ff;
+}
+
+.icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 8px;
+}
+
+.error {
+    color: red;
+}
+.success {
+    color: green;
 }
 </style>
