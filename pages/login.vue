@@ -78,7 +78,9 @@ const router = useRouter();
 
 const login = async () => {
     try {
+        debugger
         const response = await authService.login({ email: state.email, password: state.password });
+        debugger
         if (response.data) {
             debugger
             state.phone = response.data.user.phone_number
@@ -124,7 +126,7 @@ const verifyCode = async () => {
             phone_number: state.phone,
             method: selectedMethod.value,
         }
-        const response = await authService.verifyVerificationCode(params, state.code);
+        const response = await authService.verifyVerification(params, state.code);
         if (response.success) {
             localStorage.setItem("_token", response.data?.token)
             successMessage.value = 'Code verified!';
