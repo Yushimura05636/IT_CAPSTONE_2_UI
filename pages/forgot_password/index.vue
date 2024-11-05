@@ -36,6 +36,7 @@ import { apiService } from '~/routes/api/API';
 
     try {
 
+        debugger
       //check if email is legit
       const params = {
         email: email.value,
@@ -52,7 +53,7 @@ import { apiService } from '~/routes/api/API';
         method: 'forgot',
       };
 
-      const result = await authService.sendVerification(params);
+      const result = await authService.sendVerification(parameters);
 
     if (result) {
         codeSent.value = false;
@@ -86,6 +87,8 @@ async function resendEmail() {
     if (response) {
       // Show a success message or flash a notification
       console.log('Email resent successfully');
+
+      errorMessage.value = '';
     }
   } catch (error) {
     console.log('Error resending email:', error);
