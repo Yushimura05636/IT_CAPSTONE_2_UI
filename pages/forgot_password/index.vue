@@ -16,6 +16,9 @@
         <h2 class="text-lg text-gray-700">
             An email has been sent to {{ displayCensoredEmail(email) }} to reset your password.
         </h2>
+        <button @click="resendEmail" class="mt-2 btn-secondary">
+        Resend Email
+        </button>
     </div>
     </div>
   </template>
@@ -71,6 +74,24 @@ import { apiService } from '~/routes/api/API';
   return `${censoredLocalPart}@${domain}`;
 };
 
+async function resendEmail() {
+  try {
+    // Call your API to resend the reset link
+    const params = {
+      email: email.value,
+      method: 'forgot',
+    };
+    const response = await authService.sendVerification(params);
+
+    if (response) {
+      // Show a success message or flash a notification
+      console.log('Email resent successfully');
+    }
+  } catch (error) {
+    console.log('Error resending email:', error);
+  }
+}
+
   </script>
 
   <style scoped>
@@ -109,4 +130,18 @@ import { apiService } from '~/routes/api/API';
     color: red;
     font-size: 14px;
   }
+
+  .btn-secondary {
+  background-color: #f3f4f6;
+  color: #4b5563;
+  padding: 10px;
+  font-weight: bold;
+  border-radius: 8px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #e5e7eb;
+}
   </style>
