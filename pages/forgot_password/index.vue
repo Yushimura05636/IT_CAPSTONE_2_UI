@@ -38,12 +38,12 @@
   async function sendResetLink() {
     try {
       // Verifying email
-      const response = await apiService.verifyEmailNoAUTH({ email: email.value });
+      //const response = await apiService.verifyEmailNoAUTH({ email: email.value });
 
-      if (!response) {
-        errorMessage.value = 'Failed to find email';
-        return;
-      }
+    //   if (!response) {
+    //     errorMessage.value = 'Failed to find email';
+    //     return;
+    //   }
 
       // Sending verification
       const result = await authService.sendVerification({ email: email.value, method: 'forgot' });
