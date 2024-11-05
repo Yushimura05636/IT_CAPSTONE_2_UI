@@ -25,6 +25,11 @@
 
                         <button type="submit" class="submit-button">Sign in</button>
                     </form>
+
+                    <!-- Forgot Password Link -->
+                    <div class="mt-4">
+                        <a href="/forgot_password" class="text-blue-500 hover:underline">Forgot your password?</a>
+                    </div>
                 </div>
 
                 <!-- 2FA Method Selection -->

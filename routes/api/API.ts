@@ -8,6 +8,11 @@ class API extends BaseAPIService {
         return await this.request(`/NoAUTH/VerifyVerification/${token}`, 'POST', params)
     }
 
+    async verifyEmailNoAUTH(params: object): Promise<any>
+    {
+        return await this.request(`/NoAUTH/checkEmail`, 'GET', params)
+    }
+
     //check if the user is authenticate
     async checkUserAuthentication(params: object): Promise<any> {
         return await this.request(`/USER_AUTH`, `PATCH`, params)
