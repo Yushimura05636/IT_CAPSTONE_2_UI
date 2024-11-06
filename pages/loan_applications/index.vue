@@ -21,7 +21,6 @@
             Create Loan Application
           </button>
           <button
-            :disabled="!selectedLoanAppID"
             @click="viewLoanApplication"
             class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition disabled:bg-gray-300 disabled:cursor-not-allowed"
           >
@@ -46,14 +45,6 @@
           </thead>
           <tbody>
             <tr v-for="(loanApp, index) in filteredLoanApps()" :key="index" class="hover:bg-gray-50 transition">
-              <td class="py-2 px-4 border-b border-gray-300 text-center">
-                <input
-                  type="radio"
-                  :value="loanApp.Loan_Application.id"
-                  v-model="selectedLoanAppID"
-                  class="cursor-pointer"
-                />
-              </td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.datetime_prepared }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.document_status_code }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.loan_application_no }}</td>
@@ -91,7 +82,6 @@ import { PageNameService } from '~/models/PageName';
 
 const state = reactive({
   columnHeaders: [
-    { name: '' },
     { name: 'Date Time Prepared' },
     { name: 'Status' },
     { name: 'Loan Application No' },
@@ -154,8 +144,8 @@ function createLoanApplication() {
 function viewLoanApplication() {
   if (selectedLoanAppID.value) {
       loanApplicationService.id = selectedLoanAppID.value;
+    }
     navigateTo(`/loan_applications/view`);
-  }
 }
 
 // Fetch loan applications when component mounts

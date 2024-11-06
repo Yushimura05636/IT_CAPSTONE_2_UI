@@ -78,7 +78,7 @@
                                 />
                             </div>
 
-                            <div class="mb-4">
+                            <!-- <div class="mb-4">
                                 <label class="block text-gray-700">Co-Maker</label>
                                 <select
                                     v-model="customerData[selectedCheckCustomerId].coMaker"
@@ -87,7 +87,7 @@
                                         {{ customer.personality.family_name }} {{ customer.personality.first_name }} {{ customer.personality.middle_name }}
                                     </option>
                                 </select>
-                            </div>
+                            </div> -->
 
                             <div class="mb-4">
                         <label class="block text-gray-700 mb-1">Loan Count</label>
@@ -151,14 +151,14 @@
                                 />
                             </div>
 
-                            <div class="mb-4">
+                            <!-- <div class="mb-4">
                                 <label class="block text-gray-700">Release Schedule</label>
                                 <input
                                     v-model="customerData[selectedCheckCustomerId].releaseSchedule"
                                     type="date"
                                     class="w-full border border-gray-300 rounded p-2"
                                 />
-                            </div>
+                            </div> -->
 
                             <!-- Automatically Updated Fields -->
                             <div class="mb-4">
