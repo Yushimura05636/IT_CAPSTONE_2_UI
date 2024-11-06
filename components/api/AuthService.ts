@@ -5,6 +5,10 @@ class AuthService extends BaseAPIService {
         return await this.request(`/login`, 'POST', params)
     }
 
+    async loginClient(params: object): Promise<any> {
+        return await this.request(`/loginClient`, 'POST', params)
+    }
+
     async logout(): Promise<any> {
         return await this.request(`/logout`, 'POST')
     }

@@ -191,14 +191,27 @@
     </div>
   </nav>
     <div class="flex flex-col md:flex-row items-center gap-4 pop-in">
-      <a href="login" class="w-full md:w-auto bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-opacity-50 animate__animated animate__pulse animate__infinite flex justify-center items-center whitespace-nowrap">Log in</a>
+      <button
+      @click="toggleModal"
+      class="w-full md:w-auto bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-opacity-50 animate__animated animate__pulse animate__infinite flex justify-center items-center whitespace-nowrap"
+        >
+      Log in
+      </button>
+      <LoginModal
+      :show="showModal" 
+      v-if="showModal"
+      @close="showModal = false"
+      @employeeLogin="employeeLogin"
+      @clientLogin="clientLogin"
+      />
+
+
       <a href="customer_register"
         class="w-full md:w-auto bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-opacity-50 animate__animated animate__pulse animate__infinite flex justify-center items-center whitespace-nowrap"
         aria-label="Sign Up">
           Register
       </a>
     </div>
-
   </div>
 </header>
 
@@ -474,11 +487,31 @@
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from "vue";
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
-import { ref } from "vue";
+import LoginModal from '~/components/login/LoginModal.vue';
 import { authService } from "~/components/api/AuthService";
+
+const router = useRouter();
+const showModal = ref(false);
+
+// Function to toggle modal visibility
+const toggleModal = () => {
+  showModal.value = !showModal.value;
+};
+
+const employeeLogin = () => {
+  showModal.value = false; // Close modal
+  console.log("Redirecting to login..."); // Debugging log
+  router.push('/login'); // Adjust this route as needed
+};
+const clientLogin = () => {
+  showModal.value = false; // Close modal
+  console.log("Redirecting to login..."); // Debugging log
+  router.push('/clientLogin'); // Adjust this route as needed
+};
 
 // Define the features using a ref for reactivity
 const features = ref([
