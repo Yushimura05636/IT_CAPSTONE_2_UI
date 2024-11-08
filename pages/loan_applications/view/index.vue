@@ -366,11 +366,10 @@ function initializeCustomerData() {
 async function loadCustomerData(customerId: any, customerObject: any) {
     selectedCheckCustomerId.value = customerId;
     selectedCustomerId.value = customerId;
-
-    debugger;
     try {
         state.value.isLoading = true;
         const customer = await apiService.getLoanApplicationByCustomerIdWithPendingNoAUTH({}, customerId);
+        debugger
         const customerLoanCount = await fetchCustomerLoanCount(customer.data.customer.loan_count);
         selectedLoanCountId.value = customerLoanCount?.id;
         state.value.fees = customer.data.loan.fees || [];
@@ -535,6 +534,8 @@ const approveTransaction = async () => {
             if (response) {
                 // Optionally, show a success message for each customer or track the success/failure of each
                 toast.success('All customers approved successfully.', { autoClose: 5000 });
+
+                navigateTo('/loan_applications')
             }
         } catch (error) {
             // Show an error message for the failed submission
