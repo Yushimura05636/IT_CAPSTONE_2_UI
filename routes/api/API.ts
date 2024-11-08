@@ -143,8 +143,12 @@ class API extends BaseAPIService {
         return await this.request(`/CUSTOMERS/NoAUTH`, 'GET', params)
     }
 
-    async getApproveCustomersNoAuth(params: object): Promise<any> {
-        return await this.request(`/CUSTOMERS/NoAUTH/CustomerAPPROVE`, 'GET', params)
+    async getApproveActiveCustomersNoAuth(params: object): Promise<any> {
+        return await this.request(`/CUSTOMERS/NoAUTH/CustomerAPPROVEAndActive`, 'GET', params)
+    }
+
+    async getApproveActivePendingCustomersNoAuth(params: object): Promise<any> {
+        return await this.request(`/CUSTOMERS/NoAUTH/CustomerAPPROVEAndActiveWithPending`, 'GET', params)
     }
 
     async getCustomerById(params: object, id: number): Promise<any> {
@@ -766,6 +770,10 @@ async authRequirementsUpdate(params: object): Promise<any> {
 
     async getCustomerByGroupId(params: object, id: number): Promise<any> {
         return await this.request(`/CUSTOMERS/NoAUTH/GroupAPPROVE/${id}`, 'GET', params)
+    }
+
+    async getCustomerByGroupIdWithApproveActive(params: object, id: number): Promise<any> {
+        return await this.request(`/CUSTOMERS/NoAUTH/GroupAPPROVEACTIVE/${id}`, 'GET', params)
     }
 
     async getCustomerByGroupIdAndData(params: object, id: number): Promise<any> {

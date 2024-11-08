@@ -172,7 +172,7 @@ const payments = ref<Payment[]>([]);
 
 async function fetchCustomers() {
   try {
-    const response = await apiService.getApproveCustomersNoAuth({});
+    const response = await apiService.getApproveActiveCustomersNoAuth({});
     customers.value = response.data;
   } catch (error) {
     toast.error(`${error}`, { autoClose: 3000 });
@@ -257,6 +257,8 @@ async function submitForm() {
     const response = await apiService.createPayment(payload); // Ensure this endpoint handles batch updates
 
     toast.success('Payment data submitted successfully!', { autoClose: 3000 });
+
+    navigateTo('/payments')
 
     // Optionally, refresh payments list or clear selections
     payments.value.forEach(payment => (payment.isSelected = false));

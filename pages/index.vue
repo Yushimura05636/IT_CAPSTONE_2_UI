@@ -513,7 +513,7 @@ async function removeToken() {
         const token = localStorage.getItem('_token');
 
         debugger;
-        if(token){
+        if(token && token.length > 0){
 
             //remove laravel authentication toke
             const response = await authService.logout();

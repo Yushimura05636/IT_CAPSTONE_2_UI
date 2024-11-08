@@ -292,7 +292,7 @@ const fetchGroups = async () => {
         const response = await apiService.getNoAuth({}, "customer_group");
         state.value.groups = response.data;
 
-        const customer_data = await apiService.getCustomersNoAuth({})
+        const customer_data = await apiService.getApproveActiveCustomersNoAuth({})
         state.value.customers_temp = customer_data.data;
     } catch (error) {
         toast.error(`${error}`, { autoClose: 5000 });
@@ -317,7 +317,7 @@ const fetchCustomers = async () => {
     state.value.isLoading = true;
     if (selectedGroupId.value) {
         try {
-            const response = await apiService.getCustomerByGroupId({}, selectedGroupId.value);
+            const response = await apiService.getCustomerByGroupIdWithApproveActive({}, selectedGroupId.value);
             state.value.customers = response.data;
             initializeCustomerData();
         } catch (error) {
