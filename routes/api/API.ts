@@ -147,6 +147,11 @@ class API extends BaseAPIService {
         return await this.request(`/CUSTOMERS/NoAUTH/CustomerAPPROVEAndActive`, 'GET', params)
     }
 
+    async getActiveCustomerWithPaymentsNoAuth(params: object): Promise<any> {
+        return await this.request(`/CUSTOMERS/NoAUTH/CustomerActiveWithPayments`, 'GET', params)
+    }
+
+    //pending means payment pending
     async getApproveActivePendingCustomersNoAuth(params: object): Promise<any> {
         return await this.request(`/CUSTOMERS/NoAUTH/CustomerAPPROVEAndActiveWithPending`, 'GET', params)
     }
@@ -161,6 +166,10 @@ class API extends BaseAPIService {
 
     async updateCustomer(params: object, id: number): Promise<any> {
         return await this.request(`/CUSTOMERS/${id}`, 'PUT', params)
+    }
+
+    async updateCustomerApprove(params: object, id: number): Promise<any> {
+        return await this.request(`/CUSTOMERS/UpdateApprove/${id}`, 'PUT', params)
     }
 
     async deleteCustomer(params: object, id: number): Promise<any> {
@@ -321,6 +330,10 @@ class API extends BaseAPIService {
 
     async getPaymentByIdNoAuth(params: object, id: number): Promise<any> {
         return await this.request(`/PAYMENTS/NoAUTH/${id}`, 'GET', params)
+    }
+
+    async getPaymentByCustomerIdNoAuth(params: object, id: number): Promise<any> {
+        return await this.request(`/PAYMENTS/NoAUTH/CustomerId/${id}`, 'GET', params)
     }
 
     async getPaymentByLoanNONoAuth(params: object, id: string): Promise<any> {
@@ -490,6 +503,11 @@ class API extends BaseAPIService {
     }
     async getFeeNoAuth(params: object): Promise<any>{
         return await this.request(`/FEES/NoAUTH`, 'GET', params);
+    }
+
+    //only get the active fees
+    async getFeeActiveNoAuth(params: object): Promise<any>{
+        return await this.request(`/FEES/NoAUTH/FeeActive`, 'GET', params);
     }
     async getFeeById(params: object, id: number): Promise<any> {
         return await this.request(`/FEES/${id}`, 'GET', params)

@@ -172,7 +172,7 @@ const payments = ref<Payment[]>([]);
 
 async function fetchCustomers() {
   try {
-    const response = await apiService.getApproveActiveCustomersNoAuth({});
+    const response = await apiService.getActiveCustomerWithPaymentsNoAuth({});
     customers.value = response.data;
   } catch (error) {
     toast.error(`${error}`, { autoClose: 3000 });
@@ -184,10 +184,16 @@ async function fetchCustomers() {
 async function fetchLoanApplications() {
 
   loading.value = true;
+  debugger
   try {
     if (selectedCustomer.value) {
       const response = await apiService.getLoanApplicationByCustomerId({}, selectedCustomer.value);
       loanApplications.value = response.data;
+
+      if(!response || response.data.length <= 0)
+      {
+        fetchPayments();
+      }
 
     }
   } catch (error) {
@@ -198,11 +204,23 @@ async function fetchLoanApplications() {
 }
 
 async function fetchPayments() {
+    debugger
   try {
     loading.value = true;
     if(selectedLoan.value)
     {
         const response = await apiService.getPaymentByLoanNONoAuth({}, selectedLoan.value);
+        if(!response.data && response.data == null && response.data.length <= 0)
+        {
+            throw new Error(`Payment Schedule does not exists`);
+        }
+
+        payments.value = response.data;
+    }
+    else
+    {
+        debugger
+        const response = await apiService.getPaymentByCustomerIdNoAuth({}, selectedCustomer.value);
         if(!response.data && response.data == null)
         {
             throw new Error(`Payment Schedule does not exists`);

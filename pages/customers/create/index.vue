@@ -165,7 +165,7 @@
 
           <div>
             <label for="passbookNo" class="block text-gray-700">Passbook No</label>
-            <input v-model="customer.passbook_no" type="number" id="passbookNo" class="w-full border rounded-lg px-4 py-2" />
+            <input v-model="customer.passbook_no" type="number" id="passbookNo" class="w-full border rounded-lg px-4 py-2" readonly />
             <span v-if="validationErrorsForCustomer.passbook_no" class="text-red-500 text-sm">{{ validationErrorsForCustomer.passbook_no }}</span>
 
           </div>
@@ -188,29 +188,11 @@
 
           </div>
 
-          <div>
-            <label for="enableMortuary" class="block text-gray-700">Enable Mortuary</label>
-            <select v-model="customer.enable_mortuary" id="enable_mortuary" class="w-full border rounded-lg px-4 py-2">
-              <option value="1">Yes</option>
-              <option value="2">No</option>
-            </select>
-            <span v-if="validationErrorsForCustomer.enable_mortuary" class="text-red-500 text-sm">{{ validationErrorsForCustomer.enable_mortuary }}</span>
-
-          </div>
-          
-          <div v-if="customer.enable_mortuary == '1'">
-            <label for="mortuaryCoverageStart" class="block text-gray-700">Mortuary Coverage Start</label>
-            <input v-model="customer.mortuary_coverage_start" type="date" id="mortuaryCoverageStart" class="w-full border rounded-lg px-4 py-2" />
-          </div>
-
-          <div v-if="customer.enable_mortuary == '1'">
-            <label for="mortuaryCoverageEnd" class="block text-gray-700">Mortuary Coverage End</label>
-            <input v-model="customer.mortuary_coverage_end" type="date" id="mortuaryCoverageEnd" class="w-full border rounded-lg px-4 py-2" />
-          </div>
-          
         </div>
 
-        <div class="mt-4">
+        <!-- Requirements table -->
+        <div class="mt-4 mb-4">
+            <h3 class="text-gray-700 font-bold my-4">Requirements</h3>
         <table class="min-w-full table-auto">
             <thead>
                 <tr>
@@ -228,7 +210,6 @@
                                 :value="requirement.id"
                                 v-model="selectedRequirements"
                                 @change="getSelectedRequirements"
-                                :disabled="!requirement.expiry_date"
                                 class="form-checkbox h-5 w-5 text-green-600"
                             />
                         </label>
@@ -250,6 +231,50 @@
                   {{ requirementsPrompt }}
               </span> -->
         </table>
+
+        <div class="mb-4 mt-4">
+
+            <!-- Fees table -->
+  <h3 class="text-gray-700 font-bold my-4">Fees</h3>
+
+  <div v-if="state.fees && state.fees.length > 0" class="overflow-auto max-h-[250px]">
+    <table class="min-w-full bg-white border border-gray-300 mb-4">
+      <thead>
+        <tr>
+          <th class="px-4 py-2 border text-left">Select</th>
+          <th class="px-4 py-2 border text-left">Fee Description</th>
+          <th class="px-4 py-2 border text-left">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="fee in state.fees" :key="fee.id">
+          <td class="px-4 py-2 border text-left">
+            <input
+              type="checkbox"
+              :value="fee.id"
+              :checked="customerData.selectedFees.includes(fee.id)"
+              @change="updateSelectedFees(fee, $event.target.checked)"
+            />
+          </td>
+          <td class="px-4 py-2 border">{{ fee.description }}</td>
+          <td class="px-4 py-2 border">{{ fee.amount }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mb-4">
+    <label class="block text-gray-700">Total Fees</label>
+    <input
+      v-model="totalFees"
+      step="0.01"
+      type="number"
+      class="w-full border border-gray-300 rounded p-2"
+      readonly
+    />
+  </div>
+</div>
+
     </div>
 
     <div class="mt-4 flex justify-end space-x-4">
@@ -311,9 +336,13 @@ const personality = ref({
   notes: '',
 });
 
+const customerData = ref({
+  selectedFees: [], // Tracks selected fee IDs
+});
+
 const customer = ref({
   group_id: '',
-  passbook_no: '',
+  passbook_no: generatePassbookNo(),
   loan_count_id: 0,
   enable_mortuary: '',
   mortuary_coverage_start: '',
@@ -330,8 +359,58 @@ const state = ref({
   personality_status_code: [],
   loan_count: [],
   requirements: [],
+  fees: [],
   isTableLoading: false,
 });
+
+// Function to fetch fees from an API or data source
+async function fetchFees() {
+  try {
+    debugger
+    const response = await apiService.getFeeActiveNoAuth({});
+    // Simulating an API call with hardcoded data
+    state.value.fees = response.data;
+  } catch (error) {
+    console.error('Error fetching fees:', error);
+  }
+}
+
+// Function to update selected fees based on checkbox state
+function updateSelectedFees(fee, isSelected) {
+    debugger
+  if (isSelected) {
+    if (!customerData.value.selectedFees.includes(fee.id)) {
+        customerData.value.selectedFees.push({
+        id: fee.id,
+        amount: fee.amount,
+        });
+    }
+  } else {
+    customerData.value.selectedFees = customerData.value.selectedFees.filter(id => id !== fee.id);
+  }
+}
+
+// Computed property to calculate total fees of selected items
+const totalFees = computed(() => {
+  return state.value.fees
+    .filter(fee => customerData.value.selectedFees.includes(fee.id))
+    .reduce((total, fee) => total + fee.amount, 0);
+});
+
+// Auto-generate passbook number
+function generatePassbookNo() {
+  return Math.floor(100000000 + Math.random() * 900000000).toString(); // 9-digit random number
+}
+
+// Check if user is 18 years old
+function isValidAge(birthday) {
+  const birthDate = new Date(birthday);
+  const today = new Date();
+  const age = today.getFullYear() - birthDate.getFullYear();
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+
+  return age > 18 || (age === 18 && monthDiff >= 0);
+}
 
 const fetchBarangays = async () => {
   // Replace with your actual API call
@@ -446,6 +525,7 @@ onMounted(async () => {
     // fetchPersonalityStatusCode(),
     fetchLoanCount(),
     fetchNotExpiredCustomerRequirementsNoAUTH(),
+    fetchFees(),
   ]);
 });
 
@@ -472,7 +552,6 @@ const validationErrors = ref({
       group_id: '',
       passbook_no: '',
       loan_count_id: '',
-      enable_mortuary: '',
     });
 
 
@@ -480,26 +559,16 @@ const validationErrorsForCustomer = ref({
       group_id: '',
       passbook_no: '',
       loan_count_id: '',
-      enable_mortuary: '',
     });
 
     const requirementsPrompt = ref('');
 
-    // Watching selectedRequirements for changes
-watch(selectedRequirements, (newSelected) => {
-    // Check for expiry dates in selected requirements
-    const hasMissingExpiryDate = newSelected.some(requirementId => {
-        const requirement = requirements.value.find(req => req.id === requirementId);
-        return requirement && !requirement.expiry_date;
-    });
-
-    if (hasMissingExpiryDate) {
-        toast.info("Please select an expiry date for each selected requirement.");
-        requirementsPrompt.value = "Input expiry date for all selected requirements before proceeding.";
-    } else {
-        requirementsPrompt.value = ""; // Clear prompt if all dates are filled
-    }
-});
+// Validate Philippine-based phone number
+function isValidPhilippineNumber(phone) {
+  const mobileRegex = /^09\d{10}$/; // 12 digits
+  const landlineRegex = /^0\d{7,9}$/; // 7-9 digits
+  return mobileRegex.test(phone) || landlineRegex.test(phone);
+}
 
 const createCustomer = async () => {
   try {
@@ -516,6 +585,18 @@ const createCustomer = async () => {
       if (!personality.value[field as keyof typeof personality.value]) {
         validationErrors.value[field as keyof typeof validationErrors.value] = `Please complete all required fields before proceeding.`;
       }
+    }
+
+    // Validate age
+    if (!isValidAge(personality.value.birthday)) {
+        toast.error("Customer must be at least 18 years old.");
+        return;
+    }
+
+    // Validate phone numbers
+    if (!isValidPhilippineNumber(personality.value.cellphone_no) || !isValidPhilippineNumber(personality.value.telephone_no)) {
+        toast.error("Please enter a valid Philippine-based phone number.");
+        return;
     }
 
     for (const field in validationErrorsForCustomer.value) {
@@ -543,9 +624,6 @@ const createCustomer = async () => {
         !customer.value.group_id  ||
         !customer.value.passbook_no  ||
         !customer.value.loan_count_id  ||
-        !customer.value.enable_mortuary  ||
-        // !customer.value.mortuary_coverage_start  ||
-        // !customer.value.mortuary_coverage_end  ||
         !personality.value.datetime_registered
       )
       {
@@ -598,9 +676,11 @@ const createCustomer = async () => {
             notes: personality.value.notes, // Get from personality ref, optional
         },
         requirements: state.value.requirements,
+        fees: customerData.value.selectedFees,
     };
 
-    debugger;
+    debugger
+
     await apiService.createCustomer(jsonObject);
     console.log("JSON Object:", JSON.stringify(jsonObject, null, 2));
     toast.success("Customer create successfully!", {
@@ -645,7 +725,7 @@ async function fetchNotExpiredCustomerRequirementsNoAUTH() {
         }
     }
 
-    debugger;
+
 
     // Assuming selectedDataRequirements is an array
     state.value.requirements = []; // Reset the array first
@@ -660,18 +740,35 @@ async function fetchNotExpiredCustomerRequirementsNoAUTH() {
 
 
 const formatDate = (dateString) => {
-  console.log("Input Date String:", dateString); // Add this line for debugging
-  const parts = dateString.split('-');
-  debugger;
-  if (parts.length === 3) {
-    const month = parts[1].padStart(2, '0');
-    const day = parts[2].padStart(2, '0');
-    const year = parts[0];
-    return `${year}-${month}-${day}`;
-  } else {
-    console.error("Invalid date format. Expected MM/DD/YYYY.");
-    return null;
-  }
+    if(!(dateString == null) || !(dateString == undefined))
+{
+    console.log("Input Date String:", dateString); // Add this line for debugging
+    const parts = dateString.split('-');
+    // debugger;
+    if (parts.length === 3) {
+        const month = parts[1].padStart(2, '0');
+        const day = parts[2].padStart(2, '0');
+        const year = parts[0];
+        return `${year}-${month}-${day}`;
+    } else {
+        console.error("Invalid date format. Expected MM/DD/YYYY.");
+        return null;
+    }
+}
+return null
+//     console.log("Input Date String:", dateString); // Add this line for debugging
+//   const parts = dateString.split('-');
+
+
+//   if (parts.length === 3) {
+//     const month = parts[1].padStart(2, '0');
+//     const day = parts[2].padStart(2, '0');
+//     const year = parts[0];
+//     return `${year}-${month}-${day}`;
+//   } else {
+//     console.error("Invalid date format. Expected MM/DD/YYYY.");
+//     return null;
+//   }
 };
 
 const handleCancel = () => {

@@ -141,6 +141,7 @@ import { PageNameService } from '~/models/PageName';
     { value: 'name_type', label: 'Name Type' },
     { value: 'customer_group', label: 'Customer Group' },
     { value: 'document_status_code', label: 'Document Status Code' },
+    { value: 'requirement', label: 'Requirement' },
   ];
 
   let selectedLibraryId = ref(null); // Track selected library

@@ -509,6 +509,7 @@ const toggleRequirements = () => {
 };
 
 async function removeToken() {
+debugger
     try {
         const token = localStorage.getItem('_token');
 
@@ -520,9 +521,6 @@ async function removeToken() {
 
             // Remove the token from local storage
             localStorage.removeItem('_token'); // Adjust the key based on your implementation
-
-            //go back to the landing page
-            navigateTo(`/`);
         }
     } catch (error) {
         toast.error(`${error}`, {

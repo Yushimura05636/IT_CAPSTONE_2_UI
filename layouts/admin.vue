@@ -289,7 +289,7 @@
       <span class="sr-only">Open sidebar</span>
       <Bars3Icon class="h-6 w-6" aria-hidden="true" />
     </button>
-    <h1 class="text-lg font-semibold">{{ PageNameService.pageName ?? 'Dashboard' }}</h1>
+    <h1 class="text-lg font-semibold">{{ formattedPageName }}</h1>
 
     <!-- User Dropdown -->
     <!-- User Dropdown -->
@@ -524,6 +524,14 @@ const toggleHighlight = (itemName: string) => {
     highlightedItem.value = itemName; // Highlight the clicked item
   }
 };
+
+const formattedPageName = computed(() => {
+  // Extract the path segment for the current page
+  const pageName = route.path.split('/')[1] || 'dashboard';
+
+  // Replace underscores with spaces, make uppercase
+  return pageName.replace(/_/g, ' ').toUpperCase();
+});
 
 
 function isPageNameTrue(): string {
