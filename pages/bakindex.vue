@@ -4,31 +4,31 @@
   <div class="container mx-auto flex justify-between items-center scroll-pop">
     <div class="flex items-center gap-2">
       <img src="../img/LendCash_Logo-removebg-preview.png" class="w-20" alt="logo">
-      <p class="text-2xl font-bold text-teal-900">LendCash</p>
+      <p class="text-medium text-green-600">LendCash</p>
     </div>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     <!-- FEATURES -->
     <nav class="hidden md:flex gap-12">
     <div class="relative nav-item">
-        <a href="features" class="text-gray-600 hover:text-teal-600 font-bold">Features</a>
+        <a href="features" class="text-gray-600 hover:text-green-600 font-bold">Features</a>
 <div class="info-box">
-    <section class="features-section py-12 bg-teal-50">
-        <h2 class="text-2xl font-bold text-center text-teal-600 mb-8">Microfinance Features</h2>
+    <section class="features-section py-12 bg-gray-50">
+        <h2 class="text-2xl font-bold text-center text-gray-700 mb-8">Microfinance Features</h2>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
     <div v-for="feature in features" :key="feature.title" class="feature-card p-6 text-center bg-white rounded-lg shadow-md">
-      <h3 class=" text-lg font-semibold text-teal-600 mb-2">{{ feature.title }}</h3>
+      <h3 class="text-lg font-semibold text-gray-800 mb-2">{{ feature.title }}</h3>
       <p class="text-sm text-gray-600">{{ feature.description }}</p>
     </div>
   </div>
 </section>
 
   <div class="additional-info text-center mt-6">
-    <h3 class="text-lg font-semibold text-teal-600 mb-2">Why Microfinance Matters</h3>
+    <h3 class="text-lg font-semibold text-green-600 mb-2">Why Microfinance Matters</h3>
     <p class="text-medium text-gray-600">
       Microfinance plays a critical role in promoting financial inclusion by providing small loans and financial services to individuals and businesses that lack access to traditional banking. It empowers entrepreneurs to start or expand small businesses, contributing to economic growth and job creation. Additionally, microfinance institutions often offer training and support to help clients manage their finances effectively, fostering sustainable development.
     </p>
-    <h3 class="text-lg font-semibold text-teal-600 mb-2">Key Services Offered</h3>
+    <h3 class="text-lg font-semibold text-green-600 mb-2">Key Services Offered</h3>
     <ul class="list-disc list-inside text-medium text-gray-600">
       <li>MICROLOANS: Small, low-interest loans designed for those without access to conventional credit.</li>
       <li>GROUP LENDING: Allowing clients to form groups to borrow collectively, reducing risk for lenders.</li>
@@ -40,53 +40,53 @@
 
 <!-- ABOUT -->
 <div class="relative nav-item">
-  <a href="about" class="text-gray-600 hover:text-teal-600 font-bold">About</a>
+  <a href="about" class="text-gray-600 hover:text-green-600 font-bold">About</a>
   <div class="info-box">
-    <h2 class="text-2xl font-bold text-center text-teal-600 mb-8">About Us</h2>
+    <h2 class="text-2xl font-bold text-center text-green-700 mb-8">About Us</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-8xl mx-auto">
       <div v-for="about in about" :key="about.title" class="about-card p-6 text-center bg-white rounded-lg shadow-md">
         <div class="feature-icon mb-4">
-          <about.icon class="w-12 h-12 text-teal-600 mx-auto" />
+          <about.icon class="w-12 h-12 text-green-500 mx-auto" />
         </div>
-        <h3 class="text-lg font-semibold text-teal-600 mb-2">{{ about.title }}</h3>
-        <p class="text-medium text-teal-600">{{ about.description }}</p>
+        <h3 class="text-lg font-semibold text-green-600 mb-2">{{ about.title }}</h3>
+        <p class="text-medium text-gray-600">{{ about.description }}</p>
       </div>
     </div>
     <div class="additional-info text-center mt-6">
-      <h3 class="text-lg font-bold text-teal-600 mb-2">MISSION</h3>
-      <h4 class="text-lg font-bold text-teal-600 mb-2">Mission Statement for LendCash</h4>
+      <h3 class="text-lg font-bold text-green-600 mb-2">MISSION</h3>
+      <h4 class="text-lg font-bold text-green-600 mb-2">Mission Statement for LendCash</h4>
       <h5>"Empowering Dreams, One Loan at a Time."</h5>
       <p class="text-medium text-gray-600">
         At LendCash, our mission is to provide accessible and affordable microfinance solutions that empower individuals and small businesses to achieve their financial goals. We are committed to fostering financial inclusion by offering a range of tailored products, exceptional customer service, and educational resources that promote responsible borrowing and entrepreneurship.
       </p>
-      <h3 class="text-lg font-bold text-teal-600 mb-2">VISION</h3>
-      <h4 class="text-lg font-bold text-teal-600 mb-2">Vision Statement for LendCash</h4>
+      <h3 class="text-lg font-bold text-green-600 mb-2">VISION</h3>
+      <h4 class="text-lg font-bold text-green-600 mb-2">Vision Statement for LendCash</h4>
       <h5>"A World Where Every Aspiration is Within Reach."</h5>
       <p class="text-medium text-gray-600">
         Our vision is to create a world where financial resources are accessible to everyone, regardless of their background or circumstances. We envision a future where individuals and communities thrive through empowered financial decisions, sustainable economic growth, and opportunities for all, transforming lives and fostering prosperity across the globe.
       </p>
-      <h3 class="text-lg font-bold text-teal-600 mb-2">History Background of LendCash</h3>
+      <h3 class="text-lg font-bold text-green-600 mb-2">History Background of LendCash</h3>
       <p class="text-medium text-gray-600">
         LendCash was founded in response to the growing need for accessible financial services in underserved communities. Recognizing the barriers faced by individuals and small businesses in securing traditional loans, the company set out to create a microfinance platform that empowers its clients with the financial resources necessary to achieve their goals. Since its inception, LendCash has focused on delivering tailored financial products that cater specifically to the unique needs of its customers. The founders leveraged their expertise in finance and technology to develop an intuitive online platform, allowing users to apply for loans seamlessly and receive timely support. Throughout its journey, LendCash has prioritized micro loans and micro groupings, providing resources and tools to help borrowers understand the responsibilities that come with taking loans. By fostering a culture of responsible lending and borrowing, LendCash aims to not only provide funds but also to promote financial literacy and independence among its users. As LendCash continues to grow, its commitment to community development remains at the forefront, working closely with local organizations and stakeholders to ensure that the benefits of microfinance reach those who need it most. Through innovative practices and a deep understanding of its customers, LendCash is dedicated to transforming the landscape of microfinance and making a positive impact in the lives of individuals and communities.
       </p>
-      <h3 class="text-lg font-semibold text-teal-600 mb-2">Impact on Communities</h3>
+      <h3 class="text-lg font-semibold text-green-600 mb-2">Impact on Communities</h3>
       <p class="text-medium text-gray-600">
         By providing financial resources to underserved populations, microfinance fosters community development. It enables clients to invest in education, healthcare, and small business ventures, leading to improved living standards and economic stability. Additionally, it encourages women’s empowerment, as many microfinance programs target female entrepreneurs, helping to break cycles of poverty.
       </p>
 
     <!-- Team Information Section -->
-<h3 class="text-lg font-semibold text-teal-600 mb-2">Meet Our Team</h3>
+<h3 class="text-lg font-semibold text-green-600 mb-2">Meet Our Team</h3>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
   <div class="team-member p-4 bg-white rounded-lg shadow-md text-center">
     <img src="" alt="Team Member 1" class="w-24 h-24 rounded-full mx-auto mb-2" />
-    <h4 class="font-bold text-teal-600">Adrian Sastre</h4>
+    <h4 class="font-bold text-green-600">Adrian Sastre</h4>
     <p class="text-sm text-gray-600">Leader and Programmer</p>
     <p class="text-xs text-gray-500">Is a student of STI College Davao taking up Bachelor of Science in Information Technology, a 4-year course program.</p>
     <div class="social-media mt-2">
-      <a href="https://facebook.com/adrian" target="_blank" class="text-gray-600 hover:text-teal-600 mx-2">
+      <a href="https://facebook.com/adrian" target="_blank" class="text-gray-600 hover:text-green-600 mx-2">
         <i class="fab fa-facebook"></i>
       </a>
-      <a href="mailto:adrian@example.com" class="text-gray-600 hover:text-teal-600 mx-2">
+      <a href="mailto:adrian@example.com" class="text-gray-600 hover:text-green-600 mx-2">
         <i class="fas fa-envelope"></i>
       </a>
     </div>
@@ -94,14 +94,14 @@
 
   <div class="team-member p-4 bg-white rounded-lg shadow-md text-center">
     <img src="" alt="Team Member 2" class="w-24 h-24 rounded-full mx-auto mb-2" />
-    <h4 class="font-bold text-teal-600">Eric Ramones</h4>
+    <h4 class="font-bold text-green-600">Eric Ramones</h4>
     <p class="text-sm text-gray-600">Programmer</p>
     <p class="text-xs text-gray-500">Is a student of STI College Davao taking up Bachelor of Science in Information Technology, a 4-year course program.</p>
     <div class="social-media mt-2">
-      <a href="https://facebook.com/eric" target="_blank" class="text-gray-600 hover:text-teal-600 mx-2">
+      <a href="https://facebook.com/eric" target="_blank" class="text-gray-600 hover:text-green-600 mx-2">
         <i class="fab fa-facebook"></i>
       </a>
-      <a href="mailto:eric@example.com" class="text-gray-600 hover:text-teal-600 mx-2">
+      <a href="mailto:eric@example.com" class="text-gray-600 hover:text-green-600 mx-2">
         <i class="fas fa-envelope"></i>
       </a>
     </div>
@@ -109,14 +109,14 @@
 
   <div class="team-member p-4 bg-white rounded-lg shadow-md text-center">
     <img src="" alt="Team Member 3" class="w-24 h-24 rounded-full mx-auto mb-2" />
-    <h4 class="font-bold text-teal-600">Froy Lao</h4>
+    <h4 class="font-bold text-green-600">Froy Lao</h4>
     <p class="text-sm text-gray-600">Programmer</p>
     <p class="text-xs text-gray-500">Is a student of STI College Davao taking up Bachelor of Science in Information Technology, a 4-year course program.</p>
     <div class="social-media mt-2">
-      <a href="https://facebook.com/froy" target="_blank" class="text-gray-600 hover:text-teal-600 mx-2">
+      <a href="https://facebook.com/froy" target="_blank" class="text-gray-600 hover:text-green-600 mx-2">
         <i class="fab fa-facebook"></i>
       </a>
-      <a href="mailto:froy@example.com" class="text-gray-600 hover:text-teal-600 mx-2">
+      <a href="mailto:froy@example.com" class="text-gray-600 hover:text-green-600 mx-2">
         <i class="fas fa-envelope"></i>
       </a>
     </div>
@@ -124,14 +124,14 @@
 
   <div class="team-member p-4 bg-white rounded-lg shadow-md text-center">
     <img src="" alt="Team Member 4" class="w-24 h-24 rounded-full mx-auto mb-2" />
-    <h4 class="font-bold text-teal-600">Maviel Segurog</h4>
+    <h4 class="font-bold text-green-600">Maviel Segurog</h4>
     <p class="text-sm text-gray-600">Programmer</p>
     <p class="text-xs text-gray-500">Is a student of STI College Davao taking up Bachelor of Science in Information Technology, a 4-year course program.</p>
     <div class="social-media mt-2">
-      <a href="https://facebook.com/maviel" target="_blank" class="text-gray-600 hover:text-teal-600 mx-2">
+      <a href="https://facebook.com/maviel" target="_blank" class="text-gray-600 hover:text-green-600 mx-2">
         <i class="fab fa-facebook"></i>
       </a>
-      <a href="mailto:maviel@example.com" class="text-gray-600 hover:text-teal-600 mx-2">
+      <a href="mailto:maviel@example.com" class="text-gray-600 hover:text-green-600 mx-2">
         <i class="fas fa-envelope"></i>
       </a>
     </div>
@@ -143,40 +143,40 @@
 
         <!-- CONTACT -->
     <div class="relative nav-item">
-      <a href="contact" class="text-gray-600 hover:text-teal-600 font-bold">Contact</a>
+      <a href="contact" class="text-gray-600 hover:text-green-600 font-bold">Contact</a>
       <div class="info-box">
-        <section class="contact-us py-12 bg-teal-50">
-    <h2 class="text-2xl font-bold text-center text-teal-700 mb-8">Contact Us: LendCash Microfinance</h2>
+        <section class="contact-us py-12 bg-gray-50">
+    <h2 class="text-2xl font-bold text-center text-green-700 mb-8">Contact Us: LendCash Microfinance</h2>
     <p class="text-center text-gray-600 mb-4">
         At LendCash, we are dedicated to empowering individuals and small businesses through accessible financial solutions.
         Whether you have questions about our lending system, need assistance, or want to share feedback, we’re here to help!
     </p>
 
-    <h3 class="text-lg font-semibold text-teal-600 mb-4">Our Lending System</h3>
+    <h3 class="text-lg font-semibold text-green-600 mb-4">Our Lending System</h3>
     <ul class="list-disc list-inside mb-6 text-gray-600">
         <li><strong>Microloans</strong>: Small loans designed for individuals and entrepreneurs to start or grow their businesses.</li>
         <li><strong>Group Lending</strong>: Allowing clients to form groups to borrow collectively, reducing risk for lenders.</li>
         <li><strong>Website Services</strong>: Implementing website solutions to improve accessibility for clients.</li>
     </ul>
 
-    <h3 class="text-lg font-semibold text-teal-600 mb-4">Get in Touch</h3>
+    <h3 class="text-lg font-semibold text-green-600 mb-4">Get in Touch</h3>
     <div class="contact-info mb-6">
         <p><strong>Customer Support:</strong></p>
         <p>Phone: +1-800-555-0199</p>
-        <p>Email: <a href="mailto:ERD@lendcash.com" class="text-teal-600">ERD@lendcash.com</a></p>
+        <p>Email: <a href="mailto:ERD@lendcash.com" class="text-green-600">ERD@lendcash.com</a></p>
         <p>Office Hours: Monday to Friday, 9 AM - 5 PM (EST)</p>
     </div>
 
-    <h3 class="text-lg font-semibold text-teal-600 mb-4">Visit Us:</h3>
+    <h3 class="text-lg font-semibold text-green-600 mb-4">Visit Us:</h3>
     <p>Location: Acacia-Magsaysay, Davao City, Philippines</p>
 
-    <h3 class="text-lg font-semibold text-teal-600 mb-4">Follow Us on Social Media:</h3>
+    <h3 class="text-lg font-semibold text-green-600 mb-4">Follow Us on Social Media:</h3>
     <div class="social-media">
         <a href="https://www.facebook.com/lendcash" class="text-green-600">Facebook</a> |
         <a href="https://www.instagram.com/lendcash" class="text-green-600">Instagram</a>
     </div>
 
-    <h3 class="text-lg font-semibold text-teal-600 mb-4">Feedback & Inquiries</h3>
+    <h3 class="text-lg font-semibold text-green-600 mb-4">Feedback & Inquiries</h3>
     <p class="text-gray-600 mb-4">
         We value your input! If you have suggestions, comments, or questions, please reach out through our contact form on our website or send us an email.
         We strive to respond to all inquiries within 24 hours.
@@ -204,39 +204,34 @@
       @employeeLogin="employeeLogin"
       @clientLogin="clientLogin"
       />
-    </div>
 
+
+      <a href="customer_register"
+        class="w-full md:w-auto bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-opacity-50 animate__animated animate__pulse animate__infinite flex justify-center items-center whitespace-nowrap"
+        aria-label="Sign Up">
+          Register
+      </a>
+    </div>
   </div>
 </header>
 
 <main class="py-16 px-4 md:px-16">
     <div class="container mx-auto flex flex-col md:flex-row gap-16 scroll-pop">
     <div class="md:w-1/2">
-      <h2 class="text-5xl font-bold text-teal-600 mb-4">LendCash Microfinance System for ERD Financial Solution</h2>
+      <h2 class="text-5xl font-bold text-green-500 mb-4">LendCash Microfinance System for ERD Financial Solution</h2>
       <p class="text-lg text-gray-600 mb-8">An Online Microfinance Lending System designed to empower individuals and small businesses by providing quick and easy access to financial services.</p>
-      <a href="customer_register">
-        <div class="flex items-center gap-4">
-          <button class="button">
-                Register to Loan!
-                <svg fill="currentColor" viewBox="0 0 24 24" class="icon">
-                <path
-                  clip-rule="evenodd"
-                  d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm4.28 10.28a.75.75 0 000-1.06l-3-3a.75.75 0 10-1.06 1.06l1.72 1.72H8.25a.75.75 0 000 1.5h5.69l-1.72 1.72a.75.75 0 101.06 1.06l3-3z"
-                  fill-rule="evenodd"
-                ></path>
-              </svg>
-          </button>
-        </div>
-    </a>
+      <div class="flex items-center gap-4">
+        <p class="text-5xl font-bold text-green-500">Apply Na!</p>
+      </div>
     </div>
     <div class="md:w-1/2 flex justify-center items-center animate__animated animate__zoomIn">
       <img src="../img/handsakebg_1sect.jpg" alt="LendCash" class="w-full h-auto rounded-lg shadow-lg">
     </div>
 </div>
 
-    <div class="relative bg-cover bg-no-repeat">
+    <div class="relative bg-cover bg-no-repeat" style="background-image: url('../img/rainingmoney.png');">
   <div class="container mx-auto mt-20 scroll-pop text-center">
-    <h3 class="text-6xl font-bold text-teal-600 mb-4">LendCash Offers</h3>
+    <h3 class="text-6xl font-bold text-green-500 mb-4">LendCash Offers</h3>
     <p class="text-lg text-gray-600 mb-8">Creating Opportunities, One Microloan at a Time!</p>
 
     <div class="flex justify-center pop-in"> <!-- Flexbox added to center the grid -->
@@ -244,13 +239,13 @@
 
         <div class="bg-white rounded-md p-6 shadow-lg pop-in flex flex-col items-center">
           <img src="../img/grouping.png" alt="Group Lending" class="w-16 h-16 mb-4">
-          <h4 class="text-xl font-bold text-teal-600 mb-2 text-center">Group Lending</h4>
+          <h4 class="text-xl font-bold text-green-600 mb-2 text-center">Group Lending</h4>
           <p class="text-gray-600 text-center">Offers small groups of individuals the opportunity to come together to access financial services, guaranteeing each other's loans and fostering a sense of shared responsibility and mutual support.</p>
         </div>
 
         <div class="bg-white rounded-md p-6 shadow-lg pop-in flex flex-col items-center">
           <img src="../img/no-hidden-fees.png" alt="No Surcharges" class="w-16 h-16 mb-4">
-          <h4 class="text-xl font-bold text-teal-600 mb-2 text-center">No Surcharges</h4>
+          <h4 class="text-xl font-bold text-green-600 mb-2 text-center">No Surcharges</h4>
           <p class="text-gray-600 text-center">Providing loans and financial services without hidden fees ensures transparency, making financial products more accessible and affordable.</p>
         </div>
 
@@ -262,19 +257,19 @@
 
         <div class="bg-white rounded-md p-6 shadow-lg pop-in flex flex-col items-center">
           <img src="../img/easy-loan-process.png" alt="Easy Loan Process" class="w-16 h-16 mb-4">
-          <h4 class="text-xl font-bold text-teal-600 mb-2 text-center">Easy Loan Process</h4>
+          <h4 class="text-xl font-bold text-green-600 mb-2 text-center">Easy Loan Process</h4>
           <p class="text-gray-600 text-center">Our streamlined loan process makes borrowing simple, reducing the complexity and time typically involved so you can focus on what matters most.</p>
         </div>
 
         <div class="bg-white rounded-md p-6 shadow-lg pop-in flex flex-col items-center">
           <img src="../img/loan-disbursement.png" alt="Quick Cash Disbursement" class="w-16 h-16 mb-4">
-          <h4 class="text-xl font-bold text-teal-600 mb-2 text-center">Quick Cash Disbursement</h4>
+          <h4 class="text-xl font-bold text-green-600 mb-2 text-center">Quick Cash Disbursement</h4>
           <p class="text-gray-600 text-center">Get access to funds when you need them the most. Our streamlined process ensures that you receive your cash swiftly and efficiently.</p>
         </div>
 
         <div class="bg-white rounded-md p-6 shadow-lg pop-in flex flex-col items-center">
           <img src="../img/hassle-free.png" alt="Hassle-Free Requirements" class="w-16 h-16 mb-4">
-          <h4 class="text-xl font-bold text-teal-600 mb-2 text-center">Hassle-Free Requirements</h4>
+          <h4 class="text-xl font-bold text-green-600 mb-2 text-center">Hassle-Free Requirements</h4>
           <p class="text-gray-600 text-center">Simplified borrowing requirements make the process accessible and efficient for everyone, ensuring a smoother experience for both borrowers and lenders.</p>
         </div>
 
@@ -289,25 +284,23 @@
     <!-- Additional Content: How It Works Section -->
     <section class="py-16 pop-in">
       <div class="container mx-auto text-center">
-        <h3 class="text-4xl font-bold text-teal-600 mb-6 pop-in">How It Works</h3>
-        <p class="text-lg text-teal-500 mb-10">We make it easy for you to get access to funds when you need them the most. Here’s how you can get started:</p>
+        <h3 class="text-4xl font-bold text-green-500 mb-6 pop-in">How It Works</h3>
+        <p class="text-lg text-gray-600 mb-10">We make it easy for you to get access to funds when you need them the most. Here’s how you can get started:</p>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div class="bg-white rounded-md p-6 shadow-lg pop-in">
       <img src="../img/transaction.png" alt="Register" class="w-16 h-16 mb-4 mx-auto">
-      <h4 class="text-xl font-bold text-teal-600 mb-2">Step 1: Requirements</h4>
+      <h4 class="text-xl font-bold text-green-600 mb-2">Step 1: Requirements</h4>
       <p class="text-gray-600">Bring the necessary requirements to register for membership.</p>
 
-      <button @click="toggleRequirements" class="mt-4 text-sm text-teal-500 hover:text-teal-700">
+      <button @click="toggleRequirements" class="mt-4 text-sm text-green-500 hover:text-green-700">
         See Requirements List
       </button>
 
-      <div v-if="showRequirements" class="mt-4 p-4 border rounded-md shadow-md bg-gray-50 text-justify-center">
+      <div v-if="showRequirements" class="mt-4 p-4 border rounded-md shadow-md bg-gray-50 justify-center">
         <ul class="list-disc list-inside text-gray-700 justify-center">
-          <p class="text-teal-600">REQ NO.1 Bring a 2x2 picture ID</p>
-            <p class="text-teal-600">REQ NO.2 Any proof of income</p>
-          <p class="text-teal-600">REQ NO.3 Any type of house bills</p>
-          <p class="text-teal-600">REQ NO.4 Valid IDs: bring any of these
-            <ul class="list-disc list-inside text-justify">
+          <li>Bring a 2x2 picture ID</li>
+          <p class="text-green-600">Valid IDs: bring any of these
+            <ul class="list-disc list-inside">
               <li>Passport</li>
               <li>PSA birth certificate</li>
               <li>Driver's license</li>
@@ -320,17 +313,19 @@
               <li>Senior Citizen ID</li>
             </ul>
           </p>
+          <li>Any proof of income</li>
+          <li>Any type of house bills</li>
         </ul>
       </div>
     </div>
           <div class="bg-white rounded-md p-6 shadow-lg animate__animated animate__fadeInUp animate__delay-2s">
             <img src="../img/no-hidden-fees.png" alt="Apply for Loan" class="w-16 h-16 mb-4 mx-auto">
-            <h4 class="text-xl font-bold text-teal-600 mb-2">Step 2: Apply for Loan</h4>
+            <h4 class="text-xl font-bold text-green-600 mb-2">Step 2: Apply for Loan</h4>
             <p class="text-gray-600">Fill in  loan application form, and we’ll guide you through the process step-by-step.</p>
           </div>
           <div class="bg-white rounded-md p-6 shadow-lg animate__animated animate__fadeInUp animate__delay-3s">
             <img src="../img/money.png" alt="Receive Funds" class="w-16 h-16 mb-4 mx-auto">
-            <h4 class="text-xl font-bold text-teal-600 mb-2">Step 3: Receive Funds</h4>
+            <h4 class="text-xl font-bold text-green-600 mb-2">Step 3: Receive Funds</h4>
             <p class="text-gray-600">Once approved, funds will be disbursed quickly so you can start using them immediately.</p>
           </div>
         </div>
@@ -341,23 +336,23 @@
     <!-- Additional Content: Frequently Asked Questions Section -->
     <section class="py-16 pop-in">
       <div class="container mx-auto text-center">
-        <h3 class="text-4xl font-bold text-teal-600 mb-6">Frequently Asked Questions</h3>
+        <h3 class="text-4xl font-bold text-green-500 mb-6">Frequently Asked Questions</h3>
         <p class="text-lg text-gray-600 mb-10">Got questions? We have the answers. Here are some of the most frequently asked questions:</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
           <div class="bg-white rounded-md p-6 shadow-lg animate__animated animate__fadeInUp animate__delay-1s">
-            <h4 class="text-xl font-bold text-teal-600 mb-4">What is LendCash?</h4>
+            <h4 class="text-xl font-bold text-green-600 mb-4">What is LendCash?</h4>
             <p class="text-gray-600">LendCash is an online microfinance platform that provides loans to individuals and small businesses without the need for collateral.</p>
           </div>
           <div class="bg-white rounded-md p-6 shadow-lg animate__animated animate__fadeInUp animate__delay-2s">
-            <h4 class="text-xl font-bold text-teal-600 mb-4">How do I apply for a loan?</h4>
+            <h4 class="text-xl font-bold text-green-600 mb-4">How do I apply for a loan?</h4>
             <p class="text-gray-600">You can apply for a loan by going to the site or company, filling out a simple application form, and submitting your details for review.</p>
           </div>
           <div class="bg-white rounded-md p-6 shadow-lg animate__animated animate__fadeInUp animate__delay-3s">
-            <h4 class="text-xl font-bold text-teal-600 mb-4">Do I need to provide collateral?</h4>
+            <h4 class="text-xl font-bold text-green-600 mb-4">Do I need to provide collateral?</h4>
             <p class="text-gray-600">No, we do not require any collateral for the loan. We believe in empowering everyone, regardless of their financial capabilities.</p>
           </div>
           <div class="bg-white rounded-md p-6 shadow-lg animate__animated animate__fadeInUp animate__delay-4s">
-            <h4 class="text-xl font-bold text-teal-600 mb-4">How soon can I receive the funds?</h4>
+            <h4 class="text-xl font-bold text-green-600 mb-4">How soon can I receive the funds?</h4>
             <p class="text-gray-600">Once your loan is approved, the money will be disbursed within the scheduled date.</p>
           </div>
         </div>
@@ -365,7 +360,7 @@
     </section>
 
   </main>
-  <footer class="pt-10 bg-teal-900 pop-in">
+  <footer class="pt-10 bg-green-900 pop-in">
     <div class="max-w-screen-xl mx-auto px-3 md:px-5">
       <div class="justify-between items-center gap-12 md:flex">
         <div class="flex-1 max-w-lg">
@@ -376,32 +371,32 @@
         <div class="flex flex-col gap-6 text-white">
           <h4 class="text-white font-bold">Company</h4>
           <ul class="space-y-4">
-            <li><a href="#about" class="duration-150 hover:text-teal-500">About Us</a></li>
-            <li><a href="#team" class="duration-150 hover:text-teal-500">Our Team</a></li>
-            <li><a href="#careers" class="duration-150 hover:text-teal-500">Careers</a></li>
-            <li><a href="#press" class="duration-150 hover:text-teal-500">Press</a></li>
+            <li><a href="#about" class="duration-150 hover:text-green-500">About Us</a></li>
+            <li><a href="#team" class="duration-150 hover:text-green-500">Our Team</a></li>
+            <li><a href="#careers" class="duration-150 hover:text-green-500">Careers</a></li>
+            <li><a href="#press" class="duration-150 hover:text-green-500">Press</a></li>
           </ul>
         </div>
         <div class="flex flex-col gap-6 text-white">
           <h4 class="text-white font-bold">Support</h4>
           <ul class="space-y-4">
-            <li><a href="#faq" class="duration-150 hover:text-teal-500">FAQs</a></li>
-            <li><a href="#contact" class="duration-150 hover:text-teal-500">Contact Support</a></li>
-            <li><a href="#help" class="duration-150 hover:text-teal-500">Help Center</a></li>
+            <li><a href="#faq" class="duration-150 hover:text-green-500">FAQs</a></li>
+            <li><a href="#contact" class="duration-150 hover:text-green-500">Contact Support</a></li>
+            <li><a href="#help" class="duration-150 hover:text-green-500">Help Center</a></li>
           </ul>
         </div>
         <div class="flex flex-col gap-6 text-white">
           <h4 class="text-white font-bold">Legal</h4>
           <ul class="space-y-4">
-            <li><a href="#privacy" class="duration-150 hover:text-teal-500">Privacy Policy</a></li>
-            <li><a href="#terms" class="duration-150 hover:text-teal-500">Terms of Service</a></li>
-            <li><a href="#security" class="duration-150 hover:text-teal-500">Security</a></li>
+            <li><a href="#privacy" class="duration-150 hover:text-green-500">Privacy Policy</a></li>
+            <li><a href="#terms" class="duration-150 hover:text-green-500">Terms of Service</a></li>
+            <li><a href="#security" class="duration-150 hover:text-green-500">Security</a></li>
           </ul>
         </div>
       </div>
       <div class="mt-10 py-10 border-t border-white items-center justify-between sm:flex">
-        <p class="text-teal-500">© 2024 LendCash. All rights reserved.</p>
-        <div class="flex items-center gap-x-6 text-teal-500 mt-6">
+        <p class="text-green-500">© 2024 LendCash. All rights reserved.</p>
+        <div class="flex items-center gap-x-6 text-green-500 mt-6">
           <a href="javascript:void()">
             <svg
               class="w-6 h-6 hover:text-white duration-150"
@@ -491,6 +486,7 @@
   </div>
 </template>
 
+
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { toast } from 'vue3-toastify';
@@ -567,12 +563,9 @@ async function removeToken() {
     }
 }
 
-
 onMounted(() => {
     removeToken();
 })
-
-
 </script>
 
 <style scoped>
@@ -616,75 +609,5 @@ onMounted(() => {
 /* Utility classes */
 .container {
   max-width: 1200px;
-}
-
-.button {
-  position: relative;
-  transition: all 0.3s ease-in-out;
-  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-  padding-block: 0.5rem;
-  padding-inline: 1.25rem;
-  background-color: #116f6f; /* Tailwind color teal-800 */
-  border-radius: 9999px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: #fff;
-  gap: 10px;
-  font-weight: bold;
-  border: 3px solid #ffffff4d;
-  outline: none;
-  overflow: hidden;
-  font-size: 15px;
-}
-
-.icon {
-  width: 24px;
-  height: 24px;
-  transition: all 0.3s ease-in-out;
-}
-
-.button:hover {
-  transform: scale(1.05);
-  border-color: #fff9;
-}
-
-.button:hover .icon {
-  transform: translate(4px);
-}
-
-.button:hover::before {
-  animation: shine 1.5s ease-out infinite;
-}
-
-.button::before {
-  content: "";
-  position: absolute;
-  width: 100px;
-  height: 100%;
-  background-image: linear-gradient(
-    120deg,
-    rgba(255, 255, 255, 0) 30%,
-    rgba(255, 255, 255, 0.8),
-    rgba(255, 255, 255, 0) 70%
-  );
-  top: 0;
-  left: -100px;
-  opacity: 0.6;
-}
-
-@keyframes shine {
-  0% {
-    left: -100px;
-  }
-
-  60% {
-    left: 100%;
-  }
-
-  to {
-    left: 100%;
-  }
 }
 </style>

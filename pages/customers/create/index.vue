@@ -30,7 +30,12 @@
             <label for="email" class="block text-gray-700">Email</label>
             <input v-model="personality.email_address" type="email" id="email" class="w-full border rounded-lg px-4 py-2"  />
             <span v-if="validationErrors.email_address" class="text-red-500 text-sm">{{ validationErrors.email_address }}</span>
+          </div>
 
+          <div>
+            <label for="password" class="block text-gray-700">Password</label>
+            <input v-model="customer.password" type="password" id="password" class="w-full border rounded-lg px-4 py-2"  />
+            <span v-if="validationErrorsForCustomer.password" class="text-red-500 text-sm">{{ validationErrors.password }}</span>
           </div>
 
           <div>
@@ -347,6 +352,7 @@ const customer = ref({
   enable_mortuary: '',
   mortuary_coverage_start: '',
   mortuary_coverage_end: '',
+  password: '',
 });
 
 const state = ref({
@@ -559,6 +565,7 @@ const validationErrorsForCustomer = ref({
       group_id: '',
       passbook_no: '',
       loan_count_id: '',
+      password: '',
     });
 
     const requirementsPrompt = ref('');
@@ -650,6 +657,7 @@ const createCustomer = async () => {
             passbook_no: customer.value.passbook_no,
             loan_count: customer.value.loan_count_id,
             enable_mortuary: customer.value.enable_mortuary,
+            password: customer.value.password,
             personality_id: 0,
         },
         personality: {
