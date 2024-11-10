@@ -55,7 +55,6 @@
               id="amount_paid"
               :value="paymentData.amount_paid"
               class="border rounded px-4 py-2 w-full"
-              readonly
             />
           </div>
 
