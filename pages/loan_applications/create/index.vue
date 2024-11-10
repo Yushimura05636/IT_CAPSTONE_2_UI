@@ -426,17 +426,23 @@ async function fetchCustomerLoanCount(customerId) {
 
 // Loan amount and interest calculations
 const calculateInterestAndAmountPaid = (loanAmount, factorRate) => {
+    debugger
     if (loanAmount && factorRate) {
-        const interestAmount = loanAmount * (factorRate / 100);
-        const amountPaid = loanAmount + interestAmount;
-        return { interestAmount, amountPaid };
-    }
+    const interestAmount = loanAmount * (factorRate / 100);
+    const amountPaid = loanAmount + interestAmount;
+
+    return {
+        interestAmount: Math.round(interestAmount * 100) / 100,  // Rounds to 2 decimal places
+        amountPaid: Math.round(amountPaid * 100) / 100  // Rounds to 2 decimal places
+    };
+}
     return { interestAmount: 0, amountPaid: 0 };
 };
 
 const exceedsMaxAmount = ref('');
 
 const updateLoanAmount = (customerId) => {
+    debugger
     const customer = customerData[customerId];
     if (customer.loanAmount && customer.factorRateValue) {
         const { interestAmount, amountPaid } = calculateInterestAndAmountPaid(customer.loanAmount, customer.factorRateValue);
