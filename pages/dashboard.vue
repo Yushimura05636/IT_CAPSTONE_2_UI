@@ -6,10 +6,12 @@
 
             <!-- Top Row: Total Borrowers, Total Groups, and Amount Receivable Chart -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
               <!-- Left Side: Total Borrowers and Total Groups -->
               <div class="flex flex-col space-y-4">
+
                 <!-- Card 1: Total Borrowers -->
-                <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full border border-gray-200">
+                <div v-if="total_customers !== null" class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full border border-gray-200">
                   <div class="flex items-center justify-between mb-4">
                     <h1 class="text-4xl font-semibold text-gray-800">{{ total_customers ?? 0 }}</h1>
                     <UserIcon class="text-gray-700 w-8 h-8" />
@@ -21,7 +23,7 @@
                 </div>
 
                 <!-- Card 2: Total Groups -->
-                <div class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full border border-gray-200">
+                <div v-if="total_groups !== null" class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full border border-gray-200">
                   <div class="flex items-center justify-between mb-4">
                     <h1 class="text-4xl font-semibold text-gray-800">{{ total_groups ?? 0}} </h1>
                     <UsersIcon class="text-gray-700 w-8 h-8" />
@@ -34,7 +36,7 @@
               </div>
 
               <!-- Right Side: Amount Receivable Chart -->
-              <div class="bg-white shadow-md rounded-lg p-6 flex items-center justify-center h-full border border-gray-200">
+              <div v-if="amount_receivables !== null" class="bg-white shadow-md rounded-lg p-6 flex items-center justify-center h-full border border-gray-200">
                 <div class="w-full h-64 flex flex-col items-center justify-center">
                   <p class="text-lg font-semibold text-gray-700 mb-4">Amount Receivable</p>
                   <div class="text-5xl font-bold text-gray-800">₱ {{ amount_receivables ?? 0 }}</div>
@@ -44,38 +46,36 @@
             </div>
 
             <!-- Payment History Table -->
-            <div class="bg-white shadow-md rounded-lg p-6 border border-gray-200">
+            <div v-if="payments.length > 0" class="bg-white shadow-md rounded-lg p-6 border border-gray-200">
               <p class="text-lg font-semibold text-gray-700 mb-4">Payment History</p>
 
               <!-- Payment Table -->
-<div class="overflow-x-auto max-h-96">
-  <table class="min-w-full bg-white border-collapse">
-    <thead>
-      <tr class="bg-gray-100 text-gray-700">
-        <th class="py-2 px-4 border-b text-left">Family Name</th>
-        <th class="py-2 px-4 border-b text-left">First Name</th>
-        <th class="py-2 px-4 border-b text-left">Middle Name</th>
-        <th class="py-2 px-4 border-b text-left">Amount Paid</th>
-        <th class="py-2 px-4 border-b text-left">Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Iterate through payments and display them in rows -->
-      <tr v-for="payment in payments" :key="payment.id" class="hover:bg-gray-50">
-        <td class="py-2 px-4 border-b">{{ payment.family_name }}</td>
-        <td class="py-2 px-4 border-b">{{ payment.first_name }}</td>
-        <td class="py-2 px-4 border-b">{{ payment.middle_name }}</td>
-        <td class="py-2 px-4 border-b">{{ payment.amount_paid | currency }}</td>
-        <td class="py-2 px-4 border-b">{{ payment.document_status_code }}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-
+              <div class="overflow-x-auto max-h-96">
+                <table class="min-w-full bg-white border-collapse">
+                  <thead>
+                    <tr class="bg-gray-100 text-gray-700">
+                      <th class="py-2 px-4 border-b text-left">Family Name</th>
+                      <th class="py-2 px-4 border-b text-left">First Name</th>
+                      <th class="py-2 px-4 border-b text-left">Middle Name</th>
+                      <th class="py-2 px-4 border-b text-left">Amount Paid</th>
+                      <th class="py-2 px-4 border-b text-left">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="payment in payments" :key="payment.id" class="hover:bg-gray-50">
+                      <td class="py-2 px-4 border-b">{{ payment.family_name }}</td>
+                      <td class="py-2 px-4 border-b">{{ payment.first_name }}</td>
+                      <td class="py-2 px-4 border-b">{{ payment.middle_name }}</td>
+                      <td class="py-2 px-4 border-b">{{ payment.amount_paid | currency }}</td>
+                      <td class="py-2 px-4 border-b">{{ payment.document_status_code }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
 
             <!-- Payment Schedules Line Chart -->
-            <div class="bg-white shadow-md rounded-lg p-6 border border-gray-200">
+            <div v-if="payments.length > 0" class="bg-white shadow-md rounded-lg p-6 border border-gray-200">
               <p class="text-lg font-semibold text-gray-700 mb-4">Payment Schedules</p>
               <PaymentSchedulesChart/>
             </div>
@@ -83,8 +83,9 @@
           </div>
         </main>
       </NuxtLayout>
-    </div> <!-- Closing the outer div here -->
+    </div>
   </template>
+
 
 
   <script setup>
