@@ -233,11 +233,11 @@ const total_groups = ref([]);
 async function fetchPayments() {
   try {
     const response = await apiService.getGraphDataAll(); // Call your API service for payments
-    debugger
     payments.value = response.data.payments; // Update the payments data
-    amount_receivables.value = response.data.total_amount_recievables;
-    total_customers.value = response.data.total_customers;
-    total_groups.value = response.data.total_groups;
+    amount_receivables.value = response.data.total_amount_recievables ?? 0;
+    debugger
+    total_customers.value = response.data.total_customers ?? 0;
+    total_groups.value = response.data.total_groups ?? 0;
   } catch (error) {
     console.error('Error fetching:', error);
   }
