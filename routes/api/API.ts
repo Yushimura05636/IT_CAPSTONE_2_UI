@@ -820,6 +820,11 @@ async authRequirementsUpdate(params: object): Promise<any> {
         }
 
 
+        //bar graph data
+        async getGraphDataAll(params: object): Promise<any> {
+            return await this.request(`/GRAPHS/NoAUTH/Data/All`, 'GET', params)
+        }
+
 }
 
 export const apiService = new API()
