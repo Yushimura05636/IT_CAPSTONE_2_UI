@@ -19,7 +19,7 @@
     "@vuelidate/validators": "^2.0.4",
     "@vueuse/core": "^11.1.0",
     "ably": "^2.4.1",
-    "chart.js": "^4.4.4",
+    "chart.js": "^4.4.6",
     "nuxt": "^3.11.2",
     "pinia": "^2.1.7",
     "socket.io": "^4.8.1",

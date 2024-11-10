@@ -17,7 +17,7 @@ class="mb-4 flex items-center text-gray-700 hover:text-blue-500 transition-color
 <!-- Customer Name Combobox -->
 <div v-if="!loading" class="mb-4">
 <label class="block text-gray-700">Customer Name</label>
-<select v-model="selectedCustomer" @change="fetchLoanApplications" class="w-full border rounded-lg px-4 py-2">
+<select v-model="selectedCustomer" @change="fetchPayments" class="w-full border rounded-lg px-4 py-2">
 <option disabled value="">Select Customer</option>
 <option v-for="customer in customers" :key="customer.customer.id" :value="customer.customer.id">
   {{ customer.personality.family_name }}
@@ -183,17 +183,19 @@ async function fetchCustomers() {
 
 async function fetchLoanApplications() {
 
+
+
   loading.value = true;
   debugger
   try {
     if (selectedCustomer.value) {
-      const response = await apiService.getLoanApplicationByCustomerId({}, selectedCustomer.value);
-      loanApplications.value = response.data;
+    fetchPayments();
+    //   const response = await apiService.getLoanApplicationByCustomerId({}, selectedCustomer.value);
+    //   loanApplications.value = response.data;
 
-      if(!response || response.data.length <= 0)
-      {
-        fetchPayments();
-      }
+    //   if(!response || response.data.length <= 0)
+    //   {
+    //   }
 
     }
   } catch (error) {
@@ -206,28 +208,39 @@ async function fetchLoanApplications() {
 async function fetchPayments() {
     debugger
   try {
-    loading.value = true;
-    if(selectedLoan.value)
-    {
-        const response = await apiService.getPaymentByLoanNONoAuth({}, selectedLoan.value);
-        if(!response.data && response.data == null && response.data.length <= 0)
-        {
-            throw new Error(`Payment Schedule does not exists`);
-        }
-
-        payments.value = response.data;
-    }
-    else
-    {
-        debugger
+    if (selectedCustomer.value) {
+        loading.value = true;
         const response = await apiService.getPaymentByCustomerIdNoAuth({}, selectedCustomer.value);
-        if(!response.data && response.data == null)
-        {
-            throw new Error(`Payment Schedule does not exists`);
-        }
-
         payments.value = response.data;
     }
+    // if(selectedLoan.value)
+    // {
+    //     const response = await apiService.getPaymentByLoanNONoAuth({}, selectedLoan.value);
+    //     if(!response.data && response.data == null && response.data.length <= 0)
+    //     {
+    //         const response = await apiService.getPaymentByCustomerIdNoAuth({}, selectedCustomer.value);
+    //         if(!response.data && response.data == null)
+    //         {
+    //             throw new Error(`Payment Schedule and Loan Application does not exists`);
+    //         }
+    //         payments.value = response.data;
+    //     }
+    //     else
+    //     {
+    //         payments.value = response.data;
+    //     }
+    // }
+    // else
+    // {
+    //     debugger
+
+    //     if(!response.data && response.data == null)
+    //     {
+    //         throw new Error(`Payment Schedule does not exists`);
+    //     }
+
+    //     payments.value = response.data;
+    // }
   } catch (error) {
     toast.error(`${error}`, {autoClose: 3000});
   }
