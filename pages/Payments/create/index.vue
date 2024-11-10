@@ -212,10 +212,17 @@ async function fetchPayments() {
         const response = await apiService.getPaymentByLoanNONoAuth({}, selectedLoan.value);
         if(!response.data && response.data == null && response.data.length <= 0)
         {
-            throw new Error(`Payment Schedule does not exists`);
+            const response = await apiService.getPaymentByCustomerIdNoAuth({}, selectedCustomer.value);
+            if(!response.data && response.data == null)
+            {
+                throw new Error(`Payment Schedule and Loan Application does not exists`);
+            }
+            payments.value = response.data;
         }
-
-        payments.value = response.data;
+        else
+        {
+            payments.value = response.data;
+        }
     }
     else
     {
