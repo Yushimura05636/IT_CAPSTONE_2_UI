@@ -8,26 +8,15 @@
       <div class="flex flex-col md:flex-row justify-between items-center mb-6 space-y-4 md:space-y-0">
         <!-- Buttons on the left -->
         <div class="flex space-x-2 justify-center md:justify-start">
-          <button
-            @click="createItem"
-            class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-600 transition"
-          >
+          <FormButton buttonStyle="black" @click="createItem">
             Create
-          </button>
-          <button
-            @click="viewSelected"
-            :disabled="!selectedId"
-            class="px-4 py-2 bg-green-500 text-white rounded-lg shadow hover:bg-green-600 transition disabled:opacity-50"
-          >
+          </FormButton>
+          <FormButton buttonStyle="green" @click="viewSelected" :disabled="!selectedId">
             View
-          </button>
-          <button
-            @click="updateSelected"
-            :disabled="!selectedId"
-            class="px-4 py-2 bg-yellow-500 text-white rounded-lg shadow hover:bg-yellow-600 transition disabled:opacity-50"
-          >
+          </FormButton>
+          <FormButton buttonStyle="yellow" @click="updateSelected" :disabled="!selectedId">
             Update
-          </button>
+          </FormButton>
         </div>
 
         <!-- Search Input on the right -->
@@ -107,6 +96,7 @@ import 'vue3-toastify/dist/index.css';
 import { CustomersService } from '~/models/Customer';
 import { PageNameService } from '~/models/PageName';
 import { apiService } from '~/routes/api/API';
+import FormButton  from '~/components/form/Button.vue';
 
 const searchQuery = ref<string>('');
 const tableItems = ref<TableItem[]>([]);

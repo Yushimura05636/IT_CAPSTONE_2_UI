@@ -32,6 +32,12 @@
             </div>
 
             <div>
+                <label for="password" class="block text-gray-700">Password</label>
+                <input v-model="customer.password" type="password" id="password" class="w-full border rounded-lg px-4 py-2"  />
+                <span v-if="validationErrorsForCustomer.password" class="text-red-500 text-sm">{{ validationErrorsForCustomer.password }}</span>
+            </div>
+
+            <div>
                 <label for="telephone" class="block text-gray-700">Telephone#</label>
                 <input v-model="personality.telephone_no" type="text" id="telephone" class="w-full border rounded-lg px-4 py-2" />
             </div>
@@ -151,6 +157,47 @@
                 Create Customer
             </button>
         </div>
+
+        <div class="mb-4 mt-4">
+        <!-- Fees table -->
+            <h3 class="text-gray-700 font-bold my-4">Fees</h3>
+            <div v-if="state.fees && state.fees.length > 0" class="overflow-auto max-h-[250px]">
+                <table class="min-w-full bg-white border border-gray-300 mb-4">
+                    <thead>
+                        <tr>
+                            <th class="px-4 py-2 border text-left">Select</th>
+                            <th class="px-4 py-2 border text-left">Fee Description</th>
+                            <th class="px-4 py-2 border text-left">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="fee in state.fees" :key="fee.id">
+                            <td class="px-4 py-2 border text-left">
+                            <input
+                            type="checkbox"
+                            :value="fee.id"
+                            :checked="customerData.selectedFees.includes(fee.id)"
+                            @change="updateSelectedFees(fee, $event.target.checked)"
+                            />
+                            </td>
+                            <td class="px-4 py-2 border">{{ fee.description }}</td>
+                            <td class="px-4 py-2 border">{{ fee.amount }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700">Total Fees</label>
+                <input
+                :value="totalFees"
+                step="0.01"
+                type="number"
+                class="w-full border border-gray-300 rounded p-2"
+                readonly
+                />
+            </div>
+        </div>
         </form>
     </div>
 </template>
@@ -174,6 +221,10 @@ interface Requirement {
     description: string;
     expiry_date?: string; // Optional expiry date
 }
+
+const customerData = ref({
+  selectedFees: [], // Tracks selected fee IDs
+});
 
 const personality = ref({
     first_name: '',
@@ -219,6 +270,8 @@ const customer = ref({
     passbook_no: generatePassbookNo(),
     loan_count_id: 1,
     enable_mortuary: '',
+    password: '',
+    
 });
 
 const state = ref({
@@ -230,8 +283,44 @@ creditStatuses: [],
 groups: [],
 personality_status_code: [],
 loan_count: [],
+fees: [],
 isTableLoading: false,
 });
+
+
+// Function to fetch fees from an API or data source
+    async function fetchFees() {
+    try {
+        debugger
+        const response = await apiService.getFeeActiveNoAuthForReg({});
+        // Simulating an API call with hardcoded data
+        state.value.fees = response.data;
+    } catch (error) {
+        console.error('Error fetching fees:', error);
+    }
+    }
+
+    // Function to update selected fees based on checkbox state
+    function updateSelectedFees(fee, isSelected) {
+    debugger
+    if (isSelected) {
+        if (!customerData.value.selectedFees.some(selected => selected.id === fee.id)) {
+        customerData.value.selectedFees.push({
+        id: fee.id,
+        amount: fee.amount,
+        });
+    }
+    } else {
+    customerData.value.selectedFees = customerData.value.selectedFees.filter(id => id !== fee.id);
+    }
+    }
+
+    // Computed property to calculate total fees of selected items
+    const totalFees = computed(() => {
+    return state.value.fees
+    .filter(fee => customerData.value.selectedFees.includes(fee.id))
+    .reduce((total, fee) => total + fee.amount, 0);
+    });
 
 
 const fetchBarangays = async () => {
@@ -318,6 +407,21 @@ try {
 }
 };
 
+function isValidAge(birthday) {
+    const birthDate = new Date(birthday);
+    const today = new Date();
+    const age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    return age > 18 || (age === 18 && monthDiff >= 0);
+}
+
+function isValidPhilippineNumber(phone) {
+    const mobileRegex = /^09\d{9}$/; // 12 digits
+    const landlineRegex = /^0\d{7,9}$/; // 7-9 digits
+    return mobileRegex.test(phone) || landlineRegex.test(phone);
+}
+
 onMounted(async () => {
 await Promise.all([
     fetchBarangays(),
@@ -328,6 +432,7 @@ await Promise.all([
     fetchGroups(),
     fetchLoanCount(),
     customer.value.passbook_no = generatePassbookNo(),
+    fetchFees(),
 ]);
 });
 
@@ -360,6 +465,8 @@ const validationErrorsForCustomer = ref({
     passbook_no: '',
     loan_count_id: '',
     enable_mortuary: '',
+    password: '',
+
     });
 
 
@@ -378,6 +485,17 @@ try {
     if (!personality.value[field as keyof typeof personality.value]) {
         validationErrors.value[field as keyof typeof validationErrors.value] = `Please complete all required fields before proceeding.`;
     }
+    }
+    // Validate age
+    if (!isValidAge(personality.value.birthday)) {
+        toast.error("Customer must be at least 18 years old.");
+        return;
+    }
+
+    // Validate phone numbers
+    if (!isValidPhilippineNumber(personality.value.cellphone_no) || !isValidPhilippineNumber(personality.value.telephone_no)) {
+        toast.error("Please enter a valid Philippine-based phone number.");
+        return;
     }
 
     for (const field in validationErrorsForCustomer.value) {
@@ -415,6 +533,7 @@ try {
             passbook_no: customer.value.passbook_no,
             loan_count: customer.value.loan_count_id,
             enable_mortuary: customer.value.enable_mortuary,
+            password: customer.value.password,
             personality_id: 0,
         },
         personality: {
@@ -440,6 +559,7 @@ try {
             credit_status_id: personality.value.credit_status_id, // Get from personality ref
             notes: personality.value.notes, // Get from personality ref, optional
         },
+        fees: customerData.value.selectedFees,
     };
 
     debugger;

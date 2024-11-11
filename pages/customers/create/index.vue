@@ -35,7 +35,7 @@
           <div>
             <label for="password" class="block text-gray-700">Password</label>
             <input v-model="customer.password" type="password" id="password" class="w-full border rounded-lg px-4 py-2"  />
-            <span v-if="validationErrorsForCustomer.password" class="text-red-500 text-sm">{{ validationErrors.password }}</span>
+            <span v-if="validationErrorsForCustomer.password" class="text-red-500 text-sm">{{ validationErrorsForCustomer.password }}</span>
           </div>
 
           <div>
@@ -241,7 +241,6 @@
 
             <!-- Fees table -->
   <h3 class="text-gray-700 font-bold my-4">Fees</h3>
-
   <div v-if="state.fees && state.fees.length > 0" class="overflow-auto max-h-[250px]">
     <table class="min-w-full bg-white border border-gray-300 mb-4">
       <thead>
@@ -594,6 +593,12 @@ const createCustomer = async () => {
       }
     }
 
+    for (const field in validationErrorsForCustomer.value) {
+      if (!customer.value[field as keyof typeof customer.value]) {
+        validationErrorsForCustomer.value[field as keyof typeof validationErrorsForCustomer.value] = `Please complete all required fields before proceeding.`;
+      }
+    }
+
     // Validate age
     if (!isValidAge(personality.value.birthday)) {
         toast.error("Customer must be at least 18 years old.");
@@ -604,12 +609,6 @@ const createCustomer = async () => {
     if (!isValidPhilippineNumber(personality.value.cellphone_no) || !isValidPhilippineNumber(personality.value.telephone_no)) {
         toast.error("Please enter a valid Philippine-based phone number.");
         return;
-    }
-
-    for (const field in validationErrorsForCustomer.value) {
-      if (!customer.value[field as keyof typeof customer.value]) {
-        validationErrorsForCustomer.value[field as keyof typeof validationErrorsForCustomer.value] = `Please complete all required fields before proceeding.`;
-      }
     }
 
         // // First Name validation
