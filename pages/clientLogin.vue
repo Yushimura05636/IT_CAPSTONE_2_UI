@@ -12,8 +12,7 @@
                 <div v-if="!isAuthenticated" class="text-center pb-6">
                     <img src="../img/LendCash_Logo-removebg-preview.png" width="120" class="mx-auto" />
                     <div class="mt-4">
-                        <h3 class="text-gray-800 text-2xl font-semibold sm:text-3xl tracking-tight">Welcome Back!</h3>
-                        <p class="text-gray-500">Please log in to your account</p>
+                        <p class="text-gray-500">Please log in your client account</p>
                     </div>
 
                     <form @submit.prevent="login" class="space-y-6">
@@ -36,7 +35,7 @@
                 <div v-if="isAuthenticated && !isCodeSent" class="text-center space-y-4">
                     <h3 class="text-xl font-semibold">Select Verification Method</h3>
                     <div class="flex justify-around">
-                        <div @click="setMethod('email')" :class="selectedMethod === 'email' ? 'selected' : ''" class="method-option">
+                        <div @click="setMethod('email_address')" :class="selectedMethod === 'email' ? 'selected' : ''" class="method-option">
                             <img src="https://www.clipartmax.com/png/middle/262-2626325_find-and-follow-us-dark-blue-email-icon.png" alt="Email Icon" class="icon" />
                             <span>Email</span>
                         </div>
@@ -81,15 +80,16 @@ const errorMessage = ref('');
 const successMessage = ref('');
 const router = useRouter();
 
+
 const login = async () => {
     try {
-        debugger
-        const response = await authService.login({ email: state.email, password: state.password });
-        debugger
+        const response = await authService.loginClient({ email: state.email, password: state.password });
+        console.log('Response:', response); 
         if (response.data) {
-            debugger
-            state.phone = response.data.user.phone_number
-            state.email = response.data.user.email
+            // state.phone = response.data.user.cellphone_no
+            state.email = response.data.user.personality.email_address;
+            // console.log("Login Email "+state.email)
+            console.log('Response Data:', response.data);
 
             //set the phone number and
             isAuthenticated.value = true;
@@ -98,6 +98,7 @@ const login = async () => {
             state.error = 'Invalid credentials';
         }
     } catch (error) {
+        console.error('Login failed:', error);  // Log the error
         state.error = 'Login failed. Please try again.';
     }
 };
@@ -110,14 +111,17 @@ const sendVerificationCode = async () => {
     try {
         debugger
         const params = {
-            email: state.email,
-            phone_number: state.phone,
+            email_address: state.email,
+            // phone_number: state.phone,
             method: selectedMethod.value,
         }
-        const response = await authService.sendVerification(params);
+        console.log("Sending params:", params);
+        console.log("Pass email "+state.email)
+        const response = await authService.sendVerificationClient(params);
         isCodeSent.value = true;
         errorMessage.value = '';
     } catch (error) {
+        console.log(error)
         errorMessage.value = 'Failed to send verification code.';
     }
 };
@@ -127,15 +131,15 @@ const verifyCode = async () => {
         debugger
         const params = {
             code: state.code,
-            email: state.email,
-            phone_number: state.phone,
+            email_address: state.email,
+            // phone_number: state.phone,
             method: selectedMethod.value,
         }
-        const response = await authService.verifyVerification(params, state.code);
+        const response = await authService.verifyVerificationClient(params, state.code);
         if (response.success) {
             localStorage.setItem("_token", response.data?.token)
             successMessage.value = 'Code verified!';
-            router.push('/dashboard/employee');
+            router.push('/dashboard/client');
         } else {
             errorMessage.value = 'Invalid code.';
         }

@@ -372,7 +372,7 @@ import { ref } from 'vue';
 import { Dialog, TransitionRoot } from '@headlessui/vue';
 import { Bars3Icon, XMarkIcon, HomeIcon, InformationCircleIcon, Cog6ToothIcon, CreditCardIcon } from '@heroicons/vue/24/outline';
 import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/vue/24/outline';
-import { ChartPieIcon, UsersIcon, BookOpenIcon, CurrencyDollarIcon, KeyIcon, FlagIcon, FireIcon, BellAlertIcon, ShareIcon } from '@heroicons/vue/24/outline';
+import { ChartPieIcon, UsersIcon, BookOpenIcon, CurrencyDollarIcon, KeyIcon, FlagIcon, FireIcon, BellAlertIcon, ShareIcon,DocumentCheckIcon  } from '@heroicons/vue/24/outline';
 import { PageNameService } from '~/models/PageName';
 import { apiService } from '~/routes/api/API';
 import { UserService } from '~/models/User';
@@ -403,19 +403,19 @@ const toggleSidebar = () => {
 // Menu items data
 const menuHeaderTitles = ref([
     {
-        headerTitle: 'loans',
+        headerTitle: '',
     },
 ]);
 const menuItems = ref([
   {
-    name: 'dashboard',
+    name: 'Dashboard',
     icon: ChartPieIcon,
     subLinks: [
       { name: "Dashboard", href: "/Dashboard", icon: ChartPieIcon },
     ],
   },
   {
-    name: 'admin',
+    name: 'Admin',
     icon: UsersIcon,
     subLinks: [
       { name: "Libraries", href: "/Libraries", icon: BookOpenIcon },
@@ -424,7 +424,7 @@ const menuItems = ref([
     ],
   },
   {
-    name: 'customers',
+    name: 'Customers',
     icon: UsersIcon,
     subLinks: [
       { name: "Customers", href: "/customers", icon: UsersIcon },
@@ -432,14 +432,14 @@ const menuItems = ref([
     ],
   },
   {
-    name: 'employees',
+    name: 'Employees',
     icon: UsersIcon,
     subLinks: [
       { name: "Employees", href: "/employees", icon: UsersIcon },
     ],
   },
   {
-    name: 'loan',
+    name: 'Loan',
     icon: ShareIcon,
     subLinks: [
       { name: "Loan Application", href: "/loan_applications", icon: CurrencyDollarIcon },
@@ -447,14 +447,14 @@ const menuItems = ref([
     ],
   },
   {
-    name: 'release-schedules',
+    name: 'Release Schedules',
     icon: KeyIcon,
     subLinks: [
       { name: "Loan Release", href: "/loan_release", icon: CreditCardIcon },
     ],
   },
   {
-    name: 'transactions',
+    name: 'Transactions',
     icon: FlagIcon,
     subLinks: [
       { name: "Payment", href: "/payments", icon: CurrencyDollarIcon },
@@ -468,16 +468,17 @@ const menuItems = ref([
     ],
   },
   {
-    name: 'report',
+    name: 'Reports',
     icon: FireIcon,
     subLinks: [
-      { name: "Loan Application", href: "", icon: CurrencyDollarIcon },
-      { name: "Loan Release", href: "", icon: CreditCardIcon },
-      { name: "Payment Schedule", href: "", icon: CreditCardIcon },
+      { name: "Loan Disbursement Summary", href: "/reports/loan_disbursement_sum", icon: CurrencyDollarIcon }, 
+      { name: "Collection Report", href: "/reports/collection_report", icon: CurrencyDollarIcon }, 
+      { name: "Summary of Balances", href: "/reports/sum_of_balances", icon: CurrencyDollarIcon }, 
+      { name: "Ledger of Clients", href: "/reports/ledger_of_clients", icon: CurrencyDollarIcon }, 
     ],
   },
   {
-    name: 'help',
+    name: 'Help',
     icon: BellAlertIcon,
     subLinks: [
       { name: "Help Center", href: "", icon: BellAlertIcon },
