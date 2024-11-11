@@ -137,6 +137,7 @@
               <option v-for="groups in state.groups" :key="groups.id" :value="groups.id">
                 {{ groups.description }}
               </option>
+              <span v-if="validationErrorsForCustomer.group_id" class="text-red-500 text-sm">{{ validationErrorsForCustomer.group_id }}</span>
             </select>
           </div>
 
@@ -159,7 +160,7 @@
             <input v-model="personality.datetime_registered" type="date" id="dateTimeRegistered" class="w-full border rounded-lg px-4 py-2" />
           </div>
 
-          <div>
+          <!-- <div>
             <label for="enableMortuary" class="block text-gray-700">Enable Mortuary</label>
             <select v-model="customer.enable_mortuary" id="enable_mortuary" class="w-full border rounded-lg px-4 py-2">
               <option value="1">Yes</option>
@@ -175,7 +176,8 @@
           <div v-if="customer.enable_mortuary == '1'">
             <label for="mortuaryCoverageEnd" class="block text-gray-700">Mortuary Coverage End</label>
             <input v-model="customer.mortuary_coverage_end" type="date" id="mortuaryCoverageEnd" class="w-full border rounded-lg px-4 py-2" />
-          </div>
+          </div> -->
+          
         </div>
 
         <!-- Select Requirements Table -->
@@ -397,6 +399,39 @@ const fetchLoanCount = async () => {
   }
 };
 
+
+const validationErrors = ref({
+      first_name: '',
+      family_name: '',
+      middle_name: '',
+      email_address: '',
+      birthday: '',
+      gender_code: '',
+      civil_status: '',
+      house_street: '',
+      country_id: '',
+      cellphone_no: '',
+      purok_zone: '',
+      postal_code: '',
+      barangay_id: '',
+      city_id: '',
+      province_id: '',
+      credit_status_id: '',
+      datetime_registered: '',
+
+      group_id: '',
+      passbook_no: '',
+      loan_count: '',
+    });
+
+
+const validationErrorsForCustomer = ref({
+      group_id: '',
+      passbook_no: '',
+      loan_count: '',
+      password: '',
+    });
+
 onMounted(async () => {
   await Promise.all([
     fetchBarangays(),
@@ -467,6 +502,54 @@ const updateCustomer = async () => {
       return;
       }
 
+      Object.keys(validationErrors.value).forEach((key) => {
+      validationErrors.value[key as keyof typeof validationErrors.value] = '';
+      });
+      Object.keys(validationErrorsForCustomer.value).forEach((key) => {
+        validationErrorsForCustomer.value[key as keyof typeof validationErrorsForCustomer.value] = '';
+      });
+
+      // Validate each field in personality and set error if empty
+      for (const field in validationErrors.value) {
+        if (!personality.value[field as keyof typeof personality.value]) {
+          validationErrors.value[field as keyof typeof validationErrors.value] = `Please complete all required fields before proceeding.`;
+        }
+      }
+
+      for (const field in validationErrorsForCustomer.value) {
+        if (!customer.value[field as keyof typeof customer.value]) {
+          validationErrorsForCustomer.value[field as keyof typeof validationErrorsForCustomer.value] = `Please complete all required fields before proceeding.`;
+        }
+      }
+
+       // // First Name validation
+        if (!personality.value.first_name  ||
+        !personality.value.family_name  ||
+        !personality.value.middle_name  ||
+        !personality.value.email_address||
+        !personality.value.birthday     ||
+        !personality.value.gender_code  ||
+        !personality.value.civil_status ||
+        !personality.value.house_street ||
+        !personality.value.cellphone_no ||
+        !personality.value.purok_zone   ||
+        !personality.value.postal_code  ||
+        !personality.value.barangay_id  ||
+        !personality.value.city_id      ||
+        !personality.value.province_id  ||
+        !personality.value.credit_status_id  ||
+        !customer.value.group_id  ||
+        !customer.value.passbook_no  ||
+        !customer.value.loan_count  ||
+        !personality.value.datetime_registered
+      )
+      {
+        toast.error("Please fill all the required fields.", { autoClose: 3000 });
+        console.log(selectedRequirements.value)
+        return;
+      }
+
+    
     const customerId = CustomersService.id;
     const jsonObject = {
       customer: {

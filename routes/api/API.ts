@@ -818,6 +818,9 @@ async authRequirementsUpdate(params: object): Promise<any> {
         async createRegisterCustomer(params: object): Promise<any> {
             return await this.request(`/REGISTER_LIBRARIES`, 'POST', params)
         }
+        async getFeeActiveNoAuthForReg(params: object): Promise<any>{
+            return await this.request(`/REGISTER/NoAUTH/FeeActive`, 'GET', params);
+        }
 
 
         //bar graph data
