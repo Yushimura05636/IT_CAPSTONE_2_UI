@@ -828,6 +828,12 @@ async authRequirementsUpdate(params: object): Promise<any> {
             return await this.request(`/GRAPHS/NoAUTH/Data/All`, 'GET', params)
         }
 
+
+        //REPORTS
+        async getCollections(params: object): Promise<any> {
+            return await this.request(`/REPORTS`, 'GET', params)
+        }
+
 }
 
 export const apiService = new API()

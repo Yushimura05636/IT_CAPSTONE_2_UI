@@ -393,6 +393,7 @@ try {
     })
 }
 };
+
 const fetchLoanCount = async () => {
 // Replace with your actual API call
 try {
