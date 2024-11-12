@@ -381,6 +381,10 @@ class API extends BaseAPIService {
         return await this.request(`/PAYMENT_SCHEDULES/NoAUTH/${id}`, 'GET', params)
     }
 
+    async getPaymentScheduleByCustomerIdNoAuth(params: object, id: number): Promise<any> {
+        return await this.request(`/PAYMENT_SCHEDULES/NoAUTH/Customer/${id}`, 'GET', params)
+    }
+
     async createPaymentSchedule(params: object): Promise<any> {
         return await this.request(`/PAYMENT_SCHEDULES`, 'POST', params)
     }
@@ -462,8 +466,8 @@ class API extends BaseAPIService {
     }
 
     //dashboard
-    async getDashboardEmployeeDetails(params: object): Promise<any> {
-        return await this.request(`/DASHBOARD/NoAUTH/EMPLOYEE/DETAILS`, 'GET', params)
+    async getDashboardUserDetails(params: object): Promise<any> {
+        return await this.request(`/DASHBOARD/NoAUTH/USER/DETAILS`, 'GET', params)
     }
 
     //auth
@@ -800,11 +804,11 @@ async authRequirementsUpdate(params: object): Promise<any> {
     }
 
     async getCustomerByGroupIdWithApproveActive(params: object, id: number): Promise<any> {
-        return await this.request(`/CUSTOMERS/NoAUTH/GroupAPPROVEACTIVE/${id}`, 'GET', params)
+        return await this.request(`/CUSTOMERS/NoAUTH/Group/${id}`, 'GET', params)
     }
 
     async getCustomerByGroupIdAndData(params: object, id: number): Promise<any> {
-        return await this.request(`/CUSTOMERS/NoAUTH/GroupAPPROVEWithData/${id}`, 'GET', params)
+        return await this.request(`/CUSTOMERS/NoAUTH/Group/${id}`, 'GET', params)
     }
 
 
