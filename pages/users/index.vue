@@ -51,7 +51,7 @@
               </tr>
             </thead>
             <tbody class="text-gray-700">
-              <tr v-for="(user, index) in state.users?.data" :key="index" class="hover:bg-gray-100">
+              <tr v-for="(user, index) in filteredUsers" :key="index" class="hover:bg-gray-100">
                 <td class="p-3 border-b">
                   <input type="radio" v-model="selectedUserId" :value="user.id" class="cursor-pointer" />
                 </td>
@@ -73,11 +73,11 @@
   import { toast } from 'vue3-toastify';
   import 'vue3-toastify/dist/index.css';
 
-  import { ref, reactive, onMounted } from 'vue';
+  import { ref, reactive, onMounted, computed } from 'vue';
   import { apiService } from '~/routes/api/API';
   import { UserService } from '~/models/User';
   import { navigateTo } from 'nuxt/app';
-import { PageNameService } from '~/models/PageName';
+  import { PageNameService } from '~/models/PageName';
 
   const state = reactive({
     columnHeaders: [
@@ -93,6 +93,7 @@ import { PageNameService } from '~/models/PageName';
 
   const selectedUserId = ref<string | null>(null);
 
+  // Method to fetch users
   async function fetchUsers() {
     state.isTableLoading = true;
     state.error = null;
@@ -104,12 +105,13 @@ import { PageNameService } from '~/models/PageName';
     } catch (error: any) {
       state.error = error;
       toast.error(`${error}`, {
-          autoClose: 3000,
-      })
+        autoClose: 3000,
+      });
     }
     state.isTableLoading = false;
   }
 
+  // Create user
   async function createUser() {
     try {
       await apiService.authUsersCreate({});
@@ -119,6 +121,7 @@ import { PageNameService } from '~/models/PageName';
     }
   }
 
+  // Update user
   async function updateUser() {
     if (selectedUserId.value) {
       try {
@@ -129,10 +132,11 @@ import { PageNameService } from '~/models/PageName';
         toast.error(`${error}`, { autoClose: 5000 });
       }
     } else {
-      alert("Please select a user to update.");
+      alert('Please select a user to update.');
     }
   }
 
+  // Delete user
   async function deleteUser() {
     if (selectedUserId.value) {
       try {
@@ -143,10 +147,32 @@ import { PageNameService } from '~/models/PageName';
         toast.error(`${error}`, { autoClose: 5000 });
       }
     } else {
-      alert("Please select a user to delete.");
+      alert('Please select a user to delete.');
     }
   }
 
+  // Compute filtered users based on multi-search
+  const filteredUsers = computed(() => {
+    const searchTerms = state.searchQuery
+      .toLowerCase()
+      .split(' ')
+      .map(term => term.trim())
+      .filter(term => term);
+
+    return state.users.filter(user => {
+      return searchTerms.every(term =>
+        // Check each term against user fields
+        Object.values(user).some(value =>
+          String(value).toLowerCase().includes(term)
+        ) ||
+        // Check in nested fields like name or email
+        [user.first_name, user.middle_name, user.last_name, user.email]
+          .some(value => String(value).toLowerCase().includes(term))
+      );
+    });
+  });
+
+  // Manage permissions (optional, if needed)
   async function managePermissions(userId: number) {
     try {
       UserService.usr_id = userId;
@@ -155,11 +181,12 @@ import { PageNameService } from '~/models/PageName';
     } catch (error: any) {
       state.error = error;
       toast.error(`${error}`, {
-          autoClose: 3000,
-      })
+        autoClose: 3000,
+      });
     }
   }
 
+  // Fetch users on mounted
   onMounted(() => {
     PageNameService.pageName = 'Users';
     fetchUsers();

@@ -40,7 +40,7 @@
         <td class="py-2 border-b border-gray-300">
           <input
             type="radio"
-            :value="payment.id"
+            :value="getPaymentId(payment)"
             v-model="selectedPaymentID"
             class="cursor-pointer"
           />
@@ -77,6 +77,7 @@
     import { paymentServices } from '~/models/Payments'
 import { CustomersService } from '~/models/Customer';
 import { PageNameService } from '~/models/PageName';
+import { loanApplicationService } from '~/models/LoanApplication';
 
 // Router instance
 const router = useRouter();
@@ -140,6 +141,16 @@ const state = reactive({
         PageNameService.pageName = 'Payments';
       fetchPayment()
     })
+
+    function getPaymentId(payment: any): any
+    {
+        if(payment != null)
+        {
+            return payment.id
+        }
+
+        return 0
+    }
 
     async function showPayment()
     {

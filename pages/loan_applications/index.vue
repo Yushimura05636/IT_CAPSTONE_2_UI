@@ -45,6 +45,9 @@
           </thead>
           <tbody>
             <tr v-for="(loanApp, index) in filteredLoanApps()" :key="index" class="hover:bg-gray-50 transition">
+              <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Customer.family_name }}</td>
+              <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Customer.first_name }}</td>
+              <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Customer.middle_name }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.datetime_prepared }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.document_status_code }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.loan_application_no }}</td>
@@ -82,6 +85,9 @@ import { PageNameService } from '~/models/PageName';
 
 const state = reactive({
   columnHeaders: [
+    { name: 'Family Name' },
+    { name: 'First Name' },
+    { name: 'Middle Name' },
     { name: 'Date Time Prepared' },
     { name: 'Status' },
     { name: 'Loan Application No' },
@@ -113,6 +119,7 @@ async function fetchLoanApplication() {
 try {
     const response = await apiService.getLoanApplication({})
     state.loanApp = response.data
+    debugger
     console.log( 'Hello: ',state.loanApp);
   } catch (error: any) {
     toast.error(`${error}`, {
@@ -128,11 +135,21 @@ function filteredLoanApps() {
     return state.loanApp;
   }
   const query = searchQuery.value.toLowerCase();
-  return state.loanApp.filter(loanApp =>
+const searchTerms = query.split(' ').map(term => term.trim()).filter(term => term); // Split query by spaces
+
+return state.loanApp.filter(loanApp =>
+  searchTerms.every(term =>
+    // Check loanApp.Loan_Application
     Object.values(loanApp.Loan_Application).some(value =>
-      String(value).toLowerCase().includes(query)
+      String(value).toLowerCase().includes(term)
+    ) ||
+    // Check loanApp.Customer
+    loanApp.Customer && Object.values(loanApp.Customer).some(value =>
+      String(value).toLowerCase().includes(term)
     )
-  );
+  )
+);
+
 }
 
 // Navigate to create loan application page

@@ -16,6 +16,17 @@
           </div>
 
           <div>
+            <label for="customer_id" class="block mb-1">Customer ID:</label>
+            <input
+              type="number"
+              id="customer_id"
+              :value="paymentData.customer_id"
+              class="border rounded px-4 py-2 w-full"
+              readonly
+            />
+          </div>
+
+          <div>
             <label for="prepared_at" class="block mb-1">Prepared At:</label>
             <input
               type="datetime-local"
@@ -92,6 +103,7 @@ import { CustomersService } from '~/models/Customer';
   const router = useRouter();
   const paymentData = ref({
     id: null,
+    loan_application_no: '',
     customer_id: '',
     prepared_at: '',
     document_status_code: '',

@@ -95,11 +95,17 @@ interface TableItem {
 
 // Computed property for search functionality
 const filteredTableItems = computed(() => {
-  return tableItems.value.filter(item =>
+    const query = searchQuery.value.toLowerCase();
+const searchTerms = query.split(' ').map(term => term.trim()).filter(term => term); // Split query by spaces
+
+return tableItems.value.filter(item =>
+  searchTerms.every(term =>
+    // Check loanApp.Loan_Application
     Object.values(item).some(value =>
-      String(value).toLowerCase().includes(searchQuery.value.toLowerCase())
+      String(value).toLowerCase().includes(term)
     )
-  );
+  )
+);
 });
 
 // Fetch data when the component is mounted
