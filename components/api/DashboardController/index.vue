@@ -1,6 +1,5 @@
-<template v-if="">
-</template>
 <template>
+    <DashboardClient></DashboardClient>
 </template>
 
 <script setup lang="ts">
@@ -11,7 +10,7 @@ const user = ref([]);
 async function getCusotmerDetails()
 {
     try {
-        const response = await apiService.getDashboardEmployeeDetails({});
+        const response = await apiService.getDashboardUserDetails({});
         user.value = response;
         debugger
     } catch (error) {
@@ -20,6 +19,7 @@ async function getCusotmerDetails()
 }
 
 onMounted(() => {
+    alert(1)
     getCusotmerDetails();
 });
 </script>
