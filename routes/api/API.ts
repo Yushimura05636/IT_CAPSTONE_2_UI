@@ -599,6 +599,11 @@ class API extends BaseAPIService {
         return await this.request(`/LOAN_APPLICATION_COMAKERS/${id}`, 'DELETE', params)
     }
 
+    //collector
+    async getOnlyCollectorPermissionNoAUTH(params: object): Promise<any> {
+        return await this.request(`/COLLECTORS/NoAUTH/`, 'GET', params)
+    }
+
 
     //perm with empty return
 

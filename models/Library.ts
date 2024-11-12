@@ -4,6 +4,14 @@ export class Library {
   private _description?: string;
   private _id?: number;
   private _oldText?: string;
+  private _modelType?: string | undefined;
+
+    public get modelType(): string | undefined {
+        return this._modelType;
+    }
+    public set modelType(value: string | undefined) {
+        this._modelType = value;
+    }
 
   set oldText(value: string | undefined) {
     this._oldText = value;

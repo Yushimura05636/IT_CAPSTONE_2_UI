@@ -43,6 +43,23 @@
             ></textarea>
           </div>
 
+          <!-- Collector Selection Combobox -->
+<div v-if="libraryService.modelType == 'customer_group'" class="mb-4">
+  <label for="collector" class="block text-sm font-medium text-gray-700">Select Collector</label>
+  <select
+    v-model="selectedCollector"
+    @change="fetchAndSudoData"
+    id="collector"
+    class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+  >
+    <option value="">Select a Collector</option>
+    <option v-for="collector in collectors" :key="collector.id" :value="collector.id">
+      {{ collector.last_name }} {{ collector.first_name }} {{ collector.middle_name }}
+    </option>
+  </select>
+</div>
+
+
           <!-- Submit and Cancel Buttons -->
           <div class="mt-6 flex justify-between">
             <button
@@ -76,18 +93,22 @@ import 'vue3-toastify/dist/index.css';
 
 import { ref } from 'vue';
 
-import { libraryService } from '~/models/Library';
+import { Library, libraryService } from '~/models/Library';
 import { PermissionService } from '~/models/Permission';
 import { apiService } from '~/routes/api/API';
+import Collector from '~/layouts/Collector.vue';
 
 const form = ref({
   id: libraryService.id,
-  modeltype: libraryService.description,
+  modeltype: libraryService.modelType,
   description: '',
   olddescription: libraryService.oldText,
 });
 
 const successMessage = ref<string | null>(null);
+
+const collectors = ref([]);
+const selectedCollector = ref();
 
 // Function to handle form submission
 const submitForm = () => {
@@ -113,6 +134,7 @@ async function update() { // Renamed from create to update
       id: form.value.id,
       modeltype: form.value.modeltype,
       description: form.value.description,
+      collector_id: selectedCollector.value ?? null,
     };
     const response = await apiService.update(params, parseInt(form.value.id));
     if (response.data) {
@@ -137,6 +159,29 @@ const cancel = () => {
   // Navigate to the libraries page or perform any other action
   navigateTo("/libraries");
 };
+
+// Fetch collectors from API
+const fetchCollectors = async () => {
+  try {
+    const response = await apiService.get({}, 'collectors'); // Adjust API endpoint as necessary
+    collectors.value = response.data;
+  } catch (error) {
+    console.error('Error fetching collectors:', error);
+  }
+};
+
+async function fetchUserCollector()
+{
+    if(libraryService.modelType?.length > 0 && libraryService.modelType == 'customer_group')
+    {
+        const response = await apiService.getOnlyCollectorPermissionNoAUTH({});
+        collectors.value = response.data;
+    }
+}
+
+onMounted(() => {
+    fetchUserCollector()
+});
 </script>
 
 <style scoped>

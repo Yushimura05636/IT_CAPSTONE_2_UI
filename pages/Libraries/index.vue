@@ -158,14 +158,14 @@ const modelTypes = [
 let selectedLibraryId = ref(null); // Track selected library
 
 onMounted(() => {
-  PageNameService.pageName = "Libraries";
+  state.modeltype = 'customer_group'
   fetchLibraries();
 });
 
 async function createLibrary() {
   try {
     const response = await apiService.authLibrariesCreate({});
-    navigateTo('libraries/create');
+    navigateTo('/libraries/create');
   } catch (error) {
     toast.error(`${error}`, {
       autoClose: 5000,
@@ -186,9 +186,9 @@ async function updateLibrary() {
         }
       }
       libraryService.id = selectedLibraryId.value;
-      libraryService.description = state.modeltype;
+      libraryService.modelType = state.modeltype;
       libraryService.oldText = selectedDescription;
-      navigateTo('libraries/update');
+      navigateTo('/libraries/update');
     }
   } catch (error) {
     toast.error(`${error}`, {
@@ -209,7 +209,7 @@ async function fetchLibraries() {
   state.error = null;
   try {
     const params = {};
-    const response = await apiService.get(params, state.modeltype || 'customer_group'); // Fetch data with the default model
+    const response = await apiService.get(params, state.modeltype); // Fetch data with the default model
     state.datas = response;
     state.filteredLibraries = response.data; // Initialize filtered libraries with all data
   } catch (error) {
