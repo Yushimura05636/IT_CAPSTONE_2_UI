@@ -110,6 +110,10 @@ class API extends BaseAPIService {
         return await this.request(`/EMPLOYEES/findOne/${id}`, 'GET', params)
     }
 
+    async getEmployeeDetailsNoAUTH(params: object): Promise<any> {
+        return await this.request(`/EMPLOYEES/GetEmployeeDetails`, 'GET', params)
+    }
+
     async createEmployee(params: object): Promise<any> {
         return await this.request(`/EMPLOYEES`, 'POST', params)
     }
@@ -455,6 +459,11 @@ class API extends BaseAPIService {
 
     async deletePaymentduration(params: object, id: number): Promise<any> {
         return await this.request(`/PAYMENT_DURATIONS/${id}`, 'DELETE', params)
+    }
+
+    //dashboard
+    async getDashboardEmployeeDetails(params: object): Promise<any> {
+        return await this.request(`/DASHBOARD/NoAUTH/EMPLOYEE/DETAILS`, 'GET', params)
     }
 
     //auth
