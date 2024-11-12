@@ -93,9 +93,11 @@
                         class="cursor-pointer"
                       />
                     </td>
-                    <td class="py-2 px-4 border-b border-gray-300 text-center">
-                      <span>{{ lib.description }}</span>
-                    </td>
+                    <td class="py-2 px-4 border-b border-gray-300 text-center space-x-10">
+  <span>{{ lib.description }}</span>
+  <span v-if="state.modeltype == 'customer_group'">{{ lib.last_name }} {{ lib.first_name }} {{ lib.middle_name }}</span>
+</td>
+
                   </tr>
                 </template>
               </Table>
@@ -134,6 +136,24 @@ const state = reactive({
   searchQuery: '',
   filteredLibraries: [], // Track filtered libraries
   modeltype: '',
+  collectorName: '',
+  collectorId: 0,
+});
+
+// Watch for changes in modeltype and update columnHeaders
+watch(() => state.modeltype, (newType) => {
+  if (newType === 'customer_group') {
+    state.columnHeaders = [
+      { name: 'Select' },
+      { name: 'Description' },
+      { name: 'Collector' }, // Additional column for customer_group
+    ];
+  } else {
+    state.columnHeaders = [
+      { name: 'Select' },
+      { name: 'Description' },
+    ];
+  }
 });
 
 const modelTypes = [
@@ -182,12 +202,16 @@ async function updateLibrary() {
         const library = state.datas.data[i];
         if (library.id == parseInt(selectedLibraryId.value)?.toString()) {
           selectedDescription = library.description;
-          break;
+            state.collectorName = library.last_name + ' ' + library.first_name + ' ' + library.middle_name;
+            state.collectorId = library.collector_id;
+            break;
         }
       }
       libraryService.id = selectedLibraryId.value;
       libraryService.modelType = state.modeltype;
       libraryService.oldText = selectedDescription;
+      libraryService.collectorName = state.collectorName;
+      libraryService.collectorId = state.collectorId;
       navigateTo('/libraries/update');
     }
   } catch (error) {

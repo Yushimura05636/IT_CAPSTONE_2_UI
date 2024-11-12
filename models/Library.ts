@@ -5,6 +5,21 @@ export class Library {
   private _id?: number;
   private _oldText?: string;
   private _modelType?: string | undefined;
+  private _collectorId?: number | undefined;
+  private _collectorName?: string | undefined;
+
+  public get collectorName(): string | undefined {
+        return this._collectorName;
+    }
+    public set collectorName(value: string | undefined) {
+        this._collectorName = value;
+    }
+  public get collectorId(): number | undefined {
+      return this._collectorId;
+  }
+  public set collectorId(value: number | undefined) {
+      this._collectorId = value;
+  }
 
     public get modelType(): string | undefined {
         return this._modelType;

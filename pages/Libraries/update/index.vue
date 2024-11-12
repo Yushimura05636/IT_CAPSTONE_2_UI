@@ -31,6 +31,19 @@
             />
           </div>
 
+          <!-- Old Collector Field -->
+<div class="mb-4">
+  <label for="description" class="block text-sm font-medium text-gray-700">Old Collector</label>
+  <input
+  disabled
+    v-model="form.oldcollector"
+    id="description"
+    rows="4"
+    class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+    placeholder="Enter Old Collector"
+  />
+</div>
+
           <!-- Description Field -->
           <div class="mb-4">
             <label for="description" class="block text-sm font-medium text-gray-700">New Description</label>
@@ -42,6 +55,8 @@
               placeholder="Enter Description"
             ></textarea>
           </div>
+
+
 
           <!-- Collector Selection Combobox -->
 <div v-if="libraryService.modelType == 'customer_group'" class="mb-4">
@@ -103,6 +118,7 @@ const form = ref({
   modeltype: libraryService.modelType,
   description: '',
   olddescription: libraryService.oldText,
+  oldcollector: libraryService.collectorName,
 });
 
 const successMessage = ref<string | null>(null);
@@ -118,10 +134,6 @@ const submitForm = () => {
 
     update(); // Call the renamed update function
 
-    // Clear the form
-    form.value.id = '';
-    form.value.modeltype = '';
-    form.value.description = '';
   } else {
     // Handle empty fields (optional)
     successMessage.value = 'Please fill in all the fields.';
@@ -176,6 +188,7 @@ async function fetchUserCollector()
     {
         const response = await apiService.getOnlyCollectorPermissionNoAUTH({});
         collectors.value = response.data;
+        selectedCollector.value = libraryService.collectorId;
     }
 }
 

@@ -11,6 +11,7 @@
           <label for="modeltype" class="block text-sm font-medium text-gray-700">Model Type</label>
           <select
             v-model="form.modeltype"
+            @change="fetchUserCollector"
             id="modeltype"
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           >
@@ -30,6 +31,22 @@
             placeholder="Enter Description"
           ></textarea>
         </div>
+
+        <!-- Collector Selection Combobox -->
+<div v-if="form.modeltype == 'customer_group'" class="mb-4">
+  <label for="collector" class="block text-sm font-medium text-gray-700">Select Collector</label>
+  <select
+    v-model="selectedCollector"
+    @change="fetchAndSudoData"
+    id="collector"
+    class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+  >
+    <option value="">Select a Collector</option>
+    <option v-for="collector in collectors" :key="collector.id" :value="collector.id">
+      {{ collector.last_name }} {{ collector.first_name }} {{ collector.middle_name }}
+    </option>
+  </select>
+</div>
 
         <!-- Buttons -->
         <div class="flex justify-between mt-6">
@@ -67,7 +84,8 @@ import { apiService } from '~/routes/api/API';
 import { libraryService } from '~/models/Library';
 import { PermissionService } from '~/models/Permission';
 
-
+const selectedCollector = ref();
+const collectors = ref([]);
 
 const modelTypes = [
   'barangay',
@@ -89,7 +107,7 @@ const modelTypes = [
 const form = ref({
   id: '',
   modeltype: '', // Initialize with empty string for combo box
-  description: ''
+  description: '',
 });
 
 const successMessage = ref<string | null>(null);
@@ -103,9 +121,6 @@ const submitForm = () => {
 
       create();
 
-      // Clear the form
-      form.value.modeltype = '';
-      form.value.description = '';
     } catch (error: any) {
       toast.error(`${error}`, {
       autoClose: 5000,
@@ -122,7 +137,9 @@ async function create() {
     const params = {
       modeltype: form.value.modeltype.toLowerCase(),
       description: form.value.description,
+      collector_id: selectedCollector.value,
     };
+    debugger
     const response = await apiService.create(params);
     if (response.data) {
 
@@ -131,7 +148,7 @@ async function create() {
       });
       // Introduce a delay before navigating
       setTimeout(() => {
-          navigateTo('/libraries');
+          //navigateTo('/libraries');
       }, 2000);
     }
   } catch (error: any) {
@@ -140,6 +157,20 @@ async function create() {
     });
   }
 }
+
+async function fetchUserCollector()
+{
+    if(form.value.modeltype?.length > 0 && form.value.modeltype == 'customer_group')
+    {
+        const response = await apiService.getOnlyCollectorPermissionNoAUTH({});
+        collectors.value = response.data;
+        selectedCollector.value = libraryService.collectorId;
+    }
+}
+
+onMounted(() => {
+    fetchUserCollector()
+});
 
 const cancel = () => {
   // Logic to handle cancellation
