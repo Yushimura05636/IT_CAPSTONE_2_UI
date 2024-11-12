@@ -35,7 +35,7 @@
                 <div v-if="isAuthenticated && !isCodeSent" class="text-center space-y-4">
                     <h3 class="text-xl font-semibold">Select Verification Method</h3>
                     <div class="flex justify-around">
-                        <div @click="setMethod('email_address')" :class="selectedMethod === 'email' ? 'selected' : ''" class="method-option">
+                        <div @click="setMethod('email')" :class="selectedMethod === 'email' ? 'selected' : ''" class="method-option">
                             <img src="https://www.clipartmax.com/png/middle/262-2626325_find-and-follow-us-dark-blue-email-icon.png" alt="Email Icon" class="icon" />
                             <span>Email</span>
                         </div>
@@ -85,11 +85,12 @@ const login = async () => {
     try {
         const response = await authService.loginClient({ email: state.email, password: state.password });
         console.log('Response:', response); 
+        debugger
+        debugger
         if (response.data) {
-            // state.phone = response.data.user.cellphone_no
-            state.email = response.data.user.personality.email_address;
-            // console.log("Login Email "+state.email)
-            console.log('Response Data:', response.data);
+            debugger
+            state.phone = response.data.user.phone_number
+            state.email = response.data.user.email
 
             //set the phone number and
             isAuthenticated.value = true;
@@ -111,12 +112,13 @@ const sendVerificationCode = async () => {
     try {
         debugger
         const params = {
-            email_address: state.email,
+            email: state.email,
             // phone_number: state.phone,
             method: selectedMethod.value,
         }
         console.log("Sending params:", params);
         console.log("Pass email "+state.email)
+
         const response = await authService.sendVerificationClient(params);
         isCodeSent.value = true;
         errorMessage.value = '';
@@ -131,7 +133,7 @@ const verifyCode = async () => {
         debugger
         const params = {
             code: state.code,
-            email_address: state.email,
+            email: state.email,
             // phone_number: state.phone,
             method: selectedMethod.value,
         }

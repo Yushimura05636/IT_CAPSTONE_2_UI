@@ -77,6 +77,20 @@
               />
             </div>
 
+            <!-- phone num -->
+            <div class="mb-4">
+              <label for="email" class="block text-sm font-medium text-gray-700">Phone Number</label>
+              <input
+                disabled
+                v-model="form.cellphone_no"
+                type="number"
+                id="phone number"
+                class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                placeholder="Enter Phone number"
+                required
+              />
+            </div>
+
             <!-- Password Field -->
             <div class="mb-4">
               <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
@@ -144,7 +158,7 @@ import 'vue3-toastify/dist/index.css';
   import { apiService } from '~/routes/api/API'; // Assuming you have this service
 
   // Employee list for the dropdown
-  const employees = ref<{ id: string; first_name: string; family_name: string; middle_name: string; email: string }[]>([]);
+  const employees = ref<{ id: string; first_name: string; family_name: string; middle_name: string; email: string; cellphone_no: string; }[]>([]);
 
   // Status list for the dropdown
   const statuses = ref<{ id: string; name: string }[]>([]);
@@ -156,6 +170,7 @@ import 'vue3-toastify/dist/index.css';
     middle_name: '',
     email: '',
     employee_id: '',
+    cellphone_no: '',
     password: '', // Added password field to the form state
     status: 0 // Added status field to the form state
   });
@@ -177,8 +192,11 @@ import 'vue3-toastify/dist/index.css';
         first_name: entry.personality.first_name,
         family_name: entry.personality.family_name,
         middle_name: entry.personality.middle_name,
+        cellphone_no: entry.personality.cellphone_no,
         email: entry.personality.email_address
       }));
+
+      console.log(employees.value);
     } catch (error: any) {
       console.error('Error fetching employees:', error);
     }
@@ -214,6 +232,7 @@ import 'vue3-toastify/dist/index.css';
           form.value.family_name = selectedEmployee.family_name;
           form.value.middle_name = selectedEmployee.middle_name;
           form.value.email = selectedEmployee.email;
+          form.value.cellphone_no = selectedEmployee.cellphone_no;
         }
       }
     }
@@ -230,6 +249,7 @@ import 'vue3-toastify/dist/index.css';
           middle_name: form.value.middle_name,
           email: form.value.email,
           employee_id: form.value.employee_id,
+          phone_number: form.value.cellphone_no,
           password: form.value.password, // Include password in the API request
           status_id: form.value.status, // Include status in the API request
         });
@@ -266,6 +286,7 @@ import 'vue3-toastify/dist/index.css';
     form.value.email = '';
     form.value.employee_id = '';
     form.value.password = '';
+    form.value.cellphone_no = '';
     form.value.status = 0; // Clear status field
 
     navigateTo('/users');

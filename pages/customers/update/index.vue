@@ -265,7 +265,7 @@ const personality = ref({
   province_id: '',
   credit_status_id: '',
   datetime_registered: '',
-  name_type: 1, //for customer
+  name_type: 2, //for customer
   personality_status_code: '',
   notes: '',
 });
@@ -429,7 +429,6 @@ const validationErrorsForCustomer = ref({
       group_id: '',
       passbook_no: '',
       loan_count: '',
-      password: '',
     });
 
 onMounted(async () => {
@@ -488,14 +487,13 @@ watch(selectedRequirements, (newSelected) => {
     }
 });
 
+
 const updateCustomer = async () => {
   try {
-    
     if (requirementsPrompt.value) {
         toast.info(requirementsPrompt.value);
         return;
       }
-    
     if (selectedRequirements.value.length < 2) {
       toast.error("Please select at least two document requirement.");
       requirementsPrompt.value = `Select atleast one requirement before proceeding.`;
@@ -548,8 +546,8 @@ const updateCustomer = async () => {
         console.log(selectedRequirements.value)
         return;
       }
-
     
+
     const customerId = CustomersService.id;
     const jsonObject = {
       customer: {
@@ -582,7 +580,7 @@ const updateCustomer = async () => {
             credit_status_id: personality.value.credit_status_id, // Get from personality ref
             notes: personality.value.notes, // Get from personality ref, optional
         },
-        requirements: state.value.requirements,
+            requirements: state.value.requirements,
     };
 
     debugger;

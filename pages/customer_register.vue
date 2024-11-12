@@ -284,6 +284,7 @@ groups: [],
 personality_status_code: [],
 loan_count: [],
 fees: [],
+statuses: [],
 isTableLoading: false,
 });
 
@@ -393,18 +394,26 @@ try {
     })
 }
 };
-
 const fetchLoanCount = async () => {
 // Replace with your actual API call
 try {
     const response = await apiService.getRegisterLoanCount({});
-
     state.value.loan_count = response.data;
 
 } catch (error) {
     toast.error(error.message, {
     autoClose: 5000,
     })
+}
+};
+  // Function to fetch user statuses from API
+const fetchStatuses = async () => {
+try {
+    // Fetch status data from API
+    const response = await apiService.getRegisterLibraries({}, 'user_account_status'); // Ensure this API endpoint exists
+    state.value.statuses = response.data
+} catch (error: any) {
+    console.error('Error fetching statuses:', error);
 }
 };
 
@@ -416,7 +425,6 @@ function isValidAge(birthday) {
 
     return age > 18 || (age === 18 && monthDiff >= 0);
 }
-
 function isValidPhilippineNumber(phone) {
     const mobileRegex = /^09\d{9}$/; // 12 digits
     const landlineRegex = /^0\d{7,9}$/; // 7-9 digits
@@ -432,8 +440,9 @@ await Promise.all([
     fetchCreditStatuses(),
     fetchGroups(),
     fetchLoanCount(),
-    customer.value.passbook_no = generatePassbookNo(),
     fetchFees(),
+    fetchStatuses(),
+    customer.value.passbook_no = generatePassbookNo(),
 ]);
 });
 
@@ -461,6 +470,7 @@ const validationErrors = ref({
     loan_count_id: '',
     enable_mortuary: '',
     });
+
 const validationErrorsForCustomer = ref({
     group_id: '',
     passbook_no: '',
@@ -529,12 +539,11 @@ try {
     }
 
     const jsonObject = {
-    customer: {
+        customer: {
             group_id: customer.value.group_id,
             passbook_no: customer.value.passbook_no,
             loan_count: customer.value.loan_count_id,
             enable_mortuary: customer.value.enable_mortuary,
-            password: customer.value.password,
             personality_id: 0,
         },
         personality: {
@@ -561,6 +570,7 @@ try {
             notes: personality.value.notes, // Get from personality ref, optional
         },
         fees: customerData.value.selectedFees,
+        password: customer.value.password,
     };
 
     debugger;
