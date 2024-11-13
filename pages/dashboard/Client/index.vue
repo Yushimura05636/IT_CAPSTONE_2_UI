@@ -13,7 +13,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
           <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition duration-300">
             <h2 class="text-xl font-semibold text-gray-700 mb-3">Total Loan Balance</h2>
-            <p class="text-3xl font-semibold text-blue-600">${{ totalLoanBalance || 0 }}</p>
+            <p class="text-3xl font-semibold text-blue-600">{{ formatCurrency(totalLoanBalance) || 0 }}</p>
           </div>
           <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition duration-300">
             <h2 class="text-xl font-semibold text-gray-700 mb-3">Number of Loans</h2>
@@ -21,11 +21,11 @@
           </div>
           <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition duration-300">
             <h2 class="text-xl font-semibold text-gray-700 mb-3">Outstanding Balance</h2>
-            <p class="text-3xl font-semibold text-red-600">${{ outstandingBalance || 0 }}</p>
+            <p class="text-3xl font-semibold text-red-600">{{ formatCurrency(outstandingBalance) || 0 }}</p>
           </div>
           <div class="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition duration-300">
             <h2 class="text-xl font-semibold text-gray-700 mb-3">Total Payments</h2>
-            <p class="text-3xl font-semibold text-green-700">${{ totalPayments || 0 }}</p>
+            <p class="text-3xl font-semibold text-green-700">{{ formatCurrency(totalPayments) || 0 }}</p>
           </div>
         </div>
   
@@ -42,34 +42,43 @@
   <h2 class="text-xl font-semibold text-gray-700 mb-4">Loans</h2>
   <div class="overflow-x-auto">
     <table class="min-w-full bg-white rounded-lg border border-gray-200">
-      <thead>
-        <tr>
-          <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Loan ID</th>
-          <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Amount</th>
-          <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Date Applied</th>
-          <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="loan in loans" :key="loan.id" class="hover:bg-gray-50 transition duration-200">
-          <td class="py-2 px-4 border-b border-gray-300">{{ loan.loan_application_no }}</td>
-          <td class="py-2 px-4 border-b border-gray-300">{{ loan.amount_loan }}</td>
-          <td class="py-2 px-4 border-b border-gray-300">{{ loan.datetime_prepared }}</td>
-          <td class="py-2 px-4 border-b border-gray-300">{{ loan.document_status_code }}</td>
-          <td class="py-2 px-4 border-b border-gray-300">{{ loan.amount_loan }}</td>
-          <td class="py-2 px-4 border-b border-gray-300">{{ loan.factor_rate }}</td>
-          <td class="py-2 px-4 border-b border-gray-300">{{ loan.amount_interest }}</td>
-          <td class="py-2 px-4 border-b border-gray-300">{{ loan.amount_paid }}</td>
-          <td class="py-2 px-4 border-b border-gray-300">{{ loan.datetime_fully_paid }}</td>
-          <td class="py-2 px-4 border-b border-gray-300">{{ loan.datetime_approved }}</td>
-          <td class="py-2 px-4 border-b border-gray-300">{{ loan.approved_by_id }}</td>
-          <td class="py-2 px-4 border-b border-gray-300">{{ loan.prepared_by_id }}</td>
-          <td class="py-2 px-4 border-b border-gray-300">{{ loan.released_by_id }}</td>
-          <td class="py-2 px-4 border-b border-gray-300">{{ loan.last_modified_by_id }}</td>
-          <td class="py-2 px-4 border-b border-gray-300">{{ loan.notes }}</td>
-        </tr>
-      </tbody>
-    </table>
+  <thead>
+    <tr>
+      <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Loan Application No</th>
+      <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Date Prepared</th>
+      <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Status Code</th>
+      <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Loan Amount</th>
+      <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Factor Rate</th>
+      <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Interest Amount</th>
+      <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Amount Paid</th>
+      <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Date Fully Paid</th>
+      <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Date Approved</th>
+      <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Approved By</th>
+      <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Prepared By</th>
+      <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Released By</th>
+      <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Last Modified By</th>
+      <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr v-for="loan in loans" :key="loan.id" class="hover:bg-gray-50 transition duration-200">
+      <td class="py-2 px-4 border-b border-gray-300">{{ loan.loan_application_no }}</td>
+      <td class="py-2 px-4 border-b border-gray-300">{{ loan.datetime_prepared }}</td>
+      <td class="py-2 px-4 border-b border-gray-300">{{ loan.document_status_code }}</td>
+      <td class="py-2 px-4 border-b border-gray-300">{{ loan.amount_loan }}</td>
+      <td class="py-2 px-4 border-b border-gray-300">{{ loan.factor_rate }}</td>
+      <td class="py-2 px-4 border-b border-gray-300">{{ loan.amount_interest }}</td>
+      <td class="py-2 px-4 border-b border-gray-300">{{ loan.amount_paid }}</td>
+      <td class="py-2 px-4 border-b border-gray-300">{{ loan.datetime_fully_paid }}</td>
+      <td class="py-2 px-4 border-b border-gray-300">{{ loan.datetime_approved }}</td>
+      <td class="py-2 px-4 border-b border-gray-300">{{ loan.approved_by_id }}</td>
+      <td class="py-2 px-4 border-b border-gray-300">{{ loan.prepared_by_id }}</td>
+      <td class="py-2 px-4 border-b border-gray-300">{{ loan.released_by_id }}</td>
+      <td class="py-2 px-4 border-b border-gray-300">{{ loan.last_modified_by_id }}</td>
+      <td class="py-2 px-4 border-b border-gray-300">{{ loan.notes }}</td>
+    </tr>
+  </tbody>
+</table>
   </div>
 </div>
 
@@ -90,8 +99,8 @@
               <tbody>
                 <tr v-for="payment in payments" :key="payment.id" class="hover:bg-gray-50 transition duration-200">
                   <td class="px-6 py-4 text-sm font-medium text-gray-800">{{ payment.prepared_at || 'N/A' }}</td>
-                  <td class="px-6 py-4 text-sm font-medium text-gray-800">${{ payment.amount_paid || 0 }}</td>
-                  <td class="px-6 py-4 text-sm font-medium text-gray-800">${{ payment.document_status_code || 0 }}</td>
+                  <td class="px-6 py-4 text-sm font-medium text-gray-800">{{ payment.amount_paid || 0 }}</td>
+                  <td class="px-6 py-4 text-sm font-medium text-gray-800">{{ payment.document_status_code || 0 }}</td>
                   <td class="px-6 py-4 text-sm font-medium text-gray-800">{{ payment.updated_at || 'N/A' }}</td>
                 </tr>
               </tbody>
@@ -170,6 +179,11 @@
       'text-yellow-500': status === 'Pending',
     }
   }
+
+  const formatCurrency = (value) => {
+  return new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(value);
+}
+
   
   // Call the updateTime function every second
   onMounted(() => {

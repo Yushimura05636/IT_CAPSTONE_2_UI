@@ -13,7 +13,7 @@
                 <!-- Card 1: Total Borrowers -->
                 <div v-if="total_customers !== null" class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full border border-gray-200">
                   <div class="flex items-center justify-between mb-4">
-                    <h1 class="text-4xl font-semibold text-gray-800">{{ total_customers ?? 0 }}</h1>
+                    <h1 class="text-4xl font-semibold text-gray-800">{{ total_customers }}</h1>
                     <UserIcon class="text-gray-700 w-8 h-8" />
                   </div>
                   <div class="flex items-center justify-between">
@@ -25,7 +25,7 @@
                 <!-- Card 2: Total Groups -->
                 <div v-if="total_groups !== null" class="bg-white shadow-md rounded-lg p-6 flex flex-col justify-between h-full border border-gray-200">
                   <div class="flex items-center justify-between mb-4">
-                    <h1 class="text-4xl font-semibold text-gray-800">{{ total_groups ?? 0}} </h1>
+                    <h1 class="text-4xl font-semibold text-gray-800">{{ total_groups }} </h1>
                     <UsersIcon class="text-gray-700 w-8 h-8" />
                   </div>
                   <div class="flex items-center justify-between">
@@ -226,9 +226,9 @@ closePeopleDropdown();
 
 // Mock payments data (Replace with actual API data)
 const payments = ref([]);
-const amount_receivables = ref([]);
-const total_customers = ref([]);
-const total_groups = ref([]);
+const amount_receivables = ref(0);
+const total_customers = ref(0);
+const total_groups = ref(0);
 
 async function fetchPayments() {
   try {

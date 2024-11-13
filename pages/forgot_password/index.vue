@@ -1,30 +1,39 @@
 <template>
-    <div class="forgot-password-container flex flex-col items-center justify-center h-screen bg-gray-100">
-      <div class="max-w-md w-full bg-white p-8 rounded-lg shadow-lg">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Forgot Password</h2>
+  <div class="forgot-password-container flex flex-col items-center justify-center h-screen bg-gradient-to-br from-blue-500 to-purple-500">
+    <div class="max-w-md w-full bg-white p-8 rounded-lg shadow-2xl">
+      <h2 class="text-3xl font-semibold text-gray-800 text-center mb-6">Forgot Password</h2>
 
-        <form @submit.prevent="sendResetLink">
+      <form @submit.prevent="sendResetLink" class="space-y-6">
+        <div class="form-group">
           <input
             v-model="email"
             type="email"
             placeholder="Enter your email"
-            class="input-field"
+            class="input-field w-full px-4 py-3 border rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-500"
             required
           />
-          <button type="submit" class="submit-button w-full mt-4">Send Reset Link</button>
-        </form>
+        </div>
 
-        <p v-if="errorMessage" class="error text-red-600 mt-2">{{ errorMessage }}</p>
-      </div>
+        <button type="submit" class="submit-button w-full mt-4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-lg transition duration-200 py-2 text-lg font-semibold">
+          Send Reset Link
+        </button>
 
-      <div v-if="codeSent" class="mt-4">
+        <!-- Display error message if there is one -->
+        <p v-if="errorMessage" class="error-message text-red-600 text-center mt-2">{{ errorMessage }}</p>
+      </form>
+
+      <!-- Code Sent Confirmation -->
+      <div v-if="codeSent" class="mt-6 text-center">
         <h2 class="text-lg text-gray-700">
-          An email has been sent to {{ displayCensoredEmail(email) }} to reset your password.
+          An email has been sent to <span class="font-bold">{{ displayCensoredEmail(email) }}</span> to reset your password.
         </h2>
-        <button @click="resendEmail" class="mt-2 btn-secondary">Resend Email</button>
+        <button @click="resendEmail" class="mt-4 px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-lg shadow-sm transition duration-150">
+          Resend Email
+        </button>
       </div>
     </div>
-  </template>
+  </div>
+</template>
 
   <script setup lang="ts">
   import { ref } from 'vue';
@@ -129,4 +138,22 @@
   .btn-secondary:hover {
     background-color: #e5e7eb;
   }
+
+  .forgot-password-container {
+  background: linear-gradient(135deg, #3b82f6, #9333ea);
+  padding: 2rem;
+}
+
+.submit-button {
+  background-color: #4f46e5;
+  transition: background-color 0.2s;
+}
+
+.submit-button:hover {
+  background-color: #4338ca;
+}
+
+.error-message {
+  color: #e53e3e;
+}
   </style>

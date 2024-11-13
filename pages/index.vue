@@ -515,7 +515,7 @@ const employeeLogin = () => {
 const clientLogin = () => {
   showModal.value = false; // Close modal
   console.log("Redirecting to login..."); // Debugging log
-  router.push('/clientLogin'); // Adjust this route as needed
+  router.push('/client_login'); // Adjust this route as needed
 };
 
 // Define the features using a ref for reactivity
