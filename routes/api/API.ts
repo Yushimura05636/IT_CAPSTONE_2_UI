@@ -466,8 +466,13 @@ class API extends BaseAPIService {
     }
 
     //dashboard
-    async getDashboardUserDetails(params: object): Promise<any> {
+    async getDashboardUserDetailsNoAUTH(params: object): Promise<any> {
         return await this.request(`/DASHBOARD/NoAUTH/USER/DETAILS`, 'GET', params)
+    }
+
+    //dashboard
+    async getDashboardUserLoanDetailsNoAUTH(params: object): Promise<any> {
+        return await this.request(`/DASHBOARD/NoAUTH/USER/LOAN/DETAILS`, 'GET', params)
     }
 
     //auth
@@ -844,6 +849,12 @@ async authRequirementsUpdate(params: object): Promise<any> {
         //bar graph data
         async getGraphDataAll(params: object): Promise<any> {
             return await this.request(`/GRAPHS/NoAUTH/Data/All`, 'GET', params)
+        }
+
+
+        //REPORTS
+        async getCollections(params: object): Promise<any> {
+            return await this.request(`/REPORTS`, 'GET', params)
         }
 
 }
