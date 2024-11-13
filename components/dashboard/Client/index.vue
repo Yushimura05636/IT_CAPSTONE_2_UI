@@ -3,8 +3,11 @@
       <div class="p-6 bg-gray-50 min-h-screen">
         <!-- Welcome Message and Date-Time -->
         <div class="flex items-center justify-between mb-6">
+          <div v-if="UserService.first_name == null">
+            No User
+          </div>
           <div>
-            <h1 class="text-3xl font-extrabold text-gray-800">Welcome Back, {{ UserService.last_name }} {{ UserService.first_name }} {{ UserService.middle_name }}!</h1>
+            <h1 class="text-3xl font-extrabold text-gray-800">Welcome Back, User!</h1>
             <p class="text-gray-600 text-lg">{{ currentDateTime }}</p>
           </div>
         </div>
@@ -122,6 +125,10 @@
   
   // Real-time clock
   const currentDateTime = ref('')
+
+  const last_name = ref('User');
+  const first_name = ref('User');
+  const middle_name = ref('User');
   
   // Update the time every second
   const updateTime = () => {
@@ -150,6 +157,12 @@
 
     loans.value = response.loan_history
     payments.value = response.payment_history
+
+
+    //name
+    first_name.value = UserService.first_name
+    last_name.value = UserService.last_name
+    middle_name.value = UserService.middle_name
   }
   
   // Status color classes for loan status and reloan eligibility

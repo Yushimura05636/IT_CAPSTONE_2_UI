@@ -1,6 +1,6 @@
 export class Users {
   private _usr_id!: number;
-  private static _lgUsr_id!: number;
+  private static _lgUsr_id?: number;
   private _usbl_id?: number | undefined;
   private _status_id!: number;
   private _last_name!: string;
