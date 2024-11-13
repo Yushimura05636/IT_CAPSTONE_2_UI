@@ -15,6 +15,17 @@ async function getCustomerDetails() {
         
         // Set user role after successful response
         user.value = response.role;
+
+        if(user.value == 'CUSTOMER')
+        {
+            loading.value = false
+            navigateTo('/dashboard/Client')
+        }
+        else
+        {
+            loading.value = false
+            navigateTo('/dashboard/Employee')
+        }
     } catch (error) {
         console.error(`Error fetching user details: ${error}`);
     } finally {
