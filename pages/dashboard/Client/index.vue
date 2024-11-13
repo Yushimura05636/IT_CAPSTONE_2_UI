@@ -3,11 +3,8 @@
       <div class="p-6 bg-gray-50 min-h-screen">
         <!-- Welcome Message and Date-Time -->
         <div class="flex items-center justify-between mb-6">
-          <div v-if="UserService.first_name == null">
-            No User
-          </div>
           <div>
-            <h1 class="text-3xl font-extrabold text-gray-800">Welcome Back, {{ last_name ?? 'User'}} {{ first_name ?? 'User'}} {{ middle_name ?? 'User'}}!</h1>
+            <h1 class="text-3xl font-extrabold text-gray-800">Welcome Back, {{  UserService.last_name ?? 'User'}} {{  UserService.first_name ?? 'User'}} {{ UserService.middle_name ?? 'User'}}!</h1>
             <p class="text-gray-600 text-lg">{{ currentDateTime }}</p>
           </div>
         </div>
