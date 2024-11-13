@@ -1,20 +1,3 @@
-<template>
-    <div v-if="loading">
-        <div class="loading-overlay">
-            <div class="spinner"></div>
-            <div class="mx-10">Loading Dashboard...</div>
-        </div>
-    </div>
-    
-    <div v-else-if="user === 'CUSTOMER'">
-        <DashboardClient />
-    </div>
-    
-    <div v-else>
-        <DashboardEmployee />
-    </div>
-</template>
-
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { apiService } from '~/routes/api/API';

@@ -141,7 +141,7 @@ const verifyCode = async () => {
         if (response.success) {
             localStorage.setItem("_token", response.data?.token)
             successMessage.value = 'Code verified!';
-            router.push('/dashboard');
+            router.push('/dashboard/Client');
         } else {
             errorMessage.value = 'Invalid code.';
         }

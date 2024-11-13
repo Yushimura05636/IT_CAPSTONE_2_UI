@@ -7,7 +7,7 @@
             No User
           </div>
           <div>
-            <h1 class="text-3xl font-extrabold text-gray-800">Welcome Back, User!</h1>
+            <h1 class="text-3xl font-extrabold text-gray-800">Welcome Back, {{ last_name ?? 'User'}} {{ first_name ?? 'User'}} {{ middle_name ?? 'User'}}!</h1>
             <p class="text-gray-600 text-lg">{{ currentDateTime }}</p>
           </div>
         </div>
