@@ -76,7 +76,7 @@ import { apiService } from '~/routes/api/API';
   const state_response = ref('');
   try {
     const response = await apiService.authRequirementsUpdate({})
-    state_response.value = response.data;
+    state_response.value = response.message;
   } catch (error) {
     toast.error(`${error}`, { autoClose: 3000, })
   }

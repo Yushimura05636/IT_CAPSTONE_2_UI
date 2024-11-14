@@ -347,7 +347,7 @@ onMounted(async () => {
   const state_response = ref('');
   try {
     const response = await apiService.authEmployeesCreate({})
-    state_response.value = response.data;
+    state_response.value = response.message;
   } catch (error) {
     toast.error(`${error}`, { autoClose: 3000, })
   }
