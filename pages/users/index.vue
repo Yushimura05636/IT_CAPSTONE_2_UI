@@ -101,7 +101,8 @@
     try {
       const params = {};
       const response = await apiService.getUser(params);
-      state.users = response;
+      debugger
+      state.users = response.data;
     } catch (error: any) {
       //state.error = error;
       toast.error(`${error}`, {
@@ -159,17 +160,18 @@
       .map(term => term.trim())
       .filter(term => term);
 
-    return state.users.filter(user => {
-      return searchTerms.every(term =>
-        // Check each term against user fields
-        Object.values(user).some(value =>
-          String(value).toLowerCase().includes(term)
-        ) ||
-        // Check in nested fields like name or email
-        [user.first_name, user.middle_name, user.last_name, user.email]
-          .some(value => String(value).toLowerCase().includes(term))
-      );
-    });
+    return state.users.filter(user =>
+  searchTerms.every(term =>
+    // Check loanApp.Loan_Application
+    Object.values(user).some(value =>
+      String(value).toLowerCase().includes(term)
+    ) ||
+    // Check loanApp.Customer
+    user && Object.values(user).some(value =>
+      String(value).toLowerCase().includes(term)
+    )
+  )
+);
   });
 
   // Manage permissions (optional, if needed)
