@@ -172,7 +172,7 @@ const payments = ref<Payment[]>([]);
 
 async function fetchCustomers() {
   try {
-    const response = await apiService.getActiveCustomerWithPaymentsNoAuth({});
+    const response = await apiService.getCustomerWithPaymentsNoAuth({});
     customers.value = response.data;
   } catch (error) {
     toast.error(`${error}`, { autoClose: 3000 });

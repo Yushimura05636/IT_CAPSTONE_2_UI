@@ -192,7 +192,7 @@ const verifyCode = async () => {
 }
 /* Background Animation */
 .animated-background {
-    background: linear-gradient(45deg, #4f46e5, #8b5cf6, #f59e0b, #10b981);
+    background: linear-gradient(45deg, #10b981, #34d399, #6ee7b7, #a7f3d0);
     background-size: 300% 300%;
     animation: gradientAnimation 15s ease infinite;
     transition: background 0.3s ease;

@@ -1,23 +1,46 @@
 <template>
-<div v-if="show" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
-    <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full relative">
-    <button @click="closeModal" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-2xl font-bold">
-        ×
-    </button>
-    <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Log in</h2>
-    <button 
-        @click="employeeLogin"
-        class="w-full bg-green-600 text-white py-2 rounded-md mb-4 hover:bg-green-600 transition">
-        Employee
-    </button>
-    <button 
-        @click="clientLogin"
-        class="w-full bg-gray-300 text-gray-700 py-2 rounded-md hover:bg-gray-400 transition">
-        Client
-    </button>
+    <div v-if="show" class="fixed inset-0 flex items-center justify-center bg-white bg-opacity-90 backdrop-blur-sm z-50">
+      <div class="bg-gradient-to-b from-green-600 to-green-700 rounded-lg shadow-2xl max-w-md w-full relative transform transition-all duration-500 ease-in-out">
+        
+        <!-- Bottom Section (Green) with Employee Login Button -->
+        <div class="bg-green-700 p-4 rounded-b-lg flex items-center justify-center rounded-lg">
+          <div class="w-full flex items-center justify-between bg-transparent text-white py-3 px-4 rounded-lg"></div> 
+        </div>
+
+        <!-- Close Button -->
+        <button 
+          @click="closeModal" 
+          class="absolute top-3 right-3 text-white text-2xl font-bold hover:text-gray-200 transition transform hover:scale-110">
+          ×
+        </button>
+        
+        <!-- Center Section (White Background) -->
+        <div class="bg-white p-8 text-center shadow-inner">
+          
+          <!-- Modal Header -->
+          <h2 class="text-gray-800 text-2xl font-bold mb-8 text-center tracking-wide">
+          </h2>
+  
+          <!-- Client Login Button -->
+          <button 
+            @click="clientLogin"
+            class="flex items-center justify-center w-full bg-red-500 text-white py-7 rounded-full mb-8 hover:bg-red-600 transition duration-300 transform hover:scale-105 shadow-lg text-lg font-semibold">
+            <span>Login</span>
+          </button>
+        </div>
+        
+        <!-- Bottom Section (Green) with Employee Login Button -->
+        <div class="bg-green-700 p-1 rounded-b-lg flex items-center justify-center">
+          <button 
+            @click="employeeLogin"
+            class="w-full flex items-center justify-between bg-transparent text-white py-2 px-4 rounded-lg hover:bg-green-600 transition duration-300 transform hover:scale-105 shadow-lg text-base font-medium">
+            <span>Employee Log in</span>
+            <span class="text-xl font-bold">&rsaquo;</span>
+          </button>
+        </div>
+      </div>
     </div>
-</div>
-</template>
+  </template>
 
 <script>
 export default {

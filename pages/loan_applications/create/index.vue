@@ -319,18 +319,22 @@ const fetchCustomers = async () => {
         try {
             const response = await apiService.getCustomerByGroupIdWithApproveActive({}, selectedGroupId.value);
             state.value.customers = response.data;
-            initializeCustomerData();
             debugger
         } catch (error) {
-            toast.error(`ewo ${error}`, { autoClose: 5000 });
+            toast.error(`${error}`, { autoClose: 5000 });
         }
         finally {
-            state.value.isLoading = false;
-
-            //foreach
-            state.value.customers.forEach(element => {
-                element.isSelected = true
-            });
+            debugger
+            if(state.value.customers.length > 0 || !state.value.customers == null)
+            {
+                initializeCustomerData();
+                
+                //foreach
+                state.value.customers.forEach(element => {
+                    element.isSelected = true
+                });
+            }
+            state.value.isLoading = false
         }
     } else {
         toast.error('Please select a group.', { autoClose: 5000 });
