@@ -259,6 +259,8 @@ onMounted(async () => {
     state_response.value = response.message;
   } catch (error) {
     toast.error(`${error}`, { autoClose: 3000, })
+setTimeout(() => {
+    }, 2000);
   }
   finally
   {
@@ -632,6 +634,8 @@ const filteredGroup = computed(() => {
         return state.value.groups;
     } catch (error) {
         toast.error(`${error}`, { autoClose: 3000, })
+setTimeout(() => {
+    }, 2000);
     }
 });
 </script>

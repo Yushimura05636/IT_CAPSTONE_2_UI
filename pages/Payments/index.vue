@@ -219,7 +219,9 @@ function createPayment(){
     try {
         navigateTo(`/payments/create/`);
     } catch (error) {
-        toast.error(`${error}`, { autoClose: 3000, });
+        toast.error(`${error}`, { autoClose: 3000, })
+setTimeout(() => {
+    }, 2000);;
     }
 }
 </script>

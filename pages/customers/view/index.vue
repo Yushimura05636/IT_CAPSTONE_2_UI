@@ -386,6 +386,8 @@ onMounted(async () => {
     state_response.value = response.message;
   } catch (error) {
     toast.error(`${error}`, { autoClose: 3000, })
+setTimeout(() => {
+    }, 2000);
   }
   finally
   {
@@ -613,7 +615,9 @@ function cancelForm() {
     try {
         navigateTo('/customers/');
     } catch (error) {
-        toast.error(`${error}`, { autoClose: 3000, });
+        toast.error(`${error}`, { autoClose: 3000, })
+setTimeout(() => {
+    }, 2000);;
     }
 }
 
