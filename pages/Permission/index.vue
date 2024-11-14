@@ -98,8 +98,9 @@ import { PageNameService } from '~/models/PageName';
 
     async function managePermissions(userId: number) {
         try {
-            UserService.usr_id = userId;
-            const response = await apiService.authUsersUpdate({});
+            debugger
+            UserService.usbl_id = userId;
+            const response = await apiService.authUserUpdate({});
             navigateTo('/permission/manage');
         } catch (error: any) {
             state.error = error;

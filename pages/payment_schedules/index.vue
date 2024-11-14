@@ -161,7 +161,7 @@ const LoadPaymentSchedule = async () => {
         groups.value = groups.value.filter(group => uniqueGroupIds.has(group.id));
         return groups.value;
     } catch (error) {
-        toast.error(`${error}`)
+        toast.error(`${error}`, { autoClose: 3000, })
     }
 };
 

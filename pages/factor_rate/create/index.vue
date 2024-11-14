@@ -102,7 +102,24 @@ import 'vue3-toastify/dist/index.css';
                 state.isTableLoading = false;
             }
         }
-onMounted(() => {
+onMounted(async () => {
+
+    //Promise for authentication
+  const state_response = ref('');
+  try {
+    const response = await apiService.authFactorRatesCreate({})
+    state_response.value = response.data;
+  } catch (error) {
+    toast.error(`${error}`, { autoClose: 3000, })
+  }
+  finally
+  {
+    if(state_response.value == null || state_response.value.length <= 0)
+    {
+      navigateTo(`/factor_rate`)
+    }
+  }
+
     fetchFreqAndDura();
 });
 

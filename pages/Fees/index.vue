@@ -107,7 +107,7 @@ import { PageNameService } from '~/models/PageName';
     state.isTableLoading = true;
     state.error = null;
     try {
-      const response = await apiService.getFeeNoAuth({});
+      const response = await apiService.getFee({});
       state.fee = response;
     } catch (error: any) {
       toast.error(`${error}`, { autoClose: 5000 });

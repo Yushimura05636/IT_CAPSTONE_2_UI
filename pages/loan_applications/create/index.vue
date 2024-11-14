@@ -278,7 +278,24 @@ const minAmountForSelected = computed(() => {
 });
 
 // Fetch data on mount
-onMounted(() => {
+onMounted(async () => {
+
+    //Promise for authentication
+  const state_response = ref('');
+  try {
+    const response = await apiService.authLoanApplicationsCreate({})
+    state_response.value = response.data;
+  } catch (error) {
+    toast.error(`${error}`, { autoClose: 3000, })
+  }
+  finally
+  {
+    if(state_response.value == null || state_response.value.length <= 0)
+    {
+      navigateTo(`/loan_applications`)
+    }
+  }
+
     fetchGroups();
     fetchFactorRate();
     fetchPaymentFrequencies();
@@ -623,7 +640,7 @@ const filteredGroup = computed(() => {
         state.value.groups = state.value.groups.filter(group => uniqueGroupIds.has(group.id));
         return state.value.groups;
     } catch (error) {
-        toast.error(`${error}`)
+        toast.error(`${error}`, { autoClose: 3000, })
     }
 });
 </script>

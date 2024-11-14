@@ -185,7 +185,7 @@ async function updateSelected() {
     navigateTo(`/customers/update`);
     // toast.success(`Update button clicked for Customer ID: ${selectedId.value}`);
   } catch (error) {
-    toast.error(`${error}`);
+    toast.error(`${error}`, { autoClose: 3000, });
   }
 }
 </script>

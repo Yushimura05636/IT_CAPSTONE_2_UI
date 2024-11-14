@@ -175,11 +175,12 @@ return map;
 
 async function fetchPermissionandDocuments() {
 try {
+  debugger
   const params = {};
   const tblpermissions = await apiService.getPermission(params);
-  const permissions = await apiService.getUserPermission(params, UserService.usr_id);
+  const permissions = await apiService.getUserPermission(params, UserService.usbl_id);
   const documents = await apiService.getDocumentMap(params);
-  const users = await apiService.getUserById(params, UserService.usr_id);
+  const users = await apiService.getUserById(params, UserService.usbl_id);
 
   if (tblpermissions && tblpermissions.data && permissions && permissions.data && documents && documents.data && users && users.data) {
     state.permission = permissions.data;
@@ -312,7 +313,24 @@ documentPermissions.value = [];
 }
 
 // Fetch data on component mount
-onMounted(() => {
+onMounted(async () => {
+
+  //Promise for authentication
+  const state_response = ref('');
+  try {
+    const response = await apiService.authUserUpdate({})
+    state_response.value = response.data;
+  } catch (error) {
+    toast.error(`${error}`, { autoClose: 3000, })
+  }
+  finally
+  {
+    if(state_response.value == null || state_response.value.length <= 0)
+    {
+      navigateTo(`/permission`)
+    }
+  }
+
   fetchPermissionandDocuments();
 });
 

@@ -103,7 +103,7 @@
       const response = await apiService.getUser(params);
       state.users = response;
     } catch (error: any) {
-      state.error = error;
+      //state.error = error;
       toast.error(`${error}`, {
         autoClose: 3000,
       });
@@ -114,7 +114,7 @@
   // Create user
   async function createUser() {
     try {
-      await apiService.authUsersCreate({});
+      await apiService.authUserCreate({});
       navigateTo('/users/create');
     } catch (error) {
       toast.error(`${error}`, { autoClose: 5000 });
@@ -126,7 +126,7 @@
     if (selectedUserId.value) {
       try {
         UserService.usr_id = parseInt(selectedUserId.value);
-        await apiService.authUsersUpdate({});
+        await apiService.authUserUpdate({});
         navigateTo(`/users/update/${selectedUserId.value}`);
       } catch (error) {
         toast.error(`${error}`, { autoClose: 5000 });
@@ -176,7 +176,7 @@
   async function managePermissions(userId: number) {
     try {
       UserService.usr_id = userId;
-      await apiService.authUsersUpdate({});
+      await apiService.authUserUpdate({});
       navigateTo('/permission/manage');
     } catch (error: any) {
       state.error = error;

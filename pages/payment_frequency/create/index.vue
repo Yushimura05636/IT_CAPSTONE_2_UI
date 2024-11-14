@@ -1,5 +1,6 @@
 <template>
-    <div class="bg-gray-100 h-screen flex items-center justify-center p-6">
+    <NuxtLayout name="admin">
+        <div class="bg-gray-100 h-screen flex items-center justify-center p-6">
         <form @submit.prevent="createPaymentFrequency" class="w-full max-w-lg bg-white p-8 rounded-md shadow-md">
             <div class="container mx-auto p-4">
                 <div class="border-b border-gray-900/10 pb-12">
@@ -37,6 +38,7 @@
             </div>
         </form>
     </div>
+    </NuxtLayout>
 </template>
 
 
@@ -91,4 +93,22 @@ import { apiService } from '~/routes/api/API';
       });
             }
         };
+
+onMounted(async () => {
+    //Promise for authentication
+  const state_response = ref('');
+  try {
+    const response = await apiService.authPaymentFrequenciesCreate({})
+    state_response.value = response.data;
+  } catch (error) {
+    toast.error(`${error}`, { autoClose: 3000, })
+  }
+  finally
+  {
+    if(state_response.value == null || state_response.value.length <= 0)
+    {
+      navigateTo(`/payment_frequency`)
+    }
+  }
+})
 </script>

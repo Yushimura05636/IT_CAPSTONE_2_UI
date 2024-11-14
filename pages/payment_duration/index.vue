@@ -125,9 +125,11 @@ import { PageNameService } from '~/models/PageName';
       toast.error(`${error}`, { autoClose: 5000 });
     }
     state.isTableLoading = false;
+    debugger
   }
 
   onMounted(() => {
+    debugger
     PageNameService.pageName = 'Payment Durations';
     fetchFreqandDuration();
   });
@@ -163,7 +165,7 @@ import { PageNameService } from '~/models/PageName';
 
   async function createPaymentFrequency() {
     try {
-      await apiService.authPaymentFrequenciesCreate({});
+      await apiService.authPaymentDurationsCreate({});
       navigateTo('payment_duration/create');
     } catch (error) {
       toast.error(`${error}`, { autoClose: 5000 });

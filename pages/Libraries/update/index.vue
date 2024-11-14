@@ -192,7 +192,23 @@ async function fetchUserCollector()
     }
 }
 
-onMounted(() => {
+onMounted(async () => {
+
+  //Promise for authentication
+  const state_response = ref('');
+  try {
+    const response = await apiService.authLibrariesUpdate({})
+    state_response.value = response.data;
+  } catch (error) {
+    toast.error(`${error}`, { autoClose: 3000, })
+  }
+  finally
+  {
+    if(state_response.value == null || state_response.value.length <= 0)
+    {
+      navigateTo(`/libraries`)
+    }
+  }
     fetchUserCollector()
 });
 </script>

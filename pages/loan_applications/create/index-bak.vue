@@ -603,7 +603,7 @@ const filteredGroup = computed(() => {
         state.value.groups = state.value.groups.filter(group => uniqueGroupIds.has(group.id));
         return state.value.groups;
     } catch (error) {
-        toast.error(`${error}`)
+        toast.error(`${error}`, { autoClose: 3000, })
     }
 });
 </script>

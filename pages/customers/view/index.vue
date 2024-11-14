@@ -378,6 +378,23 @@ try {
 };
 
 onMounted(async () => {
+
+  //Promise for authentication
+  const state_response = ref('');
+  try {
+    const response = await apiService.authCustomersView({})
+    state_response.value = response.data;
+  } catch (error) {
+    toast.error(`${error}`, { autoClose: 3000, })
+  }
+  finally
+  {
+    if(state_response.value == null || state_response.value.length <= 0)
+    {
+      navigateTo(`/customers`)
+    }
+  }
+
 await Promise.all([
     fetchBarangays(),
     fetchCities(),
@@ -596,7 +613,7 @@ function cancelForm() {
     try {
         navigateTo('/customers/');
     } catch (error) {
-        toast.error(`${error}`);
+        toast.error(`${error}`, { autoClose: 3000, });
     }
 }
 

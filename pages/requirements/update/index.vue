@@ -37,8 +37,12 @@
   </template>
   
   <script setup lang="ts">
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
   import { ref, onMounted } from 'vue'
   import { useRouter, useRoute } from 'vue-router'
+import { apiService } from '~/routes/api/API';
   
   const router = useRouter()
   const route = useRoute()
@@ -66,7 +70,24 @@
   }
   
   // Fetch the data when the component is mounted
-  onMounted(() => {
+  onMounted(async () => {
+
+    //Promise for authentication
+  const state_response = ref('');
+  try {
+    const response = await apiService.authRequirementsUpdate({})
+    state_response.value = response.data;
+  } catch (error) {
+    toast.error(`${error}`, { autoClose: 3000, })
+  }
+  finally
+  {
+    if(state_response.value == null || state_response.value.length <= 0)
+    {
+      navigateTo(`/requriements`)
+    }
+  }
+
     const id = Number(route.params.id)
     fetchRequirement(id)
   })

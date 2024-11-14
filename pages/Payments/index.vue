@@ -126,7 +126,7 @@ const state = reactive({
         state.error = null
         try {
             const params = {}
-            const response = await apiService.getPayment(params)
+            const response = await apiService.getPaymentAUTH(params)
             state.payment = response.data;
             debugger;
             console.log(state.payment);
@@ -219,7 +219,7 @@ function createPayment(){
     try {
         navigateTo(`/payments/create/`);
     } catch (error) {
-        toast.error(`${error}`);
+        toast.error(`${error}`, { autoClose: 3000, });
     }
 }
 </script>

@@ -97,4 +97,21 @@ import { apiService } from '~/routes/api/API';
       });
             }
         };
+onMounted(async () => {
+    //Promise for authentication
+  const state_response = ref('');
+  try {
+    const response = await apiService.authFeesCreate({})
+    state_response.value = response.data;
+  } catch (error) {
+    toast.error(`${error}`, { autoClose: 3000, })
+  }
+  finally
+  {
+    if(state_response.value == null || state_response.value.length <= 0)
+    {
+      navigateTo(`/fees`)
+    }
+  }
+})
 </script>
