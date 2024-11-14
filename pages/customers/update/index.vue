@@ -443,7 +443,7 @@ onMounted(async () => {
   }
   finally
   {
-    if(state_response.value == null || state_response.value.length <= 0)
+    if(state_response.value.length <= 0)
     {
       navigateTo(`/customers`)
     }
