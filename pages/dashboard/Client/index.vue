@@ -53,10 +53,6 @@
       <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Amount Paid</th>
       <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Date Fully Paid</th>
       <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Date Approved</th>
-      <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Approved By</th>
-      <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Prepared By</th>
-      <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Released By</th>
-      <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Last Modified By</th>
       <th class="px-6 py-3 text-left text-sm font-medium text-gray-500">Notes</th>
     </tr>
   </thead>
@@ -71,10 +67,6 @@
       <td class="py-2 px-4 border-b border-gray-300">{{ loan.amount_paid }}</td>
       <td class="py-2 px-4 border-b border-gray-300">{{ loan.datetime_fully_paid }}</td>
       <td class="py-2 px-4 border-b border-gray-300">{{ loan.datetime_approved }}</td>
-      <td class="py-2 px-4 border-b border-gray-300">{{ loan.approved_by_id }}</td>
-      <td class="py-2 px-4 border-b border-gray-300">{{ loan.prepared_by_id }}</td>
-      <td class="py-2 px-4 border-b border-gray-300">{{ loan.released_by_id }}</td>
-      <td class="py-2 px-4 border-b border-gray-300">{{ loan.last_modified_by_id }}</td>
       <td class="py-2 px-4 border-b border-gray-300">{{ loan.notes }}</td>
     </tr>
   </tbody>

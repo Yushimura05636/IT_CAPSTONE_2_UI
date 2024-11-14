@@ -4,9 +4,9 @@
         
         <!-- Bottom Section (Green) with Employee Login Button -->
         <div class="bg-green-700 p-4 rounded-b-lg flex items-center justify-center rounded-lg">
+            <span class="text-white">Login</span>
           <div class="w-full flex items-center justify-between bg-transparent text-white py-3 px-4 rounded-lg"></div> 
         </div>
-
         <!-- Close Button -->
         <button 
           @click="closeModal" 
@@ -24,8 +24,8 @@
           <!-- Client Login Button -->
           <button 
             @click="clientLogin"
-            class="flex items-center justify-center w-full bg-red-500 text-white py-7 rounded-full mb-8 hover:bg-red-600 transition duration-300 transform hover:scale-105 shadow-lg text-lg font-semibold">
-            <span>Login</span>
+            class="flex items-center justify-center w-full bg-red-500 text-white py-5 rounded-full mb-8 hover:bg-red-600 transition duration-300 transform hover:scale-105 shadow-lg text-lg font-semibold">
+            <span>Client</span>
           </button>
         </div>
         

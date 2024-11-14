@@ -512,7 +512,7 @@ try {
 onMounted(() => {
 
 //check if user is auth
-AUTH_USER();
+//AUTH_USER();
 
 //get the user details
 userDetails();
