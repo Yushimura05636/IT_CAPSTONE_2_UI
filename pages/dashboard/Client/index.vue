@@ -92,7 +92,7 @@
                 <tr v-for="payment in payments" :key="payment.id" class="hover:bg-gray-50 transition duration-200">
                   <td class="px-6 py-4 text-sm font-medium text-gray-800">{{ payment.prepared_at || 'N/A' }}</td>
                   <td class="px-6 py-4 text-sm font-medium text-gray-800">{{ payment.amount_paid || 0 }}</td>
-                  <td class="px-6 py-4 text-sm font-medium text-gray-800">{{ payment.document_status_code || 0 }}</td>
+                  <td class="px-6 py-4 text-sm font-medium text-gray-800">{{ payment.document_status_description || 0 }}</td>
                   <td class="px-6 py-4 text-sm font-medium text-gray-800">{{ payment.updated_at || 'N/A' }}</td>
                 </tr>
               </tbody>

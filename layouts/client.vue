@@ -112,7 +112,7 @@
 :class="{'lg:w-100': isChildVisible.home || isChildVisible.about, 'lg:w-50': !isChildVisible.home && !isChildVisible.about}"
 class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:flex-col overflow-hidden"
 >
-<div class="flex grow flex-col gap-y-3 bg-gray-900 shadow-lg rounded-r-lg text-gray-200 px-2 pb-4 overflow-hidden">
+<div class="flex grow flex-col gap-y-3 bg-indigo-900 shadow-lg rounded-r-lg text-gray-200 px-2 pb-4 overflow-hidden">
 <div class="flex items-center justify-center h-16">
     <button @click="toggleSidebar" class="text-gray-400 hover:text-white focus:outline-none">
     <Bars3Icon class="h-8 w-10" aria-hidden="true" />
@@ -195,7 +195,7 @@ leave-to-class="transform -translate-x-full"
 >
 <div
 v-if="sidebarExpanded"
-class="fixed inset-0 lg:w-64 lg:bg-gray-900 lg:border lg:border-gray-700 z-50 shadow-lg rounded-lg overflow-x-auto overflow-y-auto"
+class="fixed inset-0 lg:w-64 lg:bg-indigo-900 lg:border lg:border-gray-700 z-50 shadow-lg rounded-lg overflow-x-auto overflow-y-auto"
 >
 <!-- Sidebar Header -->
 <div class="flex h-16 items-center justify-between bg-gray-800 shadow-md px-4 rounded-t-lg">

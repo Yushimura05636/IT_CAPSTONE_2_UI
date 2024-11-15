@@ -190,10 +190,10 @@
         </form>
 
         <div class="mt-4 flex justify-end">
-          <button type="button" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500" @click="updateCustomer('Approved')">
+          <button type="button" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500" @click="updateCustomerApprove('Approved')">
             Approve
           </button>
-          <button type="button" class="ml-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500" @click="updateCustomer('Reject')">
+          <button type="button" class="ml-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500" @click="updateCustomerReject('Reject')">
             Reject
           </button>
         </div>
@@ -453,8 +453,34 @@ watch(selectedRequirements, (newSelected) => {
 
 const requirementsPrompt = ref('');
 
+const updateCustomerReject = async (action: 'Rejected') => {
+  try {
+    personality.value.personality_status_code = action
+    const customerId = CustomersService.id;
+    const jsonObject = {
+      customer: {
+              group_id: customer.value.group_id,
+              passbook_no: customer.value.passbook_no,
+              loan_count: customer.value.loan_count,
+              personality_id: customer.value.personality_id,
+              personality_status_description: 'Reject',
+              credit_status_description: 'Inactive',
+      },
+    }
 
-const updateCustomer = async (action: 'Approved' | 'Reject') => {
+    const response = await apiService.updateCustomerReject(jsonObject, customerId)
+  } catch (error) {
+    toast.error(`${error}`, {autoClose: 3000})
+  }
+  finally
+  {
+    setTimeout(() => {
+      navigateTo('/customers');
+    }, 3000);
+  }
+}
+
+const updateCustomerApprove = async (action: 'Approved') => {
 try {
 
     if (selectedRequirements.value.length < 2) {
@@ -464,7 +490,7 @@ try {
     }
 
 
-    personality.value.personality_status_code = action === 'Approved' ? '2' : '3';
+    personality.value.personality_status_code = action
     const customerId = CustomersService.id;
     const jsonObject = {
     customer: {

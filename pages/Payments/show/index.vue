@@ -170,9 +170,22 @@ setTimeout(() => {
   // Reject payment function
   async function rejectPayment() {
     try {
-      await apiService.updatePaymentData({ ...paymentData.value, status: 'rejected' });
+
+      //get the loan application no
+      loanApplicationService.loan_application_no = state.payment.loan_application_no;
+      CustomersService.id = state.payment.customer_id;
+      paymentServices.id = state.payment.id;
+
+      const jsonObject = {
+        state,
+        payment_status_description: 'Reject',
+      }
+
+      const response = await apiService.rejectPayment({jsonObject}, state.payment.customer_id);
       toast.success('Payment rejected successfully!', { autoClose: 3000 });
-      router.push('/payments');
+      setTimeout(() => {
+        router.push('/payments');
+      }, 3000);
     } catch (error) {
       toast.error(`Failed to reject payment: ${error}`, { autoClose: 3000 });
     }

@@ -171,8 +171,14 @@ class API extends BaseAPIService {
         return await this.request(`/CUSTOMERS/${id}`, 'PUT', params)
     }
 
+    //use for customer approve
     async updateCustomerApprove(params: object, id: number): Promise<any> {
         return await this.request(`/CUSTOMERS/UpdateApprove/${id}`, 'PUT', params)
+    }
+
+    //use for customer reject
+    async updateCustomerReject(params: object, id: number): Promise<any> {
+        return await this.request(`/CUSTOMERS/UpdateReject/${id}`, 'PUT', params)
     }
 
     async deleteCustomer(params: object, id: number): Promise<any> {
@@ -359,6 +365,10 @@ class API extends BaseAPIService {
 
     async approvePayment(params: object, id: number): Promise<any> {
         return await this.request(`/PAYMENTS/PaymentAPPROVE/${id}`, 'PUT', params)
+    }
+
+    async rejectPayment(params: object, id: number): Promise<any> {
+        return await this.request(`/PAYMENTS/PaymentREJECT/${id}`, 'PUT', params)
     }
 
     async deletePayment(params: object, id: number): Promise<any> {

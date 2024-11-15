@@ -289,7 +289,7 @@ async function submitForm() {
 
     toast.success('Payment data submitted successfully!', { autoClose: 3000 });
 
-    navigateTo('/payments')
+    //navigateTo('/payments')
 
     // Optionally, refresh payments list or clear selections
     payments.value.forEach(payment => (payment.isSelected = false));

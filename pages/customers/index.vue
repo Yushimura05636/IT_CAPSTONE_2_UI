@@ -138,6 +138,7 @@ async function fetchCustomers() {
     isLoading.value = true;
     const response = await apiService.getCustomers({});
     storeResponseInTableItems(response.data);
+    debugger
   } catch (error: any) {
     toast.error(`${error.message}`, { autoClose: 3000 });
   } finally {

@@ -56,6 +56,9 @@
 </template>
 
 <script setup lang="ts">
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+
 import { ref, reactive } from 'vue';
 import { authService } from '@/components/api/AuthService';
 import { useRouter } from 'vue-router';
@@ -91,11 +94,10 @@ const login = async () => {
             isAuthenticated.value = true;
             state.error = null;
         } else {
-            state.error = 'Invalid credentials';
+            toast.error(`Invalid credentials`, {autoClose: 3000})
         }
     } catch (error) {
-        console.error('Login failed:', error);  // Log the error
-        state.error = 'Login failed. Please try again.';
+        toast.error(`${error}`, {autoClose:3000})
     }
 };
 
@@ -118,8 +120,7 @@ const sendVerificationCode = async () => {
         isCodeSent.value = true;
         errorMessage.value = '';
     } catch (error) {
-        console.log(error)
-        errorMessage.value = 'Failed to send verification code.';
+        toast.error(`${error}`, {autoClose: 3000})
     }
 };
 
@@ -138,11 +139,17 @@ const verifyCode = async () => {
             successMessage.value = 'Code verified!';
             router.push('/dashboard/Client');
         } else {
-            errorMessage.value = 'Invalid code.';
+            toast.error(`Invalid code`, {autoClose:3000})
         }
     } catch (error) {
-        errorMessage.value = 'Verification failed.';
+        toast.error(`${error}`, {autoClose:3000})
 
+    }
+    finally
+    {
+        setTimeout(() => {
+            
+        }, 3000);
     }
 };
 </script>

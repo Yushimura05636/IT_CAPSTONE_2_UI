@@ -29,7 +29,7 @@
         <th class="px-4 py-2 border-b border-gray-300">Select</th>
         <th class="px-4 py-2 border-b border-gray-300">Customer ID</th>
         <th class="px-4 py-2 border-b border-gray-300">Prepared At</th>
-        <th class="px-4 py-2 border-b border-gray-300">Document Status Code</th>
+        <th class="px-4 py-2 border-b border-gray-300">Status</th>
         <th class="px-4 py-2 border-b border-gray-300">Prepared By</th>
         <th class="px-4 py-2 border-b border-gray-300">Amount Paid</th>
         <th class="px-4 py-2 border-b border-gray-300">Notes</th>
@@ -47,7 +47,7 @@
         </td>
         <td class="px-4 py-2 border-b border-gray-300">{{ payment.customer_id }}</td>
         <td class="px-4 py-2 border-b border-gray-300">{{ payment.prepared_at }}</td>
-        <td class="px-4 py-2 border-b border-gray-300">{{ payment.document_status_code }}</td>
+        <td class="px-4 py-2 border-b border-gray-300">{{ payment.document_status_description }}</td>
         <td class="px-4 py-2 border-b border-gray-300">{{ payment.prepared_by_id }}</td>
         <td class="px-4 py-2 border-b border-gray-300">{{ payment.amount_paid }}</td>
         <td class="px-4 py-2 border-b border-gray-300">{{ payment.notes }}</td>
