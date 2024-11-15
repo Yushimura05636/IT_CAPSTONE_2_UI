@@ -292,10 +292,23 @@ isTableLoading: false,
 // Function to fetch fees from an API or data source
     async function fetchFees() {
     try {
-        debugger
+
         const response = await apiService.getFeeActiveNoAuthForReg({});
         // Simulating an API call with hardcoded data
         state.value.fees = response.data;
+
+        //loop the selected fees
+        for (let i = 0; i < state.value.fees.length; i++)
+        {
+            const fee = state.value.fees[i];
+
+            debugger
+
+            customerData.value.selectedFees.push({
+        id: fee.id,
+        amount: fee.amount,
+        });
+        }
     } catch (error) {
         console.error('Error fetching fees:', error);
     }
@@ -303,7 +316,7 @@ isTableLoading: false,
 
     // Function to update selected fees based on checkbox state
     function updateSelectedFees(fee, isSelected) {
-    debugger
+    
     if (isSelected) {
         if (!customerData.value.selectedFees.some(selected => selected.id === fee.id)) {
         customerData.value.selectedFees.push({
@@ -480,6 +493,8 @@ const validationErrorsForCustomer = ref({
 
     });
 
+const isVerified = ref({})
+
 
 const createCustomer = async () => {
 try {
@@ -573,7 +588,7 @@ try {
         password: customer.value.password,
     };
 
-    debugger;
+    
     await apiService.createRegisterCustomer(jsonObject);
     toast.success("Customer create successfully!", {
         autoClose: 2000,
