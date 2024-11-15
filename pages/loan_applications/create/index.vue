@@ -339,11 +339,7 @@ const fetchCustomers = async () => {
             const response = await apiService.getCustomerByGroupIdWithApproveActive({}, selectedGroupId.value);
             state.value.customers = response.data;
             debugger
-        } catch (error) {
-            toast.error(`${error}`, { autoClose: 5000 });
-        }
-        finally {
-            debugger
+
             if(state.value.customers.length > 0 || !state.value.customers == null)
             {
                 initializeCustomerData();
@@ -353,6 +349,11 @@ const fetchCustomers = async () => {
                     element.isSelected = true
                 });
             }
+        } catch (error) {
+            toast.error(`${error}`, { autoClose: 5000 });
+        }
+        finally {
+            debugger
             state.value.isLoading = false
         }
     } else {
