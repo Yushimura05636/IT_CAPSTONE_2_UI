@@ -1,4 +1,5 @@
 <template>
+  <title>LendCash</title>
   <div class="bg-white">
     <header class="py-8 px-4 md:px-16">
   <div class="container mx-auto flex justify-between items-center scroll-pop">
