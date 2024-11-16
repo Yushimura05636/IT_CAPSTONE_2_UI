@@ -201,6 +201,7 @@ async function updatePayment() {
         id: paymentData.value.id,
         amount_paid: paymentData.value.amount_paid,
         notes: paymentData.value.notes,
+        document_status_code: paymentData.value.document_status_code,
       }
     };
 

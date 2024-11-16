@@ -338,7 +338,6 @@ const fetchCustomers = async () => {
         try {
             const response = await apiService.getCustomerByGroupIdNoPending({}, selectedGroupId.value);
             state.value.customers = response.data;
-            
 
             if(state.value.customers.length > 0 || !state.value.customers == null)
             {
