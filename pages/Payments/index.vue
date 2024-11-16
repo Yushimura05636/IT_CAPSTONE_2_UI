@@ -27,7 +27,9 @@
     <thead>
       <tr>
         <th class="px-4 py-2 border-b border-gray-300">Select</th>
-        <th class="px-4 py-2 border-b border-gray-300">Customer ID</th>
+        <th class="px-4 py-2 border-b border-gray-300">Family Name</th>
+        <th class="px-4 py-2 border-b border-gray-300">First Name</th>
+        <th class="px-4 py-2 border-b border-gray-300">Middle Name</th>
         <th class="px-4 py-2 border-b border-gray-300">Prepared At</th>
         <th class="px-4 py-2 border-b border-gray-300">Status</th>
         <th class="px-4 py-2 border-b border-gray-300">Prepared By</th>
@@ -45,11 +47,13 @@
             class="cursor-pointer"
           />
         </td>
-        <td class="px-4 py-2 border-b border-gray-300">{{ payment.customer_id }}</td>
+        <td class="px-4 py-2 border-b border-gray-300">{{ payment.family_name }}</td>
+        <td class="px-4 py-2 border-b border-gray-300">{{ payment.first_name }}</td>
+        <td class="px-4 py-2 border-b border-gray-300">{{ payment.middle_name }}</td>
         <td class="px-4 py-2 border-b border-gray-300">{{ payment.prepared_at }}</td>
         <td class="px-4 py-2 border-b border-gray-300">{{ payment.document_status_description }}</td>
         <td class="px-4 py-2 border-b border-gray-300">{{ payment.prepared_by_id }}</td>
-        <td class="px-4 py-2 border-b border-gray-300">{{ payment.amount_paid }}</td>
+        <td class="px-4 py-2 border-b border-gray-300">{{ formatCurrency(payment.amount_paid) }}</td>
         <td class="px-4 py-2 border-b border-gray-300">{{ payment.notes }}</td>
       </tr>
     </tbody>
@@ -86,6 +90,10 @@ const payments = ref([]); // Assume this will be populated from an API or prop
 // Reactive state for search and selected payment
 const searchQuery = ref('');
 const selectedPayment = ref<number | null>(null);
+
+const formatCurrency = (value) => {
+  return new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(value);
+}
 
 // Computed property to filter payments based on search query
 const filteredPayments = computed(() => {
@@ -169,45 +177,10 @@ const state = reactive({
 
     async function updatePayment(){
         try {
-            const response = await apiService.authPaymentUpdate({})
-            if (selectedPaymentID.value) {
-
-        let prepared_at = null;
-        let document_status_code = null;
-        let prepared_by_id = null;
-        let amount_paid = null;
-        let notes = null;
-
-        // Iterate through the data using a for loop
-        for (let i = 0; i < state.payment?.data.length; i++) {
-            const payments = state.payment.data[i];
-
-            // Check if the current library's id matches the selectedLibraryId
-            if (payments.id == parseInt(selectedPaymentID.value)?.toString()) {
-
-              prepared_at = payments.prepared_at
-              document_status_code = payments.document_status_code
-              prepared_by_id = payments.prepared_by_id
-              amount_paid = payments.amount_paid
-              notes  = payments.notes
-            break; // Exit the loop once we find the selected library
-            }
-        }
-
-        paymentServices.id = selectedPaymentID.value;
-        paymentServices.prepared_at = prepared_at;
-        paymentServices.document_status_code = document_status_code;
-        paymentServices.prepared_by_id = prepared_by_id;
-        paymentServices.amount_paid = amount_paid;
-        paymentServices.notes = notes;
-
-        console.log(paymentServices.id);
-        console.log(paymentServices.prepared_at);
-        console.log(paymentServices.document_status_code);
-        console.log(paymentServices.prepared_by_id);
-        console.log(paymentServices.amount_paid);
-        console.log(paymentServices.notes);
-        navigateTo('payments/update');
+          const response = await apiService.authPaymentUpdate({})
+          if (selectedPaymentID.value) {
+          paymentServices.id = selectedPaymentID.value;
+          navigateTo('/payments/update');
         }
         } catch (error) {
             toast.error(error.message, {

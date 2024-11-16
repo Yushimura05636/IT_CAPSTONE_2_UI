@@ -1,33 +1,121 @@
 <template>
   <NuxtLayout name="admin">
     <div class="p-8">
-      <h1 class="text-2xl font-bold mb-4">Update Payments</h1>
-      <form   @submit.prevent="submitForm"  class="space-y-4">
+      <h1 class="text-2xl font-bold mb-4">Show Payment</h1>
+
+      <div class="space-y-4">
+        <!-- First Name Field -->
         <div>
-          <label class="block text-gray-700">Prepared at</label>
-          <input v-model="form.prepared_at" type="date" class="border rounded px-4 py-2 w-full">
+          <label for="first_name" class="block mb-1">First Name:</label>
+          <input
+            type="text"
+            id="first_name"
+            :value="paymentData.first_name"
+            class="border rounded px-4 py-2 w-full"
+            readonly
+          />
         </div>
+
+        <!-- Family Name Field -->
         <div>
-          <label class="block text-gray-700">Document Status </label>
-          <input v-model="form.document_status_code" type="text" class="border rounded px-4 py-2 w-full">
+          <label for="family_name" class="block mb-1">Family Name:</label>
+          <input
+            type="text"
+            id="family_name"
+            :value="paymentData.family_name"
+            class="border rounded px-4 py-2 w-full"
+            readonly
+          />
         </div>
+
+        <!-- Middle Name Field -->
         <div>
-          <label class="block text-gray-700">Prepared By</label>
-          <input v-model="form.prepared_by_id" type="text" class="border rounded px-4 py-2 w-full">
+          <label for="middle_name" class="block mb-1">Middle Name:</label>
+          <input
+            type="text"
+            id="middle_name"
+            :value="paymentData.middle_name"
+            class="border rounded px-4 py-2 w-full"
+            readonly
+          />
         </div>
+
+        <!-- Document Status Description Field -->
         <div>
-          <label class="block text-gray-700">Amount Paid</label>
-          <input v-model="form.amount_paid" type="number" class="border rounded px-4 py-2 w-full">
+          <label for="document_status_description" class="block mb-1">Document Status Description:</label>
+          <input
+            type="text"
+            id="document_status_description"
+            :value="paymentData.document_status_description"
+            class="border rounded px-4 py-2 w-full"
+            readonly
+          />
         </div>
+
+        <!-- Amount Paid Field (Editable) -->
         <div>
-          <label class="block text-gray-700">Notes</label>
-          <input v-model="form.notes" type="text" class="border rounded px-4 py-2 w-full">
+          <label for="amount_paid" class="block mb-1">Amount Paid:</label>
+          <input
+            type="number"
+            id="amount_paid"
+            v-model="paymentData.amount_paid"
+            class="border rounded px-4 py-2 w-full"
+          />
         </div>
-        <div class="flex space-x-2">
-          <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Update Payment</button>
-          <button type="button" @click="cancel" class="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
+
+        <!-- Loan Application No Field -->
+        <div>
+          <label for="loan_application_no" class="block mb-1">Loan Application No:</label>
+          <input
+            type="text"
+            id="loan_application_no"
+            :value="paymentData.loan_application_no"
+            class="border rounded px-4 py-2 w-full"
+            readonly
+          />
         </div>
-      </form>
+
+        <!-- Prepared At Field -->
+        <div>
+          <label for="prepared_at" class="block mb-1">Prepared At:</label>
+          <input
+            type="datetime-local"
+            id="prepared_at"
+            :value="paymentData.prepared_at"
+            class="border rounded px-4 py-2 w-full"
+            readonly
+          />
+        </div>
+
+        <!-- Prepared By Field -->
+        <div>
+          <label for="user_name" class="block mb-1">Prepared By:</label>
+          <input
+            type="text"
+            id="user_name"
+            :value="userData.last_name + ' ' + userData.first_name + ' ' + userData.middle_name"
+            class="border rounded px-4 py-2 w-full"
+            readonly
+          />
+        </div>
+
+        <!-- Notes Field (Editable) -->
+        <div>
+          <label for="notes" class="block mb-1">Notes:</label>
+          <textarea
+            id="notes"
+            v-model="paymentData.notes"
+            class="border rounded px-4 py-2 w-full"
+          ></textarea>
+        </div>
+
+        <!-- Action Button -->
+        <div class="flex space-x-4">
+          <button type="button" @click="updatePayment" class="bg-blue-500 text-white px-4 py-2 rounded">
+            Update Payment
+          </button>
+        </div>
+      </div>
     </div>
   </NuxtLayout>
 </template>
@@ -35,95 +123,100 @@
 <script setup lang="ts">
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
+import { useRoute, useRouter } from 'vue-router';
+import { ref, onMounted } from 'vue';
+import { paymentServices } from '~/models/Payments';
+import { apiService } from '~/routes/api/API';
+import { loanApplicationService } from '~/models/LoanApplication';
+import { CustomersService } from '~/models/Customer';
 
-    import { ref } from 'vue';
-    import { apiService } from '~/routes/api/API'
-    import { paymentServices } from '~/models/Payments'
+const route = useRoute();
+const router = useRouter();
+const paymentData = ref({
+  id: null,
+  loan_application_no: '',
+  customer_id: '',
+  prepared_at: '',
+  document_status_code: '',
+  prepared_by_id: '',
+  amount_paid: '',
+  notes: '',
+  family_name: '',
+  first_name: '',
+  middle_name: '',
+  document_status_description: '',
+});
+const userData = ref({
+  last_name: '',
+  first_name: '',
+  middle_name: '',
+})
 
+const state = {
+  payment: null,
+  customer: null,
+}
 
+const formatCurrency = (value) => {
+  return new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(value);
+}
 
+// Fetch the selected payment data when the component is mounted
+async function fetchPayment() {
+  try {
+    const response = await apiService.getPaymentByIdNoAuth({}, paymentServices.id);
+    const payment = response.data;
+    const user = response.user;
+    state.payment = response.data;
+    state.customer = response.user;
+    paymentData.value = payment;
+    userData.value = user;
+  } catch (error) {
+    toast.error(`${error}`, { autoClose: 3000 });
+  }
+}
 
-    const form = ref({
-    id: paymentServices.id,
-    prepared_at: paymentServices.prepared_at,
-    document_status_code: paymentServices.document_status_code,
-    prepared_by_id: paymentServices.prepared_by_id,
-    amount_paid: paymentServices.amount_paid,
-    notes: paymentServices.notes,
-    });
-
-    const successMessage = ref<string | null>(null);
-
-    // Function to handle form submission
-    const submitForm = () => {
-        if (form.value.notes && form.value.id) {
-            console.log('Form Data:', form.value);
-            create();
-
-            form.value.id = '';
-            form.value.notes = '';
-    } else {
-        // Handle empty fields (optional)
-        successMessage.value = 'Please fill in all the fields.';
-    }
-    };
-
-    async function create() {
-    try {
-        const params = {
-        id: form.value.id,
-        prepared_at: form.value.prepared_at,
-        document_status_code: form.value.document_status_code,
-        prepared_by_id: form.value.prepared_by_id,
-        amount_paid: form.value.amount_paid,
-        notes: form.value.notes,
-        };
-
-        const response = await apiService.updatePayment(params, parseInt(form.value.id));
-        if (response.data) {
-            toast.success("Payment Updated successfully!", {
-                autoClose: 2000,
-                });
-                // Introduce a delay before navigating
-                setTimeout(() => {
-                    navigateTo('/Payments');
-                }, 2000);
-                // Redirect to the customer list page
-        }
-    } catch (error: any) {
-        toast.error("Error: " + error);
-    }
-    }
-
-    // Function to handle cancel action
-    const cancel = () => {
-    // Navigate to the libraries page or perform any other action
-    navigateTo("/Payments");
-    };
-
+// Call fetchPayment when the component is mounted
 onMounted(async () => {
-  //Promise for authentication
   const state_response = ref('');
   try {
-    const response = await apiService.authPaymentUpdate({})
+    const response = await apiService.authPaymentView({});
     state_response.value = response.message;
   } catch (error) {
-    toast.error(`${error}`, { autoClose: 3000, })
-setTimeout(() => {
-    }, 2000);
-  }
-  finally
-  {
-    if(state_response.value.length <= 0)
-    {
-      navigateTo(`/payments`)
+    toast.error(`${error}`, { autoClose: 3000 });
+  } finally {
+    if (state_response.value.length <= 0) {
+      router.push(`/payments`);
     }
   }
-})
+  fetchPayment();
+});
+
+// Update payment function
+async function updatePayment() {
+  try {
+    // Update only the amount and notes fields
+    const jsonObject = {
+      payment: {
+        id: paymentData.value.id,
+        amount_paid: paymentData.value.amount_paid,
+        notes: paymentData.value.notes,
+      }
+    };
+
+    debugger
+
+    await apiService.updatePayment(jsonObject, paymentServices.id);
+    toast.success('Payment updated successfully!', { autoClose: 3000 });
+    router.push('/payments');
+  } catch (error) {
+    toast.error(`Failed to update payment: ${error}`, { autoClose: 3000 });
+  }
+}
 </script>
 
-  <style scoped>
-  body {
-    font-family: 'Roboto', sans-serif;
-  }
-  </style>
+<style scoped>
+body {
+  font-family: 'Roboto', sans-serif;
+}
+</style>
