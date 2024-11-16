@@ -129,28 +129,27 @@ const state = reactive({
 
     let selectedPaymentID = ref(null); // Track selected library
 
-    async function fetchPayment() {
-        state.isTableLoading = true
-        state.error = null
-        try {
-            const params = {}
-            const response = await apiService.getPaymentAUTH(params)
-            alert(response)
-            if(response.data.length > 0)
-            {
-              state.payment = response.data;
-            }
-            debugger
-        } catch (error: any) {
-            toast.error(error.message, {
-                autoClose: 5000,
-            })
+async function fetchPayment() {
+    state.isTableLoading = true;
+    state.error = null;
+    try {
+        const params = {};
+        const response = await apiService.getPaymentAUTH(params);
+        console.log('API Response:', response); // Debugging output
+        if (response?.data?.length > 0) {
+            state.payment = response.data; // Populate the payments
+        } else {
+            toast.info('No payments found', { autoClose: 3000 });
         }
-        state.isTableLoading = false
+    } catch (error: any) {
+        console.error('Error fetching payments:', error);
+        toast.error(error.message || 'Failed to fetch payments', { autoClose: 5000 });
+    } finally {
+        state.isTableLoading = false;
     }
+}
 
     onMounted(() => {
-        PageNameService.pageName = 'Payments';
       fetchPayment()
     })
 
