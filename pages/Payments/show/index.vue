@@ -212,12 +212,15 @@ setTimeout(() => {
         //get the loan application no
         loanApplicationService.loan_application_no = state.payment.loan_application_no;
         CustomersService.id = state.payment.customer_id;
-
       await apiService.approvePayment({state}, paymentServices.id);
       toast.success('Payment accepted successfully!', { autoClose: 3000 });
       navigateTo('/payments/show/receipt');
     } catch (error) {
       toast.error(`Failed to accept payment: ${error}`, { autoClose: 3000 });
+    }
+    finally{
+      setTimeout(() => {
+      }, 3000);
     }
   }
 
@@ -242,6 +245,10 @@ setTimeout(() => {
       }, 3000);
     } catch (error) {
       toast.error(`Failed to reject payment: ${error}`, { autoClose: 3000 });
+    }
+    finally{
+      setTimeout(() => {
+      }, 3000);
     }
   }
   </script>

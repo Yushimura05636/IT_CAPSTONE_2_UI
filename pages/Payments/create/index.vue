@@ -182,9 +182,6 @@ async function fetchCustomers() {
 }
 
 async function fetchLoanApplications() {
-
-
-
   loading.value = true;
   debugger
   try {
@@ -296,6 +293,10 @@ async function submitForm() {
     await fetchPayments();
   } catch (error) {
     toast.error(`Failed to submit payment data: ${error}`, { autoClose: 3000 });
+  }
+  finally{
+    setTimeout(() => {
+    }, 3000);
   }
 }
 
