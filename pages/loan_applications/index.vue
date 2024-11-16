@@ -57,7 +57,9 @@
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.amount_paid }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.datetime_fully_paid }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.datetime_approved }}</td>
+              <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.datetime_rejected }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.approved_by_id }}</td>
+              <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.rejected_by_id }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.prepared_by_id }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.released_by_id }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.last_modified_by_id }}</td>
@@ -97,7 +99,9 @@ const state = reactive({
     { name: 'Amount Paid' },
     { name: 'Date Time Fully Paid' },
     { name: 'Date Time Approved' },
+    { name: 'Date Time Rejected' },
     { name: 'Approved by' },
+    { name: 'Rejected by' },
     { name: 'Prepared by' },
     { name: 'Released by' },
     { name: 'Last modified by' },

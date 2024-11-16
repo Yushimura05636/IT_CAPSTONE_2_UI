@@ -561,6 +561,10 @@ const rejectTransaction = async () => {
             // Show an error message for the failed submission
             toast.error(`Submission failed: ${error}`, { autoClose: 5000 });
         }
+        finally{
+            setTimeout(() => {
+            }, 3000);
+        }
 
         // After all submissions are done, navigate to the loan applications page
         // navigateTo('/loan_applications');
@@ -635,6 +639,10 @@ const approveTransaction = async () => {
         } catch (error) {
             // Show an error message for the failed submission
             toast.error(`Submission failed: ${error}`, { autoClose: 5000 });
+        }
+        finally{
+            setTimeout(() => {
+            }, 3000);
         }
 
         // After all submissions are done, navigate to the loan applications page
