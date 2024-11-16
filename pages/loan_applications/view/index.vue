@@ -312,7 +312,7 @@ const fetchCustomers = async () => {
             state.value.customers = response.data;
             initializeCustomerData();
         } catch (error) {
-            toast.error(`ewo ${error}`, { autoClose: 5000 });
+            toast.error(`${error}`, { autoClose: 5000 });
         }
         finally {
             state.value.isLoading = false;
