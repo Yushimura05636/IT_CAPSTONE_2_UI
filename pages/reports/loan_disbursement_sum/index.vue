@@ -7,93 +7,142 @@
                 <!-- Action Buttons -->
                 <div class="flex justify-between items-center mb-8 mt-8">
                     <div class="flex space-x-4">
-                        <button class="px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-600">
+                        <button @click="printTable" class="px-4 py-2 text-white bg-green-500 rounded-lg hover:bg-green-600">
                             Generate Report
                         </button>
                     </div>
                 </div>
+                <div v-if="state.isTableLoading" class="text-center">Loading...</div>
     
                 <!-- Chart Container with Flex for Side-by-Side Alignment -->
-                <div class="flex flex-wrap justify-center gap-8">
-                    <!-- Pie Chart Section -->
+                <div v-else class="flex flex-wrap justify-center gap-8">
                     <div class="flex-1 text-center">
-                        <h2 class="font-semibold text-lg mb-4">Collection Pie Report</h2>
-                        <PieChart :data="chartData" />
+                        <BarChart :data="BarchartData" />
                     </div>
-    
-                    <!-- Doughnut Chart Section -->
-                    <div class="flex-1 text-center">
-                        <h2 class="font-semibold text-lg mb-4">Collection Doughnut Report</h2>
-                        <DoughnutChart :data="chartData" />
-                    </div>
-                    <div class="flex-1 text-center">
-                        <h2 class="font-semibold text-lg mb-4">Collection Line Report</h2>
-                        <LineChart :data="lineData" />
-                    </div>
-
-                    <div class="flex-1 text-center">
-                        <h2 class="font-semibold text-lg mb-4">Collection Polar Area Report</h2>
-                        <PolarAreaChart :data="polarData" />
-                    </div> 
                 </div>
             </div>
+        </div>
+    
+        <div id="printable-area" class="overflow-x-auto bg-gray-100 p-4 rounded-lg shadow-md max-h-[400px] overflow-y-auto">
+            <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
+                <thead class="bg-gray-300 text-gray-700 text-sm">
+                <tr>
+                    <th class="px-6 py-4 border-b text-left">Customer ID</th>
+                    <th class="px-6 py-4 border-b text-left">Customer Name</th>
+                    <th class="px-6 py-4 border-b text-left">Disbursed Amount</th>
+                    <th class="px-6 py-4 border-b text-left">Amount Interest</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Loop through each customer and their payments -->
+                <template v-for="customer in state.totalLoanPerCustomer" :key="customer.customer_id">
+                    <tr class="hover:bg-gray-50 transition duration-150">
+                        <td class="px-6 py-4 border-b">{{ customer.customer_id }}</td>
+                        <td class="px-6 py-4 border-b">{{ customer.customer_name }}</td>
+                        <td class="px-6 py-4 border-b">{{ customer.total_loan_amount }}</td>
+                        <td class="px-6 py-4 border-b">{{ customer.total_amount_interest }}</td>
+                    </tr>
+                </template>
+                </tbody>
+                <tfoot>
+                    <!-- Total Row -->
+                    <tr class="font-bold bg-gray-200">
+                        <td class="px-6 py-4 border-b" colspan="3"><strong>Total Disbursed Amount</strong></td>
+                        <td class="px-6 py-4 border-b"><strong>{{ state.totalLoanAmount }}</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
         </div>
     </NuxtLayout>
 </template>
 
 <script setup lang="ts">
-import { reactive } from 'vue';
-import PieChart from '~/components/graphs/PieChart.vue';
-import DoughnutChart from '~/components/graphs/DoughnutChart.vue';
-import LineChart from '~/components/graphs/LineChart.vue';
-import PolarAreaChart from '~/components/graphs/PolarAreaChart.vue';
+import BarChart from '~/components/graphs/BarChart.vue';
+import { ref, onMounted } from 'vue';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+import { apiService } from '~/routes/api/API';
 
-const state = reactive({
-// Your existing reactive state
+const state = ref({
+    totalLoanAmount: 0,
+    totalAmountInterest: 0,
+    disburse: [],
+    totalLoanPerCustomer: [],
+    isTableLoading: true,
 });
 
-
-const chartData = {
-labels: ['Red', 'Blue', 'Yellow'],
-datasets: [
-    {
-    label: 'My First Dataset',
-    data: [300, 50, 100],
-    backgroundColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)', 'rgb(255, 205, 86)'],
-    hoverOffset: 4,
-    },
-],
-};
-
-const lineData = {
-labels: ['January', 'Febuary', 'March','April','May','June','July'],
-datasets: [
-    {
-    label: 'My First Dataset',
-    data: [65, 59, 80, 81, 56, 55, 40],
-    fill: false,
-    borderColor: 'rgb(75, 192, 192)',
-    tension: 0.1
-    },
-    ],
-    };
-
-const polarData = {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+const BarchartData = ref({
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
     datasets: [
         {
-        label: 'Dataset 1',
-        data: [11, 16, 7, 14, 5, 10],
-        backgroundColor: [
-            'rgba(255, 99, 132, 0.5)',
-            'rgba(54, 162, 235, 0.5)',
-            'rgba(255, 206, 86, 0.5)',
-            'rgba(75, 192, 192, 0.5)',
-            'rgba(153, 102, 255, 0.5)',
-            'rgba(255, 159, 64, 0.5)',
-        ],
-        borderWidth: 2,
+            label: 'Total Loan Disbursed', 
+            data: [], 
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 1,
         },
     ],
-    };
+});
+
+const fetchCollectionReports = async () => {
+    try {
+        const response = await apiService.getDisburse({});
+
+        // Handle the response data to populate state
+        state.value.totalLoanAmount = response.total_loan_amount;
+        state.value.totalAmountInterest = response.total_amount_interest;
+        state.value.totalLoanPerCustomer = response.total_loan_per_customer;
+
+        const totalPaymentsByMonth = response.disbursed_by_month;
+
+        // Set chart data based on the month's disbursement totals
+        BarchartData.value.datasets[0].data = BarchartData.value.labels.map((month, index) => {
+            const monthKey = `${String(index + 1).padStart(2, '0')}-${new Date().getFullYear()}`;
+            return totalPaymentsByMonth[monthKey] || 0;
+        });
+
+        state.value.isTableLoading = false;
+    } catch (error) {
+        toast.error(error.message, {
+            autoClose: 5000,
+        });
+    }
+};
+
+// Print table function
+const printTable = () => {
+    const printContent = document.getElementById('printable-area');
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+        <html>
+        <head>
+            <title>Print Report</title>
+            <style>
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                }
+                table, th, td {
+                    border: 1px solid black;
+                    padding: 8px;
+                    text-align: left;
+                }
+                th {
+                    background-color: #f2f2f2;
+                }
+            </style>
+        </head>
+        <body>
+            ${printContent.innerHTML}
+        </body>
+        </html>
+    `);
+    printWindow.document.close();
+    printWindow.print();
+};
+
+// Fetch data on component mount
+onMounted(async () => {
+    fetchCollectionReports();
+});
 </script>
