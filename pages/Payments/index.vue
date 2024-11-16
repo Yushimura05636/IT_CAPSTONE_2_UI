@@ -136,6 +136,7 @@ const state = reactive({
             const params = {}
             const response = await apiService.getPaymentAUTH(params)
             state.payment = response.data;
+            debugger
         } catch (error: any) {
             toast.error(error.message, {
                 autoClose: 5000,
@@ -143,6 +144,7 @@ const state = reactive({
         }
         state.isTableLoading = false
     }
+
     onMounted(() => {
         PageNameService.pageName = 'Payments';
       fetchPayment()
