@@ -331,7 +331,7 @@ class API extends BaseAPIService {
 
     //payment_frequency
     async getPaymentAUTH(params: object): Promise<any> {
-        return await this.request(`/PAYMENTS/`, 'GET', params)
+        return await this.request(`/PAYMENTS`, 'GET', params)
     }
     
 

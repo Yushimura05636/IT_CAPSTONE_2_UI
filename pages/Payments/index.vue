@@ -135,6 +135,7 @@ async function fetchPayment() {
     try {
         const params = {};
         const response = await apiService.getPaymentAUTH(params);
+        debugger
         console.log('API Response:', response); // Debugging output
         if (response?.data?.length > 0) {
             state.payment = response.data; // Populate the payments
@@ -142,8 +143,7 @@ async function fetchPayment() {
             toast.info('No payments found', { autoClose: 3000 });
         }
     } catch (error: any) {
-        console.error('Error fetching payments:', error);
-        toast.error(error.message || 'Failed to fetch payments', { autoClose: 5000 });
+        toast.error(`${error}` || 'Failed to fetch payments', { autoClose: 5000 });
     } finally {
         state.isTableLoading = false;
     }
