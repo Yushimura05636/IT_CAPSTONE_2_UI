@@ -134,8 +134,8 @@ const state = reactive({
         state.error = null
         try {
             const params = {}
-            alert('code')
             const response = await apiService.getPaymentAUTH(params)
+            alert(response)
             if(response.data.length > 0)
             {
               state.payment = response.data;
