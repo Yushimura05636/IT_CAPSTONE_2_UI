@@ -553,7 +553,7 @@ const approveTransaction = async () => {
         // Loop through all the customer data
         try {
             // Send all customer data to the Laravel API
-            const response = await apiService.authLoanApplicationsApprove({
+            const response = await apiService.approveLoanApplication({
                 allCustomerData, // Use the correct variable here
             }, 0);
 
