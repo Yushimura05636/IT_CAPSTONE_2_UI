@@ -535,7 +535,7 @@ const rejectTransaction = async () => {
                 payment_frequency_id: customer.paymentFrequency,
                 payment_duration_id: customer.duration,
                 notes: customer.comment || '', // Include comment if it exists, otherwise set it to an empty string
-                document_status_code: 'APPROVE', // Means pending
+                document_status_code: 'REJECT', // Means pending
                 fees: customer.selectedFees, // Include selected fees
                 coMaker: customer.coMaker,
             });
