@@ -600,6 +600,10 @@ class API extends BaseAPIService {
         return await this.request(`/LOAN_APPLICATIONS/approve/${id}`, 'PATCH', params)
     }
 
+    async rejectLoanApplication(params: object, id: number): Promise<any> {
+        return await this.request(`/LOAN_APPLICATIONS/reject/${id}`, 'PATCH', params)
+    }
+
     //Loan Applications
     async getLoanApplicationCoMaker(params: object): Promise<any> {
         return await this.request(`/LOAN_APPLICATION_COMAKERS`, 'GET', params)

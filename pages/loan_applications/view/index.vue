@@ -496,8 +496,77 @@ const generateLoanApplicationNo = (length = 8) => {
     return `LN-${randomString}${randomNumber}`;
 };
 
-const rejectTransaction = () => {
-    // Handle reject logic here (you can reset fields, etc.)
+const rejectTransaction = async () => {
+    const allCustomerData = []; // Initialize an empty array to hold customer data
+
+    // Convert customerData object into an array
+    const customerDataArray = Object.values(customerData);
+
+    // Loop through the customer data array using a simple for loop
+    for (let i = 0; i < customerDataArray.length; i++) {
+        const customer = customerDataArray[i];
+
+        debugger;
+
+        // Ensure the customer data is valid
+        if (
+            customer &&
+            customer.isSelected && // Check if the customer is selected
+            customer.customerId &&
+            customer.loanApplicationNo &&
+            customer.loanAmount &&
+            selectedGroupId.value &&
+            customer.factorRate &&
+            customer.interestAmount &&
+            customer.amountPaid &&
+            customer.paymentFrequency &&
+            customer.duration
+        ) {
+            allCustomerData.push({
+                customer_id: customer.customerId,
+                loan_application_no: customer.loanApplicationNo,
+                amount_loan: customer.loanAmount,
+                group_id: selectedGroupId.value,
+                factor_rate: customer.factorRate,
+                amount_interest: customer.interestAmount,
+                amount_paid: customer.amountPaid,
+                datetime_target_release: customer.releaseSchedule,
+                datetime_prepared: new Date().toISOString(), // Empty because the database will cater the date when it's prepared
+                payment_frequency_id: customer.paymentFrequency,
+                payment_duration_id: customer.duration,
+                notes: customer.comment || '', // Include comment if it exists, otherwise set it to an empty string
+                document_status_code: 'APPROVE', // Means pending
+                fees: customer.selectedFees, // Include selected fees
+                coMaker: customer.coMaker,
+            });
+        }
+    }
+
+    // Check if there is any customer data to submit
+    if (allCustomerData.length > 0) {
+        // Loop through all the customer data
+        try {
+            // Send all customer data to the Laravel API
+            const response = await apiService.rejectLoanApplication({
+                allCustomerData, // Use the correct variable here
+            }, 0);
+
+            if (response) {
+                // Optionally, show a success message for each customer or track the success/failure of each
+                toast.success('All customers approved successfully.', { autoClose: 5000 });
+
+                navigateTo('/loan_applications')
+            }
+        } catch (error) {
+            // Show an error message for the failed submission
+            toast.error(`Submission failed: ${error}`, { autoClose: 5000 });
+        }
+
+        // After all submissions are done, navigate to the loan applications page
+        // navigateTo('/loan_applications');
+    } else {
+        toast.error('No customer data to submit.', { autoClose: 5000 });
+    }
     console.log("Transaction Rejected!");
 };
 
