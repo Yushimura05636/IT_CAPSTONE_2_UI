@@ -49,7 +49,7 @@
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Customer.first_name }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Customer.middle_name }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.datetime_prepared }}</td>
-              <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.document_status_code }}</td>
+              <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.document_status_description }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.loan_application_no }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.amount_loan }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.factor_rate }}</td>
@@ -58,11 +58,11 @@
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.datetime_fully_paid }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.datetime_approved }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.datetime_rejected }}</td>
-              <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.approved_by_id }}</td>
-              <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.rejected_by_id }}</td>
-              <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.prepared_by_id }}</td>
-              <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.released_by_id }}</td>
-              <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.last_modified_by_id }}</td>
+              <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.approved_by_user }}</td>
+              <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.rejected_by_user }}</td>
+              <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.prepared_by_user }}</td>
+              <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.released_by_user }}</td>
+              <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.last_modified_by_user }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.notes }}</td>
             </tr>
           </tbody>
