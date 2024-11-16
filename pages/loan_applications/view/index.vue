@@ -308,7 +308,7 @@ const fetchCustomers = async () => {
     state.value.isLoading = true;
     if (selectedGroupId.value) {
         try {
-            const response = await apiService.getCustomerByGroupId({}, selectedGroupId.value);
+            const response = await apiService.getCustomerByGroupIdNoReject({}, selectedGroupId.value);
             state.value.customers = response.data;
             initializeCustomerData();
         } catch (error) {

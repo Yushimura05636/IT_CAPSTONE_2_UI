@@ -666,6 +666,14 @@ class API extends BaseAPIService {
         return await this.request(`/CUSTOMERS/NoAUTH/GroupAPPROVE/${id}`, 'GET', params)
     }
 
+    async getCustomerByGroupIdNoReject(params: object, id: number): Promise<any> {
+        return await this.request(`/CUSTOMERS/NoAUTH/NoReject/GroupAPPROVE/${id}`, 'GET', params)
+    }
+
+    async getCustomerByGroupIdNoPending(params: object, id: number): Promise<any> {
+        return await this.request(`/CUSTOMERS/NoAUTH/NoPending/GroupAPPROVE/${id}`, 'GET', params)
+    }
+
     async getCustomerByGroupIdWithApproveActive(params: object, id: number): Promise<any> {
         return await this.request(`/CUSTOMERS/NoAUTH/Group/${id}`, 'GET', params)
     }

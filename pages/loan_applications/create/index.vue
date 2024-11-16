@@ -336,9 +336,9 @@ const fetchCustomers = async () => {
     state.value.isLoading = true;
     if (selectedGroupId.value) {
         try {
-            const response = await apiService.getCustomerByGroupIdWithApproveActive({}, selectedGroupId.value);
+            const response = await apiService.getCustomerByGroupIdNoPending({}, selectedGroupId.value);
             state.value.customers = response.data;
-            debugger
+            
 
             if(state.value.customers.length > 0 || !state.value.customers == null)
             {
@@ -353,7 +353,7 @@ const fetchCustomers = async () => {
             toast.error(`${error}`, { autoClose: 5000 });
         }
         finally {
-            debugger
+            
             state.value.isLoading = false
         }
     } else {
@@ -427,7 +427,7 @@ async function loadCustomerData(customerId: any, customerObject: any) {
     
     customerObject.isSelected = true
 
-    debugger
+
 
     try {
         state.value.isLoading = true;
@@ -460,7 +460,7 @@ async function fetchCustomerLoanCount(customerId) {
 
 // Loan amount and interest calculations
 const calculateInterestAndAmountPaid = (loanAmount, factorRate) => {
-    debugger
+    
     if (loanAmount && factorRate) {
     const interestAmount = loanAmount * (factorRate / 100);
     const amountPaid = loanAmount + interestAmount;
@@ -476,7 +476,7 @@ const calculateInterestAndAmountPaid = (loanAmount, factorRate) => {
 const exceedsMaxAmount = ref('');
 
 const updateLoanAmount = (customerId) => {
-    debugger
+    
     const customer = customerData[customerId];
     if (customer.loanAmount && customer.factorRateValue) {
         const { interestAmount, amountPaid } = calculateInterestAndAmountPaid(customer.loanAmount, customer.factorRateValue);
