@@ -1,185 +1,209 @@
 <template>
-    <div class="bg-white p-4 md:p-8">
-    <h2 class="text-gray-800 text-xl font-bold mb-4">Register as Customer</h2>
-        <form @submit.prevent="createCustomer">
-            <div class="space-y-4">
-            <!-- Personality Fields -->
+    <div class="bg-white p-6 md:p-10 rounded-xl shadow-xl max-w-5xl mx-auto">
+        <h2 class="text-gray-900 text-3xl font-bold mb-8">Register as Customer</h2>
+        <form @submit.prevent="createCustomer" class="space-y-8">
+            <!-- Personal Information Section -->
             <div>
-                <label for="firstName" class="block text-gray-700">First Name</label>
-                <input v-model="personality.first_name" type="text" id="firstName" class="w-full border rounded-lg px-4 py-2"  />
-                <span v-if="validationErrors.first_name" class="text-red-500 text-sm">{{ validationErrors.first_name }}</span>
+                <h3 class="text-xl font-semibold text-gray-700 mb-4">Personal Information</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="firstName" class="block text-sm font-medium text-gray-600">First Name</label>
+                        <input v-model="personality.first_name" type="text" id="firstName" placeholder="John" class="input-field" />
+                        <span v-if="validationErrors.first_name" class="error-text">{{ validationErrors.first_name }}</span>
+                    </div>
+
+                    <div>
+                        <label for="lastName" class="block text-sm font-medium text-gray-600">Last Name</label>
+                        <input v-model="personality.family_name" type="text" id="lastName" placeholder="Doe" class="input-field" />
+                        <span v-if="validationErrors.family_name" class="error-text">{{ validationErrors.family_name }}</span>
+                    </div>
+
+                    <div>
+                        <label for="middleName" class="block text-sm font-medium text-gray-600">Middle Name</label>
+                        <input v-model="personality.middle_name" type="text" id="middleName" placeholder="A." class="input-field" />
+                        <span v-if="validationErrors.middle_name" class="error-text">{{ validationErrors.middle_name }}</span>
+                    </div>
+                </div>
             </div>
 
+            <!-- Contact Information Section -->
             <div>
-                <label for="lastName" class="block text-gray-700">Last Name</label>
-                <input v-model="personality.family_name" type="text" id="lastName" class="w-full border rounded-lg px-4 py-2"  />
-                <span v-if="validationErrors.family_name" class="text-red-500 text-sm">{{ validationErrors.family_name }}</span>
+                <h3 class="text-xl font-semibold text-gray-700 mb-4">Contact Information</h3>
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4">
+                        <div class="flex-1">
+                            <label for="email" class="block text-sm font-medium text-gray-600">Email</label>
+                            <input v-model="personality.email_address" type="email" id="email" placeholder="email@example.com" class="input-field" />
+                            <span v-if="validationErrors.email_address" class="error-text">{{ validationErrors.email_address }}</span>
+                        </div>
+                        <button @click="sendVerificationCode" type="button" class="button-primary">
+                            <img 
+                            src="https://cdn-icons-png.flaticon.com/512/876/876777.png" 
+                            alt="Send Icon" 
+                            class="w-5 h-5 mr-2"
+                        />
+                        </button>
+                    </div>
 
+                    <div v-if="verificationCodeSent" class="flex items-center gap-4">
+                        <div class="flex-1">
+                            <label for="verificationCode" class="block text-sm font-medium text-gray-600">Verification Code</label>
+                            <input 
+                                v-model="verificationCode" 
+                                type="text" 
+                                id="verificationCode" 
+                                placeholder="Enter the code" 
+                                :disabled="isCodeVerified" 
+                                class="input-field" 
+                            />
+                            <span v-if="validationErrors.verificationCode" class="error-text">{{ validationErrors.verificationCode }}</span>
+                        </div>
+                        <button @click="verifyCode" type="button" class="button-success" :disabled="isCodeVerified">
+                            <img 
+                            src="https://cdn-icons-png.flaticon.com/512/876/876777.png" 
+                            alt="Send Icon" 
+                            class="w-5 h-5 mr-2"
+                        />
+                        </button>
+                    </div>
+                </div>
             </div>
 
+            <!-- Additional Information Section -->
             <div>
-                <label for="middleName" class="block text-gray-700">Middle Name</label>
-                <input v-model="personality.middle_name" type="text" id="middleName" class="w-full border rounded-lg px-4 py-2"  />
-                <span v-if="validationErrors.middle_name" class="text-red-500 text-sm">{{ validationErrors.middle_name }}</span>
+                <h3 class="text-xl font-semibold text-gray-700 mb-4">Additional Information</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-600">Password</label>
+                        <input v-model="customer.password" type="password" id="password" class="input-field" />
+                        <span v-if="validationErrorsForCustomer.password" class="error-text">{{ validationErrorsForCustomer.password }}</span>
+                    </div>
 
+                    <div>
+                        <label for="telephone" class="block text-sm font-medium text-gray-600">Telephone #</label>
+                        <input v-model="personality.telephone_no" type="text" id="telephone" class="input-field" />
+                    </div>
+
+                    <div>
+                        <label for="birthday" class="block text-sm font-medium text-gray-600">Birthday</label>
+                        <input v-model="personality.birthday" type="date" id="birthday" class="input-field" />
+                        <span v-if="validationErrors.birthday" class="error-text">{{ validationErrors.birthday }}</span>
+                    </div>
+
+                    <div>
+                        <label for="gender" class="block text-sm font-medium text-gray-600">Gender</label>
+                        <select v-model="personality.gender_code" id="gender" class="input-field">
+                            <option value="1">Male</option>
+                            <option value="2">Female</option>
+                        </select>
+                        <span v-if="validationErrors.gender_code" class="error-text">{{ validationErrors.gender_code }}</span>
+                    </div>
+
+                    <div>
+                        <label for="civilStatus" class="block text-sm font-medium text-gray-600">Civil Status</label>
+                        <select v-model="personality.civil_status" id="civilStatus" class="input-field">
+                            <option value="1">Married</option>
+                            <option value="2">Widowed</option>
+                            <option value="3">Single</option>
+                        </select>
+                        <span v-if="validationErrors.civil_status" class="error-text">{{ validationErrors.civil_status }}</span>
+                    </div>
+
+                    <div>
+                        <label for="cellphoneNo" class="block text-sm font-medium text-gray-600">Cellphone No</label>
+                        <input v-model="personality.cellphone_no" type="text" id="cellphoneNo" class="input-field" />
+                        <span v-if="validationErrors.cellphone_no" class="error-text">{{ validationErrors.cellphone_no }}</span>
+                    </div>
+
+                    <div>
+                        <label for="houseStreet" class="block text-sm font-medium text-gray-600">House/Street</label>
+                        <input v-model="personality.house_street" type="text" id="houseStreet" class="input-field" />
+                    </div>
+
+                    <div>
+                        <label for="purokZone" class="block text-sm font-medium text-gray-600">Purok/Zone</label>
+                        <input v-model="personality.purok_zone" type="text" id="purokZone" class="input-field" />
+                    </div>
+
+                    <div>
+                        <label for="postalCode" class="block text-sm font-medium text-gray-600">Postal Code</label>
+                        <input v-model="personality.postal_code" type="text" id="postalCode" class="input-field" />
+                    </div>
+
+                    <div>
+                        <label for="barangayId" class="block text-sm font-medium text-gray-600">Barangay</label>
+                        <select v-model="personality.barangay_id" id="barangayId" class="w-full border rounded-lg px-4 py-2">
+                        <option v-for="barangay in state.barangays" :key="barangay.id" :value="barangay.id">
+                            {{ barangay.description }}
+                        </option>
+                        </select>
+                        <span v-if="validationErrors.barangay_id" class="text-red-500 text-sm">{{ validationErrors.barangay_id }}</span>
+                    </div>
+
+                    <div>
+                        <label for="cityId" class="block text-sm font-medium text-gray-600">City</label>
+                        <select v-model="personality.city_id" id="cityId" class="w-full border rounded-lg px-4 py-2">
+                        <option v-for="city in state.cities" :key="city.id" :value="city.id">
+                            {{ city.description }}
+                        </option>
+                        </select>
+                        <span v-if="validationErrors.city_id" class="text-red-500 text-sm">{{ validationErrors.city_id }}</span>
+                    </div>
+
+                    <div>
+                        <label for="provinceId" class="block text-sm font-medium text-gray-600">Province</label>
+                        <select v-model="personality.province_id" id="provinceId" class="w-full border rounded-lg px-4 py-2">
+                        <option v-for="province in state.provinces" :key="province.id" :value="province.id">
+                            {{ province.description }}
+                        </option>
+                        </select>
+                        <span v-if="validationErrors.province_id" class="text-red-500 text-sm">{{ validationErrors.province_id }}</span>
+                    </div>
+
+                    <div>
+                        <label for="countryId" class="block text-sm font-medium text-gray-600">Country</label>
+                        <select v-model="personality.country_id" id="countryId" class="w-full border rounded-lg px-4 py-2">
+                        <option v-for="country in state.countries" :key="country.id" :value="country.id">
+                            {{ country.description }}
+                        </option>
+                        </select>
+                        <span v-if="validationErrors.country_id" class="text-red-500 text-sm">{{ validationErrors.country_id }}</span>
+                    </div>
+
+                    <div>
+                        <label for="passbookNo" class="block text-sm font-medium text-gray-600">Passbook No.</label>
+                        <input v-model="customer.passbook_no" type="number" id="passbookNo"  class="w-full border rounded-lg px-4 py-2"  disabled  />
+                        <span v-if="validationErrorsForCustomer.passbook_no" class="text-red-500 text-sm">{{ validationErrorsForCustomer.passbook_no }}</span>
+                    </div> 
+
+                    <div>
+                        <label for="notes" class="block text-sm font-medium text-gray-600">Notes</label>
+                        <textarea v-model="personality.notes" id="notes" class="input-field" placeholder="Enter any additional notes..."></textarea>
+                    </div>
+                </div>
             </div>
 
-            <div>
-                <label for="email" class="block text-gray-700">Email</label>
-                <input v-model="personality.email_address" type="email" id="email" class="w-full border rounded-lg px-4 py-2"  />
-                <span v-if="validationErrors.email_address" class="text-red-500 text-sm">{{ validationErrors.email_address }}</span>
-
-            </div>
-
-            <div>
-                <label for="password" class="block text-gray-700">Password</label>
-                <input v-model="customer.password" type="password" id="password" class="w-full border rounded-lg px-4 py-2"  />
-                <span v-if="validationErrorsForCustomer.password" class="text-red-500 text-sm">{{ validationErrorsForCustomer.password }}</span>
-            </div>
-
-            <div>
-                <label for="telephone" class="block text-gray-700">Telephone#</label>
-                <input v-model="personality.telephone_no" type="text" id="telephone" class="w-full border rounded-lg px-4 py-2" />
-            </div>
-
-            <div>
-                <label for="birthday" class="block text-gray-700">Birthday</label>
-                <input v-model="personality.birthday" type="date" id="birthday" class="w-full border rounded-lg px-4 py-2"  />
-                <span v-if="validationErrors.birthday" class="text-red-500 text-sm">{{ validationErrors.birthday }}</span>
-
-            </div>
-
-            <div>
-                <label for="gender" class="block text-gray-700">Gender</label>
-                <select v-model="personality.gender_code" id="gender" class="w-full border rounded-lg px-4 py-2">
-                <option value="1">Male</option>
-                <option value="2">Female</option>
-                </select>
-                <span v-if="validationErrors.gender_code" class="text-red-500 text-sm">{{ validationErrors.gender_code }}</span>
-
-            </div>
-
-            <div>
-                <label for="civilStatus" class="block text-gray-700">Civil Status</label>
-                <select v-model="personality.civil_status" id="civilStatus" class="w-full border rounded-lg px-4 py-2">
-                    <option value="1">Married</option>
-                    <option value="2">Widowed</option>
-                    <option value="3">Single</option>
-                </select>
-                <span v-if="validationErrors.civil_status" class="text-red-500 text-sm">{{ validationErrors.civil_status }}</span>
-
-            </div>
-
-            <div>
-                <label for="houseStreet" class="block text-gray-700">House Street</label>
-                <input v-model="personality.house_street" type="text" id="houseStreet" class="w-full border rounded-lg px-4 py-2" />
-                <span v-if="validationErrors.house_street" class="text-red-500 text-sm">{{ validationErrors.house_street }}</span>
-
-            </div>
-
-            <div>
-                <label for="Cellphone No" class="block text-gray-700">Cellphone No</label>
-                <input v-model="personality.cellphone_no" type="text" id="cellphoneNo" class="w-full border rounded-lg px-4 py-2" />
-                <span v-if="validationErrors.cellphone_no" class="text-red-500 text-sm">{{ validationErrors.cellphone_no }}</span>
-
-            </div>
-
-            <div>
-                <label for="purokZone" class="block text-gray-700">Purok Zone</label>
-                <input v-model="personality.purok_zone" type="text" id="purokZone" class="w-full border rounded-lg px-4 py-2" />
-                <span v-if="validationErrors.purok_zone" class="text-red-500 text-sm">{{ validationErrors.purok_zone }}</span>
-
-            </div>
-
-            <div>
-                <label for="Postal Code" class="block text-gray-700">Postal Code</label>
-                <input v-model="personality.postal_code" type="text" id="postalCode" class="w-full border rounded-lg px-4 py-2" />
-                <span v-if="validationErrors.postal_code" class="text-red-500 text-sm">{{ validationErrors.postal_code }}</span>
-
-            </div>
-
-            <!-- Additional Fields -->
-            <div>
-                <label for="barangayId" class="block text-gray-700">Barangay</label>
-                <select v-model="personality.barangay_id" id="barangayId" class="w-full border rounded-lg px-4 py-2">
-                <option v-for="barangay in state.barangays" :key="barangay.id" :value="barangay.id">
-                    {{ barangay.description }}
-                </option>
-                </select>
-                <span v-if="validationErrors.barangay_id" class="text-red-500 text-sm">{{ validationErrors.barangay_id }}</span>
-
-            </div>
-
-            <div>
-                <label for="cityId" class="block text-gray-700">City</label>
-                <select v-model="personality.city_id" id="cityId" class="w-full border rounded-lg px-4 py-2">
-                <option v-for="city in state.cities" :key="city.id" :value="city.id">
-                    {{ city.description }}
-                </option>
-                </select>
-                <span v-if="validationErrors.city_id" class="text-red-500 text-sm">{{ validationErrors.city_id }}</span>
-            </div>
-
-            <div>
-                <label for="countryId" class="block text-gray-700">Country</label>
-                <select v-model="personality.country_id" id="countryId" class="w-full border rounded-lg px-4 py-2">
-                <option v-for="country in state.countries" :key="country.id" :value="country.id">
-                    {{ country.description }}
-                </option>
-                </select>
-                <span v-if="validationErrors.country_id" class="text-red-500 text-sm">{{ validationErrors.country_id }}</span>
-
-            </div>
-
-            <div>
-                <label for="provinceId" class="block text-gray-700">Province</label>
-                <select v-model="personality.province_id" id="provinceId" class="w-full border rounded-lg px-4 py-2">
-                <option v-for="province in state.provinces" :key="province.id" :value="province.id">
-                    {{ province.description }}
-                </option>
-                </select>
-                <span v-if="validationErrors.province_id" class="text-red-500 text-sm">{{ validationErrors.province_id }}</span>
-            </div>
-
-            <div>
-                <label for="passbookNo" class="block text-gray-700">Passbook No.</label>
-                <input v-model="customer.passbook_no" type="number" id="passbookNo"  class="w-full border rounded-lg px-4 py-2"  disabled  />
-                <span v-if="validationErrorsForCustomer.passbook_no" class="text-red-500 text-sm">{{ validationErrorsForCustomer.passbook_no }}</span>
-            </div> 
-            
-            </div>
-
-        <div class="mt-4 flex justify-end space-x-4">
-            <button type="button" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-200" @click="handleCancel">
-                Cancel
-            </button>
-            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500">
-                Create Customer
-            </button>
-        </div>
-
-        <div class="mb-4 mt-4">
-        <!-- Fees table -->
+            <!-- Fees table -->
             <h3 class="text-gray-700 font-bold my-4">Fees</h3>
             <div v-if="state.fees && state.fees.length > 0" class="overflow-auto max-h-[250px]">
                 <table class="min-w-full bg-white border border-gray-300 mb-4">
                     <thead>
                         <tr>
-                            <th class="px-4 py-2 border text-left">Select</th>
+                            <!-- <th class="px-4 py-2 border text-left">Select</th> -->
                             <th class="px-4 py-2 border text-left">Fee Description</th>
                             <th class="px-4 py-2 border text-left">Amount</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="fee in state.fees" :key="fee.id">
-                            <td class="px-4 py-2 border text-left">
+                            <!-- <td class="px-4 py-2 border text-left">
                             <input
                             type="checkbox"
                             :value="fee.id"
                             :checked="customerData.selectedFees.includes(fee.id)"
                             @change="updateSelectedFees(fee, $event.target.checked)"
                             />
-                            </td>
+                            </td> -->
                             <td class="px-4 py-2 border">{{ fee.description }}</td>
                             <td class="px-4 py-2 border">{{ fee.amount }}</td>
                         </tr>
@@ -187,20 +211,14 @@
                 </table>
             </div>
 
-            <div class="mb-4">
-                <label class="block text-gray-700">Total Fees</label>
-                <input
-                :value="totalFees"
-                step="0.01"
-                type="number"
-                class="w-full border border-gray-300 rounded p-2"
-                readonly
-                />
+            <div class="flex justify-end gap-4">
+                <button type="submit" class="button-primary" :disabled="!isCodeVerified">Register</button>
+                <button type="button" class="button-cancel" @click="cancelForm">Cancel</button>
             </div>
-        </div>
         </form>
     </div>
 </template>
+
 
 <script setup lang="ts">
 import { watch } from 'vue';
@@ -211,6 +229,7 @@ import { ref, onMounted } from 'vue';
 
 import { PermissionService } from '~/models/Permission';
 import { apiService } from '~/routes/api/API';
+import { authService } from '~/components/api/AuthService';
 
 const requirements = ref({});
 const selectedRequirements = ref([]);
@@ -295,20 +314,24 @@ isTableLoading: false,
 
         const response = await apiService.getFeeActiveNoAuthForReg({});
         // Simulating an API call with hardcoded data
-        state.value.fees = response.data;
+        // Filter the data to include only 'Transaction Fee'
+        state.value.fees = response.data.filter(fee => fee.description === 'Transaction Fees' || fee.description == 'Transaction Fee');
 
-        //loop the selected fees
-        for (let i = 0; i < state.value.fees.length; i++)
+        if(state.value.fees.length > 0 || state.value.fees != null)
         {
-            const fee = state.value.fees[i];
-
-            debugger
-
-            customerData.value.selectedFees.push({
-        id: fee.id,
-        amount: fee.amount,
-        });
+            state.value.fees.forEach(element => {
+                if(element.description == 'Transaction Fees'){
+                    customerData.value.selectedFees.push({
+                        id: element.id,
+                        amount: element.amount,
+                        description: element.description,
+                    })
+                }
+            });
         }
+
+        
+
     } catch (error) {
         console.error('Error fetching fees:', error);
     }
@@ -331,9 +354,9 @@ isTableLoading: false,
 
     // Computed property to calculate total fees of selected items
     const totalFees = computed(() => {
-    return state.value.fees
-    .filter(fee => customerData.value.selectedFees.includes(fee.id))
-    .reduce((total, fee) => total + fee.amount, 0);
+    //return state.value.fees
+    // .filter(fee => customerData.value.selectedFees.includes(fee.id))
+    // .reduce((total, fee) => total + fee.amount, 0);
     });
 
 
@@ -482,6 +505,8 @@ const validationErrors = ref({
     passbook_no: '',
     loan_count_id: '',
     enable_mortuary: '',
+
+    verificationCode: '',
     });
 
 const validationErrorsForCustomer = ref({
@@ -493,7 +518,10 @@ const validationErrorsForCustomer = ref({
 
     });
 
-const isVerified = ref({})
+const isCodeVerified = ref(false)
+const verificationCode = ref('');
+const verificationCodeSent = ref(false);
+const verificationThreasholdCount = ref(0);
 
 
 const createCustomer = async () => {
@@ -522,6 +550,17 @@ try {
     if (!isValidPhilippineNumber(personality.value.cellphone_no) || !isValidPhilippineNumber(personality.value.telephone_no)) {
         toast.error("Please enter a valid Philippine-based phone number.");
         return;
+    }
+
+    // Validate verification code and flag
+    if (!verificationCode.value || verificationCode.value.length < 0) {
+      toast.error("Please enter the verification code.");
+      return;
+    }
+
+    if (!isCodeVerified.value == true) {
+      toast.error("Customer is not verified.");
+      return;
     }
 
     for (const field in validationErrorsForCustomer.value) {
@@ -611,10 +650,133 @@ const handleCancel = () => {
 navigateTo('/'); // Example navigation
 };
 
+// Simulated Methods
+const sendVerificationCode = async () => {
+    try {
+        const params = {
+            email: personality.value.email_address,
+            phone_number: personality.value.cellphone_no,
+            method: 'email.customer',
+        }
+
+        const response = await authService.sendVerification(params);
+
+        debugger
+
+        if(response.success == true){
+            toast.success(`The verification code has been sent!`, {autoClose: 3000})
+            verificationCodeSent.value = true;
+            isCodeVerified.value = false;
+            verificationCode.value = '';
+        }
+
+    } catch (error) {
+        toast.error(`${error}`, {autoClose: 3000})
+    }
+    finally {
+        setTimeout(() => {
+        }, 3000);
+    }
+    // Add logic to send the verification code here.
+    // On success:
+};
+
+const verifyCode = async () => {
+    try {
+        const params = {
+            code: verificationCode.value,
+            email: personality.value.email_address,
+            method: 'email.customer',
+        }
+
+        debugger
+
+        const response = await authService.verifyVerification(params, verificationCode.value);
+
+        if(response.success == true)
+        {
+            toast.success(`The code has been verified!`, {autoClose: 3000})
+
+            //disable verify field and verify button field
+            isCodeVerified.value = true;
+        }
+
+    } catch (error) {
+        toast.error(`${error}`, {autoClose:3000})
+    }
+    finally {
+        setTimeout(() => {
+        }, 3000);
+    }
+};
 
 </script>
 
 
 <style scoped>
-/* Add your styles here if needed */
+.input-field {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.375rem;
+    background-color: #f9fafb;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.input-field:focus {
+    border-color: #3b82f6;
+    background-color: #ffffff;
+}
+
+.error-text {
+    color: #ef4444;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.button-primary {
+    background-color: #2563eb;
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center; /* Corrected property */
+    justify-content: center; /* Corrected property */
+    transition: background-color 0.2s;
+}
+
+.button-primary:hover {
+    background-color: #1e40af;
+}
+
+.button-secondary {
+    background-color: #e5e7eb;
+    color: #111827;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 600;
+    transition: background-color 0.2s;
+}
+
+.button-secondary:hover {
+    background-color: #d1d5db;
+}
+
+.button-success {
+    background-color: #22c55e;
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center; /* Corrected property */
+    justify-content: center; /* Corrected property */
+    transition: background-color 0.2s;
+}
+
+.button-success:hover {
+    background-color: #15803d;
+}
 </style>
