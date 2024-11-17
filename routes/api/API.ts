@@ -717,7 +717,12 @@ class API extends BaseAPIService {
         async getCollections(params: object): Promise<any> {
             return await this.request(`/REPORTS`, 'GET', params)
         }
-
+        async getBalances(params: object): Promise<any> {
+            return await this.request(`/BALANCES`, 'GET', params)
+        }
+        async getDisburse(params: object): Promise<any> {
+            return await this.request(`/DISBURSEMENT`, 'GET', params)
+        }
 
 
 //authentioncation
