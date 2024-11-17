@@ -212,7 +212,7 @@
             </div>
 
             <div class="flex justify-end gap-4">
-                <button type="submit" class="button-primary" :disabled="!isCodeVerified">Register</button>
+                <button type="submit" class="button-primary">Register</button>
                 <button type="button" class="button-cancel" @click="cancelForm">Cancel</button>
             </div>
         </form>
@@ -526,6 +526,13 @@ const verificationThreasholdCount = ref(0);
 
 const createCustomer = async () => {
 try {
+
+    if(!isCodeVerified.value)
+    {
+        setTimeout(() => {
+            toast.error(`You need to verify first your email to be registered`, {autoClose: 3000})
+        }, 3000);
+    }
 
     Object.keys(validationErrors.value).forEach((key) => {
     validationErrors.value[key as keyof typeof validationErrors.value] = '';
