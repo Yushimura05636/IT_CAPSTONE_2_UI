@@ -120,8 +120,14 @@ const submitForm = () => {
       console.log('Form Data:', form.value);
 
       create();
-
+      
       localStorage.setItem("_modeltype", form.value.modeltype);
+      
+      // Introduce a delay before navigating
+      setTimeout(() => {
+          navigateTo('/libraries');
+      }, 2000);
+
 
     } catch (error: any) {
       toast.error(`${error}`, {
@@ -148,10 +154,6 @@ async function create() {
       toast.success("Created successfully!", {
           autoClose: 2000,
       });
-      // Introduce a delay before navigating
-      setTimeout(() => {
-          //navigateTo('/libraries');
-      }, 2000);
     }
   } catch (error: any) {
     toast.error(`${error}`, {
