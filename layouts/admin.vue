@@ -108,79 +108,88 @@
 
 
 <!-- Desktop Sidebar -->
+<!-- Desktop Sidebar -->
 <div
-  :class="{'lg:w-100': isChildVisible.home || isChildVisible.about, 'lg:w-50': !isChildVisible.home && !isChildVisible.about}"
-  class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:flex-col overflow-hidden"
->
-  <div class="flex grow flex-col gap-y-3 bg-gray-900 shadow-lg rounded-r-lg text-gray-200 px-2 pb-4 overflow-hidden">
-    <div class="flex items-center justify-center h-16">
-      <button @click="toggleSidebar" class="text-gray-400 hover:text-white focus:outline-none">
-        <Bars3Icon class="h-8 w-10" aria-hidden="true" />
-      </button>
+    :class="{'lg:w-100': isChildVisible.home || isChildVisible.about, 'lg:w-50': !isChildVisible.home && !isChildVisible.about}"
+    class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:flex-col overflow-hidden"
+  >
+    <div class="flex grow flex-col gap-y-3 bg-gray-900 shadow-lg rounded-r-lg text-gray-200 px-2 pb-4 overflow-hidden">
+      <div class="flex items-center justify-center h-16">
+        <button @click="toggleSidebar" class="text-gray-400 hover:text-white focus:outline-none">
+          <Bars3Icon class="h-8 w-10" aria-hidden="true" />
+        </button>
+      </div>
+      <nav class="flex flex-1 flex-col scrollable">
+        <ul role="list" class="flex flex-1 flex-col gap-y-2">
+
+          <!-- Static Header Title -->
+          <li v-for="item in menuItems" :key="item.name">
+            <template v-if="item.headerTitle">
+              <div class="text-gray-500 font-medium text-xs uppercase tracking-wider px-4 py-2">
+                {{ item.headerTitle }}
+              </div>
+            </template>
+
+            <template v-else>
+              <!-- Menu Item -->
+              <div
+                @click="item.subLinks?.length ? toggleChild(item.name) : navigateTo(item.href); toggleHighlight(item.name)"
+                :class="{
+                  'border-l-4 border-indigo-500 bg-gray-800 text-white': highlightedItem === item.name,
+                  'text-gray-400 hover:bg-gray-700 hover:text-white': highlightedItem !== item.name
+                }"
+                class="cursor-pointer group flex items-center p-2 rounded-lg transition duration-200"
+              >
+                <component :is="item.icon" class="h-8 w-8" aria-hidden="true" />
+                <span
+                  :class="{
+                    'ml-3 text-sm font-semibold sr-only': item.subLinks && item.subLinks.length,
+                    'ml-3 text-sm font-semibold': !item.subLinks || !item.subLinks.length
+                  }"
+                >
+                  {{ item.name }}
+                </span>
+              </div>
+
+              <!-- Submenu -->
+              <Transition
+                name="fade"
+                enter-active-class="transition-opacity duration-300"
+                enter-class="opacity-0"
+                enter-to-class="opacity-100"
+                leave-active-class="transition-opacity duration-300"
+                leave-class="opacity-100"
+                leave-to-class="opacity-0"
+              >
+                <ul v-if="isChildVisible[item.name]" class="pl-4">
+                  <li v-for="subLink in item.subLinks" :key="subLink.name">
+                    <a
+                      :href="subLink.href"
+                      class="flex items-center text-gray-300 hover:text-indigo-400 p-2 rounded-md transition duration-200"
+                    >
+                      <component :is="subLink.icon" class="h-6 w-6 mr-2" aria-hidden="true" />
+                      <span class="text-sm">{{ subLink.name }}</span>
+                    </a>
+                  </li>
+                </ul>
+              </Transition>
+            </template>
+          </li>
+
+          <!-- Settings Link -->
+          <li class="mt-auto">
+            <a
+              href="#settings"
+              class="group flex items-center justify-center rounded-lg p-2 text-sm font-semibold leading-5 text-gray-400 hover:bg-gray-800 hover:text-white transition duration-200"
+            >
+              <Cog6ToothIcon class="h-6 w-6" aria-hidden="true" />
+              <span class="ml-3">Settings</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
     </div>
-    <nav class="flex flex-1 flex-col scrollable"> <!-- Add scrollable class -->
-      <ul role="list" class="flex flex-1 flex-col gap-y-2">
-
-        <!-- Static Header Title -->
-        <li v-for="item in menuItems" :key="item.name">
-          <template v-if="item.headerTitle">
-            <div class="text-gray-500 font-medium text-xs uppercase tracking-wider px-4 py-2">
-              {{ item.headerTitle }}
-            </div>
-          </template>
-
-          <template v-else>
-            <!-- Menu Item -->
-            <div
-              @click="toggleChild(item.name); toggleHighlight(item.name)"
-              :class="{
-                'border-l-4 border-indigo-500 bg-gray-800 text-white': highlightedItem === item.name,
-                'text-gray-400 hover:bg-gray-700 hover:text-white': highlightedItem !== item.name
-              }"
-              class="cursor-pointer group flex items-center p-2 rounded-lg transition duration-200"
-            >
-              <component :is="item.icon" class="h-8 w-8" aria-hidden="true" />
-              <span class="ml-3 text-sm font-semibold sr-only">{{ item.name }}</span>
-            </div>
-
-            <Transition
-              name="fade"
-              enter-active-class="transition-opacity duration-300"
-              enter-class="opacity-0"
-              enter-to-class="opacity-100"
-              leave-active-class="transition-opacity duration-300"
-              leave-class="opacity-100"
-              leave-to-class="opacity-0"
-            >
-              <ul v-if="isChildVisible[item.name]" class="pl-4">
-                <li v-for="subLink in item.subLinks" :key="subLink.name">
-                  <a
-                    :href="subLink.href"
-                    class="flex items-center text-gray-300 hover:text-indigo-400 p-2 rounded-md transition duration-200"
-                  >
-                    <component :is="subLink.icon" class="h-6 w-6 mr-2" aria-hidden="true" />
-                    <span class="text-sm sr-only">{{ subLink.name }}</span>
-                  </a>
-                </li>
-              </ul>
-            </Transition>
-          </template>
-        </li>
-
-        <!-- Settings Link -->
-        <li class="mt-auto">
-          <a
-            href="#settings"
-            class="group flex items-center justify-center rounded-lg p-2 text-sm font-semibold leading-5 text-gray-400 hover:bg-gray-800 hover:text-white transition duration-200"
-          >
-            <Cog6ToothIcon class="h-6 w-6" aria-hidden="true" />
-            <span class="ml-3 sr-only">Settings</span>
-          </a>
-        </li>
-      </ul>
-    </nav>
   </div>
-</div>
 
 
 <!-- Desktop Sidebar Expanded -->
@@ -583,6 +592,13 @@ onMounted(() => {
         clearInterval(user_details_interval);
     }, 2100);
 })
+
+// Function for handling the redirection for single, non-child items
+const navigateTo = (href) => {
+  if (href) {
+    window.location.href = href; // Redirects to the link
+  }
+};
 </script>
 
   <style scoped>
