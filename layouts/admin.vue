@@ -410,9 +410,7 @@ const menuItems = ref([
   {
     name: 'Dashboard',
     icon: ChartPieIcon,
-    subLinks: [
-      { name: "Dashboard", href: "/Dashboard", icon: ChartPieIcon },
-    ],
+    href: "/Dashboard",
   },
   {
     name: 'Admin',
