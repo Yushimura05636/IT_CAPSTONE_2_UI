@@ -210,17 +210,7 @@
                     </tbody>
                 </table>
             </div>
-
-            <div>
-                hello
-                <VueReCaptcha
-                    action=""
-                    :sitekey="siteKey"
-                    @verify="onCaptchaVerified"
-                />
-            </div>
              
-            
             <div class="flex justify-end gap-4">
                 <button type="submit" class="button-primary">Register</button>
                 <button type="button" class="button-cancel" @click="cancelForm">Cancel</button>
@@ -240,9 +230,6 @@ import { ref, onMounted } from 'vue';
 import { PermissionService } from '~/models/Permission';
 import { apiService } from '~/routes/api/API';
 import { authService } from '~/components/api/AuthService';
-import { VueReCaptcha } from 'vue-recaptcha-v3';
-
-const { executeRecaptcha } = useGoogleRecaptcha()
 
 const config = useRuntimeConfig();
 const siteKey = config.recaptchaSiteKey; // Get the reCAPTCHA site key
