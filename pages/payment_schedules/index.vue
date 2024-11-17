@@ -186,7 +186,6 @@ const state_response = ref('');
     if(state_response.value.length <= 0)
     {
       setTimeout(() => {
-        navigateTo(`/payment_schedules`)
           }, 2000);
     }
   }
