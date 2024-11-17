@@ -539,11 +539,6 @@ const createCustomer = async () => {
             }, 3000);
         }
 
-        if (!recaptchaResponse.value) {
-            toast.error('Please complete the reCAPTCHA challenge.')
-            return
-        }
-
         // Clear previous validation errors
         Object.keys(validationErrors.value).forEach((key) => {
             validationErrors.value[key as keyof typeof validationErrors.value] = '';
