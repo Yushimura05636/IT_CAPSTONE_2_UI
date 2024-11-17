@@ -67,14 +67,14 @@ import { apiService } from '~/routes/api/API';
     state_response.value = response.message;
   } catch (error) {
     toast.error(`${error}`, { autoClose: 3000, })
-setTimeout(() => {
-    }, 2000);
   }
   finally
   {
     if(state_response.value.length <= 0)
     {
-      navigateTo(`/requirements`)
+      setTimeout(() => {
+        navigateTo(`/requirements`)
+          }, 2000);
     }
   }
   })

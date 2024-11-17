@@ -175,19 +175,19 @@ onMounted(async () => {
   try {
     const response = await apiService.authLibrariesCreate({})
     state_response.value = response.message;
+    fetchUserCollector()
   } catch (error) {
     toast.error(`${error}`, { autoClose: 3000, })
-setTimeout(() => {
-    }, 2000);
   }
   finally
   {
     if(state_response.value.length <= 0)
     {
-      navigateTo(`/libraries`)
+      setTimeout(() => {
+        navigateTo(`/libraries`)
+          }, 2000);
     }
   }
-    fetchUserCollector()
 });
 
 const cancel = () => {

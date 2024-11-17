@@ -210,21 +210,21 @@ onMounted(async () => {
   try {
     const response = await apiService.authUserUpdate({})
     state_response.value = response.message;
+    fetchEmployees();
+    fetchStatuses(); // Fetch statuses on mount
   } catch (error) {
     toast.error(`${error}`, { autoClose: 3000, })
-setTimeout(() => {
-    }, 2000);
   }
   finally
   {
     if(state_response.value.length <= 0)
     {
-      navigateTo(`/users`)
+      setTimeout(() => {
+        navigateTo(`/users`)
+          }, 2000);
     }
   }
 
-  fetchEmployees();
-  fetchStatuses(); // Fetch statuses on mount
 });
 
 // Watch for changes in selected employee_id and populate other fields

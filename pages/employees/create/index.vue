@@ -350,14 +350,14 @@ onMounted(async () => {
     state_response.value = response.message;
   } catch (error) {
     toast.error(`${error}`, { autoClose: 3000, })
-setTimeout(() => {
-    }, 2000);
   }
   finally
   {
     if(state_response.value.length <= 0)
     {
-      navigateTo(`/employees`)
+      setTimeout(() => {
+        navigateTo(`/employees`)
+          }, 2000);
     }
   }
 

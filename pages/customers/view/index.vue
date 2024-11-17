@@ -384,32 +384,32 @@ onMounted(async () => {
   try {
     const response = await apiService.authCustomersView({})
     state_response.value = response.message;
+    await Promise.all([
+        fetchBarangays(),
+        fetchCities(),
+        fetchCountries(),
+        fetchProvinces(),
+        fetchCreditStatuses(),
+        fetchGroups(),
+        fetchPersonalityStatusCode(),
+        fetchLoanCount(),
+        fetchCustomer(),
+        fetchCivilStatus(),
+        fetchActiveRequirements(),
+    ]);
   } catch (error) {
     toast.error(`${error}`, { autoClose: 3000, })
-setTimeout(() => {
-    }, 2000);
   }
   finally
   {
     if(state_response.value.length <= 0)
     {
-      navigateTo(`/customers`)
+      setTimeout(() => {
+        navigateTo(`/customers`)
+          }, 2000);
     }
   }
 
-await Promise.all([
-    fetchBarangays(),
-    fetchCities(),
-    fetchCountries(),
-    fetchProvinces(),
-    fetchCreditStatuses(),
-    fetchGroups(),
-    fetchPersonalityStatusCode(),
-    fetchLoanCount(),
-    fetchCustomer(),
-    fetchCivilStatus(),
-    fetchActiveRequirements(),
-]);
 });
 
 const fetchCustomer = async () => {

@@ -146,20 +146,20 @@ import 'vue3-toastify/dist/index.css';
   try {
     const response = await apiService.authFactorRatesUpdate({})
     state_response.value = response.message;
+    fetchFactorRate(); // Fetch factor rate details on mount
   } catch (error) {
     toast.error(`${error}`, { autoClose: 3000, })
-setTimeout(() => {
-    }, 2000);
   }
   finally
   {
     if(state_response.value.length <= 0)
     {
-      navigateTo(`/factor_rate`)
+      setTimeout(() => {
+        navigateTo(`/factor_rate`)
+          }, 2000);
     }
   }
 
-    fetchFactorRate(); // Fetch factor rate details on mount
   });
 
   // Update factor rate

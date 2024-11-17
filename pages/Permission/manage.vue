@@ -321,22 +321,20 @@ onMounted(async () => {
     debugger
     const response = await apiService.authUserUpdate({})
     state_response.value = response.message;
+    fetchPermissionandDocuments();
   } catch (error) {
     toast.error(`${error}`, { autoClose: 3000, })
-setTimeout(() => {
-    }, 2000);
-    setTimeout(() => {
-    }, 2000);
   }
   finally
   {
     if(state_response.value.length <= 0)
     {
-      navigateTo(`/permission`)
+      setTimeout(() => {
+        navigateTo(`/permission`)
+      }, 2000);
     }
   }
 
-  fetchPermissionandDocuments();
 });
 
 const fullName = computed(() => `${state.user.first_name} ${state.user.last_name} ${state.user.middle_name}`);

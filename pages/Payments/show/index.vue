@@ -190,20 +190,20 @@ import { CustomersService } from '~/models/Customer';
   try {
     const response = await apiService.authPaymentView({})
     state_response.value = response.message;
+    fetchPayment();
   } catch (error) {
     toast.error(`${error}`, { autoClose: 3000, })
-setTimeout(() => {
-    }, 2000);
   }
   finally
   {
     if(state_response.value.length <= 0)
     {
-      navigateTo(`/payments`)
+      setTimeout(() => {
+        navigateTo(`/payments`)
+          }, 2000);
     }
   }
 
-    fetchPayment();
   });
 
   // Accept payment function

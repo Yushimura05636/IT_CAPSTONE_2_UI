@@ -255,27 +255,27 @@ onMounted(async () => {
     //Promise for authentication
   const state_response = ref('');
   try {
-    const response = await apiService.authLoanApplicationsView({})
-    state_response.value = response.message;
+      const response = await apiService.authLoanApplicationsView({})
+      state_response.value = response.message;
+      fetchGroups();
+      fetchFactorRate();
+      fetchPaymentFrequencies();
+      fetchDurations();
+      fetchFees();
+      fetchLoanCount();
   } catch (error) {
     toast.error(`${error}`, { autoClose: 3000, })
-setTimeout(() => {
-    }, 2000);
-  }
-  finally
-  {
+}
+finally
+{
     if(state_response.value.length <= 0)
     {
-      navigateTo(`/loan_applications`)
+        setTimeout(() => {
+            navigateTo(`/loan_applications`)
+            }, 2000);
     }
   }
 
-    fetchGroups();
-    fetchFactorRate();
-    fetchPaymentFrequencies();
-    fetchDurations();
-    fetchFees();
-    fetchLoanCount();
 });
 
 const fetchGroups = async () => {

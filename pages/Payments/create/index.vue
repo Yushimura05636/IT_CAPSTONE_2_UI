@@ -313,20 +313,20 @@ onMounted(async () => {
   try {
     const response = await apiService.authPaymentCreate({})
     state_response.value = response.message;
+    fetchCustomers();
   } catch (error) {
     toast.error(`${error}`, { autoClose: 3000, })
-setTimeout(() => {
-    }, 2000);
   }
   finally
   {
     if(state_response.value.length <= 0)
     {
-      navigateTo(`/payments`)
+      setTimeout(() => {
+        navigateTo(`/payments`)
+          }, 2000);
     }
   }
 
-  fetchCustomers();
 });
 </script>
 

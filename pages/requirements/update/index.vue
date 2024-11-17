@@ -77,21 +77,21 @@ import { apiService } from '~/routes/api/API';
   try {
     const response = await apiService.authRequirementsUpdate({})
     state_response.value = response.message;
+    const id = Number(route.params.id)
+    fetchRequirement(id)
   } catch (error) {
     toast.error(`${error}`, { autoClose: 3000, })
-setTimeout(() => {
-    }, 2000);
   }
   finally
   {
     if(state_response.value.length <= 0)
     {
-      navigateTo(`/requriements`)
+      setTimeout(() => {
+        navigateTo(`/requriements`)
+          }, 2000);
     }
   }
 
-    const id = Number(route.params.id)
-    fetchRequirement(id)
   })
   </script>
   

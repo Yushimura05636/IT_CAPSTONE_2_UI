@@ -109,20 +109,20 @@ onMounted(async () => {
   try {
     const response = await apiService.authFactorRatesCreate({})
     state_response.value = response.message;
+    fetchFreqAndDura();
   } catch (error) {
     toast.error(`${error}`, { autoClose: 3000, })
-setTimeout(() => {
-    }, 2000);
-  }
-  finally
-  {
+}
+finally
+{
     if(state_response.value.length <= 0)
     {
-      navigateTo(`/factor_rate`)
+        setTimeout(() => {
+            navigateTo(`/factor_rate`)
+            }, 2000);
     }
   }
 
-    fetchFreqAndDura();
 });
 
 const factorRate = ref({
