@@ -1,13 +1,4 @@
 <template>
-  <head>
-  <title>LendCash</title>
-  <link rel="icon" href="../img/LendCash_Logo-removebg-preview.png" type="image/x-icon">
-  <link rel="shortcut icon" href="../img/LendCash_Logo-removebg-preview.png" type="image/x-icon">
-  <link rel="apple-touch-icon" href="../img/LendCash_Logo-removebg-preview.png">
-  <link rel="icon" sizes="192x192" href="../img/LendCash_Logo-removebg-preview.png">
-  <link rel="icon" sizes="32x32" href="../img/LendCash_Logo-removebg-preview.png">
-  <link rel="icon" sizes="16x16" href="../img/LendCash_Logo-removebg-preview.png">
-</head>
   <div class="bg-white">
     <header class="py-8 px-4 md:px-16">
   <div class="container mx-auto flex justify-between items-center scroll-pop">
