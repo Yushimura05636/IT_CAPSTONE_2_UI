@@ -500,6 +500,7 @@ const menuItems = ref([
 
 const state = {
     user: [],
+    response: [],
 }
 
 const name = reactive({
@@ -583,19 +584,30 @@ async function userDetails(){
     }
 }
 
-onMounted(() => {
-
-    //check if user is auth
-    //AUTH_USER();
+onMounted(async () => {
+  try {
+    
+    state.response = await apiService.authDashBoardEmployeeAuthView({})
 
     //get the user details
     userDetails();
-
+  
     //set interval
     const user_details_interval = setInterval(userDetails, 2000);
     setTimeout(() => {
         clearInterval(user_details_interval);
     }, 2100);
+  } catch (error) {
+    toast.error(`${error}`)
+  }
+  finally
+  {
+    if(state.response.length <= 0 || !state.response)
+    {
+      navigateTo('/dashboard')
+    }
+  }
+
 })
 
 // Function for handling the redirection for single, non-child items

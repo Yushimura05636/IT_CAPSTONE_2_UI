@@ -933,6 +933,12 @@ async authCustomerRequirementsUpdate(params: object): Promise<any> {
 async authLoanReleaseUpdate(params: object): Promise<any> {
     return await this.request(`/LOAN_RELEASES_AUTH/update`, 'PATCH', params); //not function
 }
+
+//authentioncation
+// Dashboard Employee Authenticaiton 21
+async authDashBoardEmployeeAuthView(params: object): Promise<any> {
+    return await this.request(`/DASHBOARD_EMPLOYEES_AUTH/view`, 'PATCH', params);
+}
 }
 
 export const apiService = new API()
