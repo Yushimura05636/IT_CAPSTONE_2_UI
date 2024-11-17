@@ -141,7 +141,7 @@
                 <component :is="item.icon" class="h-8 w-8" aria-hidden="true" />
                 <span
                   :class="{
-                    'ml-3 text-sm font-semibold sr-only': item.subLinks && item.subLinks.length
+                    'ml-3 text-sm font-semibold sr-only': item.subLinks && item.subLinks.length || !item.subLinks || !item.subLinks.length
                   }"
                 >
                   {{ item.name }}
