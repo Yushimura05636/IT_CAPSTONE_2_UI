@@ -141,7 +141,7 @@
                 <component :is="item.icon" class="h-8 w-8" aria-hidden="true" />
                 <span
                   :class="{
-                    'ml-3 text-sm font-semibold sr-only': item.subLinks && item.subLinks.length || !item.subLinks || !item.subLinks.length
+                    'ml-1 text-sm font-semibold sr-only': item.subLinks && item.subLinks.length || !item.subLinks || !item.subLinks.length
                   }"
                 >
                   {{ item.name }}
@@ -180,7 +180,7 @@
               class="group flex items-center justify-center rounded-lg p-2 text-sm font-semibold leading-5 text-gray-400 hover:bg-gray-800 hover:text-white transition duration-200"
             >
               <Cog6ToothIcon class="h-6 w-6" aria-hidden="true" />
-              <span class="ml-3">Settings</span>
+              <span class="ml-3 sr-only">Settings</span>
             </a>
           </li>
         </ul>
@@ -238,7 +238,8 @@
                 <component :is="item.icon" class="h-6 w-6" aria-hidden="true" />
                 <span class="font-medium">{{ item.name }}</span>
               </div>
-              <span class="ml-auto">
+              <!-- Only show chevron icons if there are subLinks -->
+              <span class="ml-auto" v-if="item.subLinks?.length">
                 <template v-if="isChildVisible[item.name]">
                   <ChevronUpIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
                 </template>

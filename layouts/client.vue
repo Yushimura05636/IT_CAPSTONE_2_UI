@@ -109,177 +109,185 @@
 
 <!-- Desktop Sidebar -->
 <div
-:class="{'lg:w-100': isChildVisible.home || isChildVisible.about, 'lg:w-50': !isChildVisible.home && !isChildVisible.about}"
-class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:flex-col overflow-hidden"
->
-<div class="flex grow flex-col gap-y-3 bg-indigo-900 shadow-lg rounded-r-lg text-gray-200 px-2 pb-4 overflow-hidden">
-<div class="flex items-center justify-center h-16">
-    <button @click="toggleSidebar" class="text-gray-400 hover:text-white focus:outline-none">
-    <Bars3Icon class="h-8 w-10" aria-hidden="true" />
-    </button>
-</div>
-<nav class="flex flex-1 flex-col scrollable"> <!-- Add scrollable class -->
-    <ul role="list" class="flex flex-1 flex-col gap-y-2">
+    :class="{'lg:w-100': isChildVisible.home || isChildVisible.about, 'lg:w-50': !isChildVisible.home && !isChildVisible.about}"
+    class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:flex-col overflow-hidden"
+  >
+    <div class="flex grow flex-col gap-y-3 bg-gray-900 shadow-lg rounded-r-lg text-gray-200 px-2 pb-4 overflow-hidden">
+      <div class="flex items-center justify-center h-16">
+        <button @click="toggleSidebar" class="text-gray-400 hover:text-white focus:outline-none">
+          <Bars3Icon class="h-8 w-10" aria-hidden="true" />
+        </button>
+      </div>
+      <nav class="flex flex-1 flex-col scrollable">
+        <ul role="list" class="flex flex-1 flex-col gap-y-2">
 
-    <!-- Static Header Title -->
-    <li v-for="item in menuItems" :key="item.name">
-        <template v-if="item.headerTitle">
-        <div class="text-gray-500 font-medium text-xs uppercase tracking-wider px-4 py-2">
-            {{ item.headerTitle }}
-        </div>
-        </template>
+          <!-- Static Header Title -->
+          <li v-for="item in menuItems" :key="item.name">
+            <template v-if="item.headerTitle">
+              <div class="text-gray-500 font-medium text-xs uppercase tracking-wider px-4 py-2">
+                {{ item.headerTitle }}
+              </div>
+            </template>
 
-        <template v-else>
-        <!-- Menu Item -->
-        <div
-            @click="toggleChild(item.name); toggleHighlight(item.name)"
-            :class="{
-            'border-l-4 border-indigo-500 bg-gray-800 text-white': highlightedItem === item.name,
-            'text-gray-400 hover:bg-gray-700 hover:text-white': highlightedItem !== item.name
-            }"
-            class="cursor-pointer group flex items-center p-2 rounded-lg transition duration-200"
-        >
-            <component :is="item.icon" class="h-8 w-8" aria-hidden="true" />
-            <span class="ml-3 text-sm font-semibold sr-only">{{ item.name }}</span>
-        </div>
-
-        <Transition
-            name="fade"
-            enter-active-class="transition-opacity duration-300"
-            enter-class="opacity-0"
-            enter-to-class="opacity-100"
-            leave-active-class="transition-opacity duration-300"
-            leave-class="opacity-100"
-            leave-to-class="opacity-0"
-        >
-            <ul v-if="isChildVisible[item.name]" class="pl-4">
-            <li v-for="subLink in item.subLinks" :key="subLink.name">
-                <a
-                :href="subLink.href"
-                class="flex items-center text-gray-300 hover:text-indigo-400 p-2 rounded-md transition duration-200"
+            <template v-else>
+              <!-- Menu Item -->
+              <div
+                @click="item.subLinks?.length ? toggleChild(item.name) : navigateTo(item.href); toggleHighlight(item.name)"
+                :class="{
+                  'border-l-4 border-indigo-500 bg-gray-800 text-white': highlightedItem === item.name,
+                  'text-gray-400 hover:bg-gray-700 hover:text-white': highlightedItem !== item.name
+                }"
+                class="cursor-pointer group flex items-center p-2 rounded-lg transition duration-200"
+              >
+                <component :is="item.icon" class="h-8 w-8" aria-hidden="true" />
+                <span
+                  :class="{
+                    'ml-1 text-sm font-semibold sr-only': item.subLinks && item.subLinks.length || !item.subLinks || !item.subLinks.length
+                  }"
                 >
-                <component :is="subLink.icon" class="h-6 w-6 mr-2" aria-hidden="true" />
-                <span class="text-sm sr-only">{{ subLink.name }}</span>
-                </a>
-            </li>
-            </ul>
-        </Transition>
-        </template>
-    </li>
+                  {{ item.name }}
+                </span>
+              </div>
 
-    <!-- Settings Link -->
-    <li class="mt-auto">
-        <a
-        href="#settings"
-        class="group flex items-center justify-center rounded-lg p-2 text-sm font-semibold leading-5 text-gray-400 hover:bg-gray-800 hover:text-white transition duration-200"
-        >
-        <Cog6ToothIcon class="h-6 w-6" aria-hidden="true" />
-        <span class="ml-3 sr-only">Settings</span>
-        </a>
-    </li>
-    </ul>
-</nav>
-</div>
-</div>
+              <!-- Submenu -->
+              <Transition
+                name="fade"
+                enter-active-class="transition-opacity duration-300"
+                enter-class="opacity-0"
+                enter-to-class="opacity-100"
+                leave-active-class="transition-opacity duration-300"
+                leave-class="opacity-100"
+                leave-to-class="opacity-0"
+              >
+                <ul v-if="isChildVisible[item.name]" class="pl-4">
+                  <li v-for="subLink in item.subLinks" :key="subLink.name">
+                    <a
+                      :href="subLink.href"
+                      class="flex items-center text-gray-300 hover:text-indigo-400 p-2 rounded-md transition duration-200"
+                    >
+                      <component :is="subLink.icon" class="h-6 w-6 mr-2" aria-hidden="true" />
+                      <span class="text-sm sr-only">{{ subLink.name }}</span>
+                    </a>
+                  </li>
+                </ul>
+              </Transition>
+            </template>
+          </li>
+
+          <!-- Settings Link -->
+          <li class="mt-auto">
+            <a
+              href="#settings"
+              class="group flex items-center justify-center rounded-lg p-2 text-sm font-semibold leading-5 text-gray-400 hover:bg-gray-800 hover:text-white transition duration-200"
+            >
+              <Cog6ToothIcon class="h-6 w-6" aria-hidden="true" />
+              <span class="ml-3 sr-only">Settings</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
 
 
 <!-- Desktop Sidebar Expanded -->
 <Transition
-name="slide"
-enter-active-class="transition-transform duration-300 ease-in-out"
-enter-class="transform -translate-x-full"
-enter-to-class="transform translate-x-0"
-leave-active-class="transition-transform duration-300 ease-in-out"
-leave-class="transform translate-x-0"
-leave-to-class="transform -translate-x-full"
->
-<div
-v-if="sidebarExpanded"
-class="fixed inset-0 lg:w-64 lg:bg-indigo-900 lg:border lg:border-gray-700 z-50 shadow-lg rounded-lg overflow-x-auto overflow-y-auto"
->
-<!-- Sidebar Header -->
-<div class="flex h-16 items-center justify-between bg-gray-800 shadow-md px-4 rounded-t-lg">
-<img class="h-12 w-auto" src="../img/LendCash_Logo-removebg-preview.png" :alt="name.company" />
-    <h1 class="text-lg font-bold text-indigo-400">{{ name.company }}</h1>
-    <button @click="toggleSidebar" class="text-gray-400 hover:text-white focus:outline-none">
-    <XMarkIcon class="h-6 w-6" aria-hidden="true" />
-    </button>
-</div>
-
-<div v-for="item in menuHeaderTitles" :key="item.headerTitle" class="my-4 mb-2">
-    <template v-if="item.headerTitle && item.headerTitle.trim() !== ''">
+    name="slide"
+    enter-active-class="transition-transform duration-300 ease-in-out"
+    enter-class="transform -translate-x-full"
+    enter-to-class="transform translate-x-0"
+    leave-active-class="transition-transform duration-300 ease-in-out"
+    leave-class="transform translate-x-0"
+    leave-to-class="transform -translate-x-full"
+  >
     <div
-        class="text-gray-400 text-md uppercase tracking-wide font-semibold px-4 pt-2 select-none pointer-events-none"
-        v-text="item.headerTitle"
-    ></div>
-    </template>
-</div>
+      v-if="sidebarExpanded"
+      class="fixed inset-0 lg:w-64 lg:bg-gray-900 lg:border lg:border-gray-700 z-50 shadow-lg rounded-lg overflow-x-auto overflow-y-auto"
+    >
+      <!-- Sidebar Header -->
+      <div class="flex h-16 items-center justify-between bg-gray-800 shadow-md px-4 rounded-t-lg">
+        <img class="h-12 w-auto" src="../img/LendCash_Logo-removebg-preview.png" :alt="name.company" />
+        <h1 class="text-lg font-bold text-indigo-400">{{ name.company }}</h1>
+        <button @click="toggleSidebar" class="text-gray-400 hover:text-white focus:outline-none">
+          <XMarkIcon class="h-6 w-6" aria-hidden="true" />
+        </button>
+      </div>
 
-<!-- Navigation Items -->
-<nav class="flex flex-1 flex-col mt-2 scrollable">
-    <ul role="list" class="flex flex-1 flex-col gap-y-2 px-4">
-    <li v-for="item in menuItems" :key="item.name">
-        <!-- Menu Item -->
-        <div
-        @click="toggleChild(item.name); toggleHighlight(item.name)"
-        :class="{
-            'border-l-4 border-indigo-500 bg-gray-800 text-white': highlightedItem === item.name,
-            'text-gray-400 hover:bg-gray-700 hover:text-white': highlightedItem !== item.name
-        }"
-        class="cursor-pointer flex items-center justify-between p-2 rounded-lg text-md font-semibold transition duration-200"
-        >
-        <div class="flex items-center space-x-2">
-            <component :is="item.icon" class="h-6 w-6" aria-hidden="true" />
-            <span class="font-medium">{{ item.name }}</span>
-        </div>
-        <span class="ml-auto">
-            <template v-if="isChildVisible[item.name]">
-            <ChevronUpIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
-            </template>
-            <template v-else>
-            <ChevronDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
-            </template>
-        </span>
-        </div>
+      <div v-for="item in menuHeaderTitles" :key="item.headerTitle" class="my-4 mb-2">
+        <template v-if="item.headerTitle && item.headerTitle.trim() !== ''">
+          <div
+            class="text-gray-400 text-md uppercase tracking-wide font-semibold px-4 pt-2 select-none pointer-events-none"
+            v-text="item.headerTitle"
+          ></div>
+        </template>
+      </div>
 
-        <!-- Child Links -->
-        <Transition
-        name="fade"
-        enter-active-class="transition-opacity duration-300 ease-in"
-        enter-class="opacity-0"
-        enter-to-class="opacity-100"
-        leave-active-class="transition-opacity duration-300 ease-out"
-        leave-class="opacity-100"
-        leave-to-class="opacity-0"
-        >
-        <ul v-if="isChildVisible[item.name]" class="pl-4 space-y-1">
-            <li v-for="subLink in item.subLinks" :key="subLink.name">
-            <a
-                :href="subLink.href"
-                class="flex items-center text-gray-300 hover:text-indigo-400 p-2 rounded-md transition duration-200"
+      <!-- Navigation Items -->
+      <nav class="flex flex-1 flex-col mt-2 scrollable">
+        <ul role="list" class="flex flex-1 flex-col gap-y-2 px-4">
+          <li v-for="item in menuItems" :key="item.name">
+            <!-- Menu Item -->
+            <div
+              @click="item.subLinks?.length ? toggleChild(item.name) : navigateTo(item.href); toggleHighlight(item.name)"
+              :class="{
+                'border-l-4 border-indigo-500 bg-gray-800 text-white': highlightedItem === item.name,
+                'text-gray-400 hover:bg-gray-700 hover:text-white': highlightedItem !== item.name
+              }"
+              class="cursor-pointer flex items-center justify-between p-2 rounded-lg text-md font-semibold transition duration-200"
             >
-                <component :is="subLink.icon" class="h-6 w-6 mr-2" aria-hidden="true" />
-                <span>{{ subLink.name }}</span>
-            </a>
-            </li>
-        </ul>
-        </Transition>
-    </li>
+              <div class="flex items-center space-x-2">
+                <component :is="item.icon" class="h-6 w-6" aria-hidden="true" />
+                <span class="font-medium">{{ item.name }}</span>
+              </div>
+              <!-- Only show chevron icons if there are subLinks -->
+              <span class="ml-auto" v-if="item.subLinks?.length">
+                <template v-if="isChildVisible[item.name]">
+                  <ChevronUpIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
+                </template>
+                <template v-else>
+                  <ChevronDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
+                </template>
+              </span>
+            </div>
 
-    <!-- Settings Link -->
-    <li class="mt-auto">
-        <a
-        href="#settings"
-        class="group flex items-left justify-left rounded-lg p-2 text-md font-semibold leading-5 text-gray-400 hover:bg-gray-700 hover:text-white transition duration-200"
-        >
-        <Cog6ToothIcon class="h-6 w-6" aria-hidden="true" />
-        <span>Settings</span>
-        </a>
-    </li>
-    </ul>
-</nav>
-</div>
-</Transition>
+            <!-- Child Links -->
+            <Transition
+              name="fade"
+              enter-active-class="transition-opacity duration-300 ease-in"
+              enter-class="opacity-0"
+              enter-to-class="opacity-100"
+              leave-active-class="transition-opacity duration-300 ease-out"
+              leave-class="opacity-100"
+              leave-to-class="opacity-0"
+            >
+              <ul v-if="isChildVisible[item.name]" class="pl-4 space-y-1">
+                <li v-for="subLink in item.subLinks" :key="subLink.name">
+                  <a
+                    :href="subLink.href"
+                    class="flex items-center text-gray-300 hover:text-indigo-400 p-2 rounded-md transition duration-200"
+                  >
+                    <component :is="subLink.icon" class="h-6 w-6 mr-2" aria-hidden="true" />
+                    <span>{{ subLink.name }}</span>
+                  </a>
+                </li>
+              </ul>
+            </Transition>
+          </li>
+
+          <!-- Settings Link -->
+          <li class="mt-auto">
+            <a
+              href="#settings"
+              class="group flex items-left justify-left rounded-lg p-2 text-md font-semibold leading-5 text-gray-400 hover:bg-gray-700 hover:text-white transition duration-200"
+            >
+              <Cog6ToothIcon class="h-6 w-6" aria-hidden="true" />
+              <span>Settings</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </Transition>
 
 
 <!-- Header -->
