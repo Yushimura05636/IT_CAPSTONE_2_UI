@@ -10,6 +10,7 @@ export default defineNuxtConfig({
 
   plugins : [
     '~/plugins/ably.js',
+    '~/plugins/recaptcha.js',
   ],
 
   postcss: {
@@ -24,6 +25,7 @@ export default defineNuxtConfig({
       appName: process.env.APP_NAME,
       apiBaseURL: process.env.API_BASE_URL,
       ablyApiKey: process.env.ABLY_API_KEY,
+      recaptchaSiteKey: process.env.RECAPTCHA_SITE_KEY,
     },
   },
 

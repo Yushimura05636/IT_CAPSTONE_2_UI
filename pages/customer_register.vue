@@ -211,6 +211,16 @@
                 </table>
             </div>
 
+            <div>
+                hello
+                <VueReCaptcha
+                    action=""
+                    :sitekey="siteKey"
+                    @verify="onCaptchaVerified"
+                />
+            </div>
+             
+            
             <div class="flex justify-end gap-4">
                 <button type="submit" class="button-primary">Register</button>
                 <button type="button" class="button-cancel" @click="cancelForm">Cancel</button>
@@ -230,6 +240,17 @@ import { ref, onMounted } from 'vue';
 import { PermissionService } from '~/models/Permission';
 import { apiService } from '~/routes/api/API';
 import { authService } from '~/components/api/AuthService';
+import { VueReCaptcha } from 'vue-recaptcha-v3';
+
+const { executeRecaptcha } = useGoogleRecaptcha()
+
+const config = useRuntimeConfig();
+const siteKey = config.recaptchaSiteKey; // Get the reCAPTCHA site key
+
+const recaptchaResponse = ref<string | null>(null)
+
+// reCAPTCHA site key (set in .env)
+const recaptchaSiteKey = process.env.RECAPTCHA_SITE_KEY || '';
 
 const requirements = ref({});
 const selectedRequirements = ref([]);
@@ -532,6 +553,11 @@ const createCustomer = async () => {
             }, 3000);
         }
 
+        if (!recaptchaResponse.value) {
+            toast.error('Please complete the reCAPTCHA challenge.')
+            return
+        }
+
         // Clear previous validation errors
         Object.keys(validationErrors.value).forEach((key) => {
             validationErrors.value[key as keyof typeof validationErrors.value] = '';
@@ -621,6 +647,7 @@ const createCustomer = async () => {
             },
             fees: customerData.value.selectedFees,
             password: customer.value.password,
+            recaptchaResponse: recaptchaResponse.value,
         };
 
         // Create the customer
@@ -710,6 +737,11 @@ const verifyCode = async () => {
 
 function cancelForm() {
     navigateTo('/')
+}
+
+// Captcha verification callback
+const onCaptchaVerified = (response: string) => {
+  recaptchaResponse.value = response
 }
 
 </script>
