@@ -52,7 +52,7 @@
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.document_status_description }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.loan_application_no }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.amount_loan }}</td>
-              <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.factor_rate }}</td>
+              <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.factor_rate_value }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.amount_interest }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.amount_paid }}</td>
               <td class="py-2 px-4 border-b border-gray-300">{{ loanApp.Loan_Application.datetime_fully_paid }}</td>
