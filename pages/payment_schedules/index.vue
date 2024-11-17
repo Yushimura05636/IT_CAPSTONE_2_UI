@@ -175,11 +175,8 @@ setTimeout(() => {
 //Promise for authentication
 const state_response = ref('');
   try {
-    const response = await apiService.authCustomersUpdate({})
-    state_response.value = response.message;
-    
-    await loadGroups();
     await fetchLoanSchedules();
+    await loadGroups();
     filteredGroup();
   } catch (error) {
     toast.error(`${error}`, { autoClose: 3000, })

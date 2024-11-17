@@ -135,7 +135,7 @@ const submitPayment = async () => {
 
 // Fetch customers when the component is mounted
 onMounted(() => {
-  fetchCustomers();
+  //fetchCustomers();
 });
 </script>
 
