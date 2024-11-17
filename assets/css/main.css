@@ -80,3 +80,12 @@ table td {
 .multiselect-option.is-selected.is-pointed {
     background: #000000 !important;
 }
+
+:root {
+    --header-logo-width: 150px;
+  }
+
+.header-logo {
+    width: 150px; /* Adjust this value to your desired width */
+    height: auto; /* This maintains the aspect ratio */
+}

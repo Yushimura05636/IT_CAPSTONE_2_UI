@@ -28,5 +28,21 @@ export default defineNuxtConfig({
   },
 
   ssr: true,
-  compatibilityDate: '2024-09-06',
+
+  app: {
+    head: {
+      title: 'LendCash Microfinance',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { hid: 'LendCash Microfinance', name: 'Lending no collateral', content: 'My LendCash application' },
+      ],
+      link: [
+        { rel: 'icon', type: 'image/x-icon', href: '/Lending_logo.png' }
+      ],
+      style: [
+        { children: ':root { --header-logo-width: 150px; }' }
+      ]
+    }
+  },
 })
