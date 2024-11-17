@@ -10,7 +10,6 @@ export default defineNuxtConfig({
 
   plugins : [
     '~/plugins/ably.js',
-    '~/plugins/recaptcha.js',
   ],
 
   postcss: {
