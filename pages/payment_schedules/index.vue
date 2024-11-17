@@ -3,10 +3,10 @@
       <div class="p-8">
         <div class="flex justify-between items-center mb-4">
           <h1 class="text-2xl font-bold">Schedules</h1>
-          <div class="flex space-x-2">
+          <!-- <div class="flex space-x-2">
             <button @click="updatePayment" class="bg-yellow-500 text-white px-4 py-2 rounded">Pay</button>
             <button @click="deletePayment" class="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
-          </div>
+          </div> -->
         </div>
 
         <!-- Comboboxes for group, customer, and search input -->
@@ -83,6 +83,9 @@
   </template>
 
   <script setup>
+  import { toast } from 'vue3-toastify';
+  import 'vue3-toastify/dist/index.css';
+
   import { ref, computed, onMounted } from 'vue';
   import { apiService } from '~/routes/api/API';
 
@@ -169,8 +172,27 @@ setTimeout(() => {
 
   // Load groups and loan schedules on component mount
   onMounted(async () => {
+//Promise for authentication
+const state_response = ref('');
+  try {
+    const response = await apiService.authCustomersUpdate({})
+    state_response.value = response.message;
+    
     await loadGroups();
     await fetchLoanSchedules();
     filteredGroup();
+  } catch (error) {
+    toast.error(`${error}`, { autoClose: 3000, })
+  }
+  finally
+  {
+    if(state_response.value.length <= 0)
+    {
+      setTimeout(() => {
+        navigateTo(`/payment_schedules`)
+          }, 2000);
+    }
+  }
+    
   });
   </script>
