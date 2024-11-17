@@ -272,7 +272,7 @@ finally
     {
         setTimeout(() => {
             navigateTo(`/loan_applications`)
-            }, 2000);
+            }, 3000);
     }
   }
 
