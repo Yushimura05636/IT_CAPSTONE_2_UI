@@ -525,131 +525,122 @@ const verificationThreasholdCount = ref(0);
 
 
 const createCustomer = async () => {
-try {
+    try {
+        if (!isCodeVerified.value) {
+            setTimeout(() => {
+                toast.error(`You need to verify first your email to be registered`, { autoClose: 3000 })
+            }, 3000);
+        }
 
-    if(!isCodeVerified.value)
-    {
-        setTimeout(() => {
-            toast.error(`You need to verify first your email to be registered`, {autoClose: 3000})
-        }, 3000);
-    }
-
-    Object.keys(validationErrors.value).forEach((key) => {
-    validationErrors.value[key as keyof typeof validationErrors.value] = '';
-    });
-    Object.keys(validationErrorsForCustomer.value).forEach((key) => {
-    validationErrorsForCustomer.value[key as keyof typeof validationErrorsForCustomer.value] = '';
-    });
-
-    // Validate each field in personality and set error if empty
-    for (const field in validationErrors.value) {
-    if (!personality.value[field as keyof typeof personality.value]) {
-        validationErrors.value[field as keyof typeof validationErrors.value] = `Please complete all required fields before proceeding.`;
-    }
-    }
-    // Validate age
-    if (!isValidAge(personality.value.birthday)) {
-        toast.error("Customer must be at least 18 years old.");
-        return;
-    }
-
-    // Validate phone numbers
-    if (!isValidPhilippineNumber(personality.value.cellphone_no) || !isValidPhilippineNumber(personality.value.telephone_no)) {
-        toast.error("Please enter a valid Philippine-based phone number.");
-        return;
-    }
-
-    // Validate verification code and flag
-    if (!verificationCode.value || verificationCode.value.length < 0) {
-      toast.error("Please enter the verification code.");
-      return;
-    }
-
-    if (!isCodeVerified.value == true) {
-      toast.error("Customer is not verified.");
-      return;
-    }
-
-    for (const field in validationErrorsForCustomer.value) {
-    if (!customer.value[field as keyof typeof customer.value]) {
-        validationErrorsForCustomer.value[field as keyof typeof validationErrorsForCustomer.value] = `Please complete all required fields before proceeding.`;
-    }
-    }
-
-        // // First Name validation
-        if (
-        !personality.value.first_name   ||
-        !personality.value.family_name  ||
-        !personality.value.middle_name  ||
-        !personality.value.email_address||
-        !personality.value.birthday     ||
-        !personality.value.gender_code  ||
-        !personality.value.civil_status ||
-        !personality.value.house_street ||
-        !personality.value.cellphone_no ||
-        !personality.value.purok_zone   ||
-        !personality.value.postal_code  ||
-        !personality.value.barangay_id  ||
-        !personality.value.city_id      ||
-        !personality.value.province_id  
-    )
-    {
-        toast.error("Please fill all the required fields.", { autoClose: 3000 });
-        console.log(selectedRequirements.value)
-        return;
-    }
-
-    const jsonObject = {
-        customer: {
-            group_id: customer.value.group_id,
-            passbook_no: customer.value.passbook_no,
-            loan_count: customer.value.loan_count_id,
-            enable_mortuary: customer.value.enable_mortuary,
-            personality_id: 0,
-        },
-        personality: {
-            datetime_registered: personality.value.datetime_registered,
-            family_name: personality.value.family_name, // Get from personality ref
-            middle_name: personality.value.middle_name, // Assuming this remains unchanged
-            first_name: personality.value.first_name, // Get from personality ref
-            birthday: personality.value.birthday, // Get from personality ref
-            civil_status: personality.value.civil_status, // Get from personality ref
-            gender_code: personality.value.gender_code, // Get from personality ref
-            house_street: personality.value.house_street, // Get from personality ref
-            purok_zone: personality.value.purok_zone, // Get from personality ref
-            postal_code: personality.value.postal_code, // Get from personality ref
-            telephone_no: personality.value.telephone_no, // Get from personality ref
-            email_address: personality.value.email_address, // Get from personality ref
-            cellphone_no: personality.value.cellphone_no, // Get from personality ref
-            name_type_code: personality.value.name_type, // Assuming this remains unchanged
-            personality_status_code: personality.value.personality_status_code, // Get from personality ref
-            barangay_id: personality.value.barangay_id, // Get from personality ref
-            city_id: personality.value.city_id, // Get from personality ref
-            country_id: personality.value.country_id, // Get from personality ref
-            province_id: personality.value.province_id, // Get from personality ref
-            credit_status_id: personality.value.credit_status_id, // Get from personality ref
-            notes: personality.value.notes, // Get from personality ref, optional
-        },
-        fees: customerData.value.selectedFees,
-        password: customer.value.password,
-    };
-
-    
-    await apiService.createRegisterCustomer(jsonObject);
-    toast.success("Customer create successfully!", {
-        autoClose: 2000,
+        // Clear previous validation errors
+        Object.keys(validationErrors.value).forEach((key) => {
+            validationErrors.value[key as keyof typeof validationErrors.value] = '';
         });
+        Object.keys(validationErrorsForCustomer.value).forEach((key) => {
+            validationErrorsForCustomer.value[key as keyof typeof validationErrorsForCustomer.value] = '';
+        });
+
+        // Validate each field in personality and set error if empty
+        for (const field in validationErrors.value) {
+            if (!personality.value[field as keyof typeof personality.value]) {
+                validationErrors.value[field as keyof typeof validationErrors.value] = `Please complete all required fields before proceeding.`;
+            }
+        }
+
+        // Validate very important fields
+        const importantFields = ['first_name', 'family_name', 'email_address', 'birthday', 'gender_code', 'civil_status', 'house_street', 'cellphone_no', 'purok_zone', 'postal_code', 'barangay_id', 'city_id', 'province_id', 'credit_status_id'];
+        for (const field of importantFields) {
+            if (!personality.value[field]) {
+                validationErrors.value[field] = `Please fill in the ${field.replace('_', ' ')} field.`;
+                toast.error(`The ${field.replace('_', ' ')} is required!`);
+                return;
+            }
+        }
+
+        // Validate age
+        if (!isValidAge(personality.value.birthday)) {
+            toast.error("Customer must be at least 18 years old.");
+            return;
+        }
+
+        // Validate phone numbers
+        if (!isValidPhilippineNumber(personality.value.cellphone_no) || !isValidPhilippineNumber(personality.value.telephone_no)) {
+            toast.error("Please enter a valid Philippine-based phone number.");
+            return;
+        }
+
+        // Validate verification code and flag
+        if (!verificationCode.value || verificationCode.value.length < 0) {
+            toast.error("Please enter the verification code.");
+            return;
+        }
+
+        if (!isCodeVerified.value) {
+            toast.error("Customer is not verified.");
+            return;
+        }
+
+        // Validate fields for customer-specific data
+        for (const field in validationErrorsForCustomer.value) {
+            if (!customer.value[field as keyof typeof customer.value]) {
+                validationErrorsForCustomer.value[field as keyof typeof validationErrorsForCustomer.value] = `Please complete all required fields before proceeding.`;
+            }
+        }
+
+        // Prepare the data for submission
+        const jsonObject = {
+            customer: {
+                group_id: customer.value.group_id,
+                passbook_no: customer.value.passbook_no,
+                loan_count: customer.value.loan_count_id,
+                enable_mortuary: customer.value.enable_mortuary,
+                personality_id: 0,
+            },
+            personality: {
+                datetime_registered: personality.value.datetime_registered,
+                family_name: personality.value.family_name,
+                middle_name: personality.value.middle_name,
+                first_name: personality.value.first_name,
+                birthday: personality.value.birthday,
+                civil_status: personality.value.civil_status,
+                gender_code: personality.value.gender_code,
+                house_street: personality.value.house_street,
+                purok_zone: personality.value.purok_zone,
+                postal_code: personality.value.postal_code,
+                telephone_no: personality.value.telephone_no,
+                email_address: personality.value.email_address,
+                cellphone_no: personality.value.cellphone_no,
+                name_type_code: personality.value.name_type,
+                personality_status_code: personality.value.personality_status_code,
+                barangay_id: personality.value.barangay_id,
+                city_id: personality.value.city_id,
+                country_id: personality.value.country_id,
+                province_id: personality.value.province_id,
+                credit_status_id: personality.value.credit_status_id,
+                notes: personality.value.notes,
+            },
+            fees: customerData.value.selectedFees,
+            password: customer.value.password,
+        };
+
+        // Create the customer
+        await apiService.createRegisterCustomer(jsonObject);
+        toast.success("Customer created successfully!", {
+            autoClose: 2000,
+        });
+
         // Introduce a delay before navigating
         setTimeout(() => {
             navigateTo('/');
-        }, 2000); // Redirect to the customer list page
-} catch (error) {
-    toast.error('Error creating customer');
-    toast.error(error.message, {
-        autoClose: 5000,
-    });
-}
+        }, 2000);
+    } catch (error) {
+        toast.error('Error creating customer');
+        toast.error(error.message, {
+            autoClose: 5000,
+        });
+    }
 };
+
 
 
 const handleCancel = () => {
