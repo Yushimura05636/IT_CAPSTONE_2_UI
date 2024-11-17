@@ -165,7 +165,7 @@
                       class="flex items-center text-gray-300 hover:text-indigo-400 p-2 rounded-md transition duration-200"
                     >
                       <component :is="subLink.icon" class="h-6 w-6 mr-2" aria-hidden="true" />
-                      <span class="text-sm">{{ subLink.name }}</span>
+                      <span class="text-sm sr-only">{{ subLink.name }}</span>
                     </a>
                   </li>
                 </ul>
