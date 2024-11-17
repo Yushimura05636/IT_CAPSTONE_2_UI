@@ -635,7 +635,7 @@ const createCustomer = async () => {
         }, 2000);
     } catch (error) {
         toast.error('Error creating customer');
-        toast.error(error.message, {
+        toast.error(`${error.message}`, {
             autoClose: 5000,
         });
     }
