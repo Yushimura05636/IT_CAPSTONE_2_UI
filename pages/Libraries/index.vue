@@ -31,14 +31,6 @@
             >
               Update
             </button>
-            <button
-              type="button"
-              @click="deleteLibrary"
-              :disabled="!selectedLibraryId"
-              class="rounded bg-black px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 disabled:opacity-50 transition"
-            >
-              Delete
-            </button>
           </div>
 
           <!-- Search Field (left side) -->
