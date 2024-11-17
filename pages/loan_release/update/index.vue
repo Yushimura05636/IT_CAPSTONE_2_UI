@@ -151,8 +151,8 @@ finally
     if(state_response.value.length <= 0)
     {
         setTimeout(() => {
-            navigateTo(`/loan_release`)
-            }, 2000);
+        navigateTo(`/loan_release`)
+        }, 2000);
     }
   }
 })

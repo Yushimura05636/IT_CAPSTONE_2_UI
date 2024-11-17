@@ -136,8 +136,26 @@ const cancelForm = () => {
   router.push('/loan_counts'); // Redirect to the loan count page
 };
 
-onMounted(() => {
-  fetchloancount();
+onMounted( async () => {
+  //Promise for authentication
+  const state_response = ref('');
+  try {
+      const response = await apiService.authLoanCountsUpdate({})
+      state_response.value = response.message;
+      
+      fetchloancount();
+  } catch (error) {
+    toast.error(`${error}`, { autoClose: 3000, })
+}
+finally
+{
+    if(state_response.value.length <= 0)
+    {
+        setTimeout(() => {
+          navigateTo(`/loan_applications`)
+        }, 2000);
+    }
+  }
 });
 </script>
 

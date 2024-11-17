@@ -135,8 +135,8 @@ finally
     if(state_response.value.length <= 0)
     {
         setTimeout(() => {
-            navigateTo(`/loan_counts`)
-            }, 2000);
+        navigateTo(`/loan_counts`)
+        }, 2000);
     }
   }
 })
