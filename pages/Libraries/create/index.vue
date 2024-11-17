@@ -121,6 +121,8 @@ const submitForm = () => {
 
       create();
 
+      localStorage.setItem("_modeltype", form.value.modeltype);
+
     } catch (error: any) {
       toast.error(`${error}`, {
       autoClose: 5000,

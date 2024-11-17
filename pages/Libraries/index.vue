@@ -178,8 +178,18 @@ const modelTypes = [
 let selectedLibraryId = ref(null); // Track selected library
 
 onMounted(() => {
-  state.modeltype = 'customer_group'
+  const storage_modeltype = localStorage.getItem('_modeltype')
+  if(storage_modeltype == null)
+  {
+    state.modeltype = 'customer_group'
+  }
+  else
+  {
+    state.modeltype = storage_modeltype;
+  }
   fetchLibraries();
+
+  localStorage.removeItem('_modeltype');
 });
 
 async function createLibrary() {
@@ -212,6 +222,8 @@ async function updateLibrary() {
       libraryService.oldText = selectedDescription;
       libraryService.collectorName = state.collectorName;
       libraryService.collectorId = state.collectorId;
+
+      localStorage.setItem("_modeltype", state.modeltype);
       navigateTo('/libraries/update');
     }
   } catch (error) {
