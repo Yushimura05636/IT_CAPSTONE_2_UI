@@ -570,9 +570,9 @@ async function removeToken() {
             //go back to the landing page
         }
     } catch (error) {
-        // toast.error(`${error}`, {
-        //     autoClose: 3000,
-        // })
+        toast.error(`${error}`, {
+            autoClose: 3000,
+        })
     }
 }
 
