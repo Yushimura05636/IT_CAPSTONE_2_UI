@@ -1,110 +1,118 @@
 <template>
 <div class="flex h-screen bg-gray-200">
-    <!-- Sidebar for mobile -->
-    <TransitionRoot as="template" :show="sidebarOpen">
-<Dialog as="div" class="relative z-50 lg:hidden" @close="sidebarOpen = false">
-<TransitionChild
-    as="template"
-    enter="transition-opacity ease-linear duration-300"
-    enter-from="opacity-0"
-    enter-to="opacity-100"
-    leave="transition-opacity ease-linear duration-300"
-    leave-from="opacity-100"
-    leave-to="opacity-0"
->
-    <div class="fixed inset-0 bg-gray-900/80" />
-</TransitionChild>
-<div class="fixed inset-0 flex">
+<!-- Sidebar for mobile -->
+<TransitionRoot as="template" :show="sidebarOpen">
+  <Dialog as="div" class="relative z-50 lg:hidden" @close="sidebarOpen = false">
     <TransitionChild
-    as="template"
-    enter="transition ease-in-out duration-300 transform"
-    enter-from="-translate-x-full"
-    enter-to="translate-x-0"
-    leave="transition ease-in-out duration-300 transform"
-    leave-from="translate-x-0"
-    leave-to="-translate-x-full"
+      as="template"
+      enter="transition-opacity ease-linear duration-300"
+      enter-from="opacity-0"
+      enter-to="opacity-100"
+      leave="transition-opacity ease-linear duration-300"
+      leave-from="opacity-100"
+      leave-to="opacity-0"
     >
-    <DialogPanel class="relative mr-16 flex w-full max-w-xs flex-1 bg-gray-800 shadow-lg rounded-r-lg h-screen">
-        <div class="flex grow flex-col gap-y-3 overflow-y-auto text-gray-200 px-4 pb-4">
-        <div class="flex h-16 shrink-0 items-center justify-between">
-            <img class="h-12 w-auto" src="../img/LendCash_Logo-removebg-preview.png" :alt="name.company" />
-            <h1 class="text-lg font-bold text-indigo-400">{{ name.company }}</h1>
-            <button @click="sidebarOpen = false" class="text-gray-400 hover:text-white focus:outline-none">
-            <XMarkIcon class="h-6 w-6" aria-hidden="true" />
-            </button>
-        </div>
-        <div v-for="item in menuHeaderTitles" :key="item.headerTitle" class="my-4">
-            <template v-if="item.headerTitle">
-                <div
-            class="text-gray-400 text-xs uppercase tracking-wide font-semibold px-4 pt-2 select-none pointer-events-none"
-            v-text="item.headerTitle"
-                ></div>
-            </template>
-        </div>
-        <nav class="flex flex-1 flex-col">
-            <ul role="list" class="flex flex-1 flex-col gap-y-4">
-            <li v-for="item in menuItems" :key="item.name" @click="toggleChild(item.name)">
-                <div>
-                <a
-                    href="#"
-                    @click.prevent="toggleHighlight(item.name)"
-                    :class="{
-                    'border-l-4 border-indigo-500 bg-gray-700 text-white': highlightedItem === item.name,
-                    'text-gray-400 hover:bg-gray-700 hover:text-white': highlightedItem !== item.name
-                    }"
-                    class="group flex items-center gap-x-2 rounded-lg p-2 text-sm leading-5 font-semibold transition duration-200"
-                >
-                    <component :is="item.icon" class="h-4 w-4" aria-hidden="true" />
-                    <span>{{ item.name }}</span>
-                    <span class="ml-auto">
-                    <template v-if="isChildVisible[item.name]">
-                        <ChevronUpIcon class="h-4 w-4 text-gray-400" aria-hidden="true" />
-                    </template>
-                    <template v-else>
-                        <ChevronDownIcon class="h-4 w-4 text-gray-400" aria-hidden="true" />
-                    </template>
-                    </span>
-                </a>
-                <Transition
-                    name="fade"
-                    enter-active-class="transition-opacity duration-300"
-                    enter-class="opacity-0"
-                    enter-to-class="opacity-100"
-                    leave-active-class="transition-opacity duration-300"
-                    leave-class="opacity-100"
-                    leave-to-class="opacity-0"
-                >
-                    <ul v-if="isChildVisible[item.name]" class="pl-4">
-                    <li v-for="subLink in item.subLinks" :key="subLink.name">
-                        <a
-                        :href="subLink.href"
-                        class="flex items-center text-gray-300 hover:text-indigo-400 p-2 rounded-md transition duration-200"
-                        >
-                        <component :is="subLink.icon" class="h-4 w-4 ml-1 mr-1" aria-hidden="true" />
-                        <span>{{ subLink.name }}</span>
-                        </a>
-                    </li>
-                    </ul>
-                </Transition>
-                </div>
-            </li>
-            <li class="mt-auto">
-                <a
-                href="#settings"
-                class="group flex items-center gap-x-2 rounded-lg p-2 text-sm font-semibold leading-5 text-gray-400 hover:bg-gray-700 hover:text-white transition duration-200"
-                >
-                <Cog6ToothIcon class="h-5 w-5" aria-hidden="true" />
-                <span>Settings</span>
-                </a>
-            </li>
-            </ul>
-        </nav>
-        </div>
-    </DialogPanel>
+      <div class="fixed inset-0 bg-gray-900/80" />
     </TransitionChild>
-</div>
-</Dialog>
+
+    <div class="fixed inset-0 flex">
+      <TransitionChild
+        as="template"
+        enter="transition ease-in-out duration-300 transform"
+        enter-from="-translate-x-full"
+        enter-to="translate-x-0"
+        leave="transition ease-in-out duration-300 transform"
+        leave-from="translate-x-0"
+        leave-to="-translate-x-full"
+      >
+        <DialogPanel class="relative mr-16 flex w-full max-w-xs flex-1 bg-gray-800 shadow-lg rounded-r-lg h-screen">
+          <div class="flex grow flex-col gap-y-3 overflow-y-auto text-gray-200 px-4 pb-4">
+            <div class="flex h-16 shrink-0 items-center justify-between">
+              <img class="h-12 w-auto" src="../img/LendCash_Logo-removebg-preview.png" :alt="name.company" />
+              <h1 class="text-lg font-bold text-indigo-400">{{ name.company }}</h1>
+              <button @click="sidebarOpen = false" class="text-gray-400 hover:text-white focus:outline-none">
+                <XMarkIcon class="h-6 w-6" aria-hidden="true" />
+              </button>
+            </div>
+
+            <div v-for="item in menuHeaderTitles" :key="item.headerTitle" class="my-4">
+              <template v-if="item.headerTitle">
+                <div
+                  class="text-gray-400 text-xs uppercase tracking-wide font-semibold px-4 pt-2 select-none pointer-events-none"
+                  v-text="item.headerTitle"
+                ></div>
+              </template>
+            </div>
+
+            <nav class="flex flex-1 flex-col">
+              <ul role="list" class="flex flex-1 flex-col gap-y-4">
+                <li v-for="item in menuItems" :key="item.name" @click="item.subLinks?.length ? toggleChild(item.name) : navigateTo(item.href)">
+                  <div>
+                    <a
+                      href="#"
+                      @click.prevent="toggleHighlight(item.name)"
+                      :class="{
+                        'border-l-4 border-indigo-500 bg-gray-700 text-white': highlightedItem === item.name,
+                        'text-gray-400 hover:bg-gray-700 hover:text-white': highlightedItem !== item.name
+                      }"
+                      class="group flex items-center gap-x-2 rounded-lg p-2 text-sm leading-5 font-semibold transition duration-200"
+                    >
+                      <component :is="item.icon" class="h-4 w-4" aria-hidden="true" />
+                      <span>{{ item.name }}</span>
+                      <span class="ml-auto" v-if="item.subLinks?.length">
+                        <template v-if="isChildVisible[item.name]">
+                          <ChevronUpIcon class="h-4 w-4 text-gray-400" aria-hidden="true" />
+                        </template>
+                        <template v-else>
+                          <ChevronDownIcon class="h-4 w-4 text-gray-400" aria-hidden="true" />
+                        </template>
+                      </span>
+                    </a>
+
+                    <!-- Child Links -->
+                    <Transition
+                      name="fade"
+                      enter-active-class="transition-opacity duration-300"
+                      enter-class="opacity-0"
+                      enter-to-class="opacity-100"
+                      leave-active-class="transition-opacity duration-300"
+                      leave-class="opacity-100"
+                      leave-to-class="opacity-0"
+                    >
+                      <ul v-if="isChildVisible[item.name]" class="pl-4">
+                        <li v-for="subLink in item.subLinks" :key="subLink.name">
+                          <a
+                            :href="subLink.href"
+                            class="flex items-center text-gray-300 hover:text-indigo-400 p-2 rounded-md transition duration-200"
+                          >
+                            <component :is="subLink.icon" class="h-4 w-4 ml-1 mr-1" aria-hidden="true" />
+                            <span>{{ subLink.name }}</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </Transition>
+                  </div>
+                </li>
+
+                <!-- Settings Link -->
+                <li class="mt-auto">
+                  <a
+                    href="#settings"
+                    class="group flex items-center gap-x-2 rounded-lg p-2 text-sm font-semibold leading-5 text-gray-400 hover:bg-gray-700 hover:text-white transition duration-200"
+                  >
+                    <Cog6ToothIcon class="h-5 w-5" aria-hidden="true" />
+                    <span>Settings</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </DialogPanel>
+      </TransitionChild>
+    </div>
+  </Dialog>
 </TransitionRoot>
+
 
 
 <!-- Desktop Sidebar -->

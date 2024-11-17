@@ -1,7 +1,7 @@
 <template>
     <div class="flex h-screen bg-gray-200">
-      <!-- Sidebar for mobile -->
-      <TransitionRoot as="template" :show="sidebarOpen">
+<!-- Sidebar for mobile -->
+<TransitionRoot as="template" :show="sidebarOpen">
   <Dialog as="div" class="relative z-50 lg:hidden" @close="sidebarOpen = false">
     <TransitionChild
       as="template"
@@ -14,6 +14,7 @@
     >
       <div class="fixed inset-0 bg-gray-900/80" />
     </TransitionChild>
+
     <div class="fixed inset-0 flex">
       <TransitionChild
         as="template"
@@ -33,17 +34,19 @@
                 <XMarkIcon class="h-6 w-6" aria-hidden="true" />
               </button>
             </div>
+
             <div v-for="item in menuHeaderTitles" :key="item.headerTitle" class="my-4">
-                <template v-if="item.headerTitle">
-                    <div
-                class="text-gray-400 text-xs uppercase tracking-wide font-semibold px-4 pt-2 select-none pointer-events-none"
-                v-text="item.headerTitle"
-                    ></div>
-                </template>
+              <template v-if="item.headerTitle">
+                <div
+                  class="text-gray-400 text-xs uppercase tracking-wide font-semibold px-4 pt-2 select-none pointer-events-none"
+                  v-text="item.headerTitle"
+                ></div>
+              </template>
             </div>
+
             <nav class="flex flex-1 flex-col">
               <ul role="list" class="flex flex-1 flex-col gap-y-4">
-                <li v-for="item in menuItems" :key="item.name" @click="toggleChild(item.name)">
+                <li v-for="item in menuItems" :key="item.name" @click="item.subLinks?.length ? toggleChild(item.name) : navigateTo(item.href)">
                   <div>
                     <a
                       href="#"
@@ -56,7 +59,7 @@
                     >
                       <component :is="item.icon" class="h-4 w-4" aria-hidden="true" />
                       <span>{{ item.name }}</span>
-                      <span class="ml-auto">
+                      <span class="ml-auto" v-if="item.subLinks?.length">
                         <template v-if="isChildVisible[item.name]">
                           <ChevronUpIcon class="h-4 w-4 text-gray-400" aria-hidden="true" />
                         </template>
@@ -65,6 +68,8 @@
                         </template>
                       </span>
                     </a>
+
+                    <!-- Child Links -->
                     <Transition
                       name="fade"
                       enter-active-class="transition-opacity duration-300"
@@ -88,6 +93,8 @@
                     </Transition>
                   </div>
                 </li>
+
+                <!-- Settings Link -->
                 <li class="mt-auto">
                   <a
                     href="#settings"
