@@ -710,6 +710,10 @@ const verifyCode = async () => {
     }
 };
 
+function cancelForm() {
+    navigateTo('/')
+}
+
 </script>
 
 
