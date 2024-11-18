@@ -632,10 +632,12 @@ const createCustomer = async () => {
         };
 
         // Create the customer
-        await apiService.createRegisterCustomer(jsonObject);
+        const response = await apiService.createRegisterCustomer(jsonObject);
         toast.success("Customer created successfully!", {
             autoClose: 2000,
         });
+
+        debugger
 
         // Introduce a delay before navigating
         setTimeout(() => {
