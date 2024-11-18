@@ -671,6 +671,8 @@ const createCustomer = async () => {
       return;
       }
 
+      debugger
+
     const jsonObject = {
       customer: {
             group_id: customer.value.group_id,
@@ -720,7 +722,7 @@ const createCustomer = async () => {
           }, 2000); // Redirect to the customer list page
   } catch (error) {
     toast.error('Error creating customer');
-    toast.error(error.message, {
+    toast.error(`${error}`, {
         autoClose: 5000,
       });
   }
