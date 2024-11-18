@@ -711,7 +711,7 @@ const createCustomer = async () => {
 
     debugger
 
-    await apiService.createCustomer(jsonObject);
+    const response = await apiService.createCustomer(jsonObject);
     console.log("JSON Object:", JSON.stringify(jsonObject, null, 2));
     toast.success("Customer create successfully!", {
           autoClose: 2000,
