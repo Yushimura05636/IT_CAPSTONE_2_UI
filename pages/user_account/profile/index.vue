@@ -1,5 +1,5 @@
 <template>
-    <NuxtLayout name="admin">
+    <NuxtLayout :name="user_layout">
       <div class="bg-gray-50 min-h-screen py-12">
         <div class="container mx-auto bg-white shadow-xl rounded-lg overflow-hidden">
           <!-- Header -->
@@ -209,6 +209,8 @@ const user = ref({
   profilePicture: "",
 });
 
+const user_layout = ref('');
+
 const placeholderImage = "https://www.shutterstock.com/image-vector/cute-cat-pixel-style-260nw-2138544923.jpg";
 
 // Profile Editing
@@ -242,8 +244,26 @@ const fetchProfile = async () => {
   }
 };
 
-onMounted(() => {
-  fetchProfile();
+const verifyUserLayout = async () => {
+  const response = await apiService.getDashboardUserDetailsNoAUTH({});
+
+  const layout = response.role
+
+  if(layout.value == 'CUSTOMER')
+  {
+    user_layout.value = 'client'
+  }
+  else if(layout.value == 'EMPLOYEE')
+  {
+    user_layout.value = 'admin'
+  }
+}
+
+onMounted( () => {
+  verifyUserLayout();
+  setTimeout(() => {
+    fetchProfile();
+  }, 3000);
 });
 
 // Password Reset Logic
@@ -335,7 +355,7 @@ const changePassword = async () => {
     verificationCode.value = ''
     isVerified.value = false
     verificationCodeSent.value = false
-    
+
   }
 
   } catch (error) {
