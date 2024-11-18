@@ -263,9 +263,7 @@ const verifyUserLayout = async () => {
 
 onMounted( () => {
   verifyUserLayout();
-  setTimeout(() => {
-    fetchProfile();
-  }, 3000);
+  fetchProfile();
 });
 
 // Password Reset Logic
