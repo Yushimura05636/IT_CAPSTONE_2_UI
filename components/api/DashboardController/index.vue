@@ -1,3 +1,5 @@
+<template>
+</template>
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { apiService } from '~/routes/api/API';
@@ -16,15 +18,22 @@ async function getCustomerDetails() {
         // Set user role after successful response
         user.value = response.role;
 
+        debugger
+
         if(user.value == 'CUSTOMER')
         {
             loading.value = false
             navigateTo('/dashboard/Client')
         }
-        else
+        else if(user.value == 'EMPLOYEE')
         {
             loading.value = false
             navigateTo('/dashboard/Employee')
+        }
+        else
+        {
+          loading.value = false
+          navigateTo('/')
         }
     } catch (error) {
         console.error(`Error fetching user details: ${error}`);

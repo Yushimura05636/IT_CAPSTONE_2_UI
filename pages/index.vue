@@ -47,108 +47,73 @@
 </div>
 </div>
 
-<!-- ABOUT -->
+<!-- ABOUT Section -->
 <div class="relative nav-item">
-  <a href="about" class="text-gray-600 hover:text-teal-600 font-bold">About</a>
-  <div class="info-box">
-    <h2 class="text-2xl font-bold text-center text-teal-600 mb-8">About Us</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-8xl mx-auto">
-      <div v-for="about in about" :key="about.title" class="about-card p-6 text-center bg-white rounded-lg shadow-md">
-        <div class="feature-icon mb-4">
-          <about.icon class="w-12 h-12 text-teal-600 mx-auto" />
+    <a href="/about" class="text-gray-600 hover:text-teal-600 font-bold">About</a>
+    <div class="info-box">
+      <h2 class="text-2xl font-bold text-center text-teal-600 mb-8">About Us</h2>
+
+      <!-- About Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-8xl mx-auto">
+        <div
+          v-for="aboutItem in aboutDetails"
+          :key="aboutItem.title"
+          class="about-card p-6 text-center bg-white rounded-lg shadow-md"
+        >
+          <div class="feature-icon mb-4">
+            <component :is="aboutItem.icon" class="w-12 h-12 text-teal-600 mx-auto" />
+          </div>
+          <h3 class="text-lg font-semibold text-teal-600 mb-2">{{ aboutItem.title }}</h3>
+          <p class="text-medium text-gray-600">{{ aboutItem.description }}</p>
         </div>
-        <h3 class="text-lg font-semibold text-teal-600 mb-2">{{ about.title }}</h3>
-        <p class="text-medium text-teal-600">{{ about.description }}</p>
+      </div>
+
+      <!-- Mission -->
+      <div class="additional-info text-center mt-6">
+        <h3 class="text-lg font-bold text-teal-600 mb-2">MISSION</h3>
+        <h4 class="text-lg font-bold text-teal-600 mb-2">{{ mission.title }}</h4>
+        <h5>"{{ mission.subtitle }}"</h5>
+        <p class="text-medium text-gray-600">{{ mission.description }}</p>
+
+        <!-- Vision -->
+        <h3 class="text-lg font-bold text-teal-600 mb-2">VISION</h3>
+        <h4 class="text-lg font-bold text-teal-600 mb-2">{{ vision.title }}</h4>
+        <h5>"{{ vision.subtitle }}"</h5>
+        <p class="text-medium text-gray-600">{{ vision.description }}</p>
+
+        <!-- History -->
+        <h3 class="text-lg font-bold text-teal-600 mb-2">History Background of LendCash</h3>
+        <p class="text-medium text-gray-600">{{ history }}</p>
+
+        <!-- Impact -->
+        <h3 class="text-lg font-semibold text-teal-600 mb-2">Impact on Communities</h3>
+        <p class="text-medium text-gray-600">{{ impact }}</p>
+      </div>
+
+      <!-- Team Section -->
+      <h3 class="text-lg font-semibold text-teal-600 mb-2">Meet Our Team</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div
+          v-for="member in team"
+          :key="member.name"
+          class="team-member p-4 bg-white rounded-lg shadow-md text-center"
+        >
+          <img :src="member.image || placeholderImage" :alt="member.name" class="w-24 h-24 rounded-full mx-auto mb-2" />
+          <h4 class="font-bold text-teal-600">{{ member.name }}</h4>
+          <p class="text-sm text-gray-600">{{ member.role }}</p>
+          <p class="text-xs text-gray-500">{{ member.description }}</p>
+          <div class="social-media mt-2">
+            <a :href="member.facebook" target="_blank" class="text-gray-600 hover:text-teal-600 mx-2">
+              <i class="fab fa-facebook"></i>
+            </a>
+            <a :href="`mailto:${member.email}`" class="text-gray-600 hover:text-teal-600 mx-2">
+              <i class="fas fa-envelope"></i>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="additional-info text-center mt-6">
-      <h3 class="text-lg font-bold text-teal-600 mb-2">MISSION</h3>
-      <h4 class="text-lg font-bold text-teal-600 mb-2">Mission Statement for LendCash</h4>
-      <h5>"Empowering Dreams, One Loan at a Time."</h5>
-      <p class="text-medium text-gray-600">
-        At LendCash, our mission is to provide accessible and affordable microfinance solutions that empower individuals and small businesses to achieve their financial goals. We are committed to fostering financial inclusion by offering a range of tailored products, exceptional customer service, and educational resources that promote responsible borrowing and entrepreneurship.
-      </p>
-      <h3 class="text-lg font-bold text-teal-600 mb-2">VISION</h3>
-      <h4 class="text-lg font-bold text-teal-600 mb-2">Vision Statement for LendCash</h4>
-      <h5>"A World Where Every Aspiration is Within Reach."</h5>
-      <p class="text-medium text-gray-600">
-        Our vision is to create a world where financial resources are accessible to everyone, regardless of their background or circumstances. We envision a future where individuals and communities thrive through empowered financial decisions, sustainable economic growth, and opportunities for all, transforming lives and fostering prosperity across the globe.
-      </p>
-      <h3 class="text-lg font-bold text-teal-600 mb-2">History Background of LendCash</h3>
-      <p class="text-medium text-gray-600">
-        LendCash was founded in response to the growing need for accessible financial services in underserved communities. Recognizing the barriers faced by individuals and small businesses in securing traditional loans, the company set out to create a microfinance platform that empowers its clients with the financial resources necessary to achieve their goals. Since its inception, LendCash has focused on delivering tailored financial products that cater specifically to the unique needs of its customers. The founders leveraged their expertise in finance and technology to develop an intuitive online platform, allowing users to apply for loans seamlessly and receive timely support. Throughout its journey, LendCash has prioritized micro loans and micro groupings, providing resources and tools to help borrowers understand the responsibilities that come with taking loans. By fostering a culture of responsible lending and borrowing, LendCash aims to not only provide funds but also to promote financial literacy and independence among its users. As LendCash continues to grow, its commitment to community development remains at the forefront, working closely with local organizations and stakeholders to ensure that the benefits of microfinance reach those who need it most. Through innovative practices and a deep understanding of its customers, LendCash is dedicated to transforming the landscape of microfinance and making a positive impact in the lives of individuals and communities.
-      </p>
-      <h3 class="text-lg font-semibold text-teal-600 mb-2">Impact on Communities</h3>
-      <p class="text-medium text-gray-600">
-        By providing financial resources to underserved populations, microfinance fosters community development. It enables clients to invest in education, healthcare, and small business ventures, leading to improved living standards and economic stability. Additionally, it encourages women’s empowerment, as many microfinance programs target female entrepreneurs, helping to break cycles of poverty.
-      </p>
-
-    <!-- Team Information Section -->
-<h3 class="text-lg font-semibold text-teal-600 mb-2">Meet Our Team</h3>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-  <div class="team-member p-4 bg-white rounded-lg shadow-md text-center">
-    <img src="" alt="Team Member 1" class="w-24 h-24 rounded-full mx-auto mb-2" />
-    <h4 class="font-bold text-teal-600">Adrian Sastre</h4>
-    <p class="text-sm text-gray-600">Leader and Programmer</p>
-    <p class="text-xs text-gray-500">Is a student of STI College Davao taking up Bachelor of Science in Information Technology, a 4-year course program.</p>
-    <div class="social-media mt-2">
-      <a href="https://facebook.com/adrian" target="_blank" class="text-gray-600 hover:text-teal-600 mx-2">
-        <i class="fab fa-facebook"></i>
-      </a>
-      <a href="mailto:adrian@example.com" class="text-gray-600 hover:text-teal-600 mx-2">
-        <i class="fas fa-envelope"></i>
-      </a>
-    </div>
   </div>
-
-  <div class="team-member p-4 bg-white rounded-lg shadow-md text-center">
-    <img src="" alt="Team Member 2" class="w-24 h-24 rounded-full mx-auto mb-2" />
-    <h4 class="font-bold text-teal-600">Eric Ramones</h4>
-    <p class="text-sm text-gray-600">Programmer</p>
-    <p class="text-xs text-gray-500">Is a student of STI College Davao taking up Bachelor of Science in Information Technology, a 4-year course program.</p>
-    <div class="social-media mt-2">
-      <a href="https://facebook.com/eric" target="_blank" class="text-gray-600 hover:text-teal-600 mx-2">
-        <i class="fab fa-facebook"></i>
-      </a>
-      <a href="mailto:eric@example.com" class="text-gray-600 hover:text-teal-600 mx-2">
-        <i class="fas fa-envelope"></i>
-      </a>
-    </div>
-  </div>
-
-  <div class="team-member p-4 bg-white rounded-lg shadow-md text-center">
-    <img src="" alt="Team Member 3" class="w-24 h-24 rounded-full mx-auto mb-2" />
-    <h4 class="font-bold text-teal-600">Froy Lao</h4>
-    <p class="text-sm text-gray-600">Programmer</p>
-    <p class="text-xs text-gray-500">Is a student of STI College Davao taking up Bachelor of Science in Information Technology, a 4-year course program.</p>
-    <div class="social-media mt-2">
-      <a href="https://facebook.com/froy" target="_blank" class="text-gray-600 hover:text-teal-600 mx-2">
-        <i class="fab fa-facebook"></i>
-      </a>
-      <a href="mailto:froy@example.com" class="text-gray-600 hover:text-teal-600 mx-2">
-        <i class="fas fa-envelope"></i>
-      </a>
-    </div>
-  </div>
-
-  <div class="team-member p-4 bg-white rounded-lg shadow-md text-center">
-    <img src="" alt="Team Member 4" class="w-24 h-24 rounded-full mx-auto mb-2" />
-    <h4 class="font-bold text-teal-600">Maviel Segurog</h4>
-    <p class="text-sm text-gray-600">Programmer</p>
-    <p class="text-xs text-gray-500">Is a student of STI College Davao taking up Bachelor of Science in Information Technology, a 4-year course program.</p>
-    <div class="social-media mt-2">
-      <a href="https://facebook.com/maviel" target="_blank" class="text-gray-600 hover:text-teal-600 mx-2">
-        <i class="fab fa-facebook"></i>
-      </a>
-      <a href="mailto:maviel@example.com" class="text-gray-600 hover:text-teal-600 mx-2">
-        <i class="fas fa-envelope"></i>
-      </a>
-    </div>
-  </div>
-    </div>
-  </div>
-</div>
-</div>
 
         <!-- CONTACT -->
     <div class="relative nav-item">
@@ -309,28 +274,27 @@
       <button @click="toggleRequirements" class="mt-4 text-sm text-teal-500 hover:text-teal-700">
         See Requirements List
       </button>
-
-      <div v-if="showRequirements" class="mt-4 p-4 border rounded-md shadow-md bg-gray-50 text-justify-center">
-        <ul class="list-disc list-inside text-gray-700 justify-center">
-          <p class="text-teal-600">REQ NO.1 Bring a 2x2 picture ID</p>
-            <p class="text-teal-600">REQ NO.2 Any proof of income</p>
-          <p class="text-teal-600">REQ NO.3 Any type of house bills</p>
-          <p class="text-teal-600">REQ NO.4 Valid IDs: bring any of these
-            <ul class="list-disc list-inside text-justify">
-              <li>Passport</li>
-              <li>PSA birth certificate</li>
-              <li>Driver's license</li>
-              <li>TIN ID</li>
-              <li>ePhilSys</li>
-              <li>PhilHealth ID</li>
-              <li>Postal ID</li>
-              <li>NBI Clearance</li>
-              <li>Police clearance</li>
-              <li>Senior Citizen ID</li>
-            </ul>
-          </p>
-        </ul>
-      </div>
+      <div v-if="showRequirements" class="mt-4 p-4 border rounded-md shadow-md bg-gray-50">
+  <ul class="list-disc list-inside text-gray-700 space-y-2">
+    <li class="text-teal-600">REQ NO.1: Bring a 2x2 picture ID</li>
+    <li class="text-teal-600">REQ NO.2: Any proof of income</li>
+    <li class="text-teal-600">REQ NO.3: Any type of house bills</li>
+    <li class="text-teal-600">REQ NO.4: Valid IDs (bring any one of the following):
+      <ul class="list-disc list-inside pl-6 text-gray-600 space-y-1">
+        <li>Passport</li>
+        <li>PSA birth certificate</li>
+        <li>Driver's license</li>
+        <li>TIN ID</li>
+        <li>ePhilSys</li>
+        <li>PhilHealth ID</li>
+        <li>Postal ID</li>
+        <li>NBI Clearance</li>
+        <li>Police clearance</li>
+        <li>Senior Citizen ID</li>
+      </ul>
+    </li>
+  </ul>
+</div>
     </div>
           <div class="bg-white rounded-md p-6 shadow-lg animate__animated animate__fadeInUp animate__delay-2s">
             <img src="../img/no-hidden-fees.png" alt="Apply for Loan" class="w-16 h-16 mb-4 mx-auto">
@@ -380,7 +344,7 @@
         <div class="flex-1 max-w-lg">
           </div>
 
-          </div>
+    </div>
       <div class="flex-1 mt-16 space-y-6 justify-between sm:flex md:space-y-0">
         <div class="flex flex-col gap-6 text-white">
           <h4 class="text-white font-bold">Company</h4>
@@ -575,6 +539,70 @@ async function removeToken() {
         })
     }
 }
+
+// Temporary data for About Section
+const aboutDetails = [
+  { title: "Our Mission", description: "Empowering dreams through microfinance.", icon: "div" },
+  { title: "Our Vision", description: "A world where aspirations are within reach.", icon: "div" },
+  { title: "Our History", description: "Founded to serve underserved communities.", icon: "div" },
+];
+
+const mission = {
+  title: "Mission Statement for LendCash",
+  subtitle: "Empowering Dreams, One Loan at a Time.",
+  description:
+    "At LendCash, our mission is to provide accessible and affordable microfinance solutions that empower individuals and small businesses to achieve their financial goals. We are committed to fostering financial inclusion by offering a range of tailored products, exceptional customer service, and educational resources that promote responsible borrowing and entrepreneurship.",
+};
+
+const vision = {
+  title: "Vision Statement for LendCash",
+  subtitle: "A World Where Every Aspiration is Within Reach.",
+  description:
+    "Our vision is to create a world where financial resources are accessible to everyone, regardless of their background or circumstances. We envision a future where individuals and communities thrive through empowered financial decisions, sustainable economic growth, and opportunities for all, transforming lives and fostering prosperity across the globe.",
+};
+
+const history =
+  "LendCash was founded in response to the growing need for accessible financial services in underserved communities. Recognizing the barriers faced by individuals and small businesses in securing traditional loans, the company set out to create a microfinance platform that empowers its clients with the financial resources necessary to achieve their goals.";
+
+const impact =
+  "By providing financial resources to underserved populations, microfinance fosters community development. It enables clients to invest in education, healthcare, and small business ventures, leading to improved living standards and economic stability. Additionally, it encourages women’s empowerment, as many microfinance programs target female entrepreneurs, helping to break cycles of poverty.";
+
+const team = [
+  {
+    name: "Adrian Sastre",
+    role: "Leader and Programmer",
+    description: "Student at STI College Davao, BSIT program.",
+    facebook: "https://facebook.com/adrian",
+    email: "adrian@example.com",
+    image: "",
+  },
+  {
+    name: "Eric Ramones",
+    role: "Programmer",
+    description: "Student at STI College Davao, BSIT program.",
+    facebook: "https://facebook.com/eric",
+    email: "eric@example.com",
+    image: "",
+  },
+  {
+    name: "Froy Lao",
+    role: "Programmer",
+    description: "Student at STI College Davao, BSIT program.",
+    facebook: "https://facebook.com/froy",
+    email: "froy@example.com",
+    image: "",
+  },
+  {
+    name: "Maviel Segurog",
+    role: "Programmer",
+    description: "Student at STI College Davao, BSIT program.",
+    facebook: "https://facebook.com/maviel",
+    email: "maviel@example.com",
+    image: "",
+  },
+];
+
+const placeholderImage = "../img/placeholder-profile.png"; // Placeholder for missing team images
 
 
 onMounted(() => {

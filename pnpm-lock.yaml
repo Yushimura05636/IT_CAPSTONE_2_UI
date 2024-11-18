@@ -56,6 +56,9 @@ importers:
       vue-chartjs:
         specifier: ^5.3.2
         version: 5.3.2(chart.js@4.4.6)(vue@3.4.27)
+      vue-recaptcha:
+        specifier: ^3.0.0-alpha.6
+        version: 3.0.0-alpha.6(rollup@4.17.2)(vue@3.4.27)
       vue-router:
         specifier: ^4.3.2
         version: 4.3.2(vue@3.4.27)
@@ -2838,6 +2841,10 @@ packages:
     resolution: {integrity: sha512-BZOr3nRQHOntUjTrH8+Lh54smKHoHyur8We1V8DSMVrl5A2malOOwuJRnKRDjSnkoeBh4at6BwEnb5I7Jl31wg==}
     engines: {node: '>=8'}
 
+  p-defer@4.0.1:
+    resolution: {integrity: sha512-Mr5KC5efvAK5VUptYEIopP1bakB85k2IWXaRC0rsh1uwn1L6M0LVml8OIQ4Gudg4oyZakf7FmeRLkMMtZW1i5A==}
+    engines: {node: '>=12'}
+
   p-limit@3.1.0:
     resolution: {integrity: sha512-TYOanM3wGwNGsZN2cVTYPArw454xnXj5qmWF1bEoAc4+cU/ol7GVh7odevjp1FNHduHc3KZMcFduxU5Xc6uJRQ==}
     engines: {node: '>=10'}
@@ -3915,6 +3922,15 @@ packages:
     resolution: {integrity: sha512-flFbp/gs9pZniXR6fans8smv1kDScJ8RS7rEpMjhVabiKeq7Qz3D9+eGsypncjfIyyU84saU88XZ0zjbD6Gq/g==}
     peerDependencies:
       vue: ^3.0.0
+
+  vue-recaptcha@3.0.0-alpha.6:
+    resolution: {integrity: sha512-hwxxAXENLN6GKJhH6s+NJV1f6llSFEQ0jMTxjEunpR6CMbQ5xc7DAHFtwrsDutGnbS8wl9yp30jsYcCToZEhTQ==}
+    peerDependencies:
+      '@vue/composition-api': '*'
+      vue: ^3.0.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
 
   vue-resize@2.0.0-alpha.1:
     resolution: {integrity: sha512-7+iqOueLU7uc9NrMfrzbG8hwMqchfVfSzpVlCMeJQe4pyibqyoifDNbKTZvwxZKDvGkB+PdFeKvnGZMoEb8esg==}
@@ -5566,7 +5582,7 @@ snapshots:
     dependencies:
       '@vueuse/core': 10.9.0(vue@3.4.27)
       '@vueuse/shared': 10.9.0(vue@3.4.27)
-      vue-demi: 0.14.7(vue@3.4.27)
+      vue-demi: 0.14.10(vue@3.4.27)
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
@@ -5576,7 +5592,7 @@ snapshots:
       '@types/web-bluetooth': 0.0.20
       '@vueuse/metadata': 10.9.0
       '@vueuse/shared': 10.9.0(vue@3.4.27)
-      vue-demi: 0.14.7(vue@3.4.27)
+      vue-demi: 0.14.10(vue@3.4.27)
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
@@ -5595,7 +5611,7 @@ snapshots:
     dependencies:
       '@vueuse/core': 10.9.0(vue@3.4.27)
       '@vueuse/shared': 10.9.0(vue@3.4.27)
-      vue-demi: 0.14.7(vue@3.4.27)
+      vue-demi: 0.14.10(vue@3.4.27)
     optionalDependencies:
       focus-trap: 7.5.4
     transitivePeerDependencies:
@@ -5608,7 +5624,7 @@ snapshots:
 
   '@vueuse/shared@10.9.0(vue@3.4.27)':
     dependencies:
-      vue-demi: 0.14.7(vue@3.4.27)
+      vue-demi: 0.14.10(vue@3.4.27)
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
@@ -7384,6 +7400,8 @@ snapshots:
 
   p-cancelable@2.1.1: {}
 
+  p-defer@4.0.1: {}
+
   p-limit@3.1.0:
     dependencies:
       yocto-queue: 0.1.0
@@ -8520,6 +8538,21 @@ snapshots:
   vue-observe-visibility@2.0.0-alpha.1(vue@3.4.27):
     dependencies:
       vue: 3.4.27
+
+  vue-recaptcha@3.0.0-alpha.6(rollup@4.17.2)(vue@3.4.27):
+    dependencies:
+      '@nuxt/kit': 3.11.2(rollup@4.17.2)
+      '@nuxt/schema': 3.11.2(rollup@4.17.2)
+      '@vueuse/shared': 10.9.0(vue@3.4.27)
+      defu: 6.1.4
+      p-defer: 4.0.1
+      std-env: 3.7.0
+      type-fest: 3.13.1
+      vue: 3.4.27
+      vue-demi: 0.14.10(vue@3.4.27)
+    transitivePeerDependencies:
+      - rollup
+      - supports-color
 
   vue-resize@2.0.0-alpha.1(vue@3.4.27):
     dependencies:

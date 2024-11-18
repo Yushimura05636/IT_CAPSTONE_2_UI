@@ -273,8 +273,10 @@ import 'vue3-toastify/dist/index.css';
           status_id: form.value.status, // Include status in the API request
         });
 
+        debugger
+
         // Handle successful response
-        if (response.data) {
+        if (response.success) {
           toast.success("User created!", {
           autoClose: 2000,
           });

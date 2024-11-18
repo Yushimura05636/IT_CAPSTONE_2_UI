@@ -2,6 +2,18 @@ import BaseAPIService from '~/components/api/BaseAPIService'
 
 class API extends BaseAPIService {
 
+
+    //profile
+    async getUserProfileData(params: object): Promise<any>
+    {
+        return await this.request(`/PROFILES/NoAUTH/profile`, 'GET', params)
+    }
+
+    async changeUserProfilePassword(params: object, code: number): Promise<any>
+    {
+        return await this.request(`/PROFILES/NoAUTH/password/reset/${code}`, 'PUT', params)
+    }
+
     //verify email and token
     async verifyTokenAndEmailNoAUTH(params: object, token: any): Promise<any>
     {
