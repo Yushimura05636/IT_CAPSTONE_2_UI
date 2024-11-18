@@ -174,7 +174,7 @@ async function viewEmployee() {
     if (selectedEmployeeId.value) {
       EmployeesService.id = parseInt(selectedEmployeeId.value?.toString());
       const response = await apiService.authEmployeesUpdate({});
-      navigateTo('employees/update');
+      navigateTo('employees/view');
     }
   } catch (error) {
     toast.error(`${error}`, {
@@ -183,9 +183,17 @@ async function viewEmployee() {
   }
 }
 
-function updateEmployee() {
+async function updateEmployee() {
+  try{
   if (selectedEmployeeId.value) {
-    toast.info(`Updating employee ${selectedEmployeeId.value}`);
+    EmployeesService.id = parseInt(selectedEmployeeId.value?.toString());
+      const response = await apiService.authEmployeesUpdate({});
+      navigateTo('employees/update');
+    }
+  } catch (error) {
+    toast.error(`${error}`, {
+      autoClose: 5000,
+    })
   }
 }
 </script>

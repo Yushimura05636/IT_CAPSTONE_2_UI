@@ -671,6 +671,15 @@ const createCustomer = async () => {
       return;
       }
 
+      console.log("Password value:", customer.value.password);
+      if (!customer.value.password || customer.value.password.trim() === '') {
+        validationErrorsForCustomer.value.password = 'Password is required.';
+        toast.error('Password is required.');
+        return;
+    }
+
+      debugger
+
     const jsonObject = {
       customer: {
             group_id: customer.value.group_id,
@@ -705,6 +714,8 @@ const createCustomer = async () => {
         },
         requirements: state.value.requirements,
         fees: customerData.value.selectedFees,
+        password: customer.value.password,
+
     };
 
     debugger
@@ -720,7 +731,7 @@ const createCustomer = async () => {
           }, 2000); // Redirect to the customer list page
   } catch (error) {
     toast.error('Error creating customer');
-    toast.error(error.message, {
+    toast.error(`${error}`, {
         autoClose: 5000,
       });
   }
