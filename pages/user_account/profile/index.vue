@@ -249,11 +249,13 @@ const verifyUserLayout = async () => {
 
   const layout = response.role
 
-  if(layout.value == 'CUSTOMER')
+  debugger
+
+  if(layout == 'CUSTOMER')
   {
     user_layout.value = 'client'
   }
-  else if(layout.value == 'EMPLOYEE')
+  else if(layout == 'EMPLOYEE')
   {
     user_layout.value = 'admin'
   }
