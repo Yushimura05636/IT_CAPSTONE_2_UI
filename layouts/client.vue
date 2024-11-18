@@ -344,7 +344,7 @@ leave-to="transform opacity-0 scale-95"
     <span class="font-semibold text-gray-800 text-center mb-2">{{ state.user.last_name }}</span>
 
     <a
-        href="#profile"
+        href="/user_account/profile"
         class="flex items-center justify-center border border-blue-500 text-blue-500 font-medium hover:bg-blue-100 rounded-md px-10 py-1 transition duration-200"
         @click="closeDropdown"
     >
