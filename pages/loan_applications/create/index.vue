@@ -17,6 +17,16 @@
                             </select>
                         </div>
 
+                        <div class="mb-4" v-if="state.customers.length > 0">
+                        <label class="block text-gray-700">Collector Name</label>
+                        <input
+                            v-model="collectorName"
+                            type="text"
+                            class="w-full border border-gray-300 rounded p-2"
+                            readonly
+                        />
+                    </div>
+
                         <!-- Table for Customer Names -->
                         <div v-if="state.customers.length > 0" class="overflow-auto max-h-[250px]"> <!-- Limit height for 10 rows -->
                             <table class="min-w-full bg-white border border-gray-300 mb-4">
@@ -265,6 +275,7 @@ const selectedCustomerId = ref(null);
 const selectedCheckCustomerId = ref(null);
 const selectedLoanCountId = ref(null);
 const customerData = reactive({});
+const collectorName = ref('');
 
 // Computed properties for min and max amounts based on selected loan count
 const maxAmountForSelected = computed(() => {
@@ -337,7 +348,10 @@ const fetchCustomers = async () => {
     if (selectedGroupId.value) {
         try {
             const response = await apiService.getCustomerByGroupIdNoPending({}, selectedGroupId.value);
-            state.value.customers = response.data;
+            state.value.customers = response.data
+            collectorName.value = response.collector.name
+
+            debugger
 
             if(state.value.customers.length > 0 || !state.value.customers == null)
             {

@@ -14,7 +14,7 @@
                             </option>
                         </select>
                     </div>
-
+                    
                     <!-- Table for Customer Names -->
 <div v-if="state.customers.length > 0" class="overflow-x-auto">
     <div class="max-h-60 overflow-y-auto">
@@ -43,6 +43,7 @@
         </table>
     </div>
 </div>
+
 
 
                     <!-- Form Fields for the Selected Customer -->
