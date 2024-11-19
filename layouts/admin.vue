@@ -97,7 +97,7 @@
                 <!-- Settings Link -->
                 <li class="mt-auto">
                   <a
-                    href="/user_account/profile?settings='settings'"
+                    href="/user_account/profile?settings=settings"
                     class="group flex items-center gap-x-2 rounded-lg p-2 text-sm font-semibold leading-5 text-gray-400 hover:bg-gray-700 hover:text-white transition duration-200"
                   >
                     <Cog6ToothIcon class="h-5 w-5" aria-hidden="true" />
@@ -183,7 +183,7 @@
           <!-- Settings Link -->
           <li class="mt-auto">
             <a
-              href="/user_account/profile?settings='settings'"
+              href="/user_account/profile?settings=settings"
               class="group flex items-center justify-center rounded-lg p-2 text-sm font-semibold leading-5 text-gray-400 hover:bg-gray-800 hover:text-white transition duration-200"
             >
               <Cog6ToothIcon class="h-6 w-6" aria-hidden="true" />
@@ -283,7 +283,7 @@
           <!-- Settings Link -->
           <li class="mt-auto">
             <a
-              href="/user_account/profile?settings='settings'"
+              href="/user_account/profile?settings=settings"
               class="group flex items-left justify-left rounded-lg p-2 text-md font-semibold leading-5 text-gray-400 hover:bg-gray-700 hover:text-white transition duration-200"
             >
               <Cog6ToothIcon class="h-6 w-6" aria-hidden="true" />

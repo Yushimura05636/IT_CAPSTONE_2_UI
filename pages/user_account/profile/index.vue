@@ -202,7 +202,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
 const settings = computed(() => route.query.settings);
-const activeTab =  ref(settings.value ?? 'Profile');
+const activeTab =  ref(settings.value);
 
 console.log(settings.value)
 
