@@ -529,6 +529,7 @@ const isCodeVerified = ref(false)
 const verificationCode = ref('');
 const verificationCodeSent = ref(false);
 const verificationThreasholdCount = ref(0);
+const success = ref(false);
 
 
 const createCustomer = async () => {
@@ -636,6 +637,9 @@ const createCustomer = async () => {
         toast.success("Customer created successfully!", {
             autoClose: 2000,
         });
+
+        success.value = true;
+        verificationCode.value = 'Successfully verified!'
 
         debugger
 
