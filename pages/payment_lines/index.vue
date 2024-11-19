@@ -97,7 +97,7 @@ import { PageNameService } from '~/models/PageName';
     state.isTableLoading = true;
     state.error = null;
     try {
-      const response = await apiService.getPaymentLineNoAUTH({});
+      const response = await apiService.getPaymentLine({});
       state.paymentLine = response;
     } catch (error: any) {
       toast.error(error.message, { autoClose: 5000 });
@@ -106,7 +106,6 @@ import { PageNameService } from '~/models/PageName';
   }
 
   onMounted(() => {
-    PageNameService.pageName = 'Payment Lines';
     fetchPaymentLine();
   });
   </script>
