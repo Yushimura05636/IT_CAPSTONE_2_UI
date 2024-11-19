@@ -203,7 +203,9 @@ import { useRoute, useRouter } from 'vue-router';
 const route = useRoute();
 const settings = computed(() => route.query.settings);
 const activeTab =  ref(settings.value ?? 'Profile');
-alert(settings.value);
+
+console.log(settings.value)
+
 // User Data (main object for editing)
 const user = ref({
   name: "",
