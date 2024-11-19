@@ -196,10 +196,13 @@ import { toast } from "vue3-toastify";
 import { authService } from "~/components/api/AuthService";
 import Newpassword from "~/pages/Members_UI/newpassword.vue";
 import { apiService } from "~/routes/api/API";
+import { useRoute, useRouter } from 'vue-router';
 
 // Active Tab
-const activeTab = ref("profile");
 
+const route = useRoute();
+const settings = computed(() => route.query.settings);
+const activeTab =  ref(settings.value ?? 'Profile');
 // User Data (main object for editing)
 const user = ref({
   name: "",
