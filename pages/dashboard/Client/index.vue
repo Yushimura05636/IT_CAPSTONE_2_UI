@@ -104,6 +104,8 @@
   </template>
   
   <script setup lang="ts">
+  import { toast } from 'vue3-toastify';
+  import 'vue3-toastify/dist/index.css';
   import { ref, onMounted } from 'vue'
   import { UserService } from '~/models/User';
   import { apiService } from '~/routes/api/API'
@@ -136,31 +138,34 @@
   
   // Fetch dashboard data
   const fetchDashboardData = async () => {
-    const response = await apiService.getDashboardUserLoanDetailsNoAUTH({})
-    totalLoanBalance.value = response.total_balances
-    numberOfLoans.value = response.number_of_loans
-    outstandingBalance.value = response.outstanding_balance
-    totalPayments.value = response.total_payments
+    try {
+      const response = await apiService.getDashboardUserLoanDetailsNoAUTH({})
+      totalLoanBalance.value = response.total_balances
+      numberOfLoans.value = response.number_of_loans
+      outstandingBalance.value = response.outstanding_balance
+      totalPayments.value = response.total_payments
 
-    debugger
+      debugger
 
-    if(response.can_reloan == true)
-    {
-        susceptibleForReloan.value = 'Yes'
+      if(response.can_reloan == true)
+      {
+          susceptibleForReloan.value = 'Yes'
+      }
+      else
+      {
+          susceptibleForReloan.value = 'No'
+      }
+
+      loans.value = response.loan_history
+      payments.value = response.payment_history
+
+      //name
+      first_name.value = UserService.first_name
+      last_name.value = UserService.last_name
+      middle_name.value = UserService.middle_name
+    } catch (error) {
+      toast.error(`${error}`)
     }
-    else
-    {
-        susceptibleForReloan.value = 'No'
-    }
-
-    loans.value = response.loan_history
-    payments.value = response.payment_history
-
-
-    //name
-    first_name.value = UserService.first_name
-    last_name.value = UserService.last_name
-    middle_name.value = UserService.middle_name
   }
   
   // Status color classes for loan status and reloan eligibility
