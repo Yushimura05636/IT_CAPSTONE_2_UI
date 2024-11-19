@@ -188,6 +188,7 @@ async function fetchUserCollector()
     {
         const response = await apiService.getOnlyCollectorPermissionNoAUTH({});
         collectors.value = response.data;
+        debugger
         selectedCollector.value = libraryService.collectorId;
 
         console.log(collectors.value)
