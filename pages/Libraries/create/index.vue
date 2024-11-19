@@ -37,7 +37,6 @@
   <label for="collector" class="block text-sm font-medium text-gray-700">Select Collector</label>
   <select
     v-model="selectedCollector"
-    @change="fetchAndSudoData"
     id="collector"
     class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
   >
@@ -168,7 +167,8 @@ async function fetchUserCollector()
     {
         const response = await apiService.getOnlyCollectorPermissionNoAUTH({});
         collectors.value = response.data;
-        selectedCollector.value = libraryService.collectorId;
+
+        debugger
     }
 }
 
