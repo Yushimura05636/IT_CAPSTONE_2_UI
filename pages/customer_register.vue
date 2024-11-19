@@ -33,7 +33,7 @@
                     <div class="flex items-center gap-4">
                         <div class="flex-1">
                             <label for="email" class="block text-sm font-medium text-gray-600">Email</label>
-                            <input v-model="personality.email_address" type="email" id="email" placeholder="email@example.com" class="input-field" />
+                            <input v-model="personality.email_address" type="email" id="email" placeholder="email@example.com" class="input-field" @input="resetCode"/>
                             <span v-if="validationErrors.email_address" class="error-text">{{ validationErrors.email_address }}</span>
                         </div>
                         <button @click="sendVerificationCode" type="button" class="button-primary">
@@ -655,8 +655,6 @@ const createCustomer = async () => {
     }
 };
 
-
-
 const handleCancel = () => {
 // Logic to navigate away or reset the form
 navigateTo('/'); // Example navigation
@@ -711,6 +709,9 @@ const verifyCode = async () => {
 
             //disable verify field and verify button field
             isCodeVerified.value = true;
+
+            verificationCode.value = 'Successfully Verified!'
+
         }
 
     } catch (error) {
@@ -721,6 +722,11 @@ const verifyCode = async () => {
         }, 3000);
     }
 };
+
+const resetCode = () => {
+    isCodeVerified.value = false;
+    verificationCode.value = 'Verify the code again';
+}
 
 function cancelForm() {
     navigateTo('/')
