@@ -167,6 +167,7 @@ async function fetchUserCollector()
     {
         const response = await apiService.getOnlyCollectorPermissionNoAUTH({});
         collectors.value = response.data;
+        console.log(collectors.value)
 
         debugger
     }
