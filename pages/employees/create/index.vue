@@ -32,6 +32,12 @@
         </div>
 
         <div>
+            <label for="password" class="block text-gray-700">Password</label>
+            <input v-model="employee.password" type="password" id="password" class="w-full border rounded-lg px-4 py-2"  />
+            <span v-if="validationErrorsforEmp.password" class="text-red-500 text-sm">{{ validationErrorsforEmp.password }}</span>
+          </div>
+
+        <div>
           <label for="telephone" class="block text-gray-700">Telephone#</label>
           <input v-model="personality.telephone_no" type="text" id="telephone" class="w-full border rounded-lg px-4 py-2" />
         </div>
@@ -152,22 +158,22 @@ const personality = ref({
   middle_name: '',
   email_address: '',
   telephone_no: '',
-  birthday: new Date().toISOString().split('T')[0], // Set to current date
+  birthday: '', // Set to current date
   gender_code: 0, // Default or set as needed (1 for Male, 2 for Female)
   civil_status: 0, // Default or set as needed
   house_street: '',
   purok_zone: '',
   postal_code: '',
   cellphone_no: '',
-  personality_status_code: 0,
+  personality_status_code: 2,
   barangay_id: 0,
   city_id: 0,
   country_id: 0,
   province_id: 0,
-  credit_status_id: 0,
+  credit_status_id: 1,
   notes: undefined, // Optional
   datetime_registered: new Date().toISOString().split('T')[0],
-  name_type_code: 0,
+  name_type_code: 1,
 })
 
 const employee = ref({
@@ -175,8 +181,10 @@ const employee = ref({
   phnic_no : '',
   tin_no : '',
   date_hired : new Date().toISOString().split('T')[0],
-  date_resigned : new Date().toISOString().split('T')[0],
+  date_resigned : '',
   personality_id: 0,
+  password: '',
+
 });
 
 const OptionsService = {
@@ -237,7 +245,8 @@ const validationErrorsforEmp = ref({
   sss_no : '',
   phnic_no : '',
   tin_no : '',
-  date_hired : ''
+  date_hired : '',
+  password: '',
 });
 
 
@@ -291,6 +300,13 @@ const createEmployee = async () => {
         return;
       }
 
+      console.log("Password value:", employee.value.password);
+      if (!employee.value.password || employee.value.password.trim() === '') {
+        validationErrorsforEmp.value.password = 'Password is required.';
+        toast.error('Password is required.');
+        return;
+    }
+
     
     const jsonObject = {
       employee: {
@@ -323,7 +339,8 @@ const createEmployee = async () => {
             province_id: personality.value.province_id, // Get from personality ref
             credit_status_id: personality.value.credit_status_id, // Get from personality ref
             notes: personality.value.notes, // Get from personality ref, optional
-        }
+        },
+        password: employee.value.password,
     };
     await apiService.createEmployee(jsonObject);
     toast.success("Employee updated successfully!", {

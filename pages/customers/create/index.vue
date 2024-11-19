@@ -671,6 +671,13 @@ const createCustomer = async () => {
       return;
       }
 
+      console.log("Password value:", customer.value.password);
+      if (!customer.value.password || customer.value.password.trim() === '') {
+        validationErrorsForCustomer.value.password = 'Password is required.';
+        toast.error('Password is required.');
+        return;
+    }
+
       debugger
 
     const jsonObject = {
@@ -707,6 +714,8 @@ const createCustomer = async () => {
         },
         requirements: state.value.requirements,
         fees: customerData.value.selectedFees,
+        password: customer.value.password,
+
     };
 
     debugger
