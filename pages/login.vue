@@ -1,7 +1,7 @@
 <template>
     <main class="w-full h-screen flex">
         <!-- Left Section with Image -->
-        <div class="w-1/2 hidden lg:flex bg-gradient-to-br from-green-600 to-green-600 items-center justify-center">
+        <div class="w-1/2 hidden lg:flex bg-gradient-to-br from-teal    -600 to-green-600 items-center justify-center">
             <img src="../img/2019-04-14.jpg" alt="Building Image" class="w-3/4 h-3/4 object-cover rounded-lg shadow-lg opacity-90 transition duration-300 hover:opacity-100 hover:scale-105" />
         </div>
 
@@ -106,7 +106,7 @@ const login = async () => {
     finally
     {
         setTimeout(() => {
-            
+
         }, 1000);
     }
 };
@@ -132,7 +132,7 @@ const sendVerificationCode = async () => {
     finally
     {
         setTimeout(() => {
-            
+
         }, 1000);
     }
 };
@@ -160,7 +160,7 @@ const verifyCode = async () => {
     finally
     {
         setTimeout(() => {
-            
+
         }, 3000);
     }
 };

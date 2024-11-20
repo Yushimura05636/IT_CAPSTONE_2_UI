@@ -1,7 +1,7 @@
 <template>
     <main class="relative flex items-center justify-center min-h-screen animated-background">
         <!-- Overlay -->
-        <div class="absolute inset-0 bg-gradient-to-br from-indigo-800 to-purple-600 opacity-70"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-indigo-800 to-teal-600 opacity-70"></div>
 
         <!-- Login Card -->
         <div class="relative z-10 bg-white p-10 rounded-xl shadow-lg w-full max-w-md border-t-4 border-indigo-500">
@@ -82,7 +82,7 @@ const router = useRouter();
 const login = async () => {
     try {
         const response = await authService.loginClient({ email: state.email, password: state.password });
-        console.log('Response:', response); 
+        console.log('Response:', response);
         debugger
         debugger
         if (response.data) {
@@ -148,7 +148,7 @@ const verifyCode = async () => {
     finally
     {
         setTimeout(() => {
-            
+
         }, 3000);
     }
 };

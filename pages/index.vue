@@ -1,13 +1,5 @@
 <template>
-  <head>
-  <title>LendCash</title>
-  <link rel="icon" href="../img/LendCash_Logo-removebg-preview.png" type="image/x-icon">
-  <link rel="shortcut icon" href="../img/LendCash_Logo-removebg-preview.png" type="image/x-icon">
-  <link rel="apple-touch-icon" href="../img/LendCash_Logo-removebg-preview.png">
-  <link rel="icon" sizes="192x192" href="../img/LendCash_Logo-removebg-preview.png">
-  <link rel="icon" sizes="32x32" href="../img/LendCash_Logo-removebg-preview.png">
-  <link rel="icon" sizes="16x16" href="../img/LendCash_Logo-removebg-preview.png">
-</head>
+
   <div class="bg-white">
     <header class="py-8 px-4 md:px-16">
   <div class="container mx-auto flex justify-between items-center scroll-pop">
@@ -167,12 +159,12 @@
     <div class="flex flex-col md:flex-row items-center gap-4 pop-in">
       <button
       @click="toggleModal"
-      class="w-full md:w-auto bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-opacity-50 animate__animated animate__pulse animate__infinite flex justify-center items-center whitespace-nowrap"
+      class="w-full md:w-auto bg-teal-600 text-white px-6 py-2 rounded-md hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-green-700 focus:ring-opacity-50 animate__animated animate__pulse animate__infinite flex justify-center items-center whitespace-nowrap"
         >
       Log in
       </button>
       <LoginModal
-      :show="showModal" 
+      :show="showModal"
       v-if="showModal"
       @close="showModal = false"
       @employeeLogin="employeeLogin"
@@ -230,7 +222,7 @@
 
         <div class="bg-white rounded-md p-6 shadow-lg pop-in flex flex-col items-center">
           <img src="../img/no-collaretal.png" alt="No Collateral" class="w-16 h-16 mb-4">
-          <h4 class="text-xl font-bold text-green-600 mb-2 text-center">No Collateral</h4>
+          <h4 class="text-xl font-bold text-teal-600 mb-2 text-center">No Collateral</h4>
           <p class="text-gray-600 text-center">Access credit and financial services without the need for collateral, enabling individuals, especially those with limited assets, to secure loans.</p>
         </div>
 
